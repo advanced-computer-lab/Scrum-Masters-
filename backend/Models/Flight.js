@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+//const Schema = mongoose.Schema;
 
 
 
-const flightSchema=new Schema({
+const flightSchema=mongoose.Schema({
 
 flightNumber: {
     type: Number,
@@ -40,32 +40,20 @@ flightNumber: {
     type:String,
     required:true
   },
- 
-  cabin: {
-    type: String,
-    enum : ['Economy','Business'],
-    
-  },
   noOfEconomy: {
     type: Number,
-    required:isAdmin(this.type)
+    required:true
   },
 
   noOfBusiness: {
     type: Number,
-    required:isAdmin(this.type)
+    required:true
   },
   noOfSeats: {
       type: Number,
       default:this.noOfBusiness+this.noOfEconomy
-  },
-
-  airport: {
-      type:String,
-      required:true
   }
-
 });
 
-const Flight = mongoose.model('flight', flightSchema);
+const Flight = mongoose.model('Flight', flightSchema);
 module.exports = Flight;
