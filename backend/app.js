@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 require("dotenv/config");
 const app = express();
 app.use(express.json());
-const port = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8081;
 
 //DB CONNECTION
 
@@ -22,6 +22,6 @@ mongoose
 app.use("/admin", require("./routes/admin/adminController"));
 
 
-app.listen(port, () => {
-  console.log("App is listening at port: ", port);
+app.listen(PORT, () => {
+  console.log("App is listening at port: ", PORT);
 });
