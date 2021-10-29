@@ -2,8 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send("HI MAROOMA HOB HAYATY ");
+router.post("/", (req, res) => {
+  console.log(req.body.name);
 });
 
 module.exports = router;
