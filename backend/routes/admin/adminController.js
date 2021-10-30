@@ -14,6 +14,21 @@ router.post("/search", async (req, res) => {
     res.json({ message: err });
   }
 });
+<<<<<<< HEAD
+=======
+router.post("/createflight",async(req, res)=>{
+const flight=new Flight({flightNumber:req.params.flightNumber});
+try{
+  await flight.save();
+  res.send("inserted dataaaaa");
+}
+catch(err){
+  console.log(err);
+}
+
+});
+
+>>>>>>> maram
 
 router.patch("/update/:id", async (req, res) => {
   Flight.findByIdAndUpdate(req.params.id, req.body, { new: true })
