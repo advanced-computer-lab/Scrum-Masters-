@@ -1,9 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
-require("dotenv/config");
+//require("dotenv/config");
 const app = express();
 app.use(express.json());
+<<<<<<< HEAD
 const PORT = process.env.PORT || 8081;
+=======
+const port = process.env.PORT || 8081;
+const dotenv=require('dotenv').config();
+>>>>>>> maram
 
 //DB CONNECTION
 
