@@ -41,29 +41,22 @@ flightNumber: {
     required:true
   },
  
-  cabin: {
-    type: String,
-    enum : ['Economy','Business'],
-    
-  },
+ 
   noOfEconomy: {
     type: Number,
-    required:isAdmin(this.type)
+   required:true
   },
 
   noOfBusiness: {
     type: Number,
-    required:isAdmin(this.type)
+    required:true
   },
   noOfSeats: {
       type: Number,
       default:this.noOfBusiness+this.noOfEconomy
-  },
-
-  airport: {
-      type:String,
-      required:true
   }
+
+ 
 
 });
 
