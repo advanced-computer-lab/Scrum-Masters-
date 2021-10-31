@@ -40,9 +40,17 @@ flightNumber: {
     type:String,
     required:true
   },
+<<<<<<< HEAD
   noOfEconomy: {
     type: Number,
     required:true
+=======
+ 
+ 
+  noOfEconomy: {
+    type: Number,
+   required:true
+>>>>>>> maram
   },
 
   noOfBusiness: {
@@ -53,6 +61,12 @@ flightNumber: {
       type: Number,
       default:this.noOfBusiness+this.noOfEconomy
   }
+<<<<<<< HEAD
+=======
+
+ 
+
+>>>>>>> maram
 });
 
 const Flight = mongoose.model('Flight', flightSchema);
