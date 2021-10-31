@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const router = express.Router();
 const Flight = require("../../Models/Flight");
 
-router.post("/search", async (req, res) => {
+router.get("/search", async (req, res) => {
   const criteria = req.body;
   console.log(criteria);
   try {
