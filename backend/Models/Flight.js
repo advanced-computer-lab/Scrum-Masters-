@@ -22,7 +22,6 @@ flightNumber: {
   },
   
   departureDate: {
-<<<<<<< HEAD
     type:String,
     //required:true
   },
@@ -30,15 +29,6 @@ flightNumber: {
   arrivalDate: {
     type:String,
     //required:true
-=======
-    type: Date,
-    required:true
-  },
-
-  arrivalDate: {
-    type: Date,
-    required:true
->>>>>>> dev
   },
 
   departureAirport: {
@@ -50,6 +40,8 @@ flightNumber: {
     type:String,
     
   },
+ 
+ 
   noOfEconomy: {
     type: Number,
    //required:true
@@ -61,14 +53,11 @@ flightNumber: {
   },
   noOfSeats: {
       type: Number,
-      
+      //default:this.noOfBusiness+this.noOfEconomy
   }
-<<<<<<< HEAD
-=======
 
  
 
->>>>>>> maram
 });
 
 const Flight = mongoose.model('Flight', flightSchema);
