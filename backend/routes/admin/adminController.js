@@ -14,11 +14,13 @@ router.get("/search", async (req, res) => {
     res.json({ message: err });
   }
 });
-router.post("/create", async (req,res) => {
+router.post("/create", async (req, res) => {
+
   console.log("trying to execute");// kharawani
   console.log("khara belkozbara");
   console.log(req.body);
-const flight=new Flight(req.body);
+  const flight=new Flight(req.body);
+
 try{
   
   const savedFlight=await flight.save();

@@ -53,7 +53,7 @@ flightNumber: {
   },
   noOfSeats: {
       type: Number,
-      default:()=> this.noOfBusiness+this.noOfEconomy
+      //default:this.noOfBusiness+this.noOfEconomy
   }
 
  
