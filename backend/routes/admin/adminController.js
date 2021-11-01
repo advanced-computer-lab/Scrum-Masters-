@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const router = express.Router();
 const Flight = require("../../Models/Flight");
 
-router.post("/search", async (req, res) => {
+router.get("/search", async (req, res) => {
   const criteria = req.body;
   console.log(criteria);
   try {
@@ -14,14 +14,19 @@ router.post("/search", async (req, res) => {
     res.json({ message: err });
   }
 });
-router.post("/create", async (req,res) => {
-  console.log("trying to execute");
-  try{
-const flight=new Flight({flightNumber: req.body.flightNumber, departureTime:req.body.departureTime, arrivalTime:req.body.arrivalTime,  departureDate: req.body.departureDate, arrivalDate: req.body.arrivalDate, departureAirport: req.body.departureAirport, arrivalAirport: req.body.arrivalAirport, noOfEconomy: req.body.noOfEconomy, noOfBusiness:req.body.noOfBusiness, noOfSeats: req.body.noOfSeats});
+router.post("/create", async (req, res) => {
 
-   flight.save();
-  res.send("WOHOOOOO")
+  console.log("trying to execute");// kharawani
+  console.log("khara belkozbara");
+  console.log(req.body);
+  const flight=new Flight(req.body);
+
+try{
+  
+  const savedFlight=await flight.save();
+  res.json(savedFlight);
 }
+
 catch(err){
   console.log(err);
 }

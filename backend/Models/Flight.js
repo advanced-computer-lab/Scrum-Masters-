@@ -22,12 +22,12 @@ flightNumber: {
   },
   
   departureDate: {
-    type: Date,
+    type:String,
     required:true
   },
 
   arrivalDate: {
-    type: Date,
+    type:String,
     required:true
   },
 
@@ -38,8 +38,10 @@ flightNumber: {
 
   arrivalAirport:{
     type:String,
-    required:true
+    required: true
   },
+ 
+ 
   noOfEconomy: {
     type: Number,
    required:true
@@ -47,11 +49,11 @@ flightNumber: {
 
   noOfBusiness: {
     type: Number,
-    required:true
+    required: true 
   },
   noOfSeats: {
       type: Number,
-      default:this.noOfBusiness+this.noOfEconomy
+      //default:this.noOfBusiness+this.noOfEconomy
   }
 
  
