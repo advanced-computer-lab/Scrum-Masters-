@@ -23,6 +23,10 @@ mongoose
 app.use("/admin", require("./routes/admin/adminController"));
 
 
-app.listen(port, () => {
-  console.log("App is listening at port: ", port);
+app.listen(PORT, () => {
+  console.log("App is listening at port: ", PORT);
 });
+
+app.get("/hellopage", (req,res) => {
+res.send("Hola gurl");
+})
