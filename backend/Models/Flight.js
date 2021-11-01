@@ -53,12 +53,9 @@ flightNumber: {
       type: Number,
       default:this.noOfBusiness+this.noOfEconomy
   }
-<<<<<<< HEAD
-=======
 
  
 
->>>>>>> maram
 });
 
 const Flight = mongoose.model('Flight', flightSchema);
