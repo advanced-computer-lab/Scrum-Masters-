@@ -14,8 +14,9 @@ router.post("/search", async (req, res) => {
     res.json({ message: err });
   }
 });
-router.get("/create/:flightNumber/:departureTime/:arrivalTime/:departureDate/:arrivalDate/:departureAirport/:arrivalAirport/:noOfEconomy/:noOfBusiness/:noOfSeats", (req,res) => {
-const flight=new Flight({flightNumber:req.params.flightNumber, departureTime:req.params.departureTime, arrivalTime:req.params.arrivalTime,  departureDate: req.params.departureDate, arrivalDate: req.params.arrivalDate, departureAirport: req.params.departureAirport, arrivalAirport: req.params.arrivalAirport, noOfEconomy: req.params.noOfEconomy, noOfBusiness:req.params.noOfBusiness, noOfSeats: req.params.noOfSeats});
+router.post("/create", async (req,res) => {
+  console.log("trying to execute");
+const flight=new Flight({flightNumber: req.body.flightNumber, departureTime:req.body.departureTime, arrivalTime:req.body.arrivalTime,  departureDate: req.body.departureDate, arrivalDate: req.body.arrivalDate, departureAirport: req.body.departureAirport, arrivalAirport: req.body.arrivalAirport, noOfEconomy: req.body.noOfEconomy, noOfBusiness:req.body.noOfBusiness, noOfSeats: req.body.noOfSeats});
 try{
    flight.save();
   res.send("WOHOOOOO")

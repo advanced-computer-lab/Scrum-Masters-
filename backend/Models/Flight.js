@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+//const Schema = mongoose.Schema;
 
 
 
-const flightSchema=new Schema({
+const flightSchema=mongoose.Schema({
 
 flightNumber: {
     type: Number,
@@ -22,12 +22,12 @@ flightNumber: {
   },
   
   departureDate: {
-    type: Date,
+    type:String,
     required:true
   },
 
   arrivalDate: {
-    type: Date,
+    type:String,
     required:true
   },
 
@@ -60,5 +60,5 @@ flightNumber: {
 
 });
 
-const Flight = mongoose.model('flight', flightSchema);
+const Flight = mongoose.model('Flight', flightSchema);
 module.exports = Flight;
