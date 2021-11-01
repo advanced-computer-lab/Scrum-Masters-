@@ -26,6 +26,7 @@ app.use("/admin", require("./routes/admin/adminController"));
 app.listen(PORT, () => {
   console.log("App is listening at port: ", PORT);
 });
+
 app.get("/hellopage", (req,res) => {
 res.send("Hola gurl");
 })
