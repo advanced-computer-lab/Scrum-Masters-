@@ -16,11 +16,12 @@ router.post("/search", async (req, res) => {
 });
 router.post("/create", async (req,res) => {
   console.log("trying to execute");
-  try{
-const flight=new Flight({flightNumber: req.body.flightNumber, departureTime:req.body.departureTime, arrivalTime:req.body.arrivalTime,  departureDate: req.body.departureDate, arrivalDate: req.body.arrivalDate, departureAirport: req.body.departureAirport, arrivalAirport: req.body.arrivalAirport, noOfEconomy: req.body.noOfEconomy, noOfBusiness:req.body.noOfBusiness, noOfSeats: req.body.noOfSeats});
+  console.log(req.body);
 
-   flight.save();
-  res.send("WOHOOOOO")
+  try{
+const flight=new Flight(req.body);
+  await flight.save();
+  res.send("WOHOOOOO");
 }
 catch(err){
   console.log(err);
