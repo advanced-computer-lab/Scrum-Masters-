@@ -40,17 +40,9 @@ flightNumber: {
     type:String,
     required:true
   },
-<<<<<<< HEAD
-  noOfEconomy: {
-    type: Number,
-    required:true
-=======
- 
- 
   noOfEconomy: {
     type: Number,
    required:true
->>>>>>> maram
   },
 
   noOfBusiness: {
