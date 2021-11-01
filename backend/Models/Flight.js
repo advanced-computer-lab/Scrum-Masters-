@@ -7,49 +7,49 @@ const flightSchema=mongoose.Schema({
 
 flightNumber: {
     type: Number,
-    required:true
+    //required:true
   }, 
 
   departureTime: {
     type: String,
-    required:true
+    //required:true
   },
 
   arrivalTime: {
     type: String,
-    required:true
+    //required:true
 
   },
   
   departureDate: {
     type:String,
-    required:true
+    //required:true
   },
 
   arrivalDate: {
     type:String,
-    required:true
+    //required:true
   },
 
   departureAirport: {
       type:String,
-      required:true
+      //required:true
   },
 
   arrivalAirport:{
     type:String,
-    required:true
+    
   },
  
  
   noOfEconomy: {
     type: Number,
-   required:true
+   //required:true
   },
 
   noOfBusiness: {
     type: Number,
-    required:true
+    
   },
   noOfSeats: {
       type: Number,
