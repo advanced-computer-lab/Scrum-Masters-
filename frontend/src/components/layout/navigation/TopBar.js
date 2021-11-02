@@ -1,16 +1,11 @@
 import React from "react";
-import {
-  Nav,
-  Offcanvas,
-  Container,
-  NavDropdown,
-  Form,
-  FormControl,
-  Button,
-  Navbar,
-} from "react-bootstrap";
+import { Nav, Container, Navbar } from "react-bootstrap";
 import logo from "../../../images/logo-white.png";
-import "@fontsource/alegreya";
+import ProfileButton from "../../admin/buttons/ProfileButton";
+// import "@fontsource/alegreya";
+// import "@fontsource/ceviche-one";
+import "@fontsource/henny-penny";
+import "../../../styles/custom.css";
 const TopBar = () => {
   return (
     <Navbar
@@ -19,13 +14,14 @@ const TopBar = () => {
       sticky="top"
       variant="dark"
       style={{ backgroundColor: "#7400b8", color: "white" }}
+      className="container-fluid"
     >
       <Navbar.Brand
         href="#home"
         style={{
-          marginLeft: "2%",
-          fontSize: "18pt",
-          fontFamily: "Alegreya",
+          // marginLeft: "2%",
+          fontSize: "21pt",
+          fontFamily: "Henny Penny",
         }}
       >
         <img
@@ -41,16 +37,18 @@ const TopBar = () => {
       <Container>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#pricing" style={{ color: "white" }}>
+          <Nav className="me-auto"></Nav>
+          <Nav>
+            <Nav.Link
+              href="#pricing"
+              style={{ color: "white" }}
+            >
               View Schedule
             </Nav.Link>
             <Nav.Link href="#features" style={{ color: "white" }}>
               Add a New Flight
             </Nav.Link>
-          </Nav>
-          <Nav>
-            <Nav.Link href="#deets">More deets</Nav.Link>
+            <ProfileButton />
           </Nav>
         </Navbar.Collapse>
       </Container>
