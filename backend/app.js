@@ -26,6 +26,6 @@ app.listen(port, () => {
   console.log('App is listening at port: ', port);
 });
 
-app.get('/hellopage', (req, res) => {
-  res.send('Hola gurl');
-});
+// app.get('/hellopage', (req, res) => {
+//   res.send('Hola gurl');
+// });
