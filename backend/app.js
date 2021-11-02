@@ -1,9 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
-require("dotenv/config");
+const cors = require("cors");
+//require("dotenv/config");
 const app = express();
 app.use(express.json());
-const port = process.env.PORT || 8081;
+const dotenv=require('dotenv').config();
 
 //DB CONNECTION
 
@@ -18,10 +19,14 @@ mongoose
   });
 
 //admin/ ROUTES
-
+app.use(cors({ origin: true, credentials: true }));
 app.use("/admin", require("./routes/admin/adminController"));
 
-
+const port = process.env.PORT || 8081;
 app.listen(port, () => {
   console.log("App is listening at port: ", port);
 });
+
+// app.get("/hellopage", (req,res) => {
+// res.send("Hola gurl");
+// })
