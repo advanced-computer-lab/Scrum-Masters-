@@ -1,9 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import TopBar from './Components/layout/navigation/TopBar';
+import TopBar from './components/layout/navigation/TopBar';
 import { BrowserRouter as Router } from 'react-router-dom';
-import ViewFlights from './Components/admin/ViewFlights';
+import ViewFlights from './components/admin/ViewFlights';
 
 function App() {
   return (

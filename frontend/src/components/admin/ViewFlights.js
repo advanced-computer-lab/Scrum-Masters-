@@ -1,24 +1,16 @@
-import * as React from 'react';
+import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import PropTypes from 'prop-types';
-
 import {
-  Box,
-  Collapse,
-  IconButton,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
   Paper,
 } from '@material-ui/core';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import Button from 'react-bootstrap/Button';
+import Row from './Row';
 
 function createData(name, calories, fat, carbs, protein, price) {
   return {
@@ -42,92 +34,6 @@ function createData(name, calories, fat, carbs, protein, price) {
     ],
   };
 }
-
-function Row(props) {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
-
-  return (
-    <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <TableCell>
-          <IconButton
-            aria-label='expand row'
-            size='small'
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell component='th'>{row.name}</TableCell>
-        <TableCell align='center'>{row.calories}</TableCell>
-        <TableCell align='center'>{row.fat}</TableCell>
-        <TableCell align='center'>{row.carbs}</TableCell>
-        <TableCell align='center'>
-          <Button variant='primary'>Update</Button>
-          <Button variant='danger'>Delete</Button>
-        </TableCell>
-        <TableCell align='center'></TableCell>
-        <TableCell align='center'>{row.carbs}</TableCell>
-        <TableCell align='center'>{row.carbs}</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout='auto' unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant='h6' gutterBottom component='div'>
-                History
-              </Typography>
-              <Table size='small' aria-label='purchases'>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align='center'>Amount</TableCell>
-                    <TableCell align='center'>Total price ($)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component='th' scope='row'>
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align='right'>{historyRow.amount}</TableCell>
-                      <TableCell align='right'>
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    </React.Fragment>
-  );
-}
-
-Row.propTypes = {
-  row: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbs: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    protein: PropTypes.number.isRequired,
-  }).isRequired,
-};
-
 const rows = [
   createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
   createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
@@ -136,7 +42,23 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
 ];
 
-export default function CollapsibleTable() {
+const ViewFlights = (props) => {
+  props = rows;
+  const [data, setData] = useState();
+
+  const sendGetRequest = async () => {
+    try {
+      const res = await axios.get('http://localhost:8081/admin/search');
+      console.log(res.data);
+      setData(res.data);
+    } catch (err) {
+      // Handle Error Here
+      console.error(err);
+    }
+  };
+
+  useEffect(sendGetRequest, []);
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label='collapsible table'>
@@ -154,11 +76,13 @@ export default function CollapsibleTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {props.map((row) => (
             <Row key={row.name} row={row} />
           ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
-}
+};
+
+export default ViewFlights;
