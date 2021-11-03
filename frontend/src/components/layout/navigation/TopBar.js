@@ -45,7 +45,7 @@ const TopBar = () => {
             >
               View Schedule
             </Nav.Link>
-            <Nav.Link href="#features" style={{ color: "white" }}>
+            <Nav.Link href="/create" style={{ color: "white" }}>
               Add a New Flight
             </Nav.Link>
             <ProfileButton />
