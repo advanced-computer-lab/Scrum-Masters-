@@ -2,14 +2,16 @@ import logo from "./logo.svg";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import TopBar from "./components/layout/navigation/TopBar";
-import { Route, BrowserRouter as Router } from "react-router-dom";
+import {BrowserRouter as Router } from "react-router-dom";
 import InsertFlight from "./components/admin/forms/InsertFlight"
 import SearchFlight from "./components/admin/forms/SearchFlight"
+import ViewFlights from './components/admin/ViewFlights';
+import { Container } from 'react-bootstrap';
 
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className='App'>
         <TopBar />
         <div className="container">
         <InsertFlight />
