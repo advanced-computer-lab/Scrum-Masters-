@@ -26,10 +26,13 @@ router.get('/search', async (req, res) => {
 });
 router.post('/create', async (req, res) => {
   console.log(req.body);
-  const flight = new Flight(req.body);
-
+  const insertion = req.body
+  insertion.noOfSeats = req.body.noOfFirstClass + req.body.noOfBusiness + req.body.noOfEconomy
+  const flight = new Flight(insertion);
+  console.log(flight.noOfSeats + " 1st");
   try {
     const savedFlight = await flight.save();
+    console.log(savedFlight.noOfSeats + " 2nd");
     res.json(savedFlight);
   } catch (err) {
     console.log(err);

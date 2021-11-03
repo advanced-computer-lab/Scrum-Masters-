@@ -18,12 +18,12 @@ const flightSchema = mongoose.Schema({
   },
 
   departureDate: {
-    type: String,
+    type: Date,
     required: true,
   },
 
   arrivalDate: {
-    type: String,
+    type: Date ,
     required: true,
   },
 
@@ -52,7 +52,7 @@ const flightSchema = mongoose.Schema({
   },
   noOfSeats: {
     type: Number,
-    //default:this.noOfBusiness+this.noOfEconomy
+    //will be assigned from insert
   },
 });
 
