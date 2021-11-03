@@ -1,9 +1,9 @@
-const express = require('express');
-const mongoose = require('mongoose');
+const express = require("express");
+const mongoose = require("mongoose");
 const router = express.Router();
-const Flight = require('../../Models/Flight');
+const Flight = require("../../Models/Flight");
 
-router.get('/search', async (req, res) => {
+router.get("/search", async (req, res) => {
   const criteria = req.body;
   console.log(criteria);
   if (Object.keys(req.body).length === 0) {
@@ -24,7 +24,7 @@ router.get('/search', async (req, res) => {
     }
   }
 });
-router.post('/create', async (req, res) => {
+router.post("/create", async (req, res) => {
   console.log(req.body);
   const insertion = req.body
   insertion.noOfSeats = req.body.noOfFirstClass + req.body.noOfBusiness + req.body.noOfEconomy
@@ -38,7 +38,7 @@ router.post('/create', async (req, res) => {
     console.log(err);
   }
 });
-router.patch('/update/:id', async (req, res) => {
+router.patch("/update/:id", async (req, res) => {
   Flight.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((result) => {
       //new:true returns modified document not original
