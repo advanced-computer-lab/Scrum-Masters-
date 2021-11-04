@@ -14,7 +14,7 @@ function App() {
       <div className='App'>
         <TopBar />
         <div className="container">
-        <InsertFlight />
+        <SearchFlight />
         </div>
       </div>
     </Router>

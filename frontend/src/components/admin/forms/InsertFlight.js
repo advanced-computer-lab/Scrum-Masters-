@@ -18,7 +18,9 @@ export default function FormPropsTextFields() {
     noOfFirstClass:'',
   });
   
-  const onChange = e=> setValues(e.target.value);
+  const onChange = e => {setValues({...values,[e.target.name]: e.target.value})
+                console.log(values)
+};
   
   const onSubmit = ()=> console.log(values);
   return (
@@ -57,6 +59,7 @@ export default function FormPropsTextFields() {
           id="outlined-search"
           label="To"
           type="search"
+          onChange = {onChange}
         />
             </div>
         {/* <TextField
