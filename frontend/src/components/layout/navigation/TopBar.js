@@ -1,20 +1,9 @@
-<<<<<<< HEAD
-import React from 'react';
-import { Nav, Container, Navbar } from 'react-bootstrap';
-import logo from '../../../images/logo-white.png';
-import ProfileButton from '../../admin/buttons/ProfileButton';
-import '@fontsource/alegreya';
-// import '@fontsource/ceviche-one';
-import '@fontsource/henny-penny';
-import '../../../styles/custom.css';
-=======
 import React from "react";
 import { Nav, Container, Navbar } from "react-bootstrap";
 import logo from "../../../images/logo-white.png";
 import ProfileButton from "../../admin/buttons/ProfileButton";
 import "@fontsource/henny-penny";
 import "../../../styles/custom.css";
->>>>>>> donia
 const TopBar = () => {
   return (
     <Navbar
