@@ -1,20 +1,24 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Date from "../forms/textFields/Date";
 import Time from "../forms/textFields/Time";
 import axios from "axios";
-import Search from "../buttons/Search";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 export default function FormPropsTextFields() {
   const [values, setValues] = React.useState();
-  const onChange = async (e) => {
+  //const [date, setDate] = React.useState();
+  const onChange = async (e,name) => {
     console.log("in onchange in search flight", e);
     if (e) {
       try {
-        
-        await setValues({ ...values, [e.target.name]: e.target.value });
+        console.log(e)
+        if(e.target){
+          await setValues({ ...values, [e.target.name]: e.target.value });
+        }
+        else{
+          await setValues({ ...values, [name]: e});
+        }
         await console.log(values);
       } catch (error) {
         console.log(error);
@@ -68,13 +72,41 @@ export default function FormPropsTextFields() {
         name="arrivalAirport"
         onChange={onChange}
       />
+        <TextField
+        id="outlined-search"
+        label="Departure Date"
+        type="search"
+        name="departureDate"
+        onChange={onChange}
+      />
+            <TextField
+        id="outlined-search"
+        label="Arrival Date"
+        type="search"
+        name="arrivalDate"
+        onChange={onChange}
+      />
+            <TextField
+        id="outlined-search"
+        label="Departure Time"
+        type="search"
+        name="departureTime"
+        onChange={onChange}
+      />
+            <TextField
+        id="outlined-search"
+        label="Arrival Time"
+        type="search" 
+        name="arrivalTime"
+        onChange={onChange}
+      />
 
-      <Date label={"Departure"} name={"departureDate"} onChange={(e)=>onChange(e)} />
-      <Date label={"Arrival"} name={"arrivalDate"} onChange={(e)=>onChange(e)} />
+     {/* <Date label={"Departure"} name={"departureDate"} onChange={onChange}  />
+      <Date label={"Arrival"} name={"arrivalDate"} onChange={onChange}  />
 
       <Time label={"Departure"} name={"departureTime"} onChange={onChange} />
       <Time label={"Arrival"} name={"arrivalTime"} onChange={onChange} />
-
+        */}
       <Button
         variant="contained"
         color="success"

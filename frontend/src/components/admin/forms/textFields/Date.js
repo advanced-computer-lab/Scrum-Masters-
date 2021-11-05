@@ -6,17 +6,17 @@ import DatePicker from '@mui/lab/DatePicker';
 
 const Date = ({onChange, label, name}) => {
   const [value, setValue] = React.useState(null);
-
+  
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         label={label}
         value={value}
         name= {name}
-        onChange={(e,newValue) => {
+        onChange={(newValue) => {
           setValue(newValue);
           console.log("in date");
-          {onChange(e)}
+          onChange(newValue,name)
         }}
         renderInput={(params) => <TextField {...params} />}
         InputLabelProps={{
