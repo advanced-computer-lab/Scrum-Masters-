@@ -1,6 +1,6 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Table,
   TableBody,
@@ -8,16 +8,26 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  tableCellClasses,
+  styled,
   Paper,
-} from '@material-ui/core';
-import FlightCard from './FlightCard';
+} from "@mui/material";
+import FlightCard from "./FlightCard";
+import { Container } from "react-bootstrap";
 
 const ViewFlights = (props) => {
   const [data, setData] = useState();
+  
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#5390d9",
+    color: theme.palette.common.white,
+  },
+}));
 
   useEffect(() => {
     axios
-      .get('http://localhost:8081/admin/search')
+      .post("http://localhost:8081/admin/search")
       .then((res) => {
         console.log(res.data);
         setData(res.data);
@@ -26,18 +36,38 @@ const ViewFlights = (props) => {
   }, []);
 
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label='collapsible table'>
+    <TableContainer component={Paper} style={{ marginBottom: "20px" }}>
+      <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
-            <TableCell />
-            <TableCell>Flight Number</TableCell>
-            <TableCell align='left'>From</TableCell>
-            <TableCell align='left'>Duration</TableCell>
-            <TableCell align='left'>To</TableCell>
-            <TableCell align='center'>Departure Date</TableCell>
-            <TableCell align='left'>Arrival Date</TableCell>
-            <TableCell align='center'>Departure Date</TableCell>
+            <StyledTableCell />
+            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
+              Flight Number
+            </StyledTableCell>
+            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
+              From
+            </StyledTableCell>
+            {/* <TableCell align="left">Duration</TableCell> */}
+            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
+              To
+            </StyledTableCell>
+            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
+              Departure Date
+            </StyledTableCell>
+            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
+              Arrival Date
+            </StyledTableCell>
+            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
+              {" "}
+              Duration
+            </StyledTableCell>
+            <StyledTableCell
+              align="center"
+              style={{ fontWeight: "bolder" }}
+            ></StyledTableCell>
+            {/* <TableCell align="center" style={{ fontWeight: "bolder" }}>
+              Delete Flight
+            </TableCell> */}
           </TableRow>
         </TableHead>
         {data ? (
