@@ -13,10 +13,10 @@ import {
   tableRowClasses,
   styled,
 } from "@mui/material/";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteButton from "@material-ui/icons/Delete";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteButton from "@mui/icons-material/Delete";
 import { Container } from "react-bootstrap";
 
 const FlightCard = (props) => {
@@ -34,7 +34,7 @@ const FlightCard = (props) => {
       border: 0,
     },
   }));
-  
+
   return (
     <React.Fragment>
       <StyledTableRow sx={{ "& > *": { borderBottom: "unset" } }}>

@@ -5,7 +5,7 @@ import Date from "../forms/textFields/Date";
 import Time from "../forms/textFields/Time";
 import axios from "axios";
 import Search from "../buttons/Search";
-import SearchIcon from "@material-ui/icons/Search";
+import SearchIcon from "@mui/icons-material/Search";
 import Stack from "@mui/material/Stack";
 import { IconButton } from "@mui/material";
 import Button from "@mui/material/Button";
