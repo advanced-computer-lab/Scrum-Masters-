@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const router = express.Router();
 const Flight = require("../../Models/Flight");
 
-router.post("/search", async (req, res) => {
+router.get("/search", async (req, res) => {
   const criteria = req.body;
   console.log(criteria);
   try {
@@ -50,5 +50,11 @@ router.patch("/update/:id", async (req, res) => {
       res.status(404).send(err);
     });
 });
+router.delete('/:id', (req, res) => {
+  flight.findByIdAndRemove(req.params.id, req.body)
+    .then(flight => res.json({ mgs: 'flight deleted successfully' }))
+    .catch(err => res.status(404).json({ error: 'No such a flight' }));
+});
+
 
 module.exports = router;
