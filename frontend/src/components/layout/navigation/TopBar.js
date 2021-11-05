@@ -3,7 +3,7 @@ import { Nav, Container, Navbar } from "react-bootstrap";
 import logo from "../../../images/logo-white.png";
 import ProfileButton from "../../admin/buttons/ProfileButton";
 import "@fontsource/henny-penny";
-import "../../../styles/custom.css";
+import "../../../Styles/custom.css";
 const TopBar = () => {
   return (
     <Navbar
