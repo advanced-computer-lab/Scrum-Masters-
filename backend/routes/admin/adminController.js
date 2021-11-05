@@ -1,30 +1,31 @@
-const express = require("express");
-const mongoose = require("mongoose");
+const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
-const Flight = require("../../Models/Flight");
+const Flight = require('../../Models/Flight');
 
-router.post("/search", async (req, res) => {
-  const criteria = req.body;
-  //console.log(criteria);
- /* if (Object.keys(req.body).length === 0) {
-    try {
-      const query = await Flight.find();
-      console.log(query);
-      res.json(query);
-    } catch (err) {
-      res.json({ message: err });
-    }
-  } else {*/
-    try {
-      const query = await Flight.find(criteria);
-      console.log(query);
-      res.json(query);
-    } catch (err) {
-      res.json({ message: err });
-    }
-  //}
+router.get('/search', async (req, res) => {
+  try {
+    const query = await Flight.find();
+    console.log(query);
+    res.json(query);
+  } catch (err) {
+    res.json({ message: err });
+  }
 });
-router.post("/create", async (req, res) => {
+
+router.post('/search', async (req, res) => {
+  const criteria = req.body;
+
+  try {
+    const query = await Flight.find(criteria);
+    console.log(query);
+    res.json(query);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
+router.post('/create', async (req, res) => {
   console.log(req.body);
   const flight = new Flight(req.body);
 
@@ -35,7 +36,7 @@ router.post("/create", async (req, res) => {
     console.log(err);
   }
 });
-router.patch("/update/:id", async (req, res) => {
+router.patch('/update/:id', async (req, res) => {
   Flight.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((result) => {
       //new:true returns modified document not original

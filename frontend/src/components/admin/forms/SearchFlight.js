@@ -3,8 +3,15 @@ import TextField from "@mui/material/TextField";
 import Date from "../forms/textFields/Date";
 import Time from "../forms/textFields/Time";
 import axios from "axios";
+<<<<<<< HEAD
+=======
+import Search from "../buttons/Search";
+import SearchIcon from "@mui/icons-material/Search";
+>>>>>>> 17c58f72c014ae8569ac036f3559f1eb024d3884
 import Stack from "@mui/material/Stack";
+import { IconButton } from "@mui/material";
 import Button from "@mui/material/Button";
+import { Tooltip } from "@mui/material";
 export default function FormPropsTextFields() {
   const [values, setValues] = React.useState();
   //const [date, setDate] = React.useState();
@@ -12,6 +19,7 @@ export default function FormPropsTextFields() {
     console.log("in onchange in search flight", e);
     if (e) {
       try {
+<<<<<<< HEAD
         console.log(e)
         if(e.target){
           await setValues({ ...values, [e.target.name]: e.target.value });
@@ -19,6 +27,9 @@ export default function FormPropsTextFields() {
         else{
           await setValues({ ...values, [name]: e});
         }
+=======
+        await setValues({ ...values, [e.target.name]: e.target.value });
+>>>>>>> 17c58f72c014ae8569ac036f3559f1eb024d3884
         await console.log(values);
       } catch (error) {
         console.log(error);
@@ -101,6 +112,7 @@ export default function FormPropsTextFields() {
         onChange={onChange}
       />
 
+<<<<<<< HEAD
      {/* <Date label={"Departure"} name={"departureDate"} onChange={onChange}  />
       <Date label={"Arrival"} name={"arrivalDate"} onChange={onChange}  />
 
@@ -108,15 +120,41 @@ export default function FormPropsTextFields() {
       <Time label={"Arrival"} name={"arrivalTime"} onChange={onChange} />
         */}
       <Button
+=======
+      <Date
+        label={"Departure"}
+        name={"departureDate"}
+        onChange={(e) => onChange(e)}
+      />
+      <Date
+        label={"Arrival"}
+        name={"arrivalDate"}
+        onChange={(e) => onChange(e)}
+      />
+
+      <Time label={"Departure"} name={"departureTime"} onChange={onChange} />
+      <Time label={"Arrival"} name={"arrivalTime"} onChange={onChange} />
+
+      {/* <Button
+>>>>>>> 17c58f72c014ae8569ac036f3559f1eb024d3884
         variant="contained"
         color="success"
         onClick={onSubmit}
-        style={{ height: "auto" }}
         size="small"
         type="submit"
       >
         Search
-      </Button>
+      </Button> */}
+      <Tooltip title="Search" arrow placement="right">
+        <IconButton
+          aria-label="delete"
+          onClick={onSubmit}
+          size="large"
+          style={{ color: "green" }}
+        >
+          <SearchIcon style={{ fontSize: 45 }} />
+        </IconButton>
+      </Tooltip>
     </Stack>
   );
 }
