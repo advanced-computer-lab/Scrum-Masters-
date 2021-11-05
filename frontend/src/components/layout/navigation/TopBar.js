@@ -8,15 +8,15 @@ const TopBar = () => {
   return (
     <Navbar
       collapseOnSelect
-      expand='lg'
-      sticky='top'
-      variant='dark'
-      style={{ backgroundColor: '#7400b8', color: 'white' }}
-      className='container-fluid'
+      expand="lg"
+      sticky="top"
+      variant="dark"
+      style={{ backgroundColor: "#7400b8", color: "white" }}
+      className="container-fluid"
     >
       <Container>
         <Navbar.Brand
-          href="#home"
+          href="#"
           style={{
             // marginLeft: "2%",
             fontSize: "21pt",
@@ -33,15 +33,15 @@ const TopBar = () => {
           />
           Cloud 9
         </Navbar.Brand>
-        <Container>
+        <Container style={{ paddingRight: 0 }}>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto"></Nav>
             <Nav>
-              <Nav.Link href="#pricing" style={{ color: "white" }}>
+              <Nav.Link href="/schedule" style={{ color: "white" }}>
                 View Schedule
               </Nav.Link>
-              <Nav.Link href="#features" style={{ color: "white" }}>
+              <Nav.Link href="/addFlight" style={{ color: "white" }}>
                 Add a New Flight
               </Nav.Link>
               <ProfileButton />

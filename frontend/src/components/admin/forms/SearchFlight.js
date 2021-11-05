@@ -5,15 +5,17 @@ import Date from "../forms/textFields/Date";
 import Time from "../forms/textFields/Time";
 import axios from "axios";
 import Search from "../buttons/Search";
+import SearchIcon from "@material-ui/icons/Search";
 import Stack from "@mui/material/Stack";
+import { IconButton } from "@mui/material";
 import Button from "@mui/material/Button";
+import { Tooltip } from "@mui/material";
 export default function FormPropsTextFields() {
   const [values, setValues] = React.useState();
   const onChange = async (e) => {
     console.log("in onchange in search flight", e);
     if (e) {
       try {
-        
         await setValues({ ...values, [e.target.name]: e.target.value });
         await console.log(values);
       } catch (error) {
@@ -69,22 +71,39 @@ export default function FormPropsTextFields() {
         onChange={onChange}
       />
 
-      <Date label={"Departure"} name={"departureDate"} onChange={(e)=>onChange(e)} />
-      <Date label={"Arrival"} name={"arrivalDate"} onChange={(e)=>onChange(e)} />
+      <Date
+        label={"Departure"}
+        name={"departureDate"}
+        onChange={(e) => onChange(e)}
+      />
+      <Date
+        label={"Arrival"}
+        name={"arrivalDate"}
+        onChange={(e) => onChange(e)}
+      />
 
       <Time label={"Departure"} name={"departureTime"} onChange={onChange} />
       <Time label={"Arrival"} name={"arrivalTime"} onChange={onChange} />
 
-      <Button
+      {/* <Button
         variant="contained"
         color="success"
         onClick={onSubmit}
-        style={{ height: "auto" }}
         size="small"
         type="submit"
       >
         Search
-      </Button>
+      </Button> */}
+      <Tooltip title="Search" arrow placement="right">
+        <IconButton
+          aria-label="delete"
+          onClick={onSubmit}
+          size="large"
+          style={{ color: "green" }}
+        >
+          <SearchIcon style={{ fontSize: 45 }} />
+        </IconButton>
+      </Tooltip>
     </Stack>
   );
 }
