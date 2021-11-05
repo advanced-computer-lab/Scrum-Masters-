@@ -13,7 +13,7 @@ import {
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import EditIcon from '@material-ui/icons/Edit';
-import DeleteButton from '@material-ui/icons/Delete';
+import DeleteFlightButton from './buttons/DeleteFlightButton';
 
 const FlightCard = (props) => {
   const { row } = props;
@@ -41,7 +41,7 @@ const FlightCard = (props) => {
             <EditIcon />
           </IconButton>
           <IconButton aria-label='delete'>
-            <DeleteButton />
+            <DeleteFlightButton flight={row} />
           </IconButton>
         </TableCell>
       </TableRow>

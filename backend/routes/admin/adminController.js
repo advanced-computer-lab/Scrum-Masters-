@@ -46,11 +46,24 @@ router.patch("/update/:id", async (req, res) => {
       res.status(404).send(err);
     });
 });
-router.delete('/:id', (req, res) => {
-  flight.findByIdAndRemove(req.params.id, req.body)
+router.delete('/delete/:id', (req, res) => {
+  Flight.findByIdAndRemove(req.params.id, req.body)
     .then(flight => res.json({ mgs: 'flight deleted successfully' }))
     .catch(err => res.status(404).json({ error: 'No such a flight' }));
 });
 
+router.get("/number", async (req, res) => {
+  const criteria = {
+    flightNumber: 1
+  }
+    try {
+      const query = await Flight.find(criteria);
+      console.log(query);
+      res.json(query);
+    } catch (err) {
+      res.json({ message: err });
+    }
+  //}
+});
 
 module.exports = router;

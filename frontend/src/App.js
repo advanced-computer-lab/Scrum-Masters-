@@ -13,7 +13,7 @@ function App() {
       <div className="App">
         <TopBar />
         <div className="container">
-          <SearchFlight />
+          <ViewFlights />
         </div>
       </div>
     </Router>
