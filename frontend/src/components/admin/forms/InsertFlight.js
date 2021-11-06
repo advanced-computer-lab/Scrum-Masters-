@@ -4,10 +4,10 @@ import TextField from '@mui/material/TextField';
 import DatePicker from 'react-date-picker'
 import Button from '@mui/material/Button';
 import {useState} from 'react';
-<<<<<<< HEAD
 import { Axios } from 'axios';
 import { Input } from '@mui/material';
 import { useEffect } from 'react';
+import Stack from "@mui/material/Stack";
 
 const axios = require('axios').default;
 
@@ -58,11 +58,10 @@ const InsertFlight = () => {
 
   return (
 
-
-      <div >
-          <form noValidate onSubmit={onSubmit}
-           m= '1'
-            width= '25ch'
+<Stack direction="row" spacing={2} style={{ marginTop: "10px" }}> 
+      //<div >
+         // <form noValidate onSubmit={onSubmit}
+          
           >
               {/* onSubmit={this.onSubmit} */}
               <div >
@@ -219,16 +218,16 @@ const InsertFlight = () => {
               </div>
 
               <div c>
-                  <TextField
-                      type='String'
-                      placeholder='Number of Seats'
-                      name='noOfSeats'
+                  {/* <TextField */}
+                      {/* type='String' */}
+                      {/* placeholder='Number of Seats' */}
+                      {/* name='noOfSeats' */}
 
-                      value={noOfSeats}
-                      onChange={event => { setNoOfSeats(event.target.value) }}
-                      align='center'
-                      m='1'
-                      InputLabelProps={{
+                      {/* value={noOfSeats} */}
+                      {/* onChange={event => { setNoOfSeats(event.target.value) }} */}
+                      {/* align='center' */}
+                      {/* m='1' */}
+                      {/* InputLabelProps={{ */}
                         shrink: true,
                       }}
                   />
@@ -243,96 +242,9 @@ const InsertFlight = () => {
           </form>
 
 
-=======
-export default function FormPropsTextFields() {
-  
-  const [values, setValues] = useState({
-    flightNumber:'',
-    departureTime:'',
-    arrivalTime:'',
-    departureDate:'',
-    arrivalDate:'',
-    departureAirport:'',
-    arrivalAirport:'',
-    noOfEconomy:'',
-    noOfBusiness:'',
-    noOfFirstClass:'',
-  });
-  
-  const onChange = e => {setValues({...values,[e.target.name]: e.target.value})
-                console.log(values)
-};
-  
-  const onSubmit = ()=> console.log(values);
-  return (
-    <Box style = {{marginTop:70}}
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 2, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <div align="center">
-            <div>
-        <TextField
-          required
-          id="outlined-search"
-          name="flightNumber"
-          label="Flight Number"
-          type="number"
-          onChange = {onChange}
-        />
-            </div>
-            <div> 
-        <TextField
-          required
-          id="outlined-search"
-          name = "departureAirport"
-          label="From"
-          type="search"
-          onChange = {onChange}
-        />
-            </div>
-            <div>
-        <TextField
-          required
-          id="outlined-search"
-          label="To"
-          type="search"
-          onChange = {onChange}
-        />
-            </div>
-        {/* <TextField
-          id="outlined-read-only-input"
-          label="Read Only"
-          defaultValue="Hello World"
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <TextField
-          id="outlined-number"
-          label="Number"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField id="outlined-search" label="Search field" type="search" />
-        <TextField
-          id="outlined-helperText"
-          label="Helper text"
-          defaultValue="Default Value"
-          helperText="Some important text"
-        /> */}
-        <Button variant="contained" color="success" onSubmit = {onSubmit} type = "submit">
-        Insert
-      </Button>
->>>>>>> ce0a25ec8a1d865d540afc584deebf8ade2e7a6e
       </div>
 
-
+      </Stack>
   )
 }
 
