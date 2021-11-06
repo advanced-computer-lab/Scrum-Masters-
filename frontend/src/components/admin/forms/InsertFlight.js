@@ -58,7 +58,7 @@ const InsertFlight = () => {
 
   return (
 
-
+<Stack direction="row" spacing={2} style={{ marginTop: "10px" }}>
       <div >
           <form noValidate onSubmit={onSubmit}>
               {/* onSubmit={this.onSubmit} */}
@@ -242,7 +242,7 @@ const InsertFlight = () => {
 
 
       </div>
-
+      </Stack>
   )
 }
 
