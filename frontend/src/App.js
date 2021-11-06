@@ -17,7 +17,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Schedule}></Route>
           <Route exact path="/schedule" component={Schedule}></Route>
-          <Route exact path="/addFlight" component={FlightCreation}></Route>
+          <Route exact path="/addFlight" component={InsertFlight}></Route>
         </Switch>
       </div>
     </Router>
