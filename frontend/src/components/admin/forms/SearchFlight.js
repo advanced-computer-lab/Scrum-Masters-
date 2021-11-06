@@ -14,19 +14,18 @@ export default function FormPropsTextFields() {
   //const [date, setDate] = React.useState();
   const onChange = async (e, name) => {
     console.log("in onchange in search flight", e);
-    if (e) {
       try {
         console.log(e);
-        if (e.target) {
+        //if (e.target) {
           await setValues({ ...values, [e.target.name]: e.target.value });
-        } else {
+        /*} else {
           await setValues({ ...values, [name]: e });
-        }
+        }*/
         await console.log(values);
       } catch (error) {
         console.log(error);
       }
-    }
+    
   };
   const onSubmit = () => {
     console.log("printing");
@@ -41,7 +40,7 @@ export default function FormPropsTextFields() {
       });
   };
   return (
-    <Stack direction="row" spacing={2} style={{ marginTop: "10px" }}>
+    <Stack direction="row" spacing={2} style={{ marginTop: "10px" }} component="form">
       {/* component="form"
       sx={{
         "& .MuiTextField-root": { m: 2, width: "20ch" },
@@ -55,6 +54,7 @@ export default function FormPropsTextFields() {
         type="number"
         name="flightNumber"
         onChange={onChange}
+        style= {{width:'150px'}}
         //defaultValue="Hello World"
       />
       <TextField
@@ -65,6 +65,7 @@ export default function FormPropsTextFields() {
         /*InputLabelProps={{
             shrink: true,
           }}*/
+        style= {{width:'150px'}}
         onChange={onChange}
       />
       <TextField
@@ -72,33 +73,47 @@ export default function FormPropsTextFields() {
         label="To"
         type="search"
         name="arrivalAirport"
+        style= {{width:'150px'}}
         onChange={onChange}
       />
       <TextField
         id="outlined-search"
         label="Departure Date"
-        type="search"
+        type="date"
+        InputLabelProps={{
+          shrink: true,
+        }}
         name="departureDate"
         onChange={onChange}
       />
       <TextField
         id="outlined-search"
         label="Arrival Date"
-        type="search"
+        type="date"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        
         name="arrivalDate"
         onChange={onChange}
       />
       <TextField
         id="outlined-search"
         label="Departure Time"
-        type="search"
+        type="time"
+        InputLabelProps={{
+          shrink: true,
+        }}
         name="departureTime"
         onChange={onChange}
       />
       <TextField
         id="outlined-search"
         label="Arrival Time"
-        type="search"
+        type="time"
+        InputLabelProps={{
+          shrink: true,
+        }}
         name="arrivalTime"
         onChange={onChange}
         
