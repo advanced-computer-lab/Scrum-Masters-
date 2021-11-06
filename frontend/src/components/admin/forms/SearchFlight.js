@@ -12,16 +12,15 @@ import { Tooltip } from "@mui/material";
 export default function FormPropsTextFields() {
   const [values, setValues] = React.useState();
   //const [date, setDate] = React.useState();
-  const onChange = async (e,name) => {
+  const onChange = async (e, name) => {
     console.log("in onchange in search flight", e);
     if (e) {
       try {
-        console.log(e)
-        if(e.target){
+        console.log(e);
+        if (e.target) {
           await setValues({ ...values, [e.target.name]: e.target.value });
-        }
-        else{
-          await setValues({ ...values, [name]: e});
+        } else {
+          await setValues({ ...values, [name]: e });
         }
         await console.log(values);
       } catch (error) {
@@ -50,7 +49,6 @@ export default function FormPropsTextFields() {
       noValidate
       autoComplete="off"
     > */}
-
       <TextField
         id="outlined-search"
         label="Flight Num"
@@ -76,31 +74,31 @@ export default function FormPropsTextFields() {
         name="arrivalAirport"
         onChange={onChange}
       />
-        <TextField
+      <TextField
         id="outlined-search"
         label="Departure Date"
         type="search"
         name="departureDate"
         onChange={onChange}
       />
-            <TextField
+      <TextField
         id="outlined-search"
         label="Arrival Date"
         type="search"
         name="arrivalDate"
         onChange={onChange}
       />
-            <TextField
+      <TextField
         id="outlined-search"
         label="Departure Time"
         type="search"
         name="departureTime"
         onChange={onChange}
       />
-            <TextField
+      <TextField
         id="outlined-search"
         label="Arrival Time"
-        type="search" 
+        type="search"
         name="arrivalTime"
         onChange={onChange}
         
