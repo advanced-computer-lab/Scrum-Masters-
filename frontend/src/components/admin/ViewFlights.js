@@ -22,22 +22,26 @@ const ViewFlights = (props) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  useEffect(() => {
+    axios
+      .get('http://localhost:8081/admin/search')
+      .then((res) => {
+        //console.log(res.data);
+        window.React1 = require('react');
+        require('react-dom');
+        window.React2 = require('react');
+        console.log(window.React1 === window.React2);
+        setData(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: '#5390d9',
       color: theme.palette.common.white,
     },
   }));
-
-  useEffect(() => {
-    axios
-      .get('http://localhost:5000/admin/search')
-      .then((res) => {
-        console.log(res.data);
-        setData(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

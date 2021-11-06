@@ -1,27 +1,26 @@
-import * as React from "react";
-import TextField from "@mui/material/TextField";
-import Date from "../forms/textFields/Date";
-import Time from "../forms/textFields/Time";
-import axios from "axios";
-import Search from "../buttons/Search";
-import SearchIcon from "@mui/icons-material/Search";
-import Stack from "@mui/material/Stack";
-import { IconButton } from "@mui/material";
-import Button from "@mui/material/Button";
-import { Tooltip } from "@mui/material";
+import * as React from 'react';
+import TextField from '@mui/material/TextField';
+import Date from '../forms/textFields/Date';
+import Time from '../forms/textFields/Time';
+import axios from 'axios';
+import Search from '../buttons/Search';
+import SearchIcon from '@mui/icons-material/Search';
+import Stack from '@mui/material/Stack';
+import { IconButton } from '@mui/material';
+import Button from '@mui/material/Button';
+import { Tooltip } from '@mui/material';
 export default function FormPropsTextFields() {
   const [values, setValues] = React.useState();
   //const [date, setDate] = React.useState();
-  const onChange = async (e,name) => {
-    console.log("in onchange in search flight", e);
+  const onChange = async (e, name) => {
+    console.log('in onchange in search flight', e);
     if (e) {
       try {
-        console.log(e)
-        if(e.target){
+        console.log(e);
+        if (e.target) {
           await setValues({ ...values, [e.target.name]: e.target.value });
-        }
-        else{
-          await setValues({ ...values, [name]: e});
+        } else {
+          await setValues({ ...values, [name]: e });
         }
         await console.log(values);
       } catch (error) {
@@ -30,19 +29,19 @@ export default function FormPropsTextFields() {
     }
   };
   const onSubmit = () => {
-    console.log("printing");
+    console.log('printing');
     axios
-      .post("http://localhost:8081/admin/search", values)
+      .post('http://localhost:8081/admin/search', values)
       .then((res) => {
         //setValues(res.data);
         console.log(res.data);
       })
       .catch((err) => {
-        console.log("Error from ShowBookList");
+        console.log('Error from ShowBookList');
       });
   };
   return (
-    <Stack direction="row" spacing={2} style={{ marginTop: "10px" }}>
+    <Stack direction='row' spacing={2} style={{ marginTop: '10px' }}>
       {/* component="form"
       sx={{
         "& .MuiTextField-root": { m: 2, width: "20ch" },
@@ -52,66 +51,66 @@ export default function FormPropsTextFields() {
     > */}
 
       <TextField
-        id="outlined-search"
-        label="Flight Num"
-        type="number"
-        name="flightNumber"
+        id='outlined-search'
+        label='Flight Num'
+        type='number'
+        name='flightNumber'
         onChange={onChange}
         //defaultValue="Hello World"
       />
       <TextField
-        id="outlined-search"
-        label="From"
-        type="search"
-        name="departureAirport"
+        id='outlined-search'
+        label='From'
+        type='search'
+        name='departureAirport'
         /*InputLabelProps={{
             shrink: true,
           }}*/
         onChange={onChange}
       />
       <TextField
-        id="outlined-search"
-        label="To"
-        type="search"
-        name="arrivalAirport"
+        id='outlined-search'
+        label='To'
+        type='search'
+        name='arrivalAirport'
         onChange={onChange}
       />
-        <TextField
-        id="outlined-search"
-        label="Departure Date"
-        type="search"
-        name="departureDate"
+      <TextField
+        id='outlined-search'
+        label='Departure Date'
+        type='search'
+        name='departureDate'
         onChange={onChange}
       />
-            <TextField
-        id="outlined-search"
-        label="Arrival Date"
-        type="search"
-        name="arrivalDate"
+      <TextField
+        id='outlined-search'
+        label='Arrival Date'
+        type='search'
+        name='arrivalDate'
         onChange={onChange}
       />
-            <TextField
-        id="outlined-search"
-        label="Departure Time"
-        type="search"
-        name="departureTime"
+      <TextField
+        id='outlined-search'
+        label='Departure Time'
+        type='search'
+        name='departureTime'
         onChange={onChange}
       />
-            <TextField
-        id="outlined-search"
-        label="Arrival Time"
-        type="search" 
-        name="arrivalTime"
+      <TextField
+        id='outlined-search'
+        label='Arrival Time'
+        type='search'
+        name='arrivalTime'
         onChange={onChange}
       />
 
-     {/* <Date label={"Departure"} name={"departureDate"} onChange={onChange}  />
+      {/* <Date label={"Departure"} name={"departureDate"} onChange={onChange}  />
       <Date label={"Arrival"} name={"arrivalDate"} onChange={onChange}  />
 
       <Time label={"Departure"} name={"departureTime"} onChange={onChange} />
       <Time label={"Arrival"} name={"arrivalTime"} onChange={onChange} />
         */}
-      <Button
+      {/* <Button
         variant="contained"
         color="success"
         onClick={onSubmit}
@@ -119,13 +118,13 @@ export default function FormPropsTextFields() {
         type="submit"
       >
         Search
-      </Button> */}
-      <Tooltip title="Search" arrow placement="right">
+      </Button>  */}
+      <Tooltip title='Search' arrow placement='right'>
         <IconButton
-          aria-label="delete"
+          aria-label='delete'
           onClick={onSubmit}
-          size="large"
-          style={{ color: "green" }}
+          size='large'
+          style={{ color: 'green' }}
         >
           <SearchIcon style={{ fontSize: 45 }} />
         </IconButton>
