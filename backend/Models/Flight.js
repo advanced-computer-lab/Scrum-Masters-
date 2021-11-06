@@ -1,42 +1,44 @@
 const mongoose = require("mongoose");
 //const Schema = mongoose.Schema;
 
-const flightSchema = mongoose.Schema({
-  flightNumber: {
-    type: Number,
-    required: true,
-  },
+const flightSchema = mongoose.Schema(
+  {
+    flightNumber: {
+      type: Number,
+      required: true,
+    },
 
-  departureTime: {
-    type: String,
-    required: true,
-  },
+    departureTime: {
+      type: String,
+      required: true,
+    },
 
-  arrivalTime: {
-    type: String,
-    required: true,
-  },
+    arrivalTime: {
+      type: String,
+      required: true,
+    },
 
-  departureDate: {
-    type: String,
-    required: true,
-  },
+    departureDate: {
+      type: String,
+      required: true,
+    },
 
-  arrivalDate: {
-    type: String,
-    required: true,
-  },
+    arrivalDate: {
+      type: String,
+      required: true,
+    },
 
-  departureAirport: {
-    type: String,
-    required: true,
-  },
+    departureAirport: {
+      type: String,
+      required: true,
+    },
 
-  arrivalAirport: {
-    type: String,
-    required: true,
-  },
+    arrivalAirport: {
+      type: String,
+      required: true,
+    },
 
+<<<<<<< HEAD
   noOfEconomy: {
     type: String,
     required: true,
@@ -53,8 +55,59 @@ const flightSchema = mongoose.Schema({
   noOfSeats: {
     type: String,
     //default:this.noOfBusiness+this.noOfEconomy
+=======
+    noOfEconomy: {
+      type: Number,
+      required: true,
+    },
+
+    noOfBusiness: {
+      type: Number,
+      required: true,
+    },
+    noOfFirstClass: {
+      type: Number,
+      required: true,
+    },
+
+    // noOfSeats: {
+    //   type: Number,
+    //   default: function () {
+    //     return this.noOfFirstClass + this.noOfBusiness + this.noOfEconomy;
+    //   },
+    // },
+>>>>>>> ce0a25ec8a1d865d540afc584deebf8ade2e7a6e
   },
-});
+  { toJSON: { virtuals: true }, toObject: { virtuals: true } }
+);
+flightSchema
+  .virtual("noOfSeats")
+  .get(function () {
+    return this.noOfFirstClass + this.noOfBusiness + this.noOfEconomy;
+  })
+  .set(function (noOfSeats) {
+    this.noOfSeats = noOfSeats;
+  });
+
+flightSchema
+  .virtual("duration")
+  .get(function () {
+    d1 = new Date(Date.parse("2017-05-02T" + this.departureTime));
+    d2 = new Date(Date.parse("2017-05-02T" + this.arrivalTime));
+    d3 = new Date(d2 - d1);
+    d0 = new Date(0);
+
+    return (
+      d3.getHours() -
+      d0.getHours() +
+      "h " +
+      (d3.getMinutes() - d0.getMinutes()) +
+      "m"
+    );
+  })
+  .set(function (duration) {
+    this.duration = duration;
+  });
 
 const Flight = mongoose.model("Flight", flightSchema);
 module.exports = Flight;

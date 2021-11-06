@@ -1,19 +1,30 @@
-// date-fns
-/*import DateAdapter from '@mui/lab/AdapterDateFns';
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import * as React from "react";
+import TextField from "@mui/material/TextField";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DatePicker from "@mui/lab/DatePicker";
 
-export default function ResponsiveDatePickers() {
-    const [value, setValue] = React.useState(new Date());
+const Date = ({ onChange, label, name }) => {
+  const [value, setValue] = React.useState(null);
+  
+  return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-
-        <DesktopDatePicker
-          label="Departure"
-          value={value}
-          //minDate={new Date('2017-01-01')}
-          onChange={(newValue) => {
-            setValue(newValue);
-          }}
-          renderInput={(params) => <TextField {...params} />}
-        />
+      <DatePicker
+        label={label}
+        value={value}
+        name= {name}
+        onChange={(newValue) => {
+          setValue(newValue);
+          console.log("in date");
+          onChange(newValue,name)
+        }}
+        renderInput={(params) => <TextField {...params} />}
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
     </LocalizationProvider>
-}*/
+  );
+};
+
+export default Date;
