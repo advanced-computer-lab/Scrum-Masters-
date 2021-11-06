@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Date from '../forms/textFields/Date'
+import { useState } from 'react';
+
+=======
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Date from "../forms/textFields/Date";
@@ -9,6 +17,7 @@ import Stack from "@mui/material/Stack";
 import { IconButton } from "@mui/material";
 import Button from "@mui/material/Button";
 import { Tooltip } from "@mui/material";
+>>>>>>> ce0a25ec8a1d865d540afc584deebf8ade2e7a6e
 export default function FormPropsTextFields() {
   const [values, setValues] = React.useState();
   //const [date, setDate] = React.useState();
@@ -77,6 +86,16 @@ export default function FormPropsTextFields() {
         onChange={onChange}
       />
         <TextField
+<<<<<<< HEAD
+          id="outlined-helperText" 
+          label="Helper text"
+          defaultValue="Default Value"
+          helperText="Some important text"
+        />
+      </div>
+      
+    </Box>
+=======
         id="outlined-search"
         label="Departure Date"
         type="search"
@@ -131,5 +150,6 @@ export default function FormPropsTextFields() {
         </IconButton>
       </Tooltip>
     </Stack>
+>>>>>>> ce0a25ec8a1d865d540afc584deebf8ade2e7a6e
   );
 }

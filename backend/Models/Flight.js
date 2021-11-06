@@ -38,6 +38,24 @@ const flightSchema = mongoose.Schema(
       required: true,
     },
 
+<<<<<<< HEAD
+  noOfEconomy: {
+    type: String,
+    required: true,
+  },
+
+  noOfBusiness: {
+    type: String,
+    required: true,
+  },
+  noOfFirstClass: {
+    type: String,
+    required: true,
+  },
+  noOfSeats: {
+    type: String,
+    //default:this.noOfBusiness+this.noOfEconomy
+=======
     noOfEconomy: {
       type: Number,
       required: true,
@@ -58,6 +76,7 @@ const flightSchema = mongoose.Schema(
     //     return this.noOfFirstClass + this.noOfBusiness + this.noOfEconomy;
     //   },
     // },
+>>>>>>> ce0a25ec8a1d865d540afc584deebf8ade2e7a6e
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

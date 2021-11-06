@@ -1,6 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
+<<<<<<< HEAD
+const Flight = require("../../Models/Flight");
+const Cors = require("cors");
+const { application } = require("express");
+router.use(Cors());
+router.get("/search", async (req, res) => {
+=======
 const Flight = require('../../Models/Flight');
 
 router.get('/search', async (req, res) => {
@@ -14,6 +21,7 @@ router.get('/search', async (req, res) => {
 });
 
 router.post('/search', async (req, res) => {
+>>>>>>> ce0a25ec8a1d865d540afc584deebf8ade2e7a6e
   const criteria = req.body;
 
   try {

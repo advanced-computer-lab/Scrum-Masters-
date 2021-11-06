@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 app.use(express.json());
 const dotenv = require('dotenv').config();
-
+app.use(cors());
 //DB CONNECTION
 
 mongoose
