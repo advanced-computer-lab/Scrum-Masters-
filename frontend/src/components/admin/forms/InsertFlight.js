@@ -243,7 +243,6 @@ const InsertFlight = () => {
 
       </div>
 
-
   )
 }
 

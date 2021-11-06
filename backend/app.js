@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 app.use(express.json());
 const dotenv = require('dotenv').config();
-
+app.use(cors());
 //DB CONNECTION
 
 mongoose
@@ -22,7 +22,7 @@ mongoose
 app.use(cors({ origin: true, credentials: true }));
 app.use("/admin", require("./routes/admin/adminController"));
 
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log('App is listening at port: ', port);
 });
