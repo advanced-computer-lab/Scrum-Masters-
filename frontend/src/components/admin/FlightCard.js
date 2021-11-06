@@ -36,22 +36,6 @@ const FlightCard = (props) => {
     },
   }));
 
-  const flightData = {
-    flightNumber: 777,
-    departureTime: '15:00',
-    arrivalTime: '18:00',
-    departureDate: '18-12-2021',
-    arrivalDate: '18-12-2021',
-    departureAirport: 'LAX',
-    arrivalAirport: 'CAI',
-    noOfEconomy: 20,
-    noOfBusiness: 17,
-    noOfFirstClass: 3,
-    __v: 0,
-    noOfSeats: 40,
-    duration: '3h 0m',
-    id: '61845b587cafb4497a27100e',
-  };
   return (
     <React.Fragment>
       <StyledTableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -82,9 +66,9 @@ const FlightCard = (props) => {
               <EditIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Delete' arrow placement='right'>
-            <DeleteFlightButton flight={flightData} />
-          </Tooltip>
+          {/* <Tooltip title="Delete" arrow placement="right"> */}
+          <DeleteFlightButton flight={row} />
+          {/* </Tooltip> */}
         </TableCell>
         {/* <TableCell align="center">
           <Tooltip title="Delete" arrow placement="right">

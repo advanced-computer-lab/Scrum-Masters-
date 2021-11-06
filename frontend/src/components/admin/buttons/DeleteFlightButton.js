@@ -1,11 +1,21 @@
 import * as React from 'react';
-import Button from '@material-ui/core/Button';
-import DeleteButton from '@material-ui/icons/Delete';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Tooltip,
+  IconButton,
+} from '@mui/material';
+import DeleteButton from '@mui/icons-material/Delete';
+// import DeleteButton from '@material-ui/icons/Delete'
+// import Dialog from '@material-ui/core/Dialog';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
 const DeleteFlightButton = (flight) => {
   const flightData = flight.flight;
@@ -33,10 +43,16 @@ const DeleteFlightButton = (flight) => {
     }, 500);
   };
   return (
-    <div>
-      <div onClick={showAlert}>
-        <DeleteButton />
-      </div>
+    <React.Fragment>
+      <Tooltip title='Delete' arrow placement='right'>
+        <IconButton
+          aria-label='delete'
+          style={{ color: 'red' }}
+          onClick={showAlert}
+        >
+          <DeleteButton />
+        </IconButton>
+      </Tooltip>
       <Dialog open={open} onClose={alertClose}>
         <DialogTitle id='alert-dialog-title'>
           {'Delete this flight?'}
@@ -56,7 +72,7 @@ const DeleteFlightButton = (flight) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </React.Fragment>
   );
 };
 

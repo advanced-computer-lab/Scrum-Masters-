@@ -20,11 +20,9 @@ function App() {
       <div className='App'>
         <TopBar />
         <Switch>
-          <Route exact path='/'>
-            <Redirect to='/schedule' /> :
-          </Route>
+          <Route exact path='/' component={Schedule}></Route>
           <Route exact path='/schedule' component={Schedule}></Route>
-          <Route exact path='/addFlight' component={FlightCreation}></Route>
+          <Route exact path='/addFlight' component={InsertFlight}></Route>
         </Switch>
       </div>
     </Router>
