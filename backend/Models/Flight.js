@@ -62,12 +62,32 @@ const flightSchema = mongoose.Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 flightSchema
-  .virtual("noOFSeats")
+  .virtual("noOfSeats")
   .get(function () {
     return this.noOfFirstClass + this.noOfBusiness + this.noOfEconomy;
   })
   .set(function (noOfSeats) {
     this.noOfSeats = noOfSeats;
+  });
+
+flightSchema
+  .virtual("duration")
+  .get(function () {
+    d1 = new Date(Date.parse("2017-05-02T" + this.departureTime));
+    d2 = new Date(Date.parse("2017-05-02T" + this.arrivalTime));
+    d3 = new Date(d2 - d1);
+    d0 = new Date(0);
+
+    return (
+      d3.getHours() -
+      d0.getHours() +
+      "h " +
+      (d3.getMinutes() - d0.getMinutes()) +
+      "m"
+    );
+  })
+  .set(function (duration) {
+    this.duration = duration;
   });
 
 const Flight = mongoose.model("Flight", flightSchema);

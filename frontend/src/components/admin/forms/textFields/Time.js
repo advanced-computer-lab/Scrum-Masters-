@@ -7,9 +7,8 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 export default function ResponsiveTimePickers({label,name,onChange}) {
     const [value, setValue] = React.useState(null);
     const handleOnChange = (e)=>{
-        setValue();
-        onChange(e);
-    }
+        setValue(e);
+        onChange(e,name)    }
     return (
       <LocalizationProvider dateAdapter={AdapterDateFns}>
           <TimePicker
