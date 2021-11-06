@@ -105,12 +105,12 @@ export default function FormPropsTextFields() {
         onChange={onChange}
       />
 
-     {/* <Date label={"Departure"} name={"departureDate"} onChange={onChange}  />
+     /* <Date label={"Departure"} name={"departureDate"} onChange={onChange}  />
       <Date label={"Arrival"} name={"arrivalDate"} onChange={onChange}  />
 
       <Time label={"Departure"} name={"departureTime"} onChange={onChange} />
       <Time label={"Arrival"} name={"arrivalTime"} onChange={onChange} />
-        */}
+        */
       <Button
         variant="contained"
         color="success"
@@ -119,7 +119,7 @@ export default function FormPropsTextFields() {
         type="submit"
       >
         Search
-      </Button> */}
+      </Button> 
       <Tooltip title="Search" arrow placement="right">
         <IconButton
           aria-label="delete"
