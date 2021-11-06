@@ -31,7 +31,7 @@ const ViewFlights = (props) => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/admin/search')
+      .get('http://localhost:8081/admin/search')
       .then((res) => {
         console.log(res.data);
         setData(res.data);

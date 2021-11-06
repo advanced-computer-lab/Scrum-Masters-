@@ -18,7 +18,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteButton from "@mui/icons-material/Delete";
 import { Container } from "react-bootstrap";
-import DeleteFlightButton from './buttons/DeleteFlightButton';
+import DeleteFlightButton from "./buttons/DeleteFlightButton";
 
 const FlightCard = (props) => {
   const { row } = props;
@@ -66,9 +66,9 @@ const FlightCard = (props) => {
               <EditIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Delete" arrow placement="right">
+          {/* <Tooltip title="Delete" arrow placement="right"> */}
           <DeleteFlightButton flight={row} />
-          </Tooltip>
+          {/* </Tooltip> */}
         </TableCell>
         {/* <TableCell align="center">
           <Tooltip title="Delete" arrow placement="right">
