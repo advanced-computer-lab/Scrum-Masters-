@@ -5,7 +5,7 @@ import ProfileButton from '../../admin/buttons/ProfileButton';
 import '@fontsource/alegreya';
 // import '@fontsource/ceviche-one';
 import '@fontsource/henny-penny';
-import '../../../styles/custom.css';
+import '../../../Styles/custom.css';
 const TopBar = () => {
   return (
     <Navbar

@@ -38,20 +38,20 @@ const flightSchema = mongoose.Schema({
   },
 
   noOfEconomy: {
-    type: Number,
+    type: String,
     required: true,
   },
 
   noOfBusiness: {
-    type: Number,
+    type: String,
     required: true,
   },
   noOfFirstClass: {
-    type: Number,
+    type: String,
     required: true,
   },
   noOfSeats: {
-    type: Number,
+    type: String,
     //default:this.noOfBusiness+this.noOfEconomy
   },
 });
