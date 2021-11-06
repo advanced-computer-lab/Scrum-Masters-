@@ -31,7 +31,7 @@ const DeleteFlightButton = (flight) => {
   };
   const DeleteFlight = () => {
     axios
-      .delete(`http://localhost:5000/admin/delete/${flightData.id}`)
+      .delete(`http://localhost:8081/admin/delete/${flightData.id}`)
       .then((res) => {
         console.log(res);
       })

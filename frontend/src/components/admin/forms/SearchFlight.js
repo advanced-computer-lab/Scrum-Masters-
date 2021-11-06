@@ -9,46 +9,48 @@ import Stack from "@mui/material/Stack";
 import { IconButton } from "@mui/material";
 import Button from "@mui/material/Button";
 import { Tooltip } from "@mui/material";
-export default function FormPropsTextFields() {
-  const [values, setValues] = React.useState();
-  //const [date, setDate] = React.useState();
-  const onChange = async (e, name) => {
-    console.log("in onchange in search flight", e);
-    if (e) {
-      try {
-        console.log(e);
-        if (e.target) {
-          await setValues({ ...values, [e.target.name]: e.target.value });
-        } else {
-          await setValues({ ...values, [name]: e });
-        }
-        await console.log(values);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-  const onSubmit = () => {
-    console.log("printing");
-    axios
-      .post("http://localhost:8081/admin/search", values)
-      .then((res) => {
-        //setValues(res.data);
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log("Error from ShowBookList");
-      });
-  };
+export default function FormPropsTextFields({ onSubmit, onChange }) {
+  // const [values, setValues] = React.useState();
+  // const [date, setDate] = React.useState();
+  // const onChange = async (e, name) => {
+  //   if (e) {
+  //     try {
+  //       console.log(e);
+  //       if (e.target) {
+  //         await setValues({ ...values, [e.target.name]: e.target.value });
+  //       } else {
+  //         await setValues({ ...values, [name]: e });
+  //       }
+  //       await console.log(values);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // };
+  // const onSubmit = () => {
+  //   console.log("printing");
+  //   axios
+  //     .post("http://localhost:8081/admin/search", values)
+  //     .then((res) => {
+  //       //setValues(res.data);
+  //       console.log(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
   return (
-    <Stack direction="row" spacing={2} style={{ marginTop: "10px" }}>
-      {/* component="form"
+    <Stack
+      direction="row"
+      spacing={2}
+      style={{ marginTop: "10px" }}
+      component="form"
       sx={{
         "& .MuiTextField-root": { m: 2, width: "20ch" },
       }}
       noValidate
       autoComplete="off"
-    > */}
+    >
       <TextField
         id="outlined-search"
         label="Flight Num"
@@ -118,7 +120,7 @@ export default function FormPropsTextFields() {
         Search
       </Button>{" "} */}
 
-      <Tooltip title="Search" arrow placement="right">
+      <Tooltip id="outlined-search" title="Search" arrow placement="right">
         <IconButton
           aria-label="delete"
           onClick={onSubmit}
