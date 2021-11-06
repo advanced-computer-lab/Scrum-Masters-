@@ -27,7 +27,6 @@ router.get("/search", async (req, res) => {
 router.post("/create", async (req, res) => {
   console.log(req.body);
   const flight = new Flight(req.body);
-
   try {
     const savedFlight = await flight.save();
     res.json(savedFlight);

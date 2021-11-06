@@ -7,6 +7,7 @@ import {useState} from 'react';
 import { Axios } from 'axios';
 import { Input } from '@mui/material';
 import { useEffect } from 'react';
+import Stack from "@mui/material/Stack";
 
 const axios = require('axios').default;
 
@@ -19,10 +20,10 @@ const InsertFlight = () => {
   const [arrivalDate, setArrivalDate] = useState("")
   const [departureAirport, setDepartureAirport] = useState("")
   const [arrivalAirport, setArrivalAirport] = useState("")
-  const [noOfEconomy, setNoOfEconomy] = useState("")
-  const [noOfBusiness, setNoOfBusiness] = useState("")
-  const [noOfFirstClass, setNoOfFirstClass] = useState("")
-  const [noOfSeats, setNoOfSeats] = useState("")
+  const [noOfEconomy, setNoOfEconomy] = useState(0)
+  const [noOfBusiness, setNoOfBusiness] = useState(0)
+  const [noOfFirstClass, setNoOfFirstClass] = useState(0)
+  const [noOfSeats, setNoOfSeats] = useState(0)
 
 
 
@@ -40,14 +41,14 @@ const InsertFlight = () => {
           noOfEconomy,
           noOfBusiness,
           noOfFirstClass,
-          noOfSeats
+          //noOfSeats
       }
       console.log(Data);
       
     axios.post('http://localhost:8081/admin/create', Data).then(
      (res) =>{
        console.log(res);
-
+       console.log("YAAAAY INSERTION COMPLETE!!")
      }
     ).catch(error=> {console.log(error)}
       
@@ -70,7 +71,7 @@ const InsertFlight = () => {
                       value={flightNumber}
                       onChange={event => { setFlightNumber(event.target.value) }}
                       align='left'
-                      m='1'
+                      margin='2.5'
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -115,11 +116,12 @@ const InsertFlight = () => {
                   <TextField
                       type='Date'
                       placeholder='Departure Date'
+                      label="Departure date"
                       name='departureDate'
                       value={departureDate}
                       onChange={event => { setDepartureDate(event.target.value) }}
                       align='center'
-                      m='1'
+                      margin='2.5'
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -172,7 +174,7 @@ const InsertFlight = () => {
               <div >
                   <TextField
                       type='String'
-                      placeholder='Number of Economy'
+                      placeholder='Number of Economy Seats'
                       name='noOfEconomy'
                       value={noOfEconomy}
                       onChange={event => { setNoOfEconomy(event.target.value) }}
@@ -186,7 +188,7 @@ const InsertFlight = () => {
               <div >
                   <TextField
                       type='String'
-                      placeholder='Number of Business'
+                      placeholder='Number of Business Seats'
                       name='noOfBusiness'
                       value={noOfBusiness}
                       onChange={event => { setNoOfBusiness(event.target.value) }}
@@ -215,27 +217,27 @@ const InsertFlight = () => {
               </div>
 
               <div c>
-                  <TextField
-                      type='String'
-                      placeholder='Number of Seats'
-                      name='noOfSeats'
+                  {/* <TextField */}
+                      {/* type='String' */}
+                      {/* placeholder='Number of Seats' */}
+                      {/* name='noOfSeats' */}
 
-                      value={noOfSeats}
-                      onChange={event => { setNoOfSeats(event.target.value) }}
-                      align='center'
-                      m='1'
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                  />
+                      {/* value={noOfSeats} */}
+                      {/* onChange={event => { setNoOfSeats(event.target.value) }} */}
+                      {/* align='center' */}
+                      {/* m='1' */}
+                      {/* InputLabelProps={{ */}
+                        {/* shrink: true, */}
+                      {/* }} */}
+                  {/* /> */}
               </div>
 
 
 
-              
-                 <button type="submit">Submit</button> onSubmit={onSubmit}
+              <input
+                  type="submit"
 
-              
+              />
           </form>
 
 
