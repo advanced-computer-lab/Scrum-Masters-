@@ -1,5 +1,9 @@
-import React from 'react';
-import { Avatar, Menu, MenuItem, IconButton, Tooltip } from '@material-ui/core';
+import React from "react";
+import Avatar from "@mui/material/Avatar";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
 const ProfileButton = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);

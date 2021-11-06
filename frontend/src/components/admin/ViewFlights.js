@@ -5,14 +5,16 @@ import {
   Box,
   Table,
   TableBody,
+  TablePagination,
   TableCell,
   TableContainer,
   TableFooter,
   TableHead,
   TableRow,
-  TablePagination,
+  tableCellClasses,
+  styled,
   Paper,
-} from '@material-ui/core';
+} from '@mui/material';
 import FlightCard from './FlightCard';
 
 const ViewFlights = (props) => {
@@ -21,13 +23,27 @@ const ViewFlights = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:8081/admin/search')
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => console.log(err));
+    if (props.length >= 0) {
+      console.log('in props');
+      console.log(props);
+      setData(props);
+    } else {
+      console.log('not in props');
+      axios
+        .get('http://localhost:8081/admin/search')
+        .then((res) => {
+          setData(res.data);
+        })
+        .catch((err) => console.log(err));
+    }
   }, []);
+
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: '#5390d9',
+      color: theme.palette.common.white,
+    },
+  }));
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -39,18 +55,38 @@ const ViewFlights = (props) => {
   };
 
   return (
-    <TableContainer component={Paper} style={{ margin: '5% 0%' }}>
-      <Table>
+    <TableContainer component={Paper} style={{ marginBottom: '20px' }}>
+      <Table aria-label='collapsible table'>
         <TableHead>
           <TableRow>
-            <TableCell />
-            <TableCell align='left'>Flight Number</TableCell>
-            <TableCell align='left'>From</TableCell>
-            <TableCell align='left'>Duration</TableCell>
-            <TableCell align='left'>To</TableCell>
-            <TableCell align='center'>Departure Date</TableCell>
-            <TableCell align='left'>Arrival Date</TableCell>
-            <TableCell align='center'></TableCell>
+            <StyledTableCell />
+            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
+              Flight Number
+            </StyledTableCell>
+            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
+              From
+            </StyledTableCell>
+            {/* <TableCell align="left">Duration</TableCell> */}
+            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
+              To
+            </StyledTableCell>
+            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
+              Departure Date
+            </StyledTableCell>
+            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
+              Arrival Date
+            </StyledTableCell>
+            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
+              {' '}
+              Duration
+            </StyledTableCell>
+            <StyledTableCell
+              align='center'
+              style={{ fontWeight: 'bolder' }}
+            ></StyledTableCell>
+            {/* <TableCell align="center" style={{ fontWeight: "bolder" }}>
+              Delete Flight
+            </TableCell> */}
           </TableRow>
         </TableHead>
         {data ? (
