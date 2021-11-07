@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 //const Schema = mongoose.Schema;
 
 const flightSchema = mongoose.Schema(
@@ -18,15 +18,15 @@ const flightSchema = mongoose.Schema(
       required: true,
     },
 
-  departureDate: {
-    type: Date,
-    required: true,
-  },
+    departureDate: {
+      type: Date,
+      required: true,
+    },
 
-  arrivalDate: {
-    type: Date ,
-    required: true,
-  },
+    arrivalDate: {
+      type: Date,
+      required: true,
+    },
 
     departureAirport: {
       type: String,
@@ -62,7 +62,7 @@ const flightSchema = mongoose.Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 flightSchema
-  .virtual("noOfSeats")
+  .virtual('noOfSeats')
   .get(function () {
     return this.noOfFirstClass + this.noOfBusiness + this.noOfEconomy;
   })
@@ -71,25 +71,25 @@ flightSchema
   });
 
 flightSchema
-  .virtual("duration")
+  .virtual('duration')
   .get(function () {
-    d1 = new Date(Date.parse("2017-05-02T" + this.departureTime));
-    d2 = new Date(Date.parse("2017-05-02T" + this.arrivalTime));
-    console.log(d2, "and ", d1);
+    d1 = new Date(Date.parse('2017-05-02T' + this.departureTime));
+    d2 = new Date(Date.parse('2017-05-02T' + this.arrivalTime));
+    console.log(d2, 'and ', d1);
     d3 = new Date(d2 - d1);
     d0 = new Date(0);
 
     return (
       d3.getHours() -
       d0.getHours() +
-      "h " +
+      'h ' +
       (d3.getMinutes() - d0.getMinutes()) +
-      "m"
+      'm'
     );
   })
   .set(function (duration) {
     this.duration = duration;
   });
 
-const Flight = mongoose.model("Flight", flightSchema);
+const Flight = mongoose.model('Flight', flightSchema);
 module.exports = Flight;

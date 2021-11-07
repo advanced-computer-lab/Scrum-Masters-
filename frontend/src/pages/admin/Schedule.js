@@ -1,8 +1,8 @@
-import { React, useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
-import SearchFlight from "../../components/admin/forms/SearchFlight";
-import ViewFlights from "../../components/admin/ViewFlights";
-import axios from "axios";
+import { React, useEffect, useState } from 'react';
+import { Container } from 'react-bootstrap';
+import SearchFlight from '../../components/admin/forms/SearchFlight';
+import ViewFlights from '../../components/admin/ViewFlights';
+import axios from 'axios';
 
 const Schedule = () => {
   const [data, setData] = useState();
@@ -12,7 +12,7 @@ const Schedule = () => {
     if (e) {
       try {
         console.log(e);
-        if (e.target.value!=="") {
+        if (e.target.value !== '') {
           await setValues({ ...values, [e.target.name]: e.target.value });
         } /*else {
           await setValues({ ...values, [name]: e });
@@ -25,12 +25,11 @@ const Schedule = () => {
   };
   const onSubmit = () => {
     setSubmit(!submit);
-    
   };
   useEffect(() => {
-    console.log(values)
+    console.log(values);
     axios
-      .post("http://localhost:8081/admin/search", values)
+      .post('http://localhost:8081/admin/search', values)
       .then((res) => {
         console.log(res.data);
         setData(res.data);
@@ -39,11 +38,11 @@ const Schedule = () => {
   }, [submit]);
   return (
     <Container>
-      <h2 style={{ marginTop: "0.5%" }}> All Flights</h2>
-      <div style={{ marginTop: "2%" }}>
+      <h2 style={{ marginTop: '0.5%' }}> All Flights</h2>
+      <div style={{ marginTop: '2%' }}>
         <SearchFlight onSubmit={onSubmit} onChange={onChange} />
       </div>
-      <div style={{ marginTop: "2%" }}>
+      <div style={{ marginTop: '2%' }}>
         <ViewFlights flights={data} />
       </div>
     </Container>
