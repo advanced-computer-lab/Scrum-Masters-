@@ -31,8 +31,6 @@ const ViewFlights = ({ flights }) => {
     },
   }));
 
-  useEffect(() => {}, []);
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };

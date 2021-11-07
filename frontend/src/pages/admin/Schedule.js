@@ -8,15 +8,17 @@ const Schedule = () => {
   const [data, setData] = useState();
   const [values, setValues] = useState();
   const [submit, setSubmit] = useState(false);
-  const onChange = async (e, name) => {
+  const onChange = async (e) => {
     if (e) {
       try {
-        console.log(e);
-        if (e.target.value!=="") {
+        console.log("this is the target value " + e.target.value + " with length " + e.target.value.length );
+        if (e.target.value.length !== 0) {
           await setValues({ ...values, [e.target.name]: e.target.value });
-        } /*else {
-          await setValues({ ...values, [name]: e });
-        }*/
+        }
+         else {
+          let name = e.target.name; 
+          delete values[name]
+         }
         await console.log(values);
       } catch (error) {
         console.log(error);
@@ -24,15 +26,15 @@ const Schedule = () => {
     }
   };
   const onSubmit = () => {
+    //console.log(values)
     setSubmit(!submit);
-    
   };
   useEffect(() => {
-    console.log(values)
+    console.log(values);
     axios
       .post("http://localhost:8081/admin/search", values)
       .then((res) => {
-        console.log(res.data);
+        console.log("The response"+ res.data);
         setData(res.data);
       })
       .catch((err) => console.log(err));
