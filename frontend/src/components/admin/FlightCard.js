@@ -16,9 +16,9 @@ import {
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteButton from '@mui/icons-material/Delete';
 import { Container } from 'react-bootstrap';
 import DeleteFlightButton from './buttons/DeleteFlightButton';
+import UpdateFlightButton from './buttons/UpdateFlightButton';
 
 const FlightCard = (props) => {
   const { row } = props;
@@ -58,14 +58,15 @@ const FlightCard = (props) => {
         <TableCell align='center'>{row.arrivalDate}</TableCell>
         <TableCell align='center'>{row.duration}</TableCell>
         <TableCell align='right'>
-          <Tooltip title='Edit' arrow placement='right'>
+          {/* <Tooltip title='Edit' arrow placement='right'>
             <IconButton
               aria-label='edit'
               style={{ color: '#e0d615', marginRight: '10px' }}
             >
               <EditIcon />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
+          <UpdateFlightButton flight={row} />
           {/* <Tooltip title="Delete" arrow placement="right"> */}
           <DeleteFlightButton flight={row} />
           {/* </Tooltip> */}
@@ -90,7 +91,7 @@ const FlightCard = (props) => {
               >
                 Details
               </Typography>
-              <Table size='small' aria-label='purchases'>
+              <Table>
                 <TableHead>
                   <TableRow>
                     <TableCell align='center' style={{ fontStyle: 'italic' }}>
@@ -135,7 +136,7 @@ const FlightCard = (props) => {
                       {row.noOfSeats}
                     </TableCell>
                   </TableRow>
-                </TableBody>{' '}
+                </TableBody>
               </Table>
             </Box>
           </Collapse>

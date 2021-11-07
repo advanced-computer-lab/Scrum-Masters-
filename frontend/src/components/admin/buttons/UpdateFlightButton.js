@@ -48,14 +48,17 @@ const UpdateFlightButton = (flight) => {
   const onSubmit = () => {
     console.log('printing');
     axios
-      .post('http://localhost:8081/admin/update', values)
+      .patch(`http://localhost:8081/admin/update/${flightData.id}`, values)
       .then((res) => {
-        //setValues(res.data);
+        setValues(res.data);
         console.log(res.data);
       })
       .catch((err) => {
         console.log('Error from ShowBookList');
       });
+    setTimeout(() => {
+      window.location.reload();
+    });
   };
   return (
     <React.Fragment>
@@ -63,11 +66,12 @@ const UpdateFlightButton = (flight) => {
         <IconButton
           aria-label='edit'
           style={{ color: '#e0d615', marginRight: '10px' }}
+          onClick={showAlert}
         >
           <EditIcon />
         </IconButton>
       </Tooltip>
-      <Dialog open={open} onClose={alertClose}>
+      <Dialog open={open} onClose={alertClose} maxWidth='xl'>
         <DialogTitle id='alert-dialog-title'>{'Update Flight'}</DialogTitle>
         <DialogContent>
           <Stack direction='row' spacing={2} style={{ marginTop: '10px' }}>
@@ -76,7 +80,7 @@ const UpdateFlightButton = (flight) => {
               label='Flight Num'
               type='number'
               name='flightNumber'
-              value={flightData.flightNumber}
+              defaultValue={flightData.flightNumber}
               onChange={onChange}
             />
             <TextField
@@ -84,7 +88,7 @@ const UpdateFlightButton = (flight) => {
               label='From'
               type='search'
               name='departureAirport'
-              value={flightData.departureAirport}
+              defaultValue={flightData.departureAirport}
               onChange={onChange}
             />
             <TextField
@@ -92,7 +96,7 @@ const UpdateFlightButton = (flight) => {
               label='To'
               type='search'
               name='arrivalAirport'
-              value={flightData.arrivalAirport}
+              defaultValue={flightData.arrivalAirport}
               onChange={onChange}
             />
             <TextField
@@ -100,7 +104,7 @@ const UpdateFlightButton = (flight) => {
               label='Departure Date'
               type='search'
               name='departureDate'
-              value={flightData.departureDate}
+              defaultValue={flightData.departureDate}
               onChange={onChange}
             />
             <TextField
@@ -108,7 +112,7 @@ const UpdateFlightButton = (flight) => {
               label='Arrival Date'
               type='search'
               name='arrivalDate'
-              value={flightData.arrivalDate}
+              defaultValue={flightData.arrivalDate}
               onChange={onChange}
             />
             <TextField
@@ -116,7 +120,7 @@ const UpdateFlightButton = (flight) => {
               label='Departure Time'
               type='search'
               name='departureTime'
-              value={flightData.departureTime}
+              defaultValue={flightData.departureTime}
               onChange={onChange}
             />
             <TextField
@@ -124,22 +128,17 @@ const UpdateFlightButton = (flight) => {
               label='Arrival Time'
               type='search'
               name='arrivalTime'
-              value={flightData.arrivalTime}
+              defaultValue={flightData.arrivalTime}
               onChange={onChange}
             />
-
-            <Tooltip title='Search' arrow placement='right'>
-              <IconButton
-                aria-label='delete'
-                onClick={onSubmit}
-                size='large'
-                style={{ color: 'green' }}
-              >
-                <SearchIcon style={{ fontSize: 45 }} />
-              </IconButton>
-            </Tooltip>
           </Stack>
         </DialogContent>
+        <DialogActions>
+          <Button onClick={onSubmit}>Update</Button>
+          <Button onClick={alertClose} autoFocus>
+            Close
+          </Button>
+        </DialogActions>
       </Dialog>
     </React.Fragment>
   );
