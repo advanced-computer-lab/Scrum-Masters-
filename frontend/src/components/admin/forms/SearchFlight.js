@@ -40,7 +40,7 @@ export default function FormPropsTextFields({ onSubmit, onChange }) {
         /*InputLabelProps={{
             shrink: true,
           }}*/
-        style= {{width:'150px'}}
+        //style= {{width:'150px'}}
         onChange={onChange}
       />
       <TextField
@@ -48,7 +48,7 @@ export default function FormPropsTextFields({ onSubmit, onChange }) {
         label="To"
         type="search"
         name="arrivalAirport"
-        style= {{width:'150px'}}
+        //style= {{width:'150px'}}
         onChange={onChange}
       />
       <TextField
@@ -97,6 +97,7 @@ export default function FormPropsTextFields({ onSubmit, onChange }) {
         <IconButton
           aria-label="delete"
           onClick={onSubmit}
+          type="submit"
           size="large"
           style={{ color: "green" }}
         >

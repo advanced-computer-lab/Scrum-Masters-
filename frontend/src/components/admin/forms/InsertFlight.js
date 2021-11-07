@@ -79,7 +79,7 @@ const InsertFlight = () => {
 
       <div>
         <TextField
-          type="String"
+          type="time"
           placeholder="Departure Time"
           name="departureTime"
           //className='form-control'
@@ -97,7 +97,7 @@ const InsertFlight = () => {
 
       <div>
         <TextField
-          type="String"
+          type="time"
           placeholder="Arrival Time"
           name="arrivalTime"
           value={arrivalTime}
