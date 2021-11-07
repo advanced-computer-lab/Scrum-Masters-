@@ -97,7 +97,7 @@ export default function FormPropsTextFields({ onSubmit, onChange }) {
         <IconButton
           aria-label="delete"
           onClick={onSubmit}
-          // type="submit"
+          //type="reset"
           size="large"
           style={{ color: "green" }}
         >
