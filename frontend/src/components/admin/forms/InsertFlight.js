@@ -56,7 +56,7 @@ const InsertFlight = () => {
 
  
   return (
-    <Container >
+     <Container >
 
     <Box
      
@@ -64,12 +64,13 @@ const InsertFlight = () => {
     sx={{ 
       '& .MuiTextField-root': { m: 1, width: '25ch' },
     }}
-    noValidate
+    onSubmit={onSubmit}
     autoComplete="off"
   > 
-  <Container>
-    {/* <Stack  spacing={2} style={{ marginTop: '10px' }}> */}
-    <Stack direction='column' spacing={2} style={{ marginTop: '10px' }}>
+  {/* <Container> */}
+   <Stack direction='row' spacing={5} style={{ marginTop: '10px' , marginLeft:'30%', marginRight:'35%'}}> 
+
+    <Stack direction='column' spacing={3} style={{ marginTop: '10px' }} >
       {/* <div >
           <form noValidate onSubmit={onSubmit}
            */}
@@ -80,40 +81,42 @@ const InsertFlight = () => {
         
         <TextField
          required
-          type='String'
-          placeholder='Flight Number'
-          
+          type='Number'
+          // placeholder='Flight Number'
+          variant='standard'
+          label='Flight Number'
           name='flightNumber'
           //className='form-control'
           value={flightNumber}
           onChange={(event) => {
             setFlightNumber(event.target.value);
           }}
-          align=''
-          position='relative'
+          // align=''
+          // position='relative'
           //m='1'
           InputLabelProps={{
             shrink: true,
           }}
         />
       </div>
-      <br />
+      
 
       <div>
         <TextField
         required
           type='time'
-          placeholder='Departure Time'
+          // placeholder='Departure Time'
           label="Departure Time"
+          variant='standard'
           name='departureTime'
           //className='form-control'
           value={departureTime}
           onChange={(event) => {
             setDepartureTime(event.target.value);
           }}
-          align='left'
-          position="relative"
-          m='1'
+          // align='left'
+          // position="relative"
+          // m='1'
           InputLabelProps={{
             shrink: true,
           }}
@@ -125,47 +128,49 @@ const InsertFlight = () => {
         required
           type='time'
           label="Arrival Time"
-          placeholder='Arrival Time'
+          variant='standard'
+          // placeholder='Arrival Time'
           name='arrivalTime'
           value={arrivalTime}
           onChange={(event) => {
             setArrivalTime(event.target.value);
           }}
-          align='left'
-          m='1'
+          // align='left'
+          // m='1'
           InputLabelProps={{
             shrink: true,
           }}
         />
       </div>
-      </Stack>
       
-      
+      <div>
         <TextField
         
         required
           type='Date'
-          placeholder='Departure Date'
+          // placeholder='Departure Date'
           name='departureDate'
+          variant='standard'
           label="Departure Date"
           value={departureDate}
           onChange={(event) => {
             setDepartureDate(event.target.value);
           }}
-          align='left'
-          m='1'
+          // align='left'
+          // m='1'
           InputLabelProps={{
             shrink: true,
           }}
         />
-      
+      </div>
 
       <div>
         <TextField 
-        
         required
           type='Date'
           placeholder='Arrival Date'
+          variant='standard'
+          
           label="Arrival Date"
           name='arrivalDate'
           value={arrivalDate}
@@ -173,27 +178,30 @@ const InsertFlight = () => {
             setArrivalDate(event.target.value);
           }}
          // multiline
-          align='center'
-          m='1'
+          // align='center'
+          // m='1'
           InputLabelProps={{
             shrink: true,
           }}
         />
-
       </div>
-      <Stack direction='column' spacing={2} style={{ marginTop: '10px' }} alignSelf> 
+    </Stack>
+
+    <Stack direction='column' spacing={3} style={{ marginTop: '10px' }} >
       <div>
         <TextField
         required
           type='String'
           placeholder='Departure Airport'
+          variant='standard'
+          label='Departure Airport'
           name='departureAirport'
           value={departureAirport}
           onChange={(event) => {
-            setDepartureAirport(event.target.value);
+            setDepartureAirport((event.target.value).toUpperCase());
           }}
-          align='center'
-          m='1'
+          // align='center'
+          // m='1'
           InputLabelProps={{
             shrink: true,
           }}
@@ -203,14 +211,16 @@ const InsertFlight = () => {
         <TextField
         required
           type='String'
-          placeholder='Arrival Airport'
+          // placeholder='Arrival Airport'
+          variant='standard'
+          label='Arrival Airport'
           name='arrivalAirport'
           value={arrivalAirport}
           onChange={(event) => {
-            setArrivalAirport(event.target.value);
+            setArrivalAirport((event.target.value).toUpperCase());
           }}
-          align='center'
-          m='1'
+          // align='center'
+          // m='1'
           InputLabelProps={{
             shrink: true,
           }}
@@ -219,15 +229,18 @@ const InsertFlight = () => {
       <div>
         <TextField
         required
-          type='String'
-          placeholder='Number of Economy'
+        label='Number of Economy'
+          variant='standard'
+          label='Number of Economy Seats'
+          type='Number'
+          // placeholder='Number of Economy'
           name='noOfEconomy'
           value={noOfEconomy}
           onChange={(event) => {
             setNoOfEconomy(event.target.value);
           }}
-          align='center'
-          m='1'
+          // align='center'
+          // m='1'
           InputLabelProps={{
             shrink: true,
           }}
@@ -236,16 +249,19 @@ const InsertFlight = () => {
       <div>
         <TextField
         required
-          type='String'
-          placeholder='Number of Business'
+          type='Number'
+        
+          variant='standard'
+          label='Number of Business Seats'
+          // placeholder='Number of Business'
           name='noOfBusiness'
           value={noOfBusiness}
           multiline
           onChange={(event) => {
             setNoOfBusiness(event.target.value);
           }}
-          align='center'
-          m='1'
+          // align='center'
+          // m='1'
           InputLabelProps={{
             shrink: true,
           }}
@@ -255,22 +271,25 @@ const InsertFlight = () => {
       <div>
         <TextField
         required
-          type='String'
+          type='Number'
+          variant='standard'
+          label='Number of First Class Seats'
 
-          placeholder='Number of First Class'
+          // placeholder='Number of First Class'
           name='noOfFirstClass'
           value={noOfFirstClass}
           onChange={(event) => {
             setNoOfFirstClass(event.target.value);
           }}
-          align='center'
-          m='1'
+          // align='center'
+          // m='1'
           InputLabelProps={{
             shrink: true,
           }}
         />
       </div>
-
+      </Stack>
+      </Stack>
       {/* <div>
                   <TextField
                   type='String'
@@ -292,7 +311,7 @@ const InsertFlight = () => {
         
         style={{color:"silver", padding:'5px',
 
-        backgroundColor:'#7400b8',
+        backgroundColor:'#5e60ce',
         border:'0 none',
         cursor:'pointer',
         // webkit-border-radius: '5px',
@@ -313,7 +332,7 @@ const InsertFlight = () => {
           left: '45%',
           variant:'fill'
          }}
-       onClick={onSubmit}
+       //onClick={onSubmit}
        
        /> 
       {/* <Button type="submit" size="lg" onSubmit='onSubmit' onClick='onSubmit'></Button> */}
@@ -321,13 +340,14 @@ const InsertFlight = () => {
 
 
       </div> */}
-      </Stack>
+      
    
    
   
-  </Container>
+   
   </Box> 
-  </Container>
+  </Container> 
+  
   ) }
 
 export default InsertFlight;
