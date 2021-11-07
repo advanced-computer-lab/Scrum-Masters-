@@ -20,10 +20,10 @@ const InsertFlight = () => {
   const [arrivalDate, setArrivalDate] = useState("")
   const [departureAirport, setDepartureAirport] = useState("")
   const [arrivalAirport, setArrivalAirport] = useState("")
-  const [noOfEconomy, setNoOfEconomy] = useState(0)
-  const [noOfBusiness, setNoOfBusiness] = useState(0)
-  const [noOfFirstClass, setNoOfFirstClass] = useState(0)
-  const [noOfSeats, setNoOfSeats] = useState(0)
+  const [noOfEconomy, setNoOfEconomy] = useState("")
+  const [noOfBusiness, setNoOfBusiness] = useState("")
+  const [noOfFirstClass, setNoOfFirstClass] = useState("")
+  const [noOfSeats, setNoOfSeats] = useState("")
 
 
 
@@ -58,10 +58,18 @@ const InsertFlight = () => {
 
   return (
 
-<Stack direction="row" spacing={2} style={{ marginTop: "10px" }}>
-      <div >
-          <form noValidate onSubmit={onSubmit}>
-              {/* onSubmit={this.onSubmit} */}
+
+    <Stack
+    direction='row'
+    spacing={2}
+    style={{ marginTop: '10px' }}
+    component='form'
+    sx={{
+      '& .MuiTextField-root': { m: 2, width: '20ch' },
+    }}
+    noValidate
+    autoComplete='off'
+  >
               <div >
                   <TextField
                       type='String'
@@ -174,7 +182,7 @@ const InsertFlight = () => {
               <div >
                   <TextField
                       type='String'
-                      placeholder='Number of Economy Seats'
+                      placeholder='Number of Economy'
                       name='noOfEconomy'
                       value={noOfEconomy}
                       onChange={event => { setNoOfEconomy(event.target.value) }}
@@ -188,7 +196,7 @@ const InsertFlight = () => {
               <div >
                   <TextField
                       type='String'
-                      placeholder='Number of Business Seats'
+                      placeholder='Number of Business'
                       name='noOfBusiness'
                       value={noOfBusiness}
                       onChange={event => { setNoOfBusiness(event.target.value) }}
@@ -227,9 +235,9 @@ const InsertFlight = () => {
                       {/* align='center' */}
                       {/* m='1' */}
                       {/* InputLabelProps={{ */}
-                        {/* shrink: true, */}
-                      {/* }} */}
-                  {/* /> */}
+                        shrink: true,
+                      }}
+                  />
               </div>
 
 
@@ -238,13 +246,16 @@ const InsertFlight = () => {
                   type="submit"
 
               />
-          </form>
+          
 
 
-      </div>
-      </Stack>
+      
   )
-}
+      </Stack>
+  
+                    
+  ) 
+                    }
 
 
 
