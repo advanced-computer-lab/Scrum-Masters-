@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Date from '../forms/textFields/Date'
-import { useState } from 'react';
-
-=======
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Date from "../forms/textFields/Date";
