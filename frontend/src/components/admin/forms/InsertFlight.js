@@ -1,31 +1,31 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import DatePicker from 'react-date-picker';
-import Button from '@mui/material/Button';
-import { useState } from 'react';
-import { Axios } from 'axios';
-import { Input } from '@mui/material';
-import { useEffect } from 'react';
-import Stack from '@mui/material/Stack';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import DatePicker from "react-date-picker";
+import Button from "@mui/material/Button";
+import { useState } from "react";
+import { Axios } from "axios";
+import { Input } from "@mui/material";
+import { useEffect } from "react";
+import Stack from "@mui/material/Stack";
 
-const axios = require('axios').default;
+const axios = require("axios").default;
 
 const InsertFlight = () => {
-  const [flightNumber, setFlightNumber] = useState('');
-  const [departureTime, setDepartureTime] = useState('');
-  const [arrivalTime, setArrivalTime] = useState('');
-  const [departureDate, setDepartureDate] = useState('');
-  const [arrivalDate, setArrivalDate] = useState('');
-  const [departureAirport, setDepartureAirport] = useState('');
-  const [arrivalAirport, setArrivalAirport] = useState('');
-  const [noOfEconomy, setNoOfEconomy] = useState('');
-  const [noOfBusiness, setNoOfBusiness] = useState('');
-  const [noOfFirstClass, setNoOfFirstClass] = useState('');
+  const [flightNumber, setFlightNumber] = useState("");
+  const [departureTime, setDepartureTime] = useState("");
+  const [arrivalTime, setArrivalTime] = useState("");
+  const [departureDate, setDepartureDate] = useState("");
+  const [arrivalDate, setArrivalDate] = useState("");
+  const [departureAirport, setDepartureAirport] = useState("");
+  const [arrivalAirport, setArrivalAirport] = useState("");
+  const [noOfEconomy, setNoOfEconomy] = useState("");
+  const [noOfBusiness, setNoOfBusiness] = useState("");
+  const [noOfFirstClass, setNoOfFirstClass] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log('Hello Lajaleejo');
+    console.log("Hello Lajaleejo");
     let Data = {
       flightNumber,
       departureTime,
@@ -42,7 +42,7 @@ const InsertFlight = () => {
     console.log(Data);
 
     axios
-      .post('http://localhost:8081/admin/create', Data)
+      .post("http://localhost:8081/admin/create", Data)
       .then((res) => {
         console.log(res);
       })
@@ -52,7 +52,7 @@ const InsertFlight = () => {
   };
 
   return (
-    <Stack direction='row' spacing={2} style={{ marginTop: '10px' }}>
+    <Stack direction="row" spacing={2} style={{ marginTop: "10px" }}>
       {/* <div >
           <form noValidate onSubmit={onSubmit}
            */}
@@ -60,16 +60,16 @@ const InsertFlight = () => {
       {/* onSubmit={this.onSubmit} */}
       <div>
         <TextField
-          type='String'
-          placeholder='Flight Number'
-          name='flightNumber'
+          type="String"
+          placeholder="Flight Number"
+          name="flightNumber"
           //className='form-control'
           value={flightNumber}
           onChange={(event) => {
             setFlightNumber(event.target.value);
           }}
-          align='left'
-          m='1'
+          align="left"
+          m="1"
           InputLabelProps={{
             shrink: true,
           }}
@@ -79,16 +79,16 @@ const InsertFlight = () => {
 
       <div>
         <TextField
-          type='time'
-          placeholder='Departure Time'
-          name='departureTime'
+          type="time"
+          placeholder="Departure Time"
+          name="departureTime"
           //className='form-control'
           value={departureTime}
           onChange={(event) => {
             setDepartureTime(event.target.value);
           }}
-          align='left'
-          m='1'
+          align="left"
+          m="1"
           InputLabelProps={{
             shrink: true,
           }}
@@ -97,15 +97,15 @@ const InsertFlight = () => {
 
       <div>
         <TextField
-          type='time'
-          placeholder='Arrival Time'
-          name='arrivalTime'
+          type="time"
+          placeholder="Arrival Time"
+          name="arrivalTime"
           value={arrivalTime}
           onChange={(event) => {
             setArrivalTime(event.target.value);
           }}
-          align='center'
-          m='1'
+          align="center"
+          m="1"
           InputLabelProps={{
             shrink: true,
           }}
@@ -114,15 +114,15 @@ const InsertFlight = () => {
 
       <div>
         <TextField
-          type='Date'
-          placeholder='Departure Date'
-          name='departureDate'
+          type="Date"
+          placeholder="Departure Date"
+          name="departureDate"
           value={departureDate}
           onChange={(event) => {
             setDepartureDate(event.target.value);
           }}
-          align='center'
-          m='1'
+          align="center"
+          m="1"
           InputLabelProps={{
             shrink: true,
           }}
@@ -131,15 +131,15 @@ const InsertFlight = () => {
 
       <div>
         <TextField
-          type='Date'
-          placeholder='Arrival Date'
-          name='arrivalDate'
+          type="Date"
+          placeholder="Arrival Date"
+          name="arrivalDate"
           value={arrivalDate}
           onChange={(event) => {
             setArrivalDate(event.target.value);
           }}
-          align='center'
-          m='1'
+          align="center"
+          m="1"
           InputLabelProps={{
             shrink: true,
           }}
@@ -147,15 +147,15 @@ const InsertFlight = () => {
       </div>
       <div>
         <TextField
-          type='String'
-          placeholder='Departure Airport'
-          name='departureAirport'
+          type="String"
+          placeholder="Departure Airport"
+          name="departureAirport"
           value={departureAirport}
           onChange={(event) => {
             setDepartureAirport(event.target.value);
           }}
-          align='center'
-          m='1'
+          align="center"
+          m="1"
           InputLabelProps={{
             shrink: true,
           }}
@@ -163,15 +163,15 @@ const InsertFlight = () => {
       </div>
       <div>
         <TextField
-          type='String'
-          placeholder='Arrival Airport'
-          name='arrivalAirport'
+          type="String"
+          placeholder="Arrival Airport"
+          name="arrivalAirport"
           value={arrivalAirport}
           onChange={(event) => {
             setArrivalAirport(event.target.value);
           }}
-          align='center'
-          m='1'
+          align="center"
+          m="1"
           InputLabelProps={{
             shrink: true,
           }}
@@ -179,15 +179,15 @@ const InsertFlight = () => {
       </div>
       <div>
         <TextField
-          type='String'
-          placeholder='Number of Economy'
-          name='noOfEconomy'
+          type="String"
+          placeholder="Number of Economy"
+          name="noOfEconomy"
           value={noOfEconomy}
           onChange={(event) => {
             setNoOfEconomy(event.target.value);
           }}
-          align='center'
-          m='1'
+          align="center"
+          m="1"
           InputLabelProps={{
             shrink: true,
           }}
@@ -195,15 +195,15 @@ const InsertFlight = () => {
       </div>
       <div>
         <TextField
-          type='String'
-          placeholder='Number of Business'
-          name='noOfBusiness'
+          type="String"
+          placeholder="Number of Business"
+          name="noOfBusiness"
           value={noOfBusiness}
           onChange={(event) => {
             setNoOfBusiness(event.target.value);
           }}
-          align='center'
-          m='1'
+          align="center"
+          m="1"
           InputLabelProps={{
             shrink: true,
           }}
@@ -212,15 +212,15 @@ const InsertFlight = () => {
 
       <div>
         <TextField
-          type='String'
-          placeholder='Number of First Class'
-          name='noOfFirstClass'
+          type="String"
+          placeholder="Number of First Class"
+          name="noOfFirstClass"
           value={noOfFirstClass}
           onChange={(event) => {
             setNoOfFirstClass(event.target.value);
           }}
-          align='center'
-          m='1'
+          align="center"
+          m="1"
           InputLabelProps={{
             shrink: true,
           }}
@@ -243,7 +243,7 @@ const InsertFlight = () => {
                   />
               </div> */}
 
-      <input type='submit' />
+      <input type="submit" onClick={onSubmit} />
       {/* </form>
 
 
