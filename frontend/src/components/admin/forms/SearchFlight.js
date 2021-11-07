@@ -13,16 +13,17 @@ export default function FormPropsTextFields({ onSubmit, onChange }) {
   
   return (
     <Stack
-      direction="row"
+      direction="column"
       spacing={2}
-      style={{ marginTop: "10px" }}
+      style={{ marginTop: "10px"}}
       component="form"
       sx={{
-        "& .MuiTextField-root": { m: 2, width: "20ch" },
+        "& .MuiTextField-root": { m: 2, width: "30ch" },
       }}
       noValidate
       autoComplete="off"
     >
+      <div>
       <TextField
         id="outlined-search"
         label="Flight Num"
@@ -51,6 +52,8 @@ export default function FormPropsTextFields({ onSubmit, onChange }) {
         //style= {{width:'150px'}}
         onChange={onChange}
       />
+      </div>
+      <div>
       <TextField
         id="outlined-search"
         label="Departure Date"
@@ -93,7 +96,7 @@ export default function FormPropsTextFields({ onSubmit, onChange }) {
         onChange={onChange}
         
       />
-      <Tooltip title="Search" arrow placement="right">
+            <Tooltip title="Search" arrow placement="right">
         <IconButton
           aria-label="delete"
           onClick={onSubmit}
@@ -104,6 +107,8 @@ export default function FormPropsTextFields({ onSubmit, onChange }) {
           <SearchIcon style={{ fontSize: 45 }} />
         </IconButton>
       </Tooltip>
+        </div>
+
     </Stack>
   );
 }

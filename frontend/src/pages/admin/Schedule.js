@@ -11,10 +11,9 @@ const Schedule = () => {
   const onChange = async (e, name) => {
     if (e) {
       try {
-        console.log(e);
-        if (e.target.value!=="") {
+          console.log(values);
           await setValues({ ...values, [e.target.name]: e.target.value });
-        } /*else {
+         /*else {
           await setValues({ ...values, [name]: e });
         }*/
         await console.log(values);
@@ -24,6 +23,7 @@ const Schedule = () => {
     }
   };
   const onSubmit = () => {
+    console.log(values)
     setSubmit(!submit);
     
   };
