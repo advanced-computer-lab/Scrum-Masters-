@@ -1,30 +1,32 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import React from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
+  Box,
   Table,
   TableBody,
-  TableFooter,
   TablePagination,
   TableCell,
   TableContainer,
+  TableFooter,
   TableHead,
   TableRow,
   tableCellClasses,
   styled,
   Paper,
-} from "@mui/material";
-import FlightCard from "./FlightCard";
-import { Container } from "react-bootstrap";
+} from '@mui/material';
+import FlightCard from './FlightCard';
+import { Container } from 'react-bootstrap';
 
 const ViewFlights = ({ flights }) => {
   // const [data, setData] = useState(flights);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  useEffect(() => {}, []);
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: "#5390d9",
+      backgroundColor: '#5390d9',
       color: theme.palette.common.white,
     },
   }));
@@ -41,34 +43,34 @@ const ViewFlights = ({ flights }) => {
   };
 
   return (
-    <TableContainer component={Paper} style={{ marginBottom: "20px" }}>
-      <Table aria-label="collapsible table">
+    <TableContainer component={Paper} style={{ marginBottom: '20px' }}>
+      <Table aria-label='collapsible table'>
         <TableHead>
           <TableRow>
             <StyledTableCell />
-            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
+            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
               Flight Number
             </StyledTableCell>
-            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
+            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
               From
             </StyledTableCell>
             {/* <TableCell align="left">Duration</TableCell> */}
-            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
+            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
               To
             </StyledTableCell>
-            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
+            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
               Departure Date
             </StyledTableCell>
-            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
+            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
               Arrival Date
             </StyledTableCell>
-            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
-              {" "}
+            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
+              {' '}
               Duration
             </StyledTableCell>
             <StyledTableCell
-              align="center"
-              style={{ fontWeight: "bolder" }}
+              align='center'
+              style={{ fontWeight: 'bolder' }}
             ></StyledTableCell>
             {/* <TableCell align="center" style={{ fontWeight: "bolder" }}>
               Delete Flight
