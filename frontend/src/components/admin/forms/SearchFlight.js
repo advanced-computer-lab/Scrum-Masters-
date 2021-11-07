@@ -10,35 +10,7 @@ import { IconButton } from "@mui/material";
 import Button from "@mui/material/Button";
 import { Tooltip } from "@mui/material";
 export default function FormPropsTextFields({ onSubmit, onChange }) {
-  // const [values, setValues] = React.useState();
-  // const [date, setDate] = React.useState();
-  // const onChange = async (e, name) => {
-  //   if (e) {
-  //     try {
-  //       console.log(e);
-  //       if (e.target) {
-  //         await setValues({ ...values, [e.target.name]: e.target.value });
-  //       } else {
-  //         await setValues({ ...values, [name]: e });
-  //       }
-  //       await console.log(values);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // };
-  // const onSubmit = () => {
-  //   console.log("printing");
-  //   axios
-  //     .post("http://localhost:8081/admin/search", values)
-  //     .then((res) => {
-  //       //setValues(res.data);
-  //       console.log(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+  
   return (
     <Stack
       direction="row"
@@ -57,6 +29,7 @@ export default function FormPropsTextFields({ onSubmit, onChange }) {
         type="number"
         name="flightNumber"
         onChange={onChange}
+        style= {{width:'150px'}}
         //defaultValue="Hello World"
       />
       <TextField
@@ -67,6 +40,7 @@ export default function FormPropsTextFields({ onSubmit, onChange }) {
         /*InputLabelProps={{
             shrink: true,
           }}*/
+        style= {{width:'150px'}}
         onChange={onChange}
       />
       <TextField
@@ -74,33 +48,47 @@ export default function FormPropsTextFields({ onSubmit, onChange }) {
         label="To"
         type="search"
         name="arrivalAirport"
+        style= {{width:'150px'}}
         onChange={onChange}
       />
       <TextField
         id="outlined-search"
         label="Departure Date"
-        type="search"
+        type="date"
+        InputLabelProps={{
+          shrink: true,
+        }}
         name="departureDate"
         onChange={onChange}
       />
       <TextField
         id="outlined-search"
         label="Arrival Date"
-        type="search"
+        type="date"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        
         name="arrivalDate"
         onChange={onChange}
       />
       <TextField
         id="outlined-search"
         label="Departure Time"
-        type="search"
+        type="time"
+        InputLabelProps={{
+          shrink: true,
+        }}
         name="departureTime"
         onChange={onChange}
       />
       <TextField
         id="outlined-search"
         label="Arrival Time"
-        type="search"
+        type="time"
+        InputLabelProps={{
+          shrink: true,
+        }}
         name="arrivalTime"
         onChange={onChange}
         
