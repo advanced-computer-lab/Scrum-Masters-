@@ -2,12 +2,13 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
+  Box,
   Table,
   TableBody,
-  TableFooter,
   TablePagination,
   TableCell,
   TableContainer,
+  TableFooter,
   TableHead,
   TableRow,
   tableCellClasses,
@@ -17,11 +18,12 @@ import {
 import FlightCard from './FlightCard';
 import { Container } from 'react-bootstrap';
 
-const ViewFlights = (props) => {
-  const [data, setData] = useState();
+const ViewFlights = ({ flights }) => {
+  // const [data, setData] = useState(flights);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  useEffect(() => {}, []);
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: '#5390d9',
@@ -29,15 +31,7 @@ const ViewFlights = (props) => {
     },
   }));
 
-  useEffect(() => {
-    axios
-      .get('http://localhost:5000/admin/search')
-      .then((res) => {
-        console.log(res.data);
-        setData(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  useEffect(() => {}, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -83,9 +77,9 @@ const ViewFlights = (props) => {
             </TableCell> */}
           </TableRow>
         </TableHead>
-        {data ? (
+        {flights ? (
           <TableBody>
-            {data
+            {flights
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <FlightCard key={row._id} row={row} />
@@ -96,7 +90,7 @@ const ViewFlights = (props) => {
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
-              count={data ? data.length : 0}
+              count={flights ? flights.length : 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

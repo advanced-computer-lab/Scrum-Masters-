@@ -18,15 +18,15 @@ const flightSchema = mongoose.Schema(
       required: true,
     },
 
-    departureDate: {
-      type: String,
-      required: true,
-    },
+  departureDate: {
+    type: Date,
+    required: true,
+  },
 
-    arrivalDate: {
-      type: String,
-      required: true,
-    },
+  arrivalDate: {
+    type: Date ,
+    required: true,
+  },
 
     departureAirport: {
       type: String,
@@ -38,24 +38,6 @@ const flightSchema = mongoose.Schema(
       required: true,
     },
 
-<<<<<<< HEAD
-  noOfEconomy: {
-    type: String,
-    required: true,
-  },
-
-  noOfBusiness: {
-    type: String,
-    required: true,
-  },
-  noOfFirstClass: {
-    type: String,
-    required: true,
-  },
-  noOfSeats: {
-    type: String,
-    //default:this.noOfBusiness+this.noOfEconomy
-=======
     noOfEconomy: {
       type: Number,
       required: true,
@@ -76,7 +58,6 @@ const flightSchema = mongoose.Schema(
     //     return this.noOfFirstClass + this.noOfBusiness + this.noOfEconomy;
     //   },
     // },
->>>>>>> ce0a25ec8a1d865d540afc584deebf8ade2e7a6e
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
@@ -94,6 +75,7 @@ flightSchema
   .get(function () {
     d1 = new Date(Date.parse("2017-05-02T" + this.departureTime));
     d2 = new Date(Date.parse("2017-05-02T" + this.arrivalTime));
+    console.log(d2, "and ", d1);
     d3 = new Date(d2 - d1);
     d0 = new Date(0);
 
