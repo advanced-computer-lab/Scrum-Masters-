@@ -27,10 +27,13 @@ router.post("/search", async (req, res) => {
 
 router.post("/create", async (req, res) => {
   console.log(req.body);
-  const insertion = req.body
+   const insertion = req.body
+ 
   const flight = new Flight(insertion);
+ 
   try {
     const savedFlight = await flight.save();
+    
     res.json(savedFlight);
   } catch (err) {
     console.log(err);
@@ -53,17 +56,5 @@ router.delete("/delete/:id", (req, res) => {
     .catch((err) => res.status(404).json({ error: "No such a flight" }));
 });
 
-router.get("/number", async (req, res) => {
-  const criteria = {
-    flightNumber: 1,
-  };
-  try {
-    const query = await Flight.find(criteria);
-    console.log(query);
-    res.json(query);
-  } catch (err) {
-    res.json({ message: err });
-  }
-});
 
 module.exports = router;
