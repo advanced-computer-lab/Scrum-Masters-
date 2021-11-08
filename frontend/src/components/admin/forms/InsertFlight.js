@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import Stack from "@mui/material/Stack";
+import { useHistory } from "react-router-dom";
 
 const axios = require("axios").default;
 
@@ -18,6 +19,7 @@ const InsertFlight = () => {
   const [noOfBusiness, setNoOfBusiness] = useState("");
   const [noOfFirstClass, setNoOfFirstClass] = useState("");
 
+  
   const onSubmit = (e) => {
     e.preventDefault();
     console.log("Hello Lajaleejo");
@@ -266,6 +268,7 @@ const InsertFlight = () => {
           left: "45%",
           variant: "fill",
         }}
+        
       />
     </Box>
   );
