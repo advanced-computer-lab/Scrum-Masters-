@@ -24,3 +24,6 @@
 .navbar .navbar-nav .nav-link:hover::before {
   transform: scaleX(1);
 }
+.nav-link:active::after {
+  font-weight: 700;
+}

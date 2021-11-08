@@ -10,18 +10,16 @@ import {
   TableRow,
   Tooltip,
   Typography,
-  tableRowClasses,
   styled,
 } from "@mui/material/";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteButton from "@mui/icons-material/Delete";
-import { Container } from "react-bootstrap";
-import DeleteFlightButton from './buttons/DeleteFlightButton';
+import DeleteFlight from "./DeleteFlight";
+import UpdateFlight from "./UpdateFlight";
 
 const FlightCard = (props) => {
-  const { row } = props;
+  const row = props.row;
+  console.log("props", props.row);
   const [open, setOpen] = React.useState(false);
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(4n-3)": {
@@ -35,6 +33,13 @@ const FlightCard = (props) => {
       border: 0,
     },
   }));
+
+  const getDate = (input) => {
+    const date = new Date(input);
+    return (
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
+    );
+  };
 
   return (
     <React.Fragment>
@@ -52,31 +57,14 @@ const FlightCard = (props) => {
         </TableCell>
         <TableCell align="center">{row.flightNumber}</TableCell>
         <TableCell align="center">{row.departureAirport}</TableCell>
-        {/* <TableCell align="left">{row.fat}</TableCell> */}
         <TableCell align="center">{row.arrivalAirport}</TableCell>
-        <TableCell align="center">{row.departureDate}</TableCell>
-        <TableCell align="center">{row.arrivalDate}</TableCell>
+        <TableCell align="center">{getDate(row.departureDate)}</TableCell>
+        <TableCell align="center">{getDate(row.arrivalDate)}</TableCell>
         <TableCell align="center">{row.duration}</TableCell>
         <TableCell align="right">
-          <Tooltip title="Edit" arrow placement="right">
-            <IconButton
-              aria-label="edit"
-              style={{ color: "#e0d615", marginRight: "10px" }}
-            >
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Delete" arrow placement="right">
-          <DeleteFlightButton flight={row} />
-          </Tooltip>
+          <UpdateFlight flight={row} onUpdate={props.onUpdate} />
+          <DeleteFlight flight={row} onDelete={props.onDelete} />
         </TableCell>
-        {/* <TableCell align="center">
-          <Tooltip title="Delete" arrow placement="right">
-            <IconButton aria-label="delete" style={{ color: "red" }}>
-              <DeleteButton />
-            </IconButton>
-          </Tooltip>
-        </TableCell> */}
       </StyledTableRow>
       <StyledTableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
@@ -90,7 +78,7 @@ const FlightCard = (props) => {
               >
                 Details
               </Typography>
-              <Table size="small" aria-label="purchases">
+              <Table>
                 <TableHead>
                   <TableRow>
                     <TableCell align="center" style={{ fontStyle: "italic" }}>
@@ -100,10 +88,10 @@ const FlightCard = (props) => {
                       Arrival Time
                     </TableCell>
                     <TableCell align="center" style={{ fontStyle: "italic" }}>
-                      Economy Seats
+                      Economy Class Seats
                     </TableCell>
                     <TableCell align="center" style={{ fontStyle: "italic" }}>
-                      Business Seats
+                      Business Class Seats
                     </TableCell>
                     <TableCell align="center" style={{ fontStyle: "italic" }}>
                       First Class Seats
@@ -111,7 +99,6 @@ const FlightCard = (props) => {
                     <TableCell align="center" style={{ fontStyle: "italic" }}>
                       Total Available Seats
                     </TableCell>
-                    {/* <TableCell align="center">Total price ($)</TableCell> */}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -135,7 +122,7 @@ const FlightCard = (props) => {
                       {row.noOfSeats}
                     </TableCell>
                   </TableRow>
-                </TableBody>{" "}
+                </TableBody>
               </Table>
             </Box>
           </Collapse>
