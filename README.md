@@ -19,7 +19,7 @@ In each directory (root,frontend,backend) containing the **`package.json`** you 
 
 **`Scrum-masters-`** 
 
-The package.json in the root directory allows running both serevrs (backend and frontend) in one terminal using the script `npm run dev` 
+The **`package.json`** in the root directory allows running both serevrs (backend and frontend) in one terminal using the script `npm run dev` 
 
 ### Alternative 
 
