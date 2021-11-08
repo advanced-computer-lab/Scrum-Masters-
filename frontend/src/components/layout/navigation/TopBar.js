@@ -1,20 +1,9 @@
-<<<<<<< HEAD
-import React from 'react';
-import { Nav, Container, Navbar } from 'react-bootstrap';
-import logo from '../../../images/logo-white.png';
-import ProfileButton from '../../admin/buttons/ProfileButton';
-import '@fontsource/alegreya';
-// import '@fontsource/ceviche-one';
-import '@fontsource/henny-penny';
-import '../../../Styles/custom.css';
-=======
 import React from "react";
 import { Nav, Container, Navbar } from "react-bootstrap";
 import logo from "../../../images/logo-white.png";
 import ProfileButton from "../../admin/buttons/ProfileButton";
 import "@fontsource/henny-penny";
 import "../../../Styles/custom.css";
->>>>>>> ce0a25ec8a1d865d540afc584deebf8ade2e7a6e
 const TopBar = () => {
   return (
     <Navbar
