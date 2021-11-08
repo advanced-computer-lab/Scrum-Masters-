@@ -22,7 +22,7 @@ mongoose
 app.use(cors({ origin: true, credentials: true }));
 app.use("/admin", require("./routes/admin/adminController"));
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8081;
 app.listen(port, () => {
   console.log('App is listening at port: ', port);
 });
