@@ -289,7 +289,6 @@ const InsertFlight = () => {
           onChange={(event) => {
             setNoOfFirstClass(event.target.value);
           }}
-          
           // align='center'
           // m='1'
           InputLabelProps={{
