@@ -5,13 +5,21 @@ import DatePicker from 'react-date-picker';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { Axios } from 'axios';
-import { Alert, Input } from '@mui/material';
+import { Input } from '@mui/material';
 import { useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import { positions } from '@mui/system';
 import { makeStyles } from '@mui/material';
 import { Container } from 'react-bootstrap';
-// import { Alert } from '@mui/material';
+
+import { DialogActions } from '@mui/material';
+import { DialogContent } from '@mui/material';
+import { DialogTitle } from '@mui/material';
+import {Dialog} from '@mui/material';
+import {DialogContentText} from '@mui/material';
+
+
+  
 
 
 const axios = require('axios').default;
@@ -27,11 +35,23 @@ const InsertFlight = () => {
   const [noOfEconomy, setNoOfEconomy] = useState("");
   const [noOfBusiness, setNoOfBusiness] = useState("");
   const [noOfFirstClass, setNoOfFirstClass] = useState("");
+  const [noOfSeats, setNoOfSeats]=useState("");
+  const [duration, setDuration]=useState('');
+  const [open, setOpen] = React.useState(false);
+  var Data={};
+  const showAlert = () => {
+    setOpen(true);
+  };
 
+  const alertClose = () => {
+    setOpen(false);
+    return false;
+  };
   const onSubmit = (e) => {
+    
     e.preventDefault();
     console.log("Hello Lajaleejo");
-    let Data = {
+     Data = {
       flightNumber,
       departureTime,
       arrivalTime,
@@ -42,17 +62,21 @@ const InsertFlight = () => {
       noOfEconomy,
       noOfBusiness,
       noOfFirstClass,
-      //noOfSeats
+      // noOfSeats,
+      // duration
     };
-    console.log(Data);
+   
 
     axios
       .post("http://localhost:8081/admin/create", Data)
       .then((res) => {
-        console.log(res);
+        console.log(res.Data);
+        showAlert();
+        //return(res);
+       
+        // console.log(Data);
         
-      } , Alert
-      )
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -69,7 +93,7 @@ const InsertFlight = () => {
     sx={{ 
       '& .MuiTextField-root': { m: 1, width: '25ch' },
     }}
-    // onSubmit={onSubmit}
+    onSubmit={onSubmit}
     autoComplete="off"
   > 
   {/* <Container> */}
@@ -96,7 +120,6 @@ const InsertFlight = () => {
           onChange={(event) => {
             setFlightNumber(event.target.value);
           }}
-         
           // align=''
           // position='relative'
           //m='1'
@@ -120,8 +143,6 @@ const InsertFlight = () => {
           onChange={(event) => {
             setDepartureTime(event.target.value);
           }}
-          //  error={value=== null}
-          //  helperText={value=== null? 'Please enter a value!' : ' '}
           // align='left'
           // position="relative"
           // m='1'
@@ -264,7 +285,7 @@ const InsertFlight = () => {
           // placeholder='Number of Business'
           name='noOfBusiness'
           value={noOfBusiness}
-          multiline
+          
           onChange={(event) => {
             setNoOfBusiness(event.target.value);
           }}
@@ -298,34 +319,6 @@ const InsertFlight = () => {
       </div>
       </Stack>
       </Stack>
-      <div>
-      <Button 
-      onClick={onSubmit} validation='required'
-      
-      style={{
-        
-        outlineColor:'transparent',
-        color:'white',
-        width:'135px',
-        height:'60px', 
-        backgroundColor:'#5e60ce',
-        marginTop:'20px', 
-        label:'Add Flight!', 
-        fontFamily:'cursive',
-        padding: '20px',
-        outline:'green',
-        
-        
-        
-        
-        
-        }}
-      hover={{color:'purple'}}
-      > Add Flight</Button>
-      </div>
-      {/* <Button onClick={onSubmit} color="blue" variant="outlined" label="HI!!">  */}
-      
-      {/* </Button> */}
       {/* <div>
                   <TextField
                   type='String'
@@ -341,37 +334,65 @@ const InsertFlight = () => {
                       }}
                   />
               </div> */}
-
-       {/* <input type='SUBMIT' aria-label='Add'  */}
+       <React.Fragment>
+       <Button type='SUBMIT' aria-label='Add' 
        
         
-        {/* style={{color:"black", padding:'5px', */}
-        {/* //label:'add flight', */}
+        style={{color:"black", padding:'5px',
+        label:'add flight',
 
-        {/* backgroundColor:'#5e60ce', */}
-        {/* border:'0 none', */}
-        {/* cursor:'pointer', */}
-        {/* // webkit-border-radius: '5px', */}
-        {/* borderBlock:'5px', */}
-        {/* color: 'white', */}
-        {/* fontFamily:'cursive' , */}
-        {/* fontSize:'5', */}
-        {/* width: '135px', */}
-        {/* height: '60px', */}
-         {/* border: 0, */}
-         {/* margin: 0, */}
-         {/* padding: 0, */}
-         {/* align:'center', */}
-         {/* location:'center', */}
-         {/* position:'relative', */}
-         {/* top:'25px', */}
-          {/* right:'50%', */}
-          {/* left: '45%', */}
-          {/* variant:'fill' */}
-         {/* }} */}
-       {/* //onClick={onSubmit} */}
+        backgroundColor:'#5e60ce',
+        border:'0 none',
+        cursor:'pointer',
+        // webkit-border-radius: '5px',
+        borderBlock:'5px',
+        color: 'White',
+        fontFamily:'cursive' ,
+        fontSize:'5',
+        width: '135px',
+        height: '60px',
+         border: 0,
+         margin: 0,
+         padding: 0,
+         align:'center',
+         location:'center',
+         position:'relative',
+         top:'25px',
+          right:'60%',
+          left: '1%',
+          variant:'fill'
+         }}
+       //onClick={onSubmit}
        
-       {/* />   */}
+       > Add Flight </Button>
+        <Dialog open={open} onClose={alertClose}>
+        <DialogTitle id="alert-dialog-title" color="purple">
+          {"Flight Added!!"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Flight Number: <b>{flightNumber}</b>. <br />
+            Departing From: <b>{departureAirport}</b>&nbsp;on:{" "}
+            <b>{departureDate}</b>&nbsp;at:{" "}
+            <b>{departureTime}</b>. <br />
+            Arriving To: <b>{arrivalAirport}</b>&nbsp;on:{" "}
+            <b>{arrivalDate}</b>&nbsp;at:{" "}
+            <b>{arrivalTime}</b>. <br />
+            {/* Flight Duration: <b>{Data.duration}</b>. <br /> */}
+            Economy Seats: <b>{noOfEconomy}</b>,.
+            <br />
+            Business Class Seats: <b>{noOfBusiness}</b>. <br />
+            First Class Seats:<b> {noOfFirstClass}</b>. <br />
+            {/* Total Seats: <b>{Data.noOfSeats}</b>.  */}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          {/* <Button onClick={() => deleteFlight()}>Yes</Button> */}
+          <Button onClick={alertClose} autoFocus>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
       {/* <Button type="submit" size="lg" onSubmit='onSubmit' onClick='onSubmit'></Button> */}
       {/* </form>
 
@@ -381,7 +402,7 @@ const InsertFlight = () => {
    
    
   
-   
+   </React.Fragment>
   </Box> 
   </Container> 
   

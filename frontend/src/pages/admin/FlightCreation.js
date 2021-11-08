@@ -12,7 +12,7 @@ const FlightCreation = () => {
         component="header"
         style={{ marginTop: "1%" }}
       >
-        Add a Flight
+        {/* Add a Flight */}
       </Typography>
       <div style={{ marginTop: "2%" }}>
         <InsertFlight />
