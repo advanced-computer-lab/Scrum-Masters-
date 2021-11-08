@@ -32,7 +32,7 @@ or
 
 `nodemon app`
 
-Open another terminal in the following directory and write: 
+Added to the previous command, open another terminal in the following directory and write: 
 
 **`Scrum-masters-/frontend`**
 
