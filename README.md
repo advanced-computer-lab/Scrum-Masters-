@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-The project has 3 **`package.json`** files in the following Tree (note: it's just a high level explanation for the main directories, the words in italic are not real directorires/files)
+The project has 3 **`package.json`** files in the following Tree (note: it's just a high level explanation for the main directories, the words between barckets are not real directorires/files)
 
 ```
 +-- backend
