@@ -1,15 +1,9 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import DatePicker from "react-date-picker";
 import Button from "@mui/material/Button";
 import { useState } from "react";
-import { Axios } from "axios";
-import { Input } from "@mui/material";
-import { useEffect } from "react";
 import Stack from "@mui/material/Stack";
-import { positions } from "@mui/system";
-import { makeStyles } from "@mui/material";
 import { Container } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { DialogActions } from "@mui/material";
@@ -17,7 +11,6 @@ import { DialogContent } from "@mui/material";
 import { DialogTitle } from "@mui/material";
 import { Dialog } from "@mui/material";
 import { DialogContentText } from "@mui/material";
-import { Redirect } from "react-router";
 
 const axios = require("axios").default;
 
@@ -39,7 +32,12 @@ const InsertFlight = () => {
   const showAlert = () => {
     setOpen(true);
   };
-
+  const getDate = (input) => {
+    const date = new Date(input);
+    return (
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
+    );
+  };
   const alertClose = () => {
     setOpen(false);
     return false;
@@ -312,14 +310,14 @@ const InsertFlight = () => {
                 <DialogContentText id="alert-dialog-description">
                   Flight Number: <b>{flight.flightNumber}</b>. <br />
                   Departing From: <b>{flight.departureAirport}</b>&nbsp;on:{" "}
-                  <b>{flight.departureDate}</b>&nbsp;at:{" "}
+                  <b>{getDate(flight.departureDate)}</b>&nbsp;at:{" "}
                   <b>{flight.departureTime}</b>. <br />
                   Arriving To: <b>{flight.arrivalAirport}</b>&nbsp;on:{" "}
-                  <b>{flight.arrivalDate}</b>&nbsp;at:{" "}
+                  <b>{getDate(flight.arrivalDate)}</b>&nbsp;at:{" "}
                   <b>{flight.arrivalTime}</b>
                   . <br />
                   Flight Duration: <b>{flight.duration}</b>. <br />
-                  Economy Seats: <b>{flight.noOfEconomy}</b>,.
+                  Economy Seats: <b>{flight.noOfEconomy}</b>.
                   <br />
                   Business Class Seats: <b>{flight.noOfBusiness}</b>. <br />
                   First Class Seats:<b> {flight.noOfFirstClass}</b>. <br />
@@ -333,7 +331,7 @@ const InsertFlight = () => {
                 <Button
                   onClick={() => {
                     alertClose();
-                     window.location.reload(false);
+                    window.location.reload(false);
                   }}
                   autoFocus
                 >
