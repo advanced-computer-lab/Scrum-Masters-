@@ -14,9 +14,10 @@ const Schedule = () => {
         console.log(e);
         if (e.target.value !== '') {
           await setValues({ ...values, [e.target.name]: e.target.value });
-        } /*else {
-          await setValues({ ...values, [name]: e });
-        }*/
+        }
+        // else {
+        //   await setValues({ ...values, [name]: e });
+        // }
         await console.log(values);
       } catch (error) {
         console.log(error);
@@ -24,6 +25,7 @@ const Schedule = () => {
     }
   };
   const onSubmit = () => {
+    console.log(values);
     setSubmit(!submit);
   };
   useEffect(() => {
