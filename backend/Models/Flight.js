@@ -18,15 +18,15 @@ const flightSchema = mongoose.Schema(
       required: true,
     },
 
-  departureDate: {
-    type: Date,
-    required: true,
-  },
+    departureDate: {
+      type: Date,
+      required: true,
+    },
 
-  arrivalDate: {
-    type: Date ,
-    required: true,
-  },
+    arrivalDate: {
+      type: Date,
+      required: true,
+    },
 
     departureAirport: {
       type: String,
@@ -40,15 +40,18 @@ const flightSchema = mongoose.Schema(
 
     noOfEconomy: {
       type: Number,
+      default: 0,
       required: true,
     },
 
     noOfBusiness: {
       type: Number,
+      default: 0,
       required: true,
     },
     noOfFirstClass: {
       type: Number,
+      default: 0,
       required: true,
     },
 

@@ -16,9 +16,8 @@ const TopBar = () => {
     >
       <Container>
         <Navbar.Brand
-          href="#"
+          href="/"
           style={{
-            // marginLeft: "2%",
             fontSize: "21pt",
             fontFamily: "Henny Penny",
           }}
@@ -38,10 +37,10 @@ const TopBar = () => {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto"></Nav>
             <Nav>
-              <Nav.Link href="/schedule" style={{ color: "white" }}>
+              <Nav.Link href="/schedule" style={{ color: "white" }} exact>
                 View Schedule
               </Nav.Link>
-              <Nav.Link href="/addFlight" style={{ color: "white" }}>
+              <Nav.Link href="/addFlight" style={{ color: "white" }} exact>
                 Add a New Flight
               </Nav.Link>
               <ProfileButton />
