@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 const Flight = require('../../Models/Flight');
+const Reservation = require('../../Models/Reservation');
+//const User = require('../../Models/User')
 
 router.get("/search", async (req, res) => {
   try {
@@ -26,9 +28,9 @@ router.post("/search", async (req, res) => {
   }
 });
 
-router.post("/create", async (req, res) => {
+router.post("/create", async (req, res) => { // define each field in req.body is better (for apis :) )
   console.log(req.body);
-   const insertion = req.body
+   const insertion = req.body;
  
   const flight = new Flight(insertion);
  
@@ -56,6 +58,22 @@ router.delete("/delete/:id", (req, res) => {
     .then((flight) => res.json({ mgs: "flight deleted successfully" }))
     .catch((err) => res.status(404).json({ error: "No such a flight" }));
 });
+
+//tests
+
+router.post("/reservation/:id",async (req,res)=>{
+    const insertion = req.body;
+    insertion.userId = req.params.id;
+    //console.log(insertion);
+    const reservation = new Reservation(insertion)
+    try {
+      const savedReservation = await reservation.save()
+      console.log(savedReservation);
+      res.json(savedReservation);
+    } catch (error) {
+      console.log(error);
+    }
+})
 
 
 module.exports = router;
