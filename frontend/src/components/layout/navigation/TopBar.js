@@ -1,16 +1,9 @@
 import React from "react";
-import {
-  Nav,
-  Offcanvas,
-  Container,
-  NavDropdown,
-  Form,
-  FormControl,
-  Button,
-  Navbar,
-} from "react-bootstrap";
+import { Nav, Container, Navbar } from "react-bootstrap";
 import logo from "../../../images/logo-white.png";
-import "@fontsource/alegreya";
+import ProfileButton from "../../admin/buttons/ProfileButton";
+import "@fontsource/henny-penny";
+import "../../../styles/custom.css";
 const TopBar = () => {
   return (
     <Navbar
@@ -19,40 +12,41 @@ const TopBar = () => {
       sticky="top"
       variant="dark"
       style={{ backgroundColor: "#7400b8", color: "white" }}
+      className="container-fluid"
     >
-      <Navbar.Brand
-        href="#home"
-        style={{
-          marginLeft: "2%",
-          fontSize: "18pt",
-          fontFamily: "Alegreya",
-        }}
-      >
-        <img
-          src={logo}
-          width="65"
-          height="40"
-          className="d-inline-block align-top"
-          alt="logo"
-          style={{ marginRight: "3%" }}
-        />
-        Cloud 9
-      </Navbar.Brand>
       <Container>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#pricing" style={{ color: "white" }}>
-              View Schedule
-            </Nav.Link>
-            <Nav.Link href="#features" style={{ color: "white" }}>
-              Add a New Flight
-            </Nav.Link>
-          </Nav>
-          <Nav>
-            <Nav.Link href="#deets">More deets</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
+        <Navbar.Brand
+          href="/"
+          style={{
+            fontSize: "21pt",
+            fontFamily: "Henny Penny",
+          }}
+        >
+          <img
+            src={logo}
+            width="65"
+            height="40"
+            className="d-inline-block align-top"
+            alt="logo"
+            style={{ marginRight: "3%" }}
+          />
+          Cloud 9
+        </Navbar.Brand>
+        <Container style={{ paddingRight: 0 }}>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="me-auto"></Nav>
+            <Nav>
+              <Nav.Link href="/schedule" style={{ color: "white" }} exact>
+                View Schedule
+              </Nav.Link>
+              <Nav.Link href="/addFlight" style={{ color: "white" }} exact>
+                Add a New Flight
+              </Nav.Link>
+              <ProfileButton />
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
       </Container>
     </Navbar>
   );
