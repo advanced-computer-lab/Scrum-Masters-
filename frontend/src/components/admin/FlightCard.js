@@ -14,8 +14,8 @@ import {
 } from "@mui/material/";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import DeleteFlight from "./DeleteFlight";
-import UpdateFlight from "./UpdateFlight";
+import DeleteFlight from "./popups/DeleteFlight";
+import UpdateFlight from "./popups/UpdateFlight";
 
 const FlightCard = (props) => {
   const row = props.row;

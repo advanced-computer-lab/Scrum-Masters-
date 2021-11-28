@@ -78,7 +78,6 @@ flightSchema
   .get(function () {
     d1 = new Date(Date.parse("2017-05-02T" + this.departureTime));
     d2 = new Date(Date.parse("2017-05-02T" + this.arrivalTime));
-    console.log(d2, "and ", d1);
     d3 = new Date(d2 - d1);
     d0 = new Date(0);
 
