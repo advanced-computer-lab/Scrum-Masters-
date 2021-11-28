@@ -1,8 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
-const Flight = require('../../Models/Flight');
-const Reservation = require('../../Models/Reservation');
+const Flight = require("../../Models/Flight");
+const Reservation = require("../../Models/Reservation");
+const Ticket = require("../../Models/Ticket");
 //const User = require('../../Models/User')
 
 router.get("/search", async (req, res) => {
@@ -28,15 +29,16 @@ router.post("/search", async (req, res) => {
   }
 });
 
-router.post("/create", async (req, res) => { // define each field in req.body is better (for apis :) )
+router.post("/create", async (req, res) => {
+  // define each field in req.body is better (for apis :) )
   console.log(req.body);
-   const insertion = req.body;
- 
+  const insertion = req.body;
+
   const flight = new Flight(insertion);
- 
+
   try {
     const savedFlight = await flight.save();
-    
+
     res.json(savedFlight);
   } catch (err) {
     console.log(err);
@@ -61,19 +63,33 @@ router.delete("/delete/:id", (req, res) => {
 
 //tests
 
-router.post("/reservation/:id",async (req,res)=>{
-    const insertion = req.body;
-    insertion.userId = req.params.id;
-    //console.log(insertion);
-    const reservation = new Reservation(insertion)
-    try {
-      const savedReservation = await reservation.save()
-      console.log(savedReservation);
-      res.json(savedReservation);
-    } catch (error) {
-      console.log(error);
-    }
-})
+router.post("/reservation/:id", async (req, res) => {
+  const insertion = req.body;
+  insertion.userId = req.params.id;
+  console.log("insertion", insertion);
 
+  // //ticket creation
+  // const depTickets = insertion.departingFlight.tickets;
+  // console.log("departure tickets", depTickets);
+  // const createdTickets = [];
+  // depTickets.forEach(async (ticket) => {
+  //   ticket.ticketType = "departing";
+  //   ticket.flightNumber = insertion.departingFlight.id;
+  //   console.log("new ticket", ticket);
+  //   const t = new Ticket(ticket);
+  //   t.save()
+  //     .then((result) => console.log("saved flightttt", result))
+  //     .catch((err) => console.log(err));
+  // });
+  // insertion.departingFlight.tickets = createdTickets;
+
+  const reservation = new Reservation(insertion);
+  try {
+    const savedReservation = await reservation.save();
+    console.log(savedReservation);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 module.exports = router;

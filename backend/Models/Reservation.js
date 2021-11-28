@@ -2,33 +2,38 @@ const mongoose = require("mongoose");
 const User = require('./User');
 const Ticket = require('./Ticket').schema;
 
-const ReservationSchema = mongoose.Schema({
-
+const ReservationSchema = mongoose.Schema(
+  {
     userId: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User',
-        required:true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    departingFlight:{
+    departingFlight: {
       id: {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'Flight',
-            required:true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Flight",
+        required: true,
+      },
+      tickets: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Ticket",
+          required: true,
         },
-      tickets:[Ticket.ticketType="departing"]
+      ],
     },
-    returnFlight:{
+    returnFlight: {
       id: {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Flight',
-        required:true
-          },
-      tickets:[Ticket.ticketType="return"]
-
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Flight",
+        required: true,
+      },
+      tickets: [(Ticket.ticketType = "return")],
+    },
   },
-    
-
-}, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
+  { toJSON: { virtuals: true }, toObject: { virtuals: true } }
+);
 
 // total price
 ReservationSchema
@@ -42,7 +47,7 @@ ReservationSchema
    this.returnFlight.tickets.forEach((ticket)=>{
         sum+=ticket.price;
     });
-    return sum 
+    return sum;
   })
   .set(function (totalPrice) {
     this.totalPrice = totalPrice;
