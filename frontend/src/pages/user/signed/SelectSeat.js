@@ -1,9 +1,10 @@
-import React from "react";
+import { React, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { autocompleteClasses, Typography } from "@mui/material";
 import SeatMap from "../../../components/user/SeatMap";
 
 const SelectSeat = () => {
+
   return (
     <Container>
       <Typography
@@ -23,7 +24,7 @@ const SelectSeat = () => {
           boxShadow: "0 3px 10px rgb(105 48 195 / 60%)",
         }}
       >
-        <SeatMap />
+        <SeatMap/>
       </div>
     </Container>
   );
