@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const User = require('./User');
 const Ticket = require('./Ticket').schema;
 
@@ -6,19 +6,19 @@ const ReservationSchema = mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     departingFlight: {
       id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Flight",
+        ref: 'Flight',
         required: true,
       },
       tickets: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Ticket",
+          ref: 'Ticket',
           required: true,
         },
       ],
@@ -26,26 +26,31 @@ const ReservationSchema = mongoose.Schema(
     returnFlight: {
       id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Flight",
+        ref: 'Flight',
         required: true,
       },
-      tickets: [(Ticket.ticketType = "return")],
+      tickets: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Ticket',
+          required: true,
+        },
+      ],
     },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 // total price
-ReservationSchema
-  .virtual("totalPrice")
+ReservationSchema.virtual('totalPrice')
   .get(function () {
-        let sum=0;
-    this.departingFlight.tickets.forEach((ticket)=>{
-        sum+=ticket.price;
+    let sum = 0;
+    this.departingFlight.tickets.forEach((ticket) => {
+      sum += ticket.price;
     });
-        
-   this.returnFlight.tickets.forEach((ticket)=>{
-        sum+=ticket.price;
+
+    this.returnFlight.tickets.forEach((ticket) => {
+      sum += ticket.price;
     });
     return sum;
   })
@@ -56,6 +61,5 @@ ReservationSchema
 // Adult ticket num & child ticket num (?)
 // I will code it here
 
-
-const Reservation = mongoose.model("Reservation", ReservationSchema);
+const Reservation = mongoose.model('Reservation', ReservationSchema);
 module.exports = Reservation;
