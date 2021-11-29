@@ -29,7 +29,11 @@ const ReservationSchema = mongoose.Schema(
         ref: "Flight",
         required: true,
       },
-      tickets: [(Ticket.ticketType = "return")],
+      tickets: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Ticket",
+        required: true,
+      },],
     },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
@@ -41,6 +45,7 @@ ReservationSchema
   .get(function () {
         let sum=0;
     this.departingFlight.tickets.forEach((ticket)=>{
+        // find by id and sum the prices
         sum+=ticket.price;
     });
         

@@ -91,6 +91,7 @@ const flightSchema = mongoose.Schema( // check for unique flight numbers within 
         required: true,
       }
     },
+  
 
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
