@@ -5,51 +5,24 @@ import { SeatSelection } from '@duffel/components';
 // import "@duffel/components/dist/SeatSelection.min.css";
 import '../../styles/seatMap.css';
 
-const SeatMap = () => {
-  const passengers = [
-    {
-      id: 'pas_0000A8oTVsAt8YurG9h4xn',
-      name: 'Amelia Earhart economy',
-      cabin: 'economy',
-    },
-    {
-      id: 'pas_0000A8oTVsAt8YurG9h4xnn',
-      name: 'Amelia Earhart First',
-      cabin: 'first_class',
-    },
-  ];
-
-  const offer = {
+function createOffer(from, to, passengers) {
+  return {
     slices: [
       {
         segments: [
           {
-            passengers: [
-              {
-                baggages: [
-                  {
-                    type: 'checked',
-                    quantity: 1,
-                  },
-                ],
-                passenger_id: 'pas_0000A8oTVsAt8YurG9h4xnn',
-                fare_basis_code: 'Y20LGTN2',
-                cabin_class_marketing_name: 'Economy',
-                cabin_class: 'first_class',
-              },
-              {
-                baggages: [
-                  {
-                    type: 'checked',
-                    quantity: 1,
-                  },
-                ],
-                passenger_id: 'pas_0000A8oTVsAt8YurG9h4xn',
-                fare_basis_code: 'Y20LGTN2',
-                cabin_class_marketing_name: 'Economy',
-                cabin_class: 'economy',
-              },
-            ],
+            passengers: passengers.map((passenger) => ({
+              baggages: [
+                {
+                  type: 'checked',
+                  quantity: 1,
+                },
+              ],
+              passenger_id: passenger.id,
+              fare_basis_code: 'Y20LGTN2',
+              cabin_class_marketing_name: 'Economy',
+              cabin_class: passenger.cabin_class,
+            })),
             origin: {
               name: 'Heathrow Airport',
               longitude: -0.458118,
@@ -70,7 +43,7 @@ const SeatMap = () => {
               time_zone: 'Europe/London',
               icao_code: 'EGLL',
               iata_country_code: 'GB',
-              iata_code: 'LHR', //FROM
+              iata_code: from, //FROM
               iata_city_code: 'LON',
               city_name: 'London',
             },
@@ -86,7 +59,7 @@ const SeatMap = () => {
               time_zone: 'Europe/Lisbon',
               icao_code: 'LPPT',
               iata_country_code: 'PT',
-              iata_code: 'LISSS', //TO
+              iata_code: to, //TO
               iata_city_code: 'LIS',
               city_name: 'Lisbon',
             },
@@ -168,48 +141,23 @@ const SeatMap = () => {
       {
         segments: [
           {
-            passengers: [
-              {
-                baggages: [
-                  {
-                    type: 'checked',
-                    quantity: 1,
-                  },
-                ],
-                passenger_id: 'pas_0000A8oTVsAt8YurG9h4xn',
-                fare_basis_code: 'Y20LGTN2',
-                cabin_class_marketing_name: 'Economy',
-                cabin_class: 'first_class',
-              },
-              {
-                baggages: [
-                  {
-                    type: 'checked',
-                    quantity: 1,
-                  },
-                ],
-                passenger_id: 'pas_0000A8oTVsAt8YurG9h4xn',
-                fare_basis_code: 'Y20LGTN2',
-                cabin_class_marketing_name: 'Economy',
-                cabin_class: 'economy',
-              },
-            ],
+            passengers: passengers.map((passenger) => ({
+              baggages: [
+                {
+                  type: 'checked',
+                  quantity: 1,
+                },
+              ],
+              passenger_id: passenger.id,
+              fare_basis_code: 'Y20LGTN2',
+              cabin_class_marketing_name: 'Economy',
+              cabin_class: passenger.cabin_class,
+            })),
             origin: {
-              // name: 'Lisbon Portela Airport',
-              // longitude: -9.135643,
-              // latitude: 38.778446,
-              // id: 'arp_lis_pt',
-              // city: null,
-              // time_zone: 'Europe/Lisbon',
-              // icao_code: 'LPPT',
-              // iata_country_code: 'PT',
               iata_code: 'LIS',
               iata_city_code: 'LIS',
               city_name: 'Lisbon',
             },
-            // id: 'seg_0000A8oTVsP4HqG5y8KP44',
-            // duration: 'PT2H48M',
-            // distance: '1664.7559640438405',
             destination: {
               name: 'Heathrow Airport',
               longitude: -0.458118,
@@ -310,12 +258,10 @@ const SeatMap = () => {
         destination_type: 'airport',
       },
     ],
-    passengers: [
-      {
-        type: 'adult',
-        id: 'pas_0000A8oTVsAt8YurG9h4xn',
-      },
-    ],
+    passengers: passengers.map((passenger) => ({
+      type: passenger.type,
+      id: passenger.id,
+    })),
     owner: {
       name: 'Duffel Airways',
       id: 'arl_00009VME7D6ivUu8dn35WK',
@@ -352,6 +298,25 @@ const SeatMap = () => {
     available_services: [],
     allowed_passenger_identity_document_types: [],
   };
+}
+
+const SeatMap = () => {
+  const passengers = [
+    {
+      id: 'pas_0000A8oTVsAt8YurG9h4xn',
+      name: 'Amelia Earhart economy',
+      cabin: 'economy',
+      type: 'adult',
+    },
+    {
+      id: 'pas_0000A8oTVsAt8YurG9h4xnn',
+      name: 'Amelia Earhart First',
+      cabin: 'first_class',
+      type: 'adult',
+    },
+  ];
+
+  const offer = createOffer('LHR', 'LIS', passengers);
   const seatMap = [
     {
       id: 'sea_0000A8okiQhItNg1JSmCuW',
