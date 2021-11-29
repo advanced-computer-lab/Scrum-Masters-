@@ -33,12 +33,11 @@ router.post("/create", async (req, res) => {
   // define each field in req.body is better (for apis :) )
   console.log(req.body);
   const insertion = req.body;
-
+  //insertion.noOfSeats = parseInt(insertion.firstClass.noOfSeats) + parseInt(insertion.business.noOfSeats) + parseInt(insertion.economy.noOfSeats)
+  console.log("the body",insertion)
   const flight = new Flight(insertion);
-
   try {
     const savedFlight = await flight.save();
-
     res.json(savedFlight);
   } catch (err) {
     console.log(err);
@@ -48,6 +47,7 @@ router.patch("/update/:id", async (req, res) => {
   Flight.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((result) => {
       //new:true returns modified document not original
+      //result.noOfSeats = parseInt(result.firstClass.noOfSeats) + parseInt(result.business.noOfSeats) + parseInt(result.economy.noOfSeats)
       res.send(result);
       console.log(result);
     })
@@ -62,31 +62,49 @@ router.delete("/delete/:id", (req, res) => {
 });
 
 //tests
+async function getTickets(tickets,flightNumber){
+  var createdTickets = [];
+  tickets.forEach(async (ticket) => {
+    ticket.ticketType = "departing";
+    ticket.flightNumber = flightNumber
+    console.log("new ticket", ticket);
+    const t =  new Ticket(ticket);
+    createdTickets.push(t._id);
+    console.log("the ticket t ",t)
+    
+      t.save().then().catch()  
+    
+      });
+  console.log("saved tickets ",createdTickets)
+  return createdTickets;
+
+}
+
+
 
 router.post("/reservation/:id", async (req, res) => {
+  
   const insertion = req.body;
   insertion.userId = req.params.id;
   console.log("insertion", insertion);
 
-  // //ticket creation
-  // const depTickets = insertion.departingFlight.tickets;
-  // console.log("departure tickets", depTickets);
-  // const createdTickets = [];
-  // depTickets.forEach(async (ticket) => {
-  //   ticket.ticketType = "departing";
-  //   ticket.flightNumber = insertion.departingFlight.id;
-  //   console.log("new ticket", ticket);
-  //   const t = new Ticket(ticket);
-  //   t.save()
-  //     .then((result) => console.log("saved flightttt", result))
-  //     .catch((err) => console.log(err));
-  // });
-  // insertion.departingFlight.tickets = createdTickets;
 
-  const reservation = new Reservation(insertion);
+  // //ticket creation
+  const depTickets = insertion.departingFlight.tickets;
+  console.log("departure tickets", depTickets);
+  insertion.departingFlight.tickets = await getTickets(depTickets,insertion.departingFlight.id);
+
+// return
+
+  const returnTickets = insertion.returnFlight.tickets;
+  console.log("return tickets", returnTickets);
+  insertion.returnFlight.tickets = await getTickets(returnTickets,insertion.returnFlight.id);
+
+  const reservation = await new Reservation(insertion);
   try {
     const savedReservation = await reservation.save();
-    console.log(savedReservation);
+    console.log("The reservation",savedReservation);
+    res.json(savedReservation);
   } catch (error) {
     console.log(error);
   }
