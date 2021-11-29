@@ -71,14 +71,10 @@ async function getTickets(tickets,flightNumber){
     const t =  new Ticket(ticket);
     createdTickets.push(t._id);
     console.log("the ticket t ",t)
-    try {
-      await t.save()  
-    } catch (error) {
-      console.log(error);
-    }
     
-  setTimeout(function(){},5555);
-  });
+      t.save().then().catch()  
+    
+      });
   console.log("saved tickets ",createdTickets)
   return createdTickets;
 

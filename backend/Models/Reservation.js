@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const User = require('./User');
-const Ticket = require('./Ticket').schema;
+const User = require("./User");
+const Ticket = require("./Ticket").schema;
 
 const ReservationSchema = mongoose.Schema(
   {
@@ -13,6 +13,11 @@ const ReservationSchema = mongoose.Schema(
       id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Flight",
+        required: true,
+      },
+      cabinClass: {
+        type: String,
+        enum: ["business", "economy", "first class"],
         required: true,
       },
       tickets: [
@@ -29,28 +34,34 @@ const ReservationSchema = mongoose.Schema(
         ref: "Flight",
         required: true,
       },
-      tickets: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Ticket",
+      cabinClass: {
+        type: String,
+        enum: ["business", "economy", "first class"],
         required: true,
-      },],
+      },
+      tickets: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Ticket",
+          required: true,
+        },
+      ],
     },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 // total price
-ReservationSchema
-  .virtual("totalPrice")
+ReservationSchema.virtual("totalPrice")
   .get(function () {
-        let sum=0;
-    this.departingFlight.tickets.forEach((ticket)=>{
-        // find by id and sum the prices
-        sum+=ticket.price;
+    let sum = 0;
+    this.departingFlight.tickets.forEach((ticket) => {
+      // find by id and sum the prices
+      sum += ticket.price;
     });
-        
-   this.returnFlight.tickets.forEach((ticket)=>{
-        sum+=ticket.price;
+
+    this.returnFlight.tickets.forEach((ticket) => {
+      sum += ticket.price;
     });
     return sum;
   })
@@ -60,7 +71,6 @@ ReservationSchema
 
 // Adult ticket num & child ticket num (?)
 // I will code it here
-
 
 const Reservation = mongoose.model("Reservation", ReservationSchema);
 module.exports = Reservation;
