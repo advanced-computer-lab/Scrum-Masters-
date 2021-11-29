@@ -84,38 +84,43 @@ const ticketSchema = mongoose.Schema(
 ticketSchema
   .virtual("price")
   .get(function () {
-    console.log("virtual price hi");
-
-    console.log("line 89");
-   var flight =  Flight.findById(this.flightNumber)
-      // .then((flight) => {
-        // console.log("line 92");
-        // console.log("the filght details\n" + flight + " ------ \n");
-        // console.log("line 95");
-        // if (this.passengerType === "adult") {
-        //   switch (this.cabinClass) {
-        //     case "business":
-        //       return flight.business.adultPrice;
-        //     case "economy":
-        //       return flight.economy.adultPrice;
-        //     case "first class":
-        //       return flight.firstClass.adultPrice;
-        //   }
-        // } else {
-        //   //child
-        //   switch (this.cabinClass) {
-        //     case "business":
-        //       return flight.business.childPrice;
-        //     case "economy":
-        //       return flight.economy.childPrice;
-        //     case "first class":
-        //       return flight.firstClass.childPrice;
-        //   }
-        // }
-        return 100;
-      //  }
-      // )
-      // .catch((err) => console.log(err));
+    console.log("virtual price hi", this.flightNumber);
+    return Flight.findById(this.flightNumber.toString()).exec().then((result) => {
+      console.log("the flight is here", result);
+      return result.economy.adultPrice;
+    });
+    // console.log("line 89");
+    // Flight.findById(this.flightNumber.toString()).then(result => {
+    //   console.log("ticket price", result.economy.childPrice);
+    //   return result.economy.childPrice;
+    // }).catch(err => console.log(err));
+    // .then((flight) => {
+    // console.log("line 92");
+    // console.log("the filght details\n" + flight + " ------ \n");
+    // console.log("line 95");
+    // if (this.passengerType === "adult") {
+    //   switch (this.cabinClass) {
+    //     case "business":
+    //       return flight.business.adultPrice;
+    //     case "economy":
+    //       return flight.economy.adultPrice;
+    //     case "first class":
+    //       return flight.firstClass.adultPrice;
+    //   }
+    // } else {
+    //   //child
+    //   switch (this.cabinClass) {
+    //     case "business":
+    //       return flight.business.childPrice;
+    //     case "economy":
+    //       return flight.economy.childPrice;
+    //     case "first class":
+    //       return flight.firstClass.childPrice;
+    //   }
+    // }
+    //  }
+    // )
+    // .catch((err) => console.log(err));
 
     // console.log("the flight \n ------- \n")
     // console.log(flight);

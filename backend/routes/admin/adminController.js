@@ -34,7 +34,7 @@ router.post("/create", async (req, res) => {
   console.log(req.body);
   const insertion = req.body;
   //insertion.noOfSeats = parseInt(insertion.firstClass.noOfSeats) + parseInt(insertion.business.noOfSeats) + parseInt(insertion.economy.noOfSeats)
-  console.log("the body",insertion)
+  console.log("the body", insertion);
   const flight = new Flight(insertion);
   try {
     const savedFlight = await flight.save();
@@ -62,56 +62,73 @@ router.delete("/delete/:id", (req, res) => {
 });
 
 //tests
-async function getTickets(tickets,flightNumber){
+async function getTickets(tickets, flightNumber) {
   var createdTickets = [];
   tickets.forEach(async (ticket) => {
     ticket.ticketType = "departing";
-    ticket.flightNumber = flightNumber
+    ticket.flightNumber = flightNumber;
     console.log("new ticket", ticket);
-    const t =  new Ticket(ticket);
+    const t = new Ticket(ticket);
     createdTickets.push(t._id);
-    console.log("the ticket t ",t)
+    console.log("the ticket t ", t);
     try {
-      await t.save()  
+      t.save()
+        .then((result) => console.log("saved t", result))
+        .catch((err) => console.log(err));
     } catch (error) {
       console.log(error);
     }
-    
-  setTimeout(function(){},5555);
-  });
-  console.log("saved tickets ",createdTickets)
-  return createdTickets;
 
+    setTimeout(function () {}, 5555);
+  });
+  console.log("saved tickets ", createdTickets);
+  return createdTickets;
 }
 
-
-
 router.post("/reservation/:id", async (req, res) => {
-  
   const insertion = req.body;
   insertion.userId = req.params.id;
   console.log("insertion", insertion);
 
-
   // //ticket creation
   const depTickets = insertion.departingFlight.tickets;
   console.log("departure tickets", depTickets);
-  insertion.departingFlight.tickets = await getTickets(depTickets,insertion.departingFlight.id);
+  insertion.departingFlight.tickets = await getTickets(
+    depTickets,
+    insertion.departingFlight.id
+  );
 
-// return
+  // return
 
   const returnTickets = insertion.returnFlight.tickets;
   console.log("return tickets", returnTickets);
-  insertion.returnFlight.tickets = await getTickets(returnTickets,insertion.returnFlight.id);
+  insertion.returnFlight.tickets = await getTickets(
+    returnTickets,
+    insertion.returnFlight.id
+  );
 
   const reservation = await new Reservation(insertion);
   try {
     const savedReservation = await reservation.save();
-    console.log("The reservation",savedReservation);
+    console.log("The reservation", savedReservation);
     res.json(savedReservation);
   } catch (error) {
     console.log(error);
   }
 });
 
+router.get("/fml", (req, res) => {
+  const t = new Ticket({
+    seatNum: 62,
+    passengerType: "adult",
+    cabinClass: "business",
+    firstName: "seifo",
+    lastName: "mego",
+    flightNumber: "61a3e0ec766320f267156a54",
+    ticketType: "departing",
+  });
+  t.save()
+    .then((result) => res.send(result))
+    .catch((err) => res.send(err));
+});
 module.exports = router;
