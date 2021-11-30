@@ -65,10 +65,10 @@ const DeleteFlight = ({ flight, onDelete }) => {
             <b>{getDate(flightData.arrivalDate)}</b>&nbsp;at:{" "}
             <b>{flightData.arrivalTime}</b>. <br />
             Flight Duration: <b>{flightData.duration}</b>. <br />
-            Economy Seats: <b>{flightData.noOfEconomy}</b>.
+            Economy Seats: <b>{flightData.economy.noOfSeats}</b>.
             <br />
-            Business Class Seats: <b>{flightData.noOfBusiness}</b>. <br />
-            First Class Seats:<b> {flightData.noOfFirstClass}</b>. <br />
+            Business Class Seats: <b>{flightData.business.noOfSeats}</b>. <br />
+            First Class Seats:<b> {flightData.firstClass.noOfSeats}</b>. <br />
             Total Seats: <b>{flightData.noOfSeats}</b>.
           </DialogContentText>
         </DialogContent>
