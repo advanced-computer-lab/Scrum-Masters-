@@ -81,8 +81,8 @@ const ticketSchema = mongoose.Schema(
 // }
 
 // deriving the price
-ticketSchema
-  .virtual("price")
+/*ticketSchema
+ .virtual("price")
   .get(function () {
     console.log("virtual price hi");
 
@@ -123,7 +123,7 @@ ticketSchema
   })
   .set(function (price) {
     this.price = price;
-  });
+  });*/
 
 const Ticket = mongoose.model("Ticket", ticketSchema);
 module.exports = Ticket;

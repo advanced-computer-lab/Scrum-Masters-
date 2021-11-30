@@ -113,5 +113,20 @@ router.post("/reservation/:id", async (req, res) => {
     console.log(error);
   }
 });
+router.post("/bookTicket/", async (req, res) => {
+  // define each field in req.body is better (for apis :) )
+  console.log(req.body);
+  const insertion = req.body;
+  //insertion.noOfSeats = parseInt(insertion.firstClass.noOfSeats) + parseInt(insertion.business.noOfSeats) + parseInt(insertion.economy.noOfSeats)
+  console.log("the body",insertion);
+  
+  const ticket =await new Ticket(insertion);
+  try {
+    const savedTicket = await ticket.save();
+    res.json(savedTicket);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 module.exports = router;
