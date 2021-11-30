@@ -1,11 +1,28 @@
 import { React, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { Modal } from "@mui/material";
+import axios from "axios";
 import { SeatSelection } from "@duffel/components";
 // import "@duffel/components/dist/SeatSelection.min.css";
-import "../../styles/seatMap.css";
+import "../../../styles/seatMap.css";
 
-const SeatMap = () => {
+const SeatMap = (props) => {
+  //props: flights: array[dep,ret]
+  // depseats,return seats
+  //dep and return cabin
+  const isAvailable = (seatNumber, cabin, flight) => {
+    if (flight === "departing")
+      return !props.departureSeats.contains({
+        seatNum: seatNumber,
+        cabin: cabin,
+        _id: null,
+      });
+    return !props.returnSeats.contains({
+      seatNum: seatNumber,
+      cabin: cabin,
+      _id: null,
+    });
+  };
   const createOffer = (from, to, passengers) => {
     return {
       slices: [
@@ -58,22 +75,48 @@ const SeatMap = () => {
       total_currency: "EGP",
       total_amount: "2748.65", //price so far
       tax_currency: "EGP",
-      tax_amount: "419.29", 
+      tax_amount: "419.29",
       base_currency: "EGP",
       base_amount: "2329.36",
       available_services: [],
     };
   };
-  const createPassengers = (passengers) => { //passengers are the users with their details
-    return ([
+  const createPassengers = (passengers) => {
+    //passengers are the users with their details
+    return [
       passengers.map((passenger) => ({
-        id: passenger.id,  //user
-        name: passenger.name, //user
+        id: passenger.id, //user
+        name: passenger.firstName + " " + passenger.lastName, //user
         cabin: passenger.cabin, //cabin
-        type: passenger.adult, //user
-      }))
-    ])
-  }
+        type: passenger.type, //passed from search/reservation
+      })),
+    ];
+  };
+  // const createFirstCabin = () => {
+  //   var row = 1;
+  //   props.flights.forEach((flight) => {
+  //     var firstSeats = flight.firstClass.noOfSeats;
+  //     for (let i = 1; i < Math.ceil(flight.firstClass.noOfSeats / 6); i++){
+  //       for (let j = 0; j < 6 && firstSeats > 0; j++){
+      
+  //       }
+  //     }
+      
+  //   })
+  // }
+  // const createSeatMaps = () => {
+  //   var row = 1;
+  //   props.flights.map((flight, index) => {
+  //     var cabin = index === 0 ? props.departureCabin : props.returnCabin;
+  //     var totalSeats =
+  //       cabin === "first"
+  //         ? flight.firstClass.noOfSeats
+  //         : cabin === "business"
+  //         ? flight.business.noOfSeats
+  //           : flight.economy.noOfSeats;
+     
+  //   });
+  // };
   const [passengers, setPassengers] = useState([
     {
       id: "pas_1",
@@ -1412,7 +1455,7 @@ const SeatMap = () => {
     },
   ]);
 
-  useEffect(() => {}, [passengers, offer, seatMaps]);
+  useEffect(() => {}, []);
 
   const onSubmit = () => {
     var x = document.getElementsByClassName(

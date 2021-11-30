@@ -6,41 +6,46 @@ const ReservationSchema = mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
     departingFlight: {
       id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Flight',
+        ref: "Flight",
         required: true,
       },
       cabinClass: {
         type: String,
-        enum: ['business', 'economy', 'first class'],
+        enum: ["business", "economy", "first"],
         required: true,
       },
-      tickets: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Ticket',
-          required: true,
-        },
-      ],
+      // tickets: [
+      //   {
+      //     type: mongoose.Schema.Types.ObjectId,
+      //     ref: 'Ticket',
+      //     required: true,
+      //   },
+      // ],
     },
     returnFlight: {
       id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Flight',
+        ref: "Flight",
         required: true,
       },
-      tickets: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Ticket',
-          required: true,
-        },
-      ],
+      cabinClass: {
+        type: String,
+        enum: ["business", "economy", "first"],
+        required: true,
+      },
+      // tickets: [
+      //   {
+      //     type: mongoose.Schema.Types.ObjectId,
+      //     ref: 'Ticket',
+      //     required: true,
+      //   },
+      // ],
     },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
