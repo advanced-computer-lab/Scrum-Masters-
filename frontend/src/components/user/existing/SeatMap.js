@@ -1,11 +1,28 @@
 import { React, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { Modal } from "@mui/material";
+import axios from "axios";
 import { SeatSelection } from "@duffel/components";
 // import "@duffel/components/dist/SeatSelection.min.css";
-import "../../styles/seatMap.css";
+import "../../../styles/seatMap.css";
 
-const SeatMap = () => {
+const SeatMap = (props) => {
+  //props: flights: array[dep,ret]
+  // depseats,return seats
+  //dep and return cabin
+  const isAvailable = (seatNumber, cabin, flight) => {
+    if (flight === "departing")
+      return !props.departureSeats.contains({
+        seatNum: seatNumber,
+        cabin: cabin,
+        _id: null,
+      });
+    return !props.returnSeats.contains({
+      seatNum: seatNumber,
+      cabin: cabin,
+      _id: null,
+    });
+  };
   const createOffer = (from, to, passengers) => {
     return {
       slices: [
@@ -13,319 +30,114 @@ const SeatMap = () => {
           segments: [
             {
               passengers: passengers.map((passenger) => ({
-                baggages: [
-                  {
-                    type: "checked",
-                    quantity: 1,
-                  },
-                ],
                 passenger_id: passenger.id,
-                fare_basis_code: "Y20LGTN2",
-                cabin_class_marketing_name: "economy",
-                cabin_class: passenger.cabin_class,
+                cabin_class_marketing_name: "economy", //cabin
+                cabin_class: passenger.cabin_class, //cabin
               })),
               origin: {
-                name: "Heathrow Airport",
-                longitude: -0.458118,
-                latitude: 51.470311,
-                id: "arp_lhr_gb",
-                city: {
-                  type: "city",
-                  name: "London",
-                  longitude: null,
-                  latitude: null,
-                  id: "cit_lon_gb",
-                  time_zone: null,
-                  iata_country_code: "GB",
-                  iata_code: "LON",
-                  iata_city_code: "LON",
-                  city_name: "",
-                },
-                time_zone: "Europe/London",
-                icao_code: "EGLL",
-                iata_country_code: "GB",
                 iata_code: "LHR", //FROM
-                iata_city_code: "LON",
-                city_name: "London",
               },
               id: "seg_1",
-              duration: "PT2H48M",
-              distance: "1664.7559640438405",
+              duration: "PT2H48M", //pt+duration
               destination: {
-                name: "Lisbon Portela Airport",
-                longitude: -9.135643,
-                latitude: 38.778446,
-                id: "arp_lis_pt",
-                city: null,
-                time_zone: "Europe/Lisbon",
-                icao_code: "LPPT",
-                iata_country_code: "PT",
                 iata_code: "LIS", //TO
-                iata_city_code: "LIS",
-                city_name: "Lisbon",
               },
-              aircraft: {
-                name: "Boeing 777-300",
-                id: "arc_00009VMF8AhXSSRnQDI6HE",
-                iata_code: "773",
-              },
-              origin_terminal: "2",
-              operating_carrier_flight_number: "6443",
-              operating_carrier: {
-                name: "Duffel Airways",
-                id: "arl_00009VME7D6ivUu8dn35WK",
-                iata_code: "ZZ",
-              },
-              marketing_carrier_flight_number: "6443",
-              marketing_carrier: {
-                name: "Duffel Airways",
-                id: "arl_00009VME7D6ivUu8dn35WK",
-                iata_code: "ZZ",
-              },
-              destination_terminal: "7",
-              departing_at: "2021-09-29T23:00:00",
-              arriving_at: "2021-09-30T01:48:00",
             },
           ],
-          origin: {
-            type: "airport",
-            name: "Heathrow Airport",
-            longitude: -0.458118,
-            latitude: 51.470311,
-            id: "arp_lhr_gb",
-            city: {
-              type: "city",
-              name: "London",
-              longitude: null,
-              latitude: null,
-              id: "cit_lon_gb",
-              time_zone: null,
-              iata_country_code: "GB",
-              iata_code: "LON",
-              iata_city_code: "LON",
-              city_name: "",
-            },
-            time_zone: "Europe/London",
-            icao_code: "EGLL",
-            iata_country_code: "GB",
-            iata_code: "LHR",
-            iata_city_code: "LON",
-            city_name: "London",
-          },
-          id: "sli_0000A8oTVsOiJ9yVx2A7Vp",
-          duration: "PT2H48M",
-          destination: {
-            type: "airport",
-            name: "Lisbon Portela Airport",
-            //longitude: -9.135643,
-            latitude: 38.778446,
-            //id: 'arp_lis_pt',
-            city: null,
-            time_zone: "Europe/Lisbon",
-            icao_code: "LPPT",
-            iata_country_code: "PT",
-            iata_code: "LIS",
-            iata_city_code: "LIS",
-            city_name: "Lisbon",
-          },
-          conditions: {
-            change_before_departure: {
-              allowed: true,
-              penalty_currency: "EGP",
-              penalty_amount: "470.00",
-            },
-          },
-          origin_type: "airport",
-          fare_brand_name: "Basic",
-          destination_type: "airport",
+          id: "sli_1",
         },
         {
           segments: [
             {
               id: "seg_2",
               passengers: passengers.map((passenger) => ({
-                baggages: [
-                  {
-                    type: "checked",
-                    quantity: 1,
-                  },
-                ],
                 passenger_id: passenger.id,
-                fare_basis_code: "Y20LGTN2",
                 cabin_class_marketing_name: "economy",
                 cabin_class: passenger.cabin_class,
               })),
               origin: {
                 iata_code: "LIS",
-                iata_city_code: "LIS",
-                city_name: "Lisbon",
               },
               destination: {
-                name: "Heathrow Airport",
-                longitude: -0.458118,
-                latitude: 51.470311,
-                id: "arp_lhr_gb",
-                city: {
-                  type: "city",
-                  name: "London",
-                  longitude: null,
-                  latitude: null,
-                  id: "cit_lon_gb",
-                  time_zone: null,
-                  iata_country_code: "GB",
-                  iata_code: "LON",
-                  iata_city_code: "LON",
-                  city_name: "",
-                },
-                time_zone: "Europe/London",
-                icao_code: "EGLL",
-                iata_country_code: "GB",
                 iata_code: "LHR",
-                iata_city_code: "LON",
-                city_name: "London",
               },
-              aircraft: {
-                name: "Boeing 777-300",
-                id: "arc_00009VMF8AhXSSRnQDI6HE",
-                iata_code: "773",
-              },
-              origin_terminal: "2",
-              operating_carrier_flight_number: "2159",
-              operating_carrier: {
-                name: "Duffel Airways",
-                id: "arl_00009VME7D6ivUu8dn35WK",
-                iata_code: "ZZ",
-              },
-              marketing_carrier_flight_number: "2159",
-              marketing_carrier: {
-                name: "Duffel Airways",
-                id: "arl_00009VME7D6ivUu8dn35WK",
-                iata_code: "ZZ",
-              },
-              destination_terminal: "7",
-              departing_at: "2021-10-19T23:00:00",
-              arriving_at: "2021-10-20T01:48:00",
+              duration: "PT2H48M", //pt+duration
             },
           ],
-          origin: {
-            type: "airport",
-            name: "Lisbon Portela Airport",
-            longitude: -9.135643,
-            latitude: 38.778446,
-            id: "arp_lis_pt",
-            city: null,
-            time_zone: "Europe/Lisbon",
-            icao_code: "LPPT",
-            iata_country_code: "PT",
-            iata_code: "LIS",
-            iata_city_code: "LIS",
-            city_name: "Lisbon",
-          },
-          id: "sli_0000A8oTVsP4HqG5y8KP45",
-          duration: "PT2H48M",
-          destination: {
-            type: "airport",
-            name: "Heathrow Airport",
-            longitude: -0.458118,
-            latitude: 51.470311,
-            id: "arp_lhr_gb",
-            city: {
-              type: "city",
-              name: "London",
-              longitude: null,
-              latitude: null,
-              id: "cit_lon_gb",
-              time_zone: null,
-              iata_country_code: "GB",
-              iata_code: "LON",
-              iata_city_code: "LON",
-              city_name: "",
-            },
-            time_zone: "Europe/London",
-            icao_code: "EGLL",
-            iata_country_code: "GB",
-            iata_code: "LHR",
-            iata_city_code: "LON",
-            city_name: "London",
-          },
-          conditions: {
-            change_before_departure: {
-              allowed: true,
-              penalty_currency: "EGP",
-              penalty_amount: "470.00",
-            },
-          },
-          origin_type: "airport",
-          fare_brand_name: "Basic",
-          destination_type: "airport",
+          id: "sli_2",
         },
       ],
       passengers: passengers.map((passenger) => ({
-        type: passenger.type,
+        type: passenger.type, //adult/child
         id: passenger.id,
       })),
-      owner: {
-        name: "Duffel Airways",
-        id: "arl_00009VME7D6ivUu8dn35WK",
-        iata_code: "ZZ",
-      },
-      id: "off_0000A8oTVsP4HqG5y8KP46",
-      conditions: {
-        refund_before_departure: {
-          allowed: false,
-        },
-        change_before_departure: {
-          allowed: true,
-          penalty_currency: "EGP",
-          penalty_amount: "470.00",
-        },
-      },
-      updated_at: "2021-06-30T13:45:51.377737Z",
-      total_emissions_kg: "863",
+
       total_currency: "EGP",
-      total_amount: "2748.65",
+      total_amount: "2748.65", //price so far
       tax_currency: "EGP",
       tax_amount: "419.29",
-      payment_requirements: {
-        requires_instant_payment: false,
-        price_guarantee_expires_at: "2022-07-02T13:45:51Z",
-        payment_required_by: "2022-07-03T13:45:51Z",
-      },
-      passenger_identity_documents_required: false,
-      live_mode: false,
-      expires_at: "2022-06-30T14:00:51.375243Z",
-      created_at: "2022-06-30T13:45:51.377737Z",
       base_currency: "EGP",
       base_amount: "2329.36",
       available_services: [],
-      allowed_passenger_identity_document_types: [],
     };
   };
+  const createPassengers = (passengers) => {
+    //passengers are the users with their details
+    return [
+      passengers.map((passenger) => ({
+        id: passenger.id, //user
+        name: passenger.firstName + " " + passenger.lastName, //user
+        cabin: passenger.cabin, //cabin
+        type: passenger.type, //passed from search/reservation
+      })),
+    ];
+  };
+  // const createFirstCabin = () => {
+  //   var row = 1;
+  //   props.flights.forEach((flight) => {
+  //     var firstSeats = flight.firstClass.noOfSeats;
+  //     for (let i = 1; i < Math.ceil(flight.firstClass.noOfSeats / 6); i++){
+  //       for (let j = 0; j < 6 && firstSeats > 0; j++){
+      
+  //       }
+  //     }
+      
+  //   })
+  // }
+  // const createSeatMaps = () => {
+  //   var row = 1;
+  //   props.flights.map((flight, index) => {
+  //     var cabin = index === 0 ? props.departureCabin : props.returnCabin;
+  //     var totalSeats =
+  //       cabin === "first"
+  //         ? flight.firstClass.noOfSeats
+  //         : cabin === "business"
+  //         ? flight.business.noOfSeats
+  //           : flight.economy.noOfSeats;
+     
+  //   });
+  // };
   const [passengers, setPassengers] = useState([
     {
-      id: "pas_0000A8oTVsAt8YurG9h4xn",
+      id: "pas_1",
       name: "Gigi Gawanty",
       cabin: "economy",
       type: "adult",
     },
     {
-      id: "pas_0000A8oTVsAt8YurG9h4xnn",
+      id: "pas_2",
       name: "Gigi Hadid",
       cabin: "economy",
       type: "adult",
     },
   ]);
-  const [offer, setOffer] = useState(createOffer("LHR", "LIS", passengers));
+  const [offer, setOffer] = useState(createOffer("LHR", "LIS", passengers)); //from, to, reserving users
   const [seatMaps, setSeatMaps] = useState([
     //flight 1
     {
       id: "sea_1",
       cabins: [
         {
-          // wings: {
-          //   last_row_index: 3,
-          //   first_row_index: 0,
-          // },
           rows: [
             {
               sections: [
@@ -348,13 +160,13 @@ const SeatMap = () => {
                           id: "ase_1",
                           total_currency: "EGP",
                           total_amount: "1.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                         {
                           id: "ase_1",
                           total_currency: "EGP",
-                          total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xnn",
+                          total_amount: "1.0",
+                          passenger_id: "pas_2",
                         },
                       ],
                     },
@@ -368,7 +180,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQhes3xbKYwUSz",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -393,7 +205,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQhes3xbKYwUT4",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -407,7 +219,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQhes3xbKYwUT7",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -429,7 +241,7 @@ const SeatMap = () => {
                           id: "ase_2",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xnn",
+                          passenger_id: "pas_2",
                         },
                       ],
                     },
@@ -443,7 +255,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQi0qkFBLf6m17",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -536,7 +348,7 @@ const SeatMap = () => {
                           id: "ase_3",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xnn",
+                          passenger_id: "pas_2",
                         },
                       ],
                     },
@@ -565,7 +377,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQiMpQWlMlH3ZQ",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -590,7 +402,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQiMpQWlMlH3ZV",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -626,7 +438,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQiMpQWlMlH3Zi",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -640,7 +452,7 @@ const SeatMap = () => {
                           id: "ase_4",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xnn",
+                          passenger_id: "pas_2",
                         },
                       ],
                     },
@@ -733,7 +545,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQiio6oLNrRL7x",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -754,7 +566,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQj4mn5vOxbcfq",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -790,7 +602,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQj4mn5vOxbcg5",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -815,7 +627,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQjQlTNVQ3luE8",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -844,7 +656,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQjQlTNVQ3luEI",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -858,7 +670,7 @@ const SeatMap = () => {
                           id: "ase_5",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xnn",
+                          passenger_id: "pas_2",
                         },
                       ],
                     },
@@ -883,7 +695,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQjQlTNVQ3luEO",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -958,7 +770,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQmcZbvjZxGSCT",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -972,7 +784,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQmcZbvjZxGSCW",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -986,7 +798,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQmcZbvjZxGSCZ",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1011,7 +823,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQmcZbvjZxGSCe",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1025,7 +837,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQmcZbvjZxGSCh",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1054,7 +866,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQmyYIDJb3Qjkm",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1068,7 +880,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQmyYIDJb3Qjkp",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1100,7 +912,7 @@ const SeatMap = () => {
                           id: "ase_6",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xnn",
+                          passenger_id: "pas_2",
                         },
                       ],
                     },
@@ -1132,7 +944,7 @@ const SeatMap = () => {
           cabin_class: "economy",
         },
       ],
-      slice_id: "sli_0000A8oTVsOiJ9yVx2A7Vp",
+      slice_id: "sli_1",
       segment_id: "seg_1",
     },
     //flight 2
@@ -1166,7 +978,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQhes3xbKYwUS1",
                           total_currency: "EGP",
                           total_amount: "1.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1180,7 +992,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQhes3xbKYwUSz",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1205,7 +1017,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQhes3xbKYwUT4",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1219,13 +1031,13 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQhes3xbKYwUT7",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                         {
                           id: "ase_0000A8okiQhes3xbKYwUT7",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xnn",
+                          passenger_id: "pas_2",
                         },
                       ],
                     },
@@ -1254,7 +1066,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQi0qkFBLf6m17",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1369,7 +1181,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQiMpQWlMlH3ZQ",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1394,7 +1206,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQiMpQWlMlH3ZV",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1451,7 +1263,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQmcZbvjZxGSCT",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1465,7 +1277,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQmcZbvjZxGSCW",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1479,7 +1291,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQmcZbvjZxGSCZ",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1504,7 +1316,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQmcZbvjZxGSCe",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1518,7 +1330,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQmcZbvjZxGSCh",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1547,7 +1359,7 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQmyYIDJb3Qjkm",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                       ],
                     },
@@ -1561,13 +1373,13 @@ const SeatMap = () => {
                           id: "ase_0000A8okiQmyYIDJb3Qjkp",
                           total_currency: "EGP",
                           total_amount: "0.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xn",
+                          passenger_id: "pas_1",
                         },
                         {
                           id: "ase_0000A8okiQmyYIDJb3Qjkp",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xnn",
+                          passenger_id: "pas_2",
                         },
                       ],
                     },
@@ -1592,7 +1404,7 @@ const SeatMap = () => {
                           id: "ase_7",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xnn",
+                          passenger_id: "pas_2",
                         },
                       ],
                     },
@@ -1606,7 +1418,7 @@ const SeatMap = () => {
                           id: "ase_8",
                           total_currency: "EGP",
                           total_amount: "20.0",
-                          passenger_id: "pas_0000A8oTVsAt8YurG9h4xnn",
+                          passenger_id: "pas_2",
                         },
                       ],
                     },
@@ -1638,18 +1450,17 @@ const SeatMap = () => {
           cabin_class: "first",
         },
       ],
-      slice_id: "sli_0000A8oTVsP4HqG5y8KP45",
+      slice_id: "sli_2",
       segment_id: "seg_2",
     },
   ]);
 
-  useEffect(() => {}, [passengers, offer, seatMaps]);
+  useEffect(() => {}, []);
 
   const onSubmit = () => {
     var x = document.getElementsByClassName(
       "passenger-selection-passenger__seat-designator"
     );
-    console.log(typeof x);
     Array.from(x).forEach((y) => {
       console.log(y.innerText);
     });
