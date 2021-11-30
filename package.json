@@ -1,7 +1,7 @@
 {
   "name": "scrum-masters-",
   "version": "1.0.0",
-  "description": "",
+  "description": "The project has 3 **`package.json`** files in the following Tree (note: it's just a high level explanation for the main directories, the words between barckets are not real directorires/files)",
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"cd backend && nodemon app\" \"cd frontend && npm start\" "
