@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const User = require("./User");
-const Ticket = require("./Ticket").schema;
+const mongoose = require('mongoose');
+const User = require('./User');
+const Ticket = require('./Ticket').schema;
 
 const ReservationSchema = mongoose.Schema(
   {
@@ -17,16 +17,16 @@ const ReservationSchema = mongoose.Schema(
       },
       cabinClass: {
         type: String,
-        enum: ["business", "economy", "first class"],
+        enum: ["business", "economy", "first"],
         required: true,
       },
-      tickets: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Ticket",
-          required: true,
-        },
-      ],
+      // tickets: [
+      //   {
+      //     type: mongoose.Schema.Types.ObjectId,
+      //     ref: 'Ticket',
+      //     required: true,
+      //   },
+      // ],
     },
     returnFlight: {
       id: {
@@ -36,27 +36,26 @@ const ReservationSchema = mongoose.Schema(
       },
       cabinClass: {
         type: String,
-        enum: ["business", "economy", "first class"],
+        enum: ["business", "economy", "first"],
         required: true,
       },
-      tickets: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Ticket",
-          required: true,
-        },
-      ],
+      // tickets: [
+      //   {
+      //     type: mongoose.Schema.Types.ObjectId,
+      //     ref: 'Ticket',
+      //     required: true,
+      //   },
+      // ],
     },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 // total price
-ReservationSchema.virtual("totalPrice")
+ReservationSchema.virtual('totalPrice')
   .get(function () {
     let sum = 0;
     this.departingFlight.tickets.forEach((ticket) => {
-      // find by id and sum the prices
       sum += ticket.price;
     });
 
@@ -72,5 +71,5 @@ ReservationSchema.virtual("totalPrice")
 // Adult ticket num & child ticket num (?)
 // I will code it here
 
-const Reservation = mongoose.model("Reservation", ReservationSchema);
+const Reservation = mongoose.model('Reservation', ReservationSchema);
 module.exports = Reservation;

@@ -92,11 +92,12 @@ async function getTickets(tickets, flightNumber) {
     console.log("new ticket", ticket);
     const t = new Ticket(ticket);
     createdTickets.push(t._id);
-    console.log("the ticket t ", t);
-
-    t.save().then().catch();
-  });
-  console.log("saved tickets ", createdTickets);
+    console.log("the ticket t ",t)
+    
+      t.save().then().catch()  
+    
+      });
+  console.log("saved tickets ",createdTickets)
   return createdTickets;
 }
 
@@ -132,4 +133,18 @@ router.post("/reservation/:id", async (req, res) => {
   }
 });
 
+router.get("/fml", (req, res) => {
+  const t = new Ticket({
+    seatNum: 62,
+    passengerType: "adult",
+    cabinClass: "business",
+    firstName: "seifo",
+    lastName: "mego",
+    flightNumber: "61a3e0ec766320f267156a54",
+    ticketType: "departing",
+  });
+  t.save()
+    .then((result) => res.send(result))
+    .catch((err) => res.send(err));
+});
 module.exports = router;
