@@ -52,9 +52,9 @@ const InsertFlight = () => {
       arrivalDate,
       departureAirport,
       arrivalAirport,
-      noOfEconomy,
-      noOfBusiness,
-      noOfFirstClass,
+      economy:{noOfSeats:noOfEconomy},
+      business: { noOfSeats: noOfBusiness },
+      firstClass:{noOfSeats:noOfFirstClass},
     };
 
     axios
@@ -317,10 +317,11 @@ const InsertFlight = () => {
                   <b>{flight.arrivalTime}</b>
                   . <br />
                   Flight Duration: <b>{flight.duration}</b>. <br />
-                  Economy Seats: <b>{flight.noOfEconomy}</b>.
+                  Economy Seats: <b>{flight.economy.noOfSeats}</b>.
                   <br />
-                  Business Class Seats: <b>{flight.noOfBusiness}</b>. <br />
-                  First Class Seats:<b> {flight.noOfFirstClass}</b>. <br />
+                  Business Class Seats: <b>{flight.business.noOfSeats}</b>.{" "}
+                  <br />
+                  First Class Seats:<b> {flight.firstClass.noOfSeats}</b>. <br />
                   Total Seats: <b>{flight.noOfSeats}</b>.
                 </DialogContentText>
               </DialogContent>
