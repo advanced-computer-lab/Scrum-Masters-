@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import { Modal } from '@mui/material';
 import { SeatSelection } from '@duffel/components';
-// import "@duffel/components/dist/SeatSelection.min.css";
+ import "@duffel/components/dist/SeatSelection.min.css";
 import '../../styles/seatMap.css';
 
 const SeatMap = () => {
