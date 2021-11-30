@@ -1,12 +1,6 @@
 import React from 'react';
-import Counter from '../../../utilities/Counter';
 import Grid from '@mui/material/Grid';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-
 import { useState } from 'react';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -71,12 +65,8 @@ const SearchFlight = () => {
             <ListItemText>
               Adult (16+) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </ListItemText>
-            <ButtonGroup
-              disableElevation
-              //variant='contained'
-              style={{ float: 'right' }}
-            >
-              <IconButton onClick={decrementChildrenCount}>
+            <ButtonGroup disableElevation style={{ float: 'right' }}>
+              <IconButton onClick={decrementAdultCount}>
                 <RemoveCircleRoundedIcon />
               </IconButton>
               <div style={{ marginTop: '5%', textAlign: 'center' }}>
@@ -89,11 +79,7 @@ const SearchFlight = () => {
           </MenuItem>
           <MenuItem disableGutters>
             <ListItemText>Child (2-16)</ListItemText>
-            <ButtonGroup
-              disableElevation
-              //variant='contained'
-              style={{ float: 'right' }}
-            >
+            <ButtonGroup disableElevation style={{ float: 'right' }}>
               <IconButton onClick={decrementChildrenCount}>
                 <RemoveCircleRoundedIcon />
               </IconButton>
