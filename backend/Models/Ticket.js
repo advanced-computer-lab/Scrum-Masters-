@@ -17,11 +17,6 @@ const ticketSchema = mongoose.Schema(
       enum: ["adult", "child"],
       required: true,
     },
-    cabinClass: {
-      type: String,
-      enum: ["business", "economy", "first class"],
-      required: true,
-    },
     firstName: {
       type: String,
       required: true,
@@ -38,10 +33,9 @@ const ticketSchema = mongoose.Schema(
       ref: "Flight",
       required: true,
     },
-    // price:{
-    //     type:Number,
-    //     default: setPrice(this.parent().departingFlight.id,this.parent().returnFlight.id)
-    // }
+    price: {
+      type: Number,
+    },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
@@ -81,54 +75,47 @@ const ticketSchema = mongoose.Schema(
 // }
 
 // deriving the price
-ticketSchema
-  .virtual("price")
-  .get(function () {
-    console.log("virtual price hi", this.flightNumber);
-    return Flight.findById(this.flightNumber.toString()).exec().then((result) => {
-      console.log("the flight is here", result);
-      return result.economy.adultPrice;
-    });
-    // console.log("line 89");
-    // Flight.findById(this.flightNumber.toString()).then(result => {
-    //   console.log("ticket price", result.economy.childPrice);
-    //   return result.economy.childPrice;
-    // }).catch(err => console.log(err));
-    // .then((flight) => {
-    // console.log("line 92");
-    // console.log("the filght details\n" + flight + " ------ \n");
-    // console.log("line 95");
-    // if (this.passengerType === "adult") {
-    //   switch (this.cabinClass) {
-    //     case "business":
-    //       return flight.business.adultPrice;
-    //     case "economy":
-    //       return flight.economy.adultPrice;
-    //     case "first class":
-    //       return flight.firstClass.adultPrice;
-    //   }
-    // } else {
-    //   //child
-    //   switch (this.cabinClass) {
-    //     case "business":
-    //       return flight.business.childPrice;
-    //     case "economy":
-    //       return flight.economy.childPrice;
-    //     case "first class":
-    //       return flight.firstClass.childPrice;
-    //   }
-    // }
-    //  }
-    // )
-    // .catch((err) => console.log(err));
+// ticketSchema
+//   .virtual("price")
+//   .get(async function () {
+//     console.log("virtual price hi");
 
-    // console.log("the flight \n ------- \n")
-    // console.log(flight);
-    // console.log("\n ------------")
-  })
-  .set(function (price) {
-    this.price = price;
-  });
+//       console.log("line 89");
+//       const flight = await Flight.findById(mongoose.Types.ObjectId(this.flightNumber))
+//         //.then((flight) => {
+//           console.log("line 92");
+//           console.log("the filght details\n" + flight + " ------ \n");
+//           console.log("line 95");
+//           if (this.passengerType === "adult") {
+//             switch (this.cabinClass) {
+//               case "business":
+//                 return flight.business.adultPrice;
+//               case "economy":
+//                 return flight.economy.adultPrice;
+//               case "first class":
+//                 return flight.firstClass.adultPrice;
+//             }
+//           } else {
+//             //child
+//             switch (this.cabinClass) {
+//               case "business":
+//                 return flight.business.childPrice;
+//               case "economy":
+//                 return flight.economy.childPrice;
+//               case "first class":
+//                 return flight.firstClass.childPrice;
+//             }
+//           }
+//         // })
+//         // .catch((err) => console.log(err));
+
+//     // console.log("the flight \n ------- \n")
+//     // console.log(flight);
+//     // console.log("\n ------------")
+//   })
+//   .set(function (price) {
+//     this.price = price;
+//   });
 
 const Ticket = mongoose.model("Ticket", ticketSchema);
 module.exports = Ticket;
