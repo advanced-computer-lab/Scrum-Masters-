@@ -46,12 +46,17 @@ const flightSchema = mongoose.Schema( // check for unique flight numbers within 
       },
       childPrice:{
         type: Number,
-        default: 0,
+        default: 750,
         required: true,
       },
       adultPrice:{
         type: Number,
-        default: 0,
+        default: 1000,
+        required: true,
+      },
+      availableSeats: {
+        type: Number,
+        default: function(){return this.economy.noOfSeats},
         required: true,
       }
     },
@@ -64,12 +69,17 @@ const flightSchema = mongoose.Schema( // check for unique flight numbers within 
       },
       childPrice:{
         type: Number,
-        default: 0,
+        default: 1100,
         required: true,
       },
       adultPrice:{
         type: Number,
-        default: 0,
+        default: 1800,
+        required: true,
+      },
+      availableSeats: {
+        type: Number,
+        default: function(){return this.business.noOfSeats},
         required: true,
       }
     },
@@ -82,13 +92,22 @@ const flightSchema = mongoose.Schema( // check for unique flight numbers within 
       },
       childPrice:{
         type: Number,
-        default: 0,
+        default: 1500,
         required: true,
       },
       adultPrice:{
         type: Number,
-        default: 0,
+        default: 3000,
         required: true,
+      },
+      availableSeats: {
+        type: Number,
+        default: function(){return this.firstClass.noOfSeats},
+        required: true,
+      },
+      baggageAllowance: {
+        type : Number,
+        default : 3
       }
     },
   
@@ -104,6 +123,16 @@ flightSchema
   .set(function (noOfSeats) {
     this.noOfSeats = noOfSeats;
   });
+
+  flightSchema
+  .virtual("availableSeats")
+  .get(function () {
+    return this.firstClass.availableSeats + this.business.availableSeats + this.economy.availableSeats;
+  })
+  .set(function (availableSeats) {
+    this.availableSeats = availableSeats;
+  });
+
 
 flightSchema
   .virtual("duration")
