@@ -9,6 +9,21 @@ const SelectSeat = () => {
   const [returnFlight, setReturnFlight] = useState();
   const [departureSeats, setDepartureSeats] = useState();
   const [returnSeats, setReturnSeats] = useState();
+  const [passengers, setPassengers] = useState([
+    {
+      id: "pas_1",
+      name: "Gigi Gawanty",
+      cabin: "economy",
+      type: "adult",
+    },
+    {
+      id: "pas_2",
+      name: "Gigi Hadid",
+      cabin: "economy",
+      type: "adult",
+    },
+  ]);
+
   useEffect(() => {
     axios
       .post("http://localhost:8081/user/search", {
@@ -63,13 +78,15 @@ const SelectSeat = () => {
           boxShadow: "0 3px 10px rgb(105 48 195 / 60%)",
         }}
       >
-        <SeatMap
-          flights={[departureFlight, returnFlight]}
-          departureSeats={departureSeats}
-          returnSeats={returnSeats}
-          departureCabin="first"
-          returnCabin="first"
-        />
+        {departureFlight && returnFlight && departureSeats && returnSeats && (
+          <SeatMap
+            flights={[departureFlight, returnFlight]}
+            departureSeats={departureSeats}
+            returnSeats={returnSeats}
+            departureCabin="first"
+            returnCabin="first"
+          />
+        )}
       </div>
     </Container>
   );

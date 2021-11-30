@@ -10,19 +10,6 @@ const SeatMap = (props) => {
   //props: flights: array[dep,ret]
   // depseats,return seats
   //dep and return cabin
-  const isAvailable = (seatNumber, cabin, flight) => {
-    if (flight === "departing")
-      return !props.departureSeats.contains({
-        seatNum: seatNumber,
-        cabin: cabin,
-        _id: null,
-      });
-    return !props.returnSeats.contains({
-      seatNum: seatNumber,
-      cabin: cabin,
-      _id: null,
-    });
-  };
   const createOffer = (from, to, passengers) => {
     return {
       slices: [
@@ -81,42 +68,6 @@ const SeatMap = (props) => {
       available_services: [],
     };
   };
-  const createPassengers = (passengers) => {
-    //passengers are the users with their details
-    return [
-      passengers.map((passenger) => ({
-        id: passenger.id, //user
-        name: passenger.firstName + " " + passenger.lastName, //user
-        cabin: passenger.cabin, //cabin
-        type: passenger.type, //passed from search/reservation
-      })),
-    ];
-  };
-  // const createFirstCabin = () => {
-  //   var row = 1;
-  //   props.flights.forEach((flight) => {
-  //     var firstSeats = flight.firstClass.noOfSeats;
-  //     for (let i = 1; i < Math.ceil(flight.firstClass.noOfSeats / 6); i++){
-  //       for (let j = 0; j < 6 && firstSeats > 0; j++){
-      
-  //       }
-  //     }
-      
-  //   })
-  // }
-  // const createSeatMaps = () => {
-  //   var row = 1;
-  //   props.flights.map((flight, index) => {
-  //     var cabin = index === 0 ? props.departureCabin : props.returnCabin;
-  //     var totalSeats =
-  //       cabin === "first"
-  //         ? flight.firstClass.noOfSeats
-  //         : cabin === "business"
-  //         ? flight.business.noOfSeats
-  //           : flight.economy.noOfSeats;
-     
-  //   });
-  // };
   const [passengers, setPassengers] = useState([
     {
       id: "pas_1",
@@ -131,6 +82,9 @@ const SeatMap = (props) => {
       type: "adult",
     },
   ]);
+  const [firstCabin, setFirstCabin] = useState([]);
+  const [businessCabin, setBusinessCabin] = useState([]);
+  const [economyCabin, setEconomyCabin] = useState([]);
   const [offer, setOffer] = useState(createOffer("LHR", "LIS", passengers)); //from, to, reserving users
   const [seatMaps, setSeatMaps] = useState([
     //flight 1
@@ -1454,8 +1408,288 @@ const SeatMap = (props) => {
       segment_id: "seg_2",
     },
   ]);
+  const isAvailable = (seatNumber, cabinClass, flight) => {
+    console.log(props.departureSeats, "        ", props.returnSeats);
+    if (flight[0] === "departing")
+      return (
+        props.departureSeats.filter(
+          (object) =>
+            object.seatNum === seatNumber && object.cabin === cabinClass
+        ).length > 0
+      );
+    return (
+      props.returnSeats.filter(
+        (object) => object.seatNum === seatNumber && object.cabin === cabinClass
+      ).length > 0
+    );
+  };
+  const createPassengers = (passengers) => {
+    //passengers are the users with their details
+    return [
+      passengers.map((passenger) => ({
+        id: passenger.id, //user
+        name: passenger.firstName + " " + passenger.lastName, //user
+        cabin: passenger.cabin, //cabin
+        type: passenger.type, //passed from search/reservation
+      })),
+    ];
+  };
+  const createSeatMaps = () => {
+    var maps = [];
+    var row = 1;
+    props.flights.forEach((flight, index) => {
+      var cabin = index === 0 ? props.departureCabin : props.returnCabin;
+      var obj = [];
+      switch (cabin) {
+        case "first": obj.push(firstCabin[index]); break;
+        case "business": obj.push(businessCabin[index]); break;
+        case "economy": obj.push(economyCabin[index]); break;
+        default: break;
+      }
+      var map = { id: "sea_" + (index + 1), cabins: obj, slice_id: "sli_" + (index + 1), segment_id: "seg_" + (index + 1) };
+      maps.push(map);
+    });
+    console.log("maps", maps);
+    setSeatMaps(maps);
+  };
+  const createEconomyCabin = () => {
+    var rows = [];
+    console.log(props.flights);
+    props.flights.forEach((flight, index) => {
+      console.log(flight[0]);
+      var economySeats = flight[0].economy.noOfSeats;
+      var type = index === 0 ? "departing" : "returning";
+      var i =
+        Math.ceil(flight[0].firstClass.noOfSeats / 6) +
+        Math.ceil(flight[0].business.noOfSeats / 6) +
+        1;
+      for (
+        i;
+        i <=
+        Math.ceil(flight[0].economy.noOfSeats / 6) +
+          Math.ceil(flight[0].business.noOfSeats / 6) +
+          Math.ceil(flight[0].firstClass.noOfSeats / 6);
+        i++
+      ) {
+        var sections = [];
+        var elements = [];
+        var char = "A";
+        for (let j = 1; j < 4 && economySeats > 0; j++, economySeats--) {
+          var seat = {
+            type: "seat",
+            name: "",
+            disclosures: [],
+            designator: "" + i + char,
+            // eslint-disable-next-line no-loop-func
+            available_services: isAvailable("" + i + char, "economy", type)
+              ? []
+              : [
+                  passengers.map((passenger, p) => ({
+                    id: "ase_" + i + char + index,
+                    total_currency: "EGP",
+                    total_amount: "0.0",
+                    passenger_id: "pas_" + (p+1),
+                  })),
+                ],
+          };
+          char = String.fromCharCode(char.charCodeAt() + 1);
+          elements.push(seat);
+        }
+        if (elements.length > 0) sections.push({ elements: elements });
+        elements = [];
+        for (let j = 1; j < 4 && economySeats > 0; j++, economySeats--) {
+          seat = {
+            type: "seat",
+            name: "",
+            disclosures: [],
+            designator: "" + i + char,
+            // eslint-disable-next-line no-loop-func
+            available_services: isAvailable("" + i + char, "economy", type)
+              ? []
+              : [
+                  // eslint-disable-next-line no-loop-func
+                  passengers.map((passenger, p) => ({
+                    id: "ase_" + i + char + index,
+                    total_currency: "EGP",
+                    total_amount: "0.0",
+                    passenger_id: "pas_" + (p+1),
+                  })),
+                ],
+          };
+          char = String.fromCharCode(char.charCodeAt() + 1);
+          elements.push(seat);
+        }
+        if (elements.length > 0) sections.push({ elements: elements });
+        if (sections.length > 0) rows.push({ sections: sections });
+      }
+      setEconomyCabin(
+        economyCabin.push({
+          rows: rows,
+          deck: 0,
+          aisles: 1,
+          cabin_class: "economy",
+        })
+      );
+    });
+  };
+  const createBusinessCabin = () => {
+    var rows = [];
+    console.log(props.flights);
+    props.flights.forEach((flight, index) => {
+      console.log(flight[0]);
+      var businessSeats = flight[0].business.noOfSeats;
+      var type = index === 0 ? "departing" : "returning";
+      var i = Math.ceil(flight[0].firstClass.noOfSeats / 6) + 1;
+      for (
+        i;
+        i <=
+        Math.ceil(flight[0].business.noOfSeats / 6) +
+          Math.ceil(flight[0].firstClass.noOfSeats / 6);
+        i++
+      ) {
+        var sections = [];
+        var elements = [];
+        var char = "A";
+        for (let j = 1; j < 4 && businessSeats > 0; j++, businessSeats--) {
+          var seat = {
+            type: "seat",
+            name: "",
+            disclosures: [],
+            designator: "" + i + char,
+            // eslint-disable-next-line no-loop-func
+            available_services: isAvailable("" + i + char, "business", type)
+              ? []
+              : [
+                  passengers.map((passenger, p) => ({
+                    id: "ase_" + i + char + index,
+                    total_currency: "EGP",
+                    total_amount: "0.0",
+                    passenger_id: "pas_" + (p+1),
+                  })),
+                ],
+          };
+          char = String.fromCharCode(char.charCodeAt() + 1);
+          elements.push(seat);
+        }
+        if (elements.length > 0) sections.push({ elements: elements });
+        elements = [];
+        for (let j = 1; j < 4 && businessSeats > 0; j++, businessSeats--) {
+          seat = {
+            type: "seat",
+            name: "",
+            disclosures: [],
+            designator: "" + i + char,
+            // eslint-disable-next-line no-loop-func
+            available_services: isAvailable("" + i + char, "business", type)
+              ? []
+              : [
+                  // eslint-disable-next-line no-loop-func
+                  passengers.map((passenger, p) => ({
+                    id: "ase_" + i + char + index,
+                    total_currency: "EGP",
+                    total_amount: "0.0",
+                    passenger_id: "pas_" + (p+1),
+                  })),
+                ],
+          };
+          char = String.fromCharCode(char.charCodeAt() + 1);
+          elements.push(seat);
+        }
+        if (elements.length > 0) sections.push({ elements: elements });
+        if (sections.length > 0) rows.push({ sections: sections });
+      }
+      setBusinessCabin(
+        businessCabin.push({
+          rows: rows,
+          deck: 0,
+          aisles: 1,
+          cabin_class: "business",
+        })
+      );
+    });
+  };
+  // console.log(createFirstCabin());
+  const createFirstCabin = () => {
+    var rows = [];
+    var i = 1;
+    console.log(props.flights);
+    props.flights.forEach((flight, index) => {
+      console.log(flight[0]);
+      var firstSeats = flight[0].firstClass.noOfSeats;
+      var type = index === 0 ? "departing" : "returning";
+      for (i = 1; i <= Math.ceil(flight[0].firstClass.noOfSeats / 6); i++) {
+        var sections = [];
+        var elements = [];
+        var char = "A";
+        for (let j = 1; j < 4 && firstSeats > 0; j++, firstSeats--) {
+          var seat = {
+            type: "seat",
+            name: "",
+            disclosures: [],
+            designator: "" + i + char,
+            // eslint-disable-next-line no-loop-func
+            available_services: isAvailable("" + i + char, "first", type)
+              ? []
+              : [
+                  passengers.map((passenger, p) => ({
+                    id: "ase_" + i + char + index,
+                    total_currency: "EGP",
+                    total_amount: "0.0",
+                    passenger_id: "pas_" + (p+1),
+                  })),
+                ],
+          };
+          char = String.fromCharCode(char.charCodeAt() + 1);
+          elements.push(seat);
+        }
+        if (elements.length > 0) sections.push({ elements: elements });
+        elements = [];
+        for (let j = 1; j < 4 && firstSeats > 0; j++, firstSeats--) {
+          seat = {
+            type: "seat",
+            name: "",
+            disclosures: [],
+            designator: "" + i + char,
+            // eslint-disable-next-line no-loop-func
+            available_services: isAvailable("" + i + char, "first", type)
+              ? []
+              : [
+                  // eslint-disable-next-line no-loop-func
+                  passengers.map((passenger, p) => ({
+                    id: "ase_" + i + char + index,
+                    total_currency: "EGP",
+                    total_amount: "0.0",
+                    passenger_id: "pas_" + (p+1),
+                  })),
+                ],
+          };
+          char = String.fromCharCode(char.charCodeAt() + 1);
+          elements.push(seat);
+        }
+        if (elements.length > 0) sections.push({ elements: elements });
+        if (sections.length > 0) rows.push({ sections: sections });
+      }
+      setFirstCabin(
+        firstCabin.push({
+          rows: rows,
+          deck: 0,
+          aisles: 1,
+          cabin_class: "first",
+        })
+      );
+      console.log(i);
+    });
+  };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    createFirstCabin();
+    createBusinessCabin();
+    createEconomyCabin();
+    createSeatMaps();
+    console.log(firstCabin);
+    console.log(businessCabin);
+    console.log(economyCabin);
+  }, []);
 
   const onSubmit = () => {
     var x = document.getElementsByClassName(
