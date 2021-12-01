@@ -14,8 +14,8 @@ import {
 } from "@mui/material/";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import DeleteFlight from "./DeleteFlight";
-import UpdateFlight from "./UpdateFlight";
+import DeleteFlight from "./popups/DeleteFlight";
+import UpdateFlight from "./popups/UpdateFlight";
 
 const FlightCard = (props) => {
   const row = props.row;
@@ -110,13 +110,13 @@ const FlightCard = (props) => {
                       {row.arrivalTime}
                     </TableCell>
                     <TableCell align="center" style={{ fontStyle: "italic" }}>
-                      {row.noOfEconomy}
+                      {row.economy.noOfSeats}
                     </TableCell>
                     <TableCell align="center" style={{ fontStyle: "italic" }}>
-                      {row.noOfBusiness}
+                      {row.business.noOfSeats}
                     </TableCell>
                     <TableCell align="center" style={{ fontStyle: "italic" }}>
-                      {row.noOfFirstClass}
+                      {row.firstClass.noOfSeats}
                     </TableCell>
                     <TableCell align="center" style={{ fontStyle: "italic" }}>
                       {row.noOfSeats}

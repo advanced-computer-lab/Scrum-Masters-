@@ -244,8 +244,8 @@ const UpdateFlight = ({ flight, onUpdate }) => {
               label="Economy Class Seats"
               type="number"
               placeholder="Economy Class Seats"
-              name="noOfEconomy"
-              defaultValue={flightData.noOfEconomy}
+              name="economy.noOfSeats"
+              defaultValue={flightData.economy.noOfSeats}
               onChange={onChange}
               InputLabelProps={{
                 shrink: true,
@@ -261,8 +261,8 @@ const UpdateFlight = ({ flight, onUpdate }) => {
               type="number"
               label="Business Class Seats"
               placeholder="Business Class Seats"
-              name="noOfBusiness"
-              defaultValue={flightData.noOfBusiness}
+              name="business.noOfSeats"
+              defaultValue={flightData.business.noOfSeats}
               onChange={onChange}
               InputLabelProps={{
                 shrink: true,
@@ -278,8 +278,8 @@ const UpdateFlight = ({ flight, onUpdate }) => {
               type="number"
               label="First Class Seats"
               placeholder="First Class Seats"
-              name="noOfFirstClass"
-              defaultValue={flightData.noOfFirstClass}
+              name="firstClass.noOfSeats"
+              defaultValue={flightData.firstClass.noOfSeats}
               onChange={onChange}
               InputLabelProps={{
                 shrink: true,

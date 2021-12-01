@@ -1,0 +1,15 @@
+Scrum Masters 
+
+Sprint 1
+
+Tasks allocation:
+
+Donia Sharaf: Update API/ Virtual fields/routing within react/ extra styling+features/search integration/view flights frontend
+
+Youssef Sameh: Delete backend/frontend/integration
+
+Ahmed Mohamed Serry: Update frontend/backend/integration/View flights backend+frontend
+
+Seifeldin Maged: Search form frontend+backend/integration of insertFlight
+
+Maram Anwar: Insertflight(create flight) backend/frontend/integration

@@ -27,3 +27,6 @@
 .nav-link:active::after {
   font-weight: 700;
 }
+.spinner {
+    animation: spin infinite 5s linear;
+  }
