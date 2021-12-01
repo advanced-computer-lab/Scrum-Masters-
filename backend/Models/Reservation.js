@@ -36,16 +36,15 @@ const ReservationSchema = mongoose.Schema(
 );
 
 // total price
-// ReservationSchema
-//   .virtual("totalPrice")
+// ReservationSchema.virtual('totalPrice')
 //   .get(function () {
-//         let sum=0;
-//     this.departingFlight.tickets.forEach((ticket)=>{
-//         sum+=ticket.price;
+//     let sum = 0;
+//     this.departingFlight.tickets.forEach((ticket) => {
+//       sum += ticket.price;
 //     });
-        
-//    this.returnFlight.tickets.forEach((ticket)=>{
-//         sum+=ticket.price;
+
+//     this.returnFlight.tickets.forEach((ticket) => {
+//       sum += ticket.price;
 //     });
 //     return sum;
 //   })
