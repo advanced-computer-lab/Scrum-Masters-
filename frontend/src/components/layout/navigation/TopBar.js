@@ -4,7 +4,7 @@ import logo from "../../../images/logo-white.png";
 import ProfileButton from "../../admin/buttons/ProfileButton";
 import "@fontsource/henny-penny";
 import "../../../styles/custom.css";
-const TopBar = () => {
+const TopBar = ({ isUser }) => {
   return (
     <Navbar
       collapseOnSelect
@@ -34,18 +34,34 @@ const TopBar = () => {
         </Navbar.Brand>
         <Container style={{ paddingRight: 0 }}>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto"></Nav>
-            <Nav>
-              <Nav.Link href="/schedule" style={{ color: "white" }} exact>
-                View Schedule
-              </Nav.Link>
-              <Nav.Link href="/addFlight" style={{ color: "white" }} exact>
-                Add a New Flight
-              </Nav.Link>
-              <ProfileButton />
-            </Nav>
-          </Navbar.Collapse>
+          {!isUser && (
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav className="me-auto"></Nav>
+              <Nav>
+                <Nav.Link href="/schedule" style={{ color: "white" }} exact>
+                  View Schedule
+                </Nav.Link>
+                <Nav.Link href="/addFlight" style={{ color: "white" }} exact>
+                  Add a New Flight
+                </Nav.Link>
+                <ProfileButton />
+              </Nav>
+            </Navbar.Collapse>
+          )}
+          {isUser && (
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav className="me-auto"></Nav>
+              <Nav>
+                <Nav.Link href="/book" style={{ color: "white" }} exact>
+                  Book a Flight
+                </Nav.Link>
+                <Nav.Link href="/reservation" style={{ color: "white" }} exact>
+                  My Bookings
+                </Nav.Link>
+                <ProfileButton />
+              </Nav>
+            </Navbar.Collapse>
+          )}
         </Container>
       </Container>
     </Navbar>
