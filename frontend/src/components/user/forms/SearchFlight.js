@@ -19,14 +19,12 @@ import axios from "axios";
 
 const SearchFlight = () => {
   
-  var from = []
-  var to = []
   useEffect(() => {
     axios
       .get("http://localhost:8081/user/search/flights")
       .then((res) => {
-         from = res.data.from;
-         to = res.data.to;
+        setFrom(res.data.from);
+        setTo(res.data.to);
         console.log("from",from);
         console.log("to",to);
       })
@@ -35,6 +33,8 @@ const SearchFlight = () => {
 
   const cabins = ["economy", "business", "first class"];
 
+  const[from,setFrom] = useState();
+  const[to,setTo] = useState()
   const cabinProps = {
     options: cabins,
     getOptionLabel: (option) => option,
