@@ -58,6 +58,10 @@ const flightSchema = mongoose.Schema( // check for unique flight numbers within 
         type: Number,
         default: function(){return this.economy.noOfSeats},
         required: true,
+      },
+      baggageAllowance: {
+        type : Number,
+        default : 2
       }
     },
 
@@ -81,6 +85,10 @@ const flightSchema = mongoose.Schema( // check for unique flight numbers within 
         type: Number,
         default: function(){return this.business.noOfSeats},
         required: true,
+      },
+      baggageAllowance: {
+        type : Number,
+        default : 2
       }
     },
 
