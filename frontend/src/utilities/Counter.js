@@ -16,7 +16,7 @@ const Counter = () => {
   return (
     <ButtonGroup
       disableElevation
-      variant='contained'
+      //variant='contained'
       style={{ float: 'right' }}
     >
       <IconButton onClick={decrementCount}>

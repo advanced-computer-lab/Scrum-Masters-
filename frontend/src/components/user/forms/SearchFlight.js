@@ -1,17 +1,41 @@
 import React from 'react';
-import Counter from '../../../utilities/Counter';
 import Grid from '@mui/material/Grid';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
+import IconButton from '@mui/material/IconButton';
+import { useState } from 'react';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import FromToInput from '../../../utilities/FromToInput';
+import PassengersButton from '../../../utilities/PassengersButton';
+
 const SearchFlight = () => {
+  const [adultCount, setAdultCount] = useState(0);
+  const [childrenCount, setChildrenCount] = useState(0);
+  function decrementAdultCount() {
+    setAdultCount((prevCount) => (prevCount === 0 ? 0 : prevCount - 1));
+  }
+  function incrementAdultCount() {
+    setAdultCount((prevCount) => prevCount + 1);
+  }
+  function decrementChildrenCount() {
+    setChildrenCount((prevCount) => (prevCount === 0 ? 0 : prevCount - 1));
+  }
+  function incrementChildrenCount() {
+    setChildrenCount((prevCount) => prevCount + 1);
+  }
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const handleChange = (event) => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const menuItemStyling = {
+    marginLeft: '5px',
   };
   return (
     <Grid
@@ -27,26 +51,47 @@ const SearchFlight = () => {
         <FromToInput label='To' />
       </Grid>
       <Grid item xs={6} md={2.5}>
-        <FormControl fullWidth>
-          <InputLabel id='demo-simple-select-label'>
-            Select Passengers
-          </InputLabel>
-          <Select
-            labelId='demo-simple-select-label'
-            id='demo-simple-select'
-            label='Age'
-            onChange={handleChange}
-          >
-            <MenuItem>
-              <ListItemText>Adult (16+)</ListItemText>
-              <Counter />
-            </MenuItem>
-            <MenuItem>
-              <ListItemText>Child (2-11)</ListItemText>
-              <Counter />
-            </MenuItem>
-          </Select>
-        </FormControl>
+        <PassengersButton onClick={handleClick} />
+        <Menu
+          id='basic-menu'
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          <MenuItem disableGutters style={menuItemStyling}>
+            <ListItemText>
+              Adult (16+) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </ListItemText>
+            <ButtonGroup disableElevation style={{ float: 'right' }}>
+              <IconButton onClick={decrementAdultCount}>
+                <RemoveCircleRoundedIcon />
+              </IconButton>
+              <div style={{ marginTop: '5%', textAlign: 'center' }}>
+                {adultCount}{' '}
+              </div>
+              <IconButton onClick={incrementAdultCount}>
+                <AddCircleIcon />
+              </IconButton>
+            </ButtonGroup>
+          </MenuItem>
+          <MenuItem disableGutters>
+            <ListItemText>Child (2-16)</ListItemText>
+            <ButtonGroup disableElevation style={{ float: 'right' }}>
+              <IconButton onClick={decrementChildrenCount}>
+                <RemoveCircleRoundedIcon />
+              </IconButton>
+              <div style={{ marginTop: '5%', textAlign: 'center' }}>
+                {childrenCount}{' '}
+              </div>
+              <IconButton onClick={incrementChildrenCount}>
+                <AddCircleIcon />
+              </IconButton>
+            </ButtonGroup>
+          </MenuItem>
+        </Menu>
       </Grid>
     </Grid>
   );
