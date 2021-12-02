@@ -2,6 +2,8 @@ import { React, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import axios from "axios";
 import { Typography } from "@mui/material";
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import SeatMap from "../../../components/user/existing/SeatMap";
 
 const SelectSeat = () => {
@@ -10,6 +12,7 @@ const SelectSeat = () => {
   const [departureSeats, setDepartureSeats] = useState();
   const [returnSeats, setReturnSeats] = useState();
   const [passengers, setPassengers] = useState();
+  const [loading, setLoading] = useState(true);
   var list = [
     {
       id: "pas_1",
@@ -72,8 +75,11 @@ const SelectSeat = () => {
       })
       .catch((err) => console.log(err));
     createPassengers(list);
+    // setTimeout(() => setLoading(false), 5000);
   }, []);
-
+  const onFetch = () => {
+    setLoading(false);
+  };
   return (
     <Container>
       <div
@@ -93,6 +99,15 @@ const SelectSeat = () => {
         >
           Select your preferred seats.
         </Typography>
+        {loading && (
+          <Loader
+            type="Plane"
+            color="#00BFFF"
+            height={100}
+            width={100}
+            timeout={5000}
+          />
+        )}
         {departureFlight &&
           returnFlight &&
           departureSeats &&
@@ -102,9 +117,11 @@ const SelectSeat = () => {
               flights={[departureFlight, returnFlight]}
               departureSeats={departureSeats}
               returnSeats={returnSeats}
-              departureCabin="first"
-              returnCabin="first"
+              departureCabin="business"
+              returnCabin="economy"
               passengers={passengers}
+              loading={loading}
+              onFetch={onFetch}
             />
           )}
       </div>
