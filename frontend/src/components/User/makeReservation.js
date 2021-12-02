@@ -1,6 +1,6 @@
 import Button from '@mui/material/Button';
 
-export default function ButtonComp({onClick}){
+/*export default function ButtonComp({onClick}){
    return(
     <Button 
     variant="contained" 
@@ -12,4 +12,5 @@ export default function ButtonComp({onClick}){
     Book Ticket
   </Button>
    )
-}
+}*/
+
