@@ -18,7 +18,7 @@ const SeatMap = (props) => {
   const [economyCabin, setEconomyCabin] = useState([]);
   const [offer, setOffer] = useState(); //from, to, reserving users
   const [seatMaps, setSeatMaps] = useState();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(props.loading);
   const isAvailable = (seatNumber, cabinClass, flight) => {
     if (flight === "departing")
       return !props.departureSeats.every(
@@ -600,11 +600,13 @@ const SeatMap = (props) => {
       props.flights[0][0].duration,
       props.flights[1][0].duration
     );
-    setTimeout(() => setLoading(false), 3000);
+    setTimeout(() => {}, 4000);
     createFirstCabin();
     createBusinessCabin();
     createEconomyCabin();
     createSeatMaps();
+    props.onFetch();
+    setLoading(false);
   }, []);
 
   const onSubmit = () => {
@@ -617,16 +619,15 @@ const SeatMap = (props) => {
   };
   return (
     <div>
-      {loading && (
+      {/* {loading && (
         <Loader
           type="Plane"
           color="#00BFFF"
           height={100}
           width={100}
-          // className="spinner"
-          timeout={7000} //3 secs
+          timeout={5000} //3 secs
         />
-      )}
+      )} */}
       {seatMaps && offer && passengers && !loading && (
         <SeatSelection
           passengers={passengers}
