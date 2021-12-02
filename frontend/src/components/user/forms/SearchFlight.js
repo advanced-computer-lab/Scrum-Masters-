@@ -13,9 +13,13 @@ import PassengersButton from "../../../utilities/PassengersButton";
 import TextField from "@mui/material/TextField";
 import { Autocomplete } from "@mui/material";
 import FlightTakeoffRoundedIcon from "@mui/icons-material/FlightTakeoffRounded";
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import InputAdornment from "@mui/material/InputAdornment";
 import FlightLandRounded from "@mui/icons-material/FlightLandRounded";
 import axios from "axios";
+import {
+  Tooltip,
+} from "@mui/material";
 
 const SearchFlight = () => {
   
@@ -25,16 +29,20 @@ const SearchFlight = () => {
       .then((res) => {
         setFrom(res.data.from);
         setTo(res.data.to);
-        console.log("from",from);
-        console.log("to",to);
+        // console.log("from",from);
+        // console.log("to",to);
       })
       .catch((err) => console.log(err));
   }, []);
 
   const cabins = ["economy", "business", "first class"];
 
+  const [query, setQuery] = useState();
   const[from,setFrom] = useState();
   const[to,setTo] = useState()
+  
+
+  
   const cabinProps = {
     options: cabins,
     getOptionLabel: (option) => option,
@@ -52,6 +60,15 @@ const SearchFlight = () => {
 
   const [adultCount, setAdultCount] = useState(0);
   const [childrenCount, setChildrenCount] = useState(0);
+
+  const onChange = (e) => {
+      
+        setQuery({ ...query, [e.target.name]: e.target.value });
+        console.log(query);
+      
+  };
+
+  const onSubmit = ()=>console.log(query);
 
   function decrementAdultCount() {
     setAdultCount((prevCount) => (prevCount === 0 ? 0 : prevCount - 1));
@@ -88,6 +105,9 @@ const SearchFlight = () => {
           <Autocomplete
             {...fromProps}
             id="blur-on-select"
+            name="departureAirport"
+            required
+            onChange={(e,newValue)=>setQuery({ ...query, ['departureAirport']: newValue })}
             blurOnSelect
             clearOnEscape
             size="30px"
@@ -114,6 +134,9 @@ const SearchFlight = () => {
           <Autocomplete
             {...toProps}
             id="blur-on-select"
+            name="arrivalAirport"
+            onChange={(e,newValue)=>setQuery({ ...query, ['arrivalAirport']: newValue })}
+            required
             blurOnSelect
             clearOnEscape
             size="30px"
@@ -146,7 +169,7 @@ const SearchFlight = () => {
             "aria-labelledby": "basic-button",
           }}
         >
-          <MenuItem disableGutters style={menuItemStyling}>
+          <MenuItem disableGutters style={menuItemStyling} name= "noOfAdults">
             <ListItemText>
               Adult (16+) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </ListItemText>
@@ -192,7 +215,7 @@ const SearchFlight = () => {
             },
           }}
           name="departureDate"
-          // onChange={onChange}
+          onChange={onChange}
         />
       </Grid>
       <Grid iteam xs={6} md={2.5}>
@@ -209,7 +232,7 @@ const SearchFlight = () => {
             },
           }}
           name="arrivalDate"
-          // onChange={onChange}
+          onChange={onChange}
         />
       </Grid>
       <Grid item xs={6} md={2.5}>
@@ -217,9 +240,11 @@ const SearchFlight = () => {
           <Autocomplete
             {...cabinProps}
             id="blur-on-select"
+            // name="cabin"
             blurOnSelect
             clearOnEscape
             size="30px"
+            onChange={(e,newValue)=>setQuery({ ...query, ['cabin']: newValue })}
             renderInput={(params) => (
               <TextField {...params} placeholder="Cabin" />
             )}
@@ -228,6 +253,16 @@ const SearchFlight = () => {
       </Grid>
 
       <Grid item xs={6} md={2.5}></Grid>
+      <Tooltip title="Search" arrow placement="right">
+              <IconButton
+                aria-label="delete"
+                onClick={onSubmit}
+                size="large"
+                style={{ color: "#56cfe1" }}
+              >
+                <ArrowRightAltIcon style={{ fontSize: 45 }} />
+              </IconButton>
+            </Tooltip>
     </Grid>
   );
 };
