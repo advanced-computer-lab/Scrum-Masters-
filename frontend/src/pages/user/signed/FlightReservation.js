@@ -15,11 +15,12 @@ import {
 } from '@mui/material';
 import UserFlightCard from '../../../components/user/UserFlightCard';
 
-const FlightReservation = ({ flights, cabinClass }) => {
+const FlightReservation = ({ data }) => {
+  console.log(data);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  useEffect(() => {}, []);
+  const cabinClass = data.details.cabin ? data.details.cabin : null;
+  //useEffect(() => {}, []);
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: '#5e60ce',
@@ -69,9 +70,9 @@ const FlightReservation = ({ flights, cabinClass }) => {
             </StyledTableCell>
           </TableRow>
         </TableHead>
-        {flights ? (
+        {data.flights ? (
           <TableBody>
-            {flights
+            {data.flights
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <UserFlightCard
@@ -86,7 +87,7 @@ const FlightReservation = ({ flights, cabinClass }) => {
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
-              count={flights ? flights.length : 0}
+              count={data.flights ? data.flights.length : 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
