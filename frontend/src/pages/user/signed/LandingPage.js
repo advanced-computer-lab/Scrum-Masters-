@@ -24,21 +24,26 @@ import { Container } from 'react-bootstrap';
 import FlightReservation from './FlightReservation';
 
 const LandingPage = () => {
-  const [data, setData] = useState();
-  const [activeStep, setActiveStep] = useState(0);
+  const [departuredata, setDepartureData] = useState();
+  const [arrivaldata, setArrivalData] = useState();
+  const [actualStep, setActualStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(actualStep - 1);
   const [skipped, setSkipped] = useState(new Set());
 
   const nextPage = (count) => {
     let newSkipped = skipped;
-    setActiveStep((count) => count + 1);
+    setActualStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep(actualStep - 1);
     setSkipped(newSkipped);
   };
   const handleNext = () => {
     let newSkipped = skipped;
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActualStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep((count) => count + 1);
     setSkipped(newSkipped);
   };
   const handleBack = () => {
+    setActualStep((prevActiveStep) => prevActiveStep - 1);
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -93,10 +98,9 @@ const LandingPage = () => {
     const { active, completed, className } = props;
 
     const icons = {
-      1: <FlightIcon />,
-      2: <GroupAddIcon />,
-      3: <AirlineSeatReclineNormalIcon />,
-      4: <ConfirmationNumberIcon />,
+      1: <GroupAddIcon />,
+      2: <AirlineSeatReclineNormalIcon />,
+      3: <ConfirmationNumberIcon />,
     };
 
     return (
@@ -158,7 +162,6 @@ const LandingPage = () => {
     },
   };
   const steps = [
-    'Select Flights',
     'Enter Passengers Details',
     'Select Seats',
     'Confirm Reservation',
@@ -169,7 +172,7 @@ const LandingPage = () => {
     <Container>
       <SearchFlight />
       <br />
-      {activeStep !== 0 && (
+      {actualStep > 1 && (
         <Stepper
           alternativeLabel
           activeStep={activeStep}
@@ -184,25 +187,28 @@ const LandingPage = () => {
           ))}
         </Stepper>
       )}
-      {activeStep === 0 && <FlightReservation data={res} nextPage={nextPage} />}
-      {activeStep === 1 && <SearchFlight />}
+      {actualStep === 0 && <FlightReservation data={res} nextPage={nextPage} />}
+      {actualStep === 1 && <FlightReservation data={res} nextPage={nextPage} />}
+      {actualStep === 2 && <SearchFlight />}
       <Box
         sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}
         style={{ float: 'right' }}
       >
-        {activeStep !== 0 && (
+        {actualStep >= 1 && (
           <Button
             color='inherit'
-            disabled={activeStep === 0}
+            disabled={actualStep === 0}
             onClick={handleBack}
             sx={{ mr: 1 }}
           >
             Back
           </Button>
         )}
-        <Button onClick={handleNext}>
-          {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-        </Button>
+        {activeStep >= 0 && (
+          <Button onClick={handleNext}>
+            {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+          </Button>
+        )}
       </Box>
     </Container>
   );
