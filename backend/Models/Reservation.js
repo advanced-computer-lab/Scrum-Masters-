@@ -9,6 +9,9 @@ const ReservationSchema = mongoose.Schema(
       ref: "User",
       required: true,
     },
+    reservationId: {
+     type:Number
+    },
     departingFlight: {
       id: {
         type: mongoose.Schema.Types.ObjectId,

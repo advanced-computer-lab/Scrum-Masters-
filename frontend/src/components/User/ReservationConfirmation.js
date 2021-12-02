@@ -34,6 +34,8 @@ import {Modal} from '@mui/material/';
 import { styled } from '@mui/material/styles';
 import EventSeatIcon from '@mui/icons-material/EventSeat';
 //import { Invoice } from 'react-simple-invoice';
+import Dropdown from 'react-bootstrap/Dropdown';
+import Input from "@mui/material/Input";
 
 
 
@@ -45,13 +47,36 @@ import EventSeatIcon from '@mui/icons-material/EventSeat';
 const axios = require("axios").default;
 
 const BookTicket = () => {
-  
+   var  i=0;
    const [open, setOpen] = React.useState(false);
+   const [checked, setChecked] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [inputFields, setInputField] = useState([{ FirstName: '', LastName : '', NationalID: '', Gender:''}]) 
   const showAlert = () => {
    setOpen(true);
  };
+ /*const handleChange = () => {
+  setChecked(!checked);
+};*/
+let handleChange = (i, e) => {
+  let newInputFields = [...inputFields];
+  newInputFields[i][e.target.name] = e.target.value;
+  setInputField(newInputFields);
+} 
+for(i=0;i<5;i++){
+
+
+let addInput = () => {
+  setInputField([...inputFields, { FirstName: '', LastName: '', NationalID:'', Gender:'' }])
+}
+}
+
+let removeFormFields = (i) => {
+  let newInputFields = [...inputFields];
+  newInputFields.splice(i, 1);
+  setInputField(newInputFields)
+}
  //const onclose = () => {
    //setOpen(false);
    //return false;
@@ -80,151 +105,299 @@ const BookTicket = () => {
       color: theme.palette.text.secondary,
     }));
     return (
-      
-   
-
-       <Container>
+      <><Container >
+        <Box  > Who's Traveling
+          <form>
+            {inputFields.map((inputField,index)=>(
+           
+           
+           
+          <Stack direction="row" spacing={10} style={{ marginTop: "30px" }}>
+            
+         <div key={index}>
+          <TextField
+            required
+            backgroundcolor="#f2f2f2"
+            type="String"
+            position="left"
+            placeholder='Flight Number'
+            variant="filled"
+            label="First Name"
+            name="First Name"
+            value={inputField.FirstName}
+           // onChange={(event) => {
+            //  setFlightNumber(event.target.value);
+           // } }
+           // InputLabelProps={{
+             // shrink: true,
+            //}}
+             />
+            </div>
+            <div key={index}>
+          <TextField
+            required
+            backgroundcolor="#f2f2f2"
+            type="String"
+             placeholder='Last Name'
+            label="Last Name"
+            variant="filled"
+            name="departureTime"
+           value={inputField.LastName}
+           // onChange={(event) => {
+            //  setDepartureTime(event.target.value);
+            //} }
+           // InputLabelProps={{
+           //   shrink: true,
+           // }}
+            />
+             </div>
+            <div key={index}>
+            <TextField
+            required
+            backgroundcolor="#f2f2f2"
+            type="Number"
+            placeholder='National ID'
+            label="National ID Number"
+            variant="filled"
+            name="departureTime"
+            value={inputField.NationalID}
+           // onChange={(event) => {
+            //  setDepartureTime(event.target.value);
+            //} }
+           // InputLabelProps={{
+           //   shrink: true,
+           // }}
+            />    
+             </div>
+            <div key={index}>
+            <TextField
+            required
+            backgroundcolor="#f2f2f2"
+            type="Text"
+             placeholder='Gender'
+            label="Gender"
+            variant="filled"
+            name="Gender"
+           value={inputField.Gender}
+           // onChange={(event) => {
+            //  setDepartureTime(event.target.value);
+            //} }
+           // InputLabelProps={{
+            //  shrink: true,
+           // }}
+             />   
+            
+          </div>
+          
+        </Stack>
+             ) )}
+         </form>
+         
+         
+        </Box>
+      </Container>
+      <Container>
 
           <Box>
-          
-     
-          
-          <Modal open={open} onClose={handleClose}
-          
-  open={open}
-  onClose={handleClose}
-  aria-labelledby="modal-modal-title"
-  aria-describedby="modal-modal-description"
->
-   <div>
-  <Box sx={style}>
-    <Typography id="modal-modal-title" variant="h6" component="h2"
-    fontFamily= "cursive"
-    fontSize= "5">
-      Pending Reservation
-    </Typography>
-    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-       <Box sx={{ width: '100%' }}> 
-    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        <Grid item xs={6}>
-          <Item>
-          <TodayIcon />
-             Departure Flight Date
-             </Item>
-        </Grid>
-        <Grid item xs={6}>
-          <Item position="relative">
-             
-          <AccessTimeIcon position='relative' /> 
-          
-          Departure Flight Time </Item>
-          
-        </Grid>
-        <Grid item xs={6}>
-          <Item>
-          <TodayIcon />
-          Return Flight Date</Item>
-        </Grid>
-        <Grid item xs={6}>
-          <Item>
-          <AccessTimeIcon/>
-          Return Flight Time</Item>
-        </Grid>
-        <Grid item xs={6}>
-          <Item>
-             <AirlineSeatReclineNormalIcon/>
-             Chosen Seats</Item>
-        </Grid>
-        <Grid item xs={6}>
-          <Item>
-             <EventSeatIcon/>
-            Class Cabin</Item>
-        </Grid>
-        <Grid item xs={6}>
-          <Item>
-          <FlightIcon/>
-          Flight Number</Item>
-        </Grid>
-        <Grid item xs={6}>
-          <Item>
-         < ConfirmationNumberIcon/> Number of Tickets</Item>
-        </Grid>
-        <Grid item xs={6} >
-          <Item>
-             <AttachMoneyIcon/>
-             Total Price of Reservation
-             </Item>
-        </Grid>
-      
 
-      </Grid>
-      </Box>
-      <Button
-         type="SUBMIT"
-         style={{
-            padding: "5px",
-            label: "add flight",
 
-            backgroundColor: "#5e60ce",
-            border: "0 none",
-            cursor: "pointer",
-            borderBlock: "5px",
-            color: "white",
-            fontFamily: "cursive",
-            fontSize: "5",
-            width: "135px",
-            height: "60px",
 
-            margin: 0,
+            <Modal open={open} onClose={handleClose}
 
-            align: "center",
-            location: "center",
-            position: "relative",
-            top: "25px",
-            right: "60%",
-            left: "40%",
-            variant: "fill",
-         }}
-         >
-       Confirm Reservation
-      </Button>
-    </Typography>
-  </Box>
-  </div>
-      </Modal>
-    
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <div>
+                <Box sx={style}>
+                  <Typography id="modal-modal-title" variant="h6" component="h2"
+                    fontFamily="cursive"
+                    fontSize="5">
+                    Pending Reservation
+                  </Typography>
+                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    <Box sx={{ width: '100%' }}>
+                      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                        <Grid item xs={6}>
+                          <Item>
+                            <TodayIcon />
+                            Departure Flight Date
+                          </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Item position="relative">
 
-       <Button
-          type="SUBMIT"
-          aria-label="Add"
-          onClick={handleOpen}
-          style={{
-             padding: "5px",
-             label: "add flight",
+                            <AccessTimeIcon position='relative' />
 
-             backgroundColor: "#5e60ce",
-             border: "0 none",
-             cursor: "pointer",
-             borderBlock: "5px",
-             color: "white",
-             fontFamily: "cursive",
-             fontSize: "5",
-             width: "135px",
-             height: "60px",
+                            Departure Flight Time </Item>
 
-             margin: 0,
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Item>
+                            <TodayIcon />
+                            Return Flight Date</Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Item>
+                            <AccessTimeIcon />
+                            Return Flight Time</Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Item>
+                            <AirlineSeatReclineNormalIcon />
+                            Chosen Seats</Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Item>
+                            <EventSeatIcon />
+                            Class Cabin</Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Item>
+                            <FlightIcon />
+                            Flight Number</Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Item>
+                            <ConfirmationNumberIcon /> Number of Tickets</Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Item>
+                            <AttachMoneyIcon />
+                            Total Price of Reservation
+                          </Item>
+                        </Grid>
 
-             align: "center",
-             location: "center",
-             position: "relative",
-             top: "25px",
-             right: "60%",
-             left: "1%",
-             variant: "fill",
-          }}
-       >Confirm Reservation</Button>
-       </Box>
-       </Container>
+
+                      </Grid>
+                    </Box>
+                    <Button
+                      type="SUBMIT"
+                      style={{
+                        padding: "5px",
+                        label: "add flight",
+
+                        backgroundColor: "#5e60ce",
+                        border: "0 none",
+                        cursor: "pointer",
+                        borderBlock: "5px",
+                        color: "white",
+                        fontFamily: "cursive",
+                        fontSize: "5",
+                        width: "135px",
+                        height: "60px",
+
+                        margin: 0,
+
+                        align: "center",
+                        location: "center",
+                        position: "relative",
+                        top: "25px",
+                        right: "60%",
+                        left: "40%",
+                        variant: "fill",
+                      }}
+                    >
+                      Confirm Reservation
+                    </Button>
+                  </Typography>
+                </Box>
+              </div>
+            </Modal>
+
+            <Button
+               onClick={()=>addInput()}
+               type="SUBMIT"
+              aria-label="Add"
+              //onClick={handleOpen}
+              style={{
+                padding: "5px",
+                label: "add flight",
+
+                backgroundColor: "#5e60ce",
+                border: "0 none",
+                cursor: "pointer",
+                borderBlock: "5px",
+                color: "white",
+                fontFamily: "cursive",
+                fontSize: "5",
+                width: "145px",
+                height: "80px",
+
+                margin: 0,
+
+                align: "center",
+                location: "center",
+                position: "relative",
+                top: "25px",
+                right: "60%",
+                left: "1%",
+                variant: "fill",
+              }}>
+             Add Ticket
+
+              </Button>
+            <Button
+              type="SUBMIT"
+              aria-label="Add"
+              onClick={handleOpen}
+              style={{
+                padding: "5px",
+                label: "add flight",
+
+                backgroundColor: "#5e60ce",
+                border: "0 none",
+                cursor: "pointer",
+                borderBlock: "5px",
+                color: "white",
+                fontFamily: "cursive",
+                fontSize: "5",
+                width: "145px",
+                height: "80px",
+
+                margin: 0,
+
+                align: "center",
+                location: "center",
+                position: "relative",
+                top: "25px",
+                right: "60%",
+                left: "1%",
+                variant: "fill",
+              }}
+            >View My Reservation Summary</Button>
+          </Box>
+          <Button
+            type="SUBMIT"
+            aria-label="Add"
+            onClick={handleOpen}
+            style={{
+              padding: "5px",
+              label: "add flight",
+
+              backgroundColor: "Green",
+              border: "0 none",
+              cursor: "pointer",
+              borderBlock: "5px",
+              color: "white",
+              fontFamily: "cursive",
+              fontSize: "5",
+              width: "135px",
+              height: "60px",
+
+              margin: 0,
+
+              align: "center",
+              location: "center",
+              position: "relative",
+              top: "60px",
+              right: "60%",
+              left: "1%",
+              variant: "fill",
+            }}
+          >Finalize reservation</Button>
+        </Container></>
        
     );
 };
