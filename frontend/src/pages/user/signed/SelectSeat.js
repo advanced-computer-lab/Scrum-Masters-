@@ -117,8 +117,8 @@ const SelectSeat = () => {
               flights={[departureFlight, returnFlight]}
               departureSeats={departureSeats}
               returnSeats={returnSeats}
-              departureCabin="first"
-              returnCabin="first"
+              departureCabin="business"
+              returnCabin="economy"
               passengers={passengers}
               loading={loading}
               onFetch={onFetch}

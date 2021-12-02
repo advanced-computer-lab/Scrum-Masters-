@@ -319,24 +319,24 @@ const SeatMap = (props) => {
             },
           ],
         },
-        {
-          sections: [
-            {
-              elements: [
-                {
-                  type: "exit_row",
-                },
-              ],
-            },
-            {
-              elements: [
-                {
-                  type: "exit_row",
-                },
-              ],
-            },
-          ],
-        }
+        // {
+        //   sections: [
+        //     {
+        //       elements: [
+        //         {
+        //           type: "exit_row",
+        //         },
+        //       ],
+        //     },
+        //     {
+        //       elements: [
+        //         {
+        //           type: "exit_row",
+        //         },
+        //       ],
+        //     },
+        //   ],
+        // }
       );
       var businessSeats = flight[0].business.noOfSeats;
       var type = index === 0 ? "departing" : "returning";
@@ -561,24 +561,24 @@ const SeatMap = (props) => {
             },
           ],
         },
-        {
-          sections: [
-            {
-              elements: [
-                {
-                  type: "exit_row",
-                },
-              ],
-            },
-            {
-              elements: [
-                {
-                  type: "exit_row",
-                },
-              ],
-            },
-          ],
-        }
+        // {
+        //   sections: [
+        //     {
+        //       elements: [
+        //         {
+        //           type: "exit_row",
+        //         },
+        //       ],
+        //     },
+        //     {
+        //       elements: [
+        //         {
+        //           type: "exit_row",
+        //         },
+        //       ],
+        //     },
+        //   ],
+        // }
       );
       setFirstCabin(
         firstCabin.push({
