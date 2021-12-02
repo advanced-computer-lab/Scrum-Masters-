@@ -66,7 +66,7 @@ const UserFlightCard = (props) => {
         <TableCell align='center'>{getDate(row.departureDate)}</TableCell>
         <TableCell align='center'>{getDate(row.arrivalDate)}</TableCell>
         <TableCell align='center'>{row.duration}</TableCell>
-        <TableCell align='center'>{getPrice(cabinClass, row)}</TableCell>
+        <TableCell align='center'>{getPrice(cabinClass, row) + '£'}</TableCell>
         <TableCell align='right'>HI</TableCell>
       </StyledTableRow>
       <StyledTableRow>
