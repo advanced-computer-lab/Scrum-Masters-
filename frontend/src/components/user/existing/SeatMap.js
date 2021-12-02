@@ -318,7 +318,7 @@ const SeatMap = (props) => {
               ],
             },
           ],
-        },
+        }
         // {
         //   sections: [
         //     {
@@ -560,7 +560,7 @@ const SeatMap = (props) => {
               ],
             },
           ],
-        },
+        }
         // {
         //   sections: [
         //     {
