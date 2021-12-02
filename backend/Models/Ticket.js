@@ -4,7 +4,7 @@ const Flight = require("./Flight");
 const ticketSchema = mongoose.Schema(
   {
     seatNum: {
-      type: Number,
+      type: String,
       required: true,
     },
     ticketType: {
@@ -15,6 +15,11 @@ const ticketSchema = mongoose.Schema(
     passengerType: {
       type: String,
       enum: ["adult", "child"],
+      required: true,
+    },
+    cabin: {
+      type: String,
+      enum: ["first", "business", "economy"],
       required: true,
     },
     firstName: {
@@ -28,9 +33,14 @@ const ticketSchema = mongoose.Schema(
 
     //extra
 
-    flightNumber: {
+    flightId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Flight",
+      required: true,
+    },
+    reservationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Reservation",
       required: true,
     },
     price: {
