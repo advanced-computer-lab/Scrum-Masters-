@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import {
   Box,
   Collapse,
@@ -14,11 +15,13 @@ import {
 } from '@mui/material/';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Button } from '@material-ui/core';
 
 const UserFlightCard = (props) => {
   const row = props.row;
   const cabinClass = props.cabinClass;
-  console.log('props', props.row);
+  const nextPage = props.nextPage;
+  const [count, setCount] = React.useState(0);
   const [open, setOpen] = React.useState(false);
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(4n-3)': {
@@ -65,9 +68,19 @@ const UserFlightCard = (props) => {
         <TableCell align='center'>{row.arrivalAirport}</TableCell>
         <TableCell align='center'>{getDate(row.departureDate)}</TableCell>
         <TableCell align='center'>{getDate(row.arrivalDate)}</TableCell>
-        <TableCell align='center'>{row.duration}</TableCell>
         <TableCell align='center'>{getPrice(cabinClass, row) + '£'}</TableCell>
-        <TableCell align='right'>HI</TableCell>
+        <TableCell align='center' style={{ fontStyle: 'italic' }}>
+          {/* <Button
+            onClick={() => {
+              const newValue = count + 1;
+              setCount(newValue);
+              nextPage(newValue);
+            }}
+          >
+            {' '}
+            HI{' '}
+          </Button> */}
+        </TableCell>
       </StyledTableRow>
       <StyledTableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
@@ -88,19 +101,10 @@ const UserFlightCard = (props) => {
                       Departure Time
                     </TableCell>
                     <TableCell align='center' style={{ fontStyle: 'italic' }}>
+                      Duration{' '}
+                    </TableCell>
+                    <TableCell align='center' style={{ fontStyle: 'italic' }}>
                       Arrival Time
-                    </TableCell>
-                    <TableCell align='center' style={{ fontStyle: 'italic' }}>
-                      Economy Class Seats
-                    </TableCell>
-                    <TableCell align='center' style={{ fontStyle: 'italic' }}>
-                      Business Class Seats
-                    </TableCell>
-                    <TableCell align='center' style={{ fontStyle: 'italic' }}>
-                      First Class Seats
-                    </TableCell>
-                    <TableCell align='center' style={{ fontStyle: 'italic' }}>
-                      Total Available Seats
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -110,19 +114,10 @@ const UserFlightCard = (props) => {
                       {row.departureTime}
                     </TableCell>
                     <TableCell align='center' style={{ fontStyle: 'italic' }}>
+                      {row.duration}
+                    </TableCell>
+                    <TableCell align='center' style={{ fontStyle: 'italic' }}>
                       {row.arrivalTime}
-                    </TableCell>
-                    <TableCell align='center' style={{ fontStyle: 'italic' }}>
-                      {row.economy.noOfSeats}
-                    </TableCell>
-                    <TableCell align='center' style={{ fontStyle: 'italic' }}>
-                      {row.business.noOfSeats}
-                    </TableCell>
-                    <TableCell align='center' style={{ fontStyle: 'italic' }}>
-                      {row.firstClass.noOfSeats}
-                    </TableCell>
-                    <TableCell align='center' style={{ fontStyle: 'italic' }}>
-                      {row.noOfSeats}
                     </TableCell>
                   </TableRow>
                 </TableBody>

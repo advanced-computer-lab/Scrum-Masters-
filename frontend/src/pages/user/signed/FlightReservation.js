@@ -1,6 +1,7 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
+  Button,
   Table,
   TableBody,
   TablePagination,
@@ -15,9 +16,10 @@ import {
 } from '@mui/material';
 import UserFlightCard from '../../../components/user/UserFlightCard';
 
-const FlightReservation = ({ data }) => {
+const FlightReservation = ({ data, nextPage }) => {
   console.log(data);
   const [page, setPage] = React.useState(0);
+  const [count, setCount] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const cabinClass = data.details.cabin ? data.details.cabin : null;
   //useEffect(() => {}, []);
@@ -35,6 +37,12 @@ const FlightReservation = ({ data }) => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const nextPageTable = () => {
+    const newValue = count + 1;
+    setCount(newValue);
+    nextPage(newValue);
   };
 
   return (
@@ -59,15 +67,12 @@ const FlightReservation = ({ data }) => {
               Arrival Date
             </StyledTableCell>
             <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
-              {' '}
-              Duration
-            </StyledTableCell>
-            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
               Price
             </StyledTableCell>
-            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
-              Actions
-            </StyledTableCell>
+            <StyledTableCell
+              align='center'
+              style={{ fontWeight: 'bolder' }}
+            ></StyledTableCell>
           </TableRow>
         </TableHead>
         {data.flights ? (
@@ -79,6 +84,7 @@ const FlightReservation = ({ data }) => {
                   key={row._id}
                   row={row}
                   cabinClass={cabinClass}
+                  nextPage={nextPage}
                 />
               ))}
           </TableBody>
@@ -96,6 +102,16 @@ const FlightReservation = ({ data }) => {
           </TableRow>
         </TableFooter>
       </Table>
+      <Button
+        onClick={() => {
+          const newValue = count + 1;
+          setCount(newValue);
+          nextPage(newValue);
+        }}
+      >
+        {' '}
+        HI
+      </Button>
     </TableContainer>
   );
 };
