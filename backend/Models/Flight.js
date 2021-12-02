@@ -62,6 +62,13 @@ const flightSchema = mongoose.Schema(
         },
         required: true,
       },
+<<<<<<< HEAD
+=======
+      baggageAllowance: {
+        type : Number,
+        default : 2
+      }
+>>>>>>> seif
     },
 
     business: {
@@ -87,6 +94,13 @@ const flightSchema = mongoose.Schema(
         },
         required: true,
       },
+<<<<<<< HEAD
+=======
+      baggageAllowance: {
+        type : Number,
+        default : 2
+      }
+>>>>>>> seif
     },
 
     firstClass: {
