@@ -21,8 +21,7 @@ firstName: {
     type: String,
     required:isUser(this.type)
 
-  },
-  
+  },  
   email: {
     type: String,
     required:isUser(this.type)
@@ -31,15 +30,11 @@ firstName: {
     type: Number,
     required:isUser(this.type)
 },
-  
- 
-
   phoneNumber: {
     type: Array,
     required:isUser(this.type)
 
   },
-
   passportNumber: {
     type: Number,
     required:isUser(this.type)
@@ -48,9 +43,8 @@ firstName: {
   type: {
       type:String,
       required:true
-  
-
   }
+  //password SPRINT 3
 });
 
 const User = mongoose.model('User', userSchema);

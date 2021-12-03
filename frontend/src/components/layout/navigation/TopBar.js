@@ -11,7 +11,7 @@ const TopBar = ({ isUser }) => {
       expand="lg"
       sticky="top"
       variant="dark"
-      style={{ backgroundColor: "#7400b8", color: "white" }}
+      style={{ backgroundColor: "#5f2daf", color: "white" }}
       className="container-fluid"
     >
       <Container>

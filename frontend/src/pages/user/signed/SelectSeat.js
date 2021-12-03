@@ -102,7 +102,7 @@ const SelectSeat = () => {
         {loading && (
           <Loader
             type="Plane"
-            color="#00BFFF"
+            color="#4ea8de"
             height={100}
             width={100}
             timeout={5000}
