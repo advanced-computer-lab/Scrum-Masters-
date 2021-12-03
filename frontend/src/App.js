@@ -8,6 +8,7 @@ import SelectSeat from './pages/user/signed/SelectSeat';
 import BookingPage from './pages/user/signed/BookingPage';
 import FlightReservation from './components/user/FlightReservation';
 import SearchingPage from './pages/user/signed/SearchingPage';
+import hi from './pages/user/signed/hi';
 
 function App() {
   const user = true;
@@ -24,6 +25,8 @@ function App() {
             <Route exact path='/selectSeat' component={SelectSeat}></Route>
             <Route exact path='/user' component={BookingPage}></Route>
             <Route exact path='/search' component={SearchingPage}></Route>
+            <Route exact path='/hi' component={hi}></Route>
+            
           </Switch>
         )}
       </div>

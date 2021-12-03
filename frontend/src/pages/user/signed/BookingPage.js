@@ -19,13 +19,22 @@ import { Container } from 'react-bootstrap';
 import FlightReservation from '../../../components/user/FlightReservation';
 
 const BookingPage = (props) => {
-  const [departuredata, setDepartureData] = useState(); //contains data of all departing flights that the user can choose from
-  const [arrivaldata, setArrivalData] = useState(); //contains data of all arriving flights that the user can choose from
+  
+  
+  console.log("in BookingPage props",props)
+  const [departureData, setDepartureData] = useState(props.props[0]); //contains data of all departing flights that the user can choose from
+  console.log("in BookingPage",departureData)
+  const [arrivalData, setArrivalData] = useState(props.props[1]); //contains data of all arriving flights that the user can choose from
   const [actualStep, setActualStep] = useState(0);
   const [activeStep, setActiveStep] = useState(actualStep - 1);
   const [skipped, setSkipped] = useState(new Set());
   const [departureFlight, setDepartureFlight] = useState(0); //for the selected departure flight
   const [arrivalFlight, setArrivalFlight] = useState(0); //for the selected arrival flight
+  
+  const [departureInput, setDepartureInput] = useState({}); //input to maram and donia
+  const [arrivalInput, setArrivalInput] = useState({});
+
+
 
   const handleDepartureFlight = async (code) => {
     const newDeparture = code;
@@ -168,15 +177,7 @@ const BookingPage = (props) => {
   //   },
   // };
 
-  useEffect(() => {
-    axios
-      .post('http://localhost:8081/user/search', props.location.state)
-      .then((res) => {
-        console.log(res.data);
-        setDepartureData(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  
 
   const steps = [
     'Enter Passengers Details',
@@ -204,7 +205,7 @@ const BookingPage = (props) => {
       )}
       {actualStep === 0 && (
         <FlightReservation
-          data={departuredata}
+          data={departureData}
           nextPage={nextPage}
           isDeparture={true}
           handleArrivalFlight={handleArrivalFlight}
@@ -213,7 +214,7 @@ const BookingPage = (props) => {
       )}
       {actualStep === 1 && (
         <FlightReservation
-          data={departuredata}
+          data={arrivalData}
           nextPage={nextPage}
           handleArrivalFlight={handleArrivalFlight}
           handleDepartureFlight={handleDepartureFlight}

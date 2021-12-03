@@ -33,6 +33,7 @@ const FlightReservation = ({
   const [page, setPage] = React.useState(0);
   const [count, setCount] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  console.log("props of flight reservation",data)
   const cabinClass = data.details.cabin ? data.details.cabin : null;
   const [open, setOpen] = React.useState(false);
   const StyledTableRow = styled(TableRow)(({ theme }) => ({

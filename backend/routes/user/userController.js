@@ -32,22 +32,37 @@ router.post("/search", async (req, res) => {
   }*/
   console.log(criteria);
   try {
-    var query = await Flight.find({
+    var query1 = await Flight.find({
       departureAirport: criteria.departureAirport,
       arrivalAirport: criteria.arrivalAirport,
       departureDate: criteria.departureDate,
     });
-    console.log("query before filtering", query);
+    var query2 = await Flight.find({
+      departureAirport: criteria.arrivalAirport,
+      arrivalAirport: criteria.departureAirport,
+      arrivalDate: criteria.arrivalDate,
+    });
+    // console.log("query before filtering", query);
     if (criteria.cabin === "economy") {
-      query = query.filter(
+      query1 = query1.filter(
         (flight) =>
           flight.economy.availableSeats >=
           criteria.noOfChildren + criteria.noOfAdults
       );
+      query2 = query2.filter(
+        (flight) =>
+          flight.economy.availableSeats >=
+          criteria.noOfChildren + criteria.noOfAdults
+      ); 
     }
     if (criteria.cabin === "business") {
       //console.log("ehna true");
-      query = query.filter(
+      query1 = query1.filter(
+        (flight) =>
+          flight.business.availableSeats >=
+          criteria.noOfChildren + criteria.noOfAdults
+      );
+      query2 = query2.filter(
         (flight) =>
           flight.business.availableSeats >=
           criteria.noOfChildren + criteria.noOfAdults
@@ -55,17 +70,21 @@ router.post("/search", async (req, res) => {
     }
     if (criteria.cabin === "first") {
       //console.log("ehna true");
-      query = query.filter(
+      query1 = query1.filter(
+        (flight) =>
+          flight.firstClass.availableSeats >=
+          criteria.noOfChildren + criteria.noOfAdults
+      );
+      query2 = query2.filter(
         (flight) =>
           flight.firstClass.availableSeats >=
           criteria.noOfChildren + criteria.noOfAdults
       );
     }
-    var output = {
-      flights: query,
-      details: criteria,
-    };
-    delete output.details["departureDate"];
+    
+    var output = []
+    output.push({flights:query1,details:criteria})
+    output.push({flights:query2,details:criteria})
     console.log(output);
     res.json(output);
     /*
@@ -83,12 +102,13 @@ router.post("/search", async (req, res) => {
  * { 
  *  noOfAdults: 3,
     noOfChildren: 0,
-    arrivalDate: '2021-11-02T00:00:00.000Z',
+    arrivalDate: '2021-11-02T00:00:00.000Z', return date 
     cabin: 'economy'
+    flightId
  * }
 */
  //route for departing Flights
-router.get("/search/departingFlights/:flightId/", async (req, res) => {
+router.get("/search/departingFlights/", async (req, res) => {
   try {
     var departingFlight = await Flight.findById({
       _id: req.params.flightId,
