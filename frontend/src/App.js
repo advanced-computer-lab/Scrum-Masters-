@@ -9,6 +9,7 @@ import LandingPage from './pages/user/signed/LandingPage';
 import yalla from './components/user/ReservationConfirmation';
 import bookTicket from './components/user/ReservationConfirmation';
 import BookTicket from './components/user/ReservationConfirmation';
+import Itenirary from './pages/user/signed/viewItenirary';
 /*import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import TopBar from "./components/layout/navigation/TopBar";
@@ -37,6 +38,7 @@ function App() {
           <Switch>
             <Route exact path="/selectSeat" component={SelectSeat}></Route>
             <Route exact path="/user" component={LandingPage}></Route>
+            <Route exact path="/itenirary" component={Itenirary}></Route>
           </Switch>
         )}
       </div>
