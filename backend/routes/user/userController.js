@@ -13,11 +13,11 @@ router.get("/reservations/:id", (req, res) => {
   });
 
 
-router.get("/reservations/:id", (req, res) => {
-  Reservation.find({userId : req.params.id})
-    .then((result) => res.json(result))
-    .catch((err) => console.log(err));
-});
+// router.get("/reservations/:id", (req, res) => {
+//   Reservation.find({userId : req.params.id})
+//     .then((result) => res.json(result))
+//     .catch((err) => console.log(err));
+// });
 
 router.delete("/delete/reservation/:id", (req, res) => {
   Reservation.findByIdAndRemove(req.params.id)
