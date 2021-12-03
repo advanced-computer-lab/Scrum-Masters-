@@ -18,7 +18,7 @@ import SearchFlight from '../../../components/user/forms/SearchFlight';
 import { Container } from 'react-bootstrap';
 import FlightReservation from '../../../components/user/FlightReservation';
 
-const LandingPage = () => {
+const BookingPage = () => {
   const [departuredata, setDepartureData] = useState(); //contains data of all departing flights that the user can choose from
   const [arrivaldata, setArrivalData] = useState(); //contains data of all arriving flights that the user can choose from
   const [actualStep, setActualStep] = useState(0);
@@ -236,4 +236,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default BookingPage;
