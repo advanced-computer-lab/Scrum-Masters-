@@ -19,31 +19,40 @@ import { Container } from 'react-bootstrap';
 import FlightReservation from '../../../components/user/FlightReservation';
 
 const BookingPage = (props) => {
-  
-  
-  console.log("in BookingPage props",props)
+  console.log('in BookingPage props', props);
   const [departureData, setDepartureData] = useState(props.props[0]); //contains data of all departing flights that the user can choose from
-  console.log("in BookingPage",departureData)
+  // console.log('in BookingPage', departureData);
   const [arrivalData, setArrivalData] = useState(props.props[1]); //contains data of all arriving flights that the user can choose from
   const [actualStep, setActualStep] = useState(0);
   const [activeStep, setActiveStep] = useState(actualStep - 1);
   const [skipped, setSkipped] = useState(new Set());
   const [departureFlight, setDepartureFlight] = useState(0); //for the selected departure flight
   const [arrivalFlight, setArrivalFlight] = useState(0); //for the selected arrival flight
-  
+
   const [departureInput, setDepartureInput] = useState({}); //input to maram and donia
   const [arrivalInput, setArrivalInput] = useState({});
-
-
 
   const handleDepartureFlight = async (code) => {
     const newDeparture = code;
     setDepartureFlight(newDeparture);
+    setDepartureInput({
+      flight: props.props[0].flights.filter(
+        (flight) => flight._id === newDeparture
+      ),
+      details: props.props[0].details,
+    });
   };
 
   const handleArrivalFlight = async (code) => {
     const newArrival = code;
     await setArrivalFlight(newArrival);
+    setArrivalInput({
+      flight: props.props[1].flights.filter(
+        (flight) => flight._id === newArrival
+      ),
+      details: props.props[0].details,
+    });
+    console.log(departureInput);
   };
   const nextPage = (count) => {
     let newSkipped = skipped;
@@ -176,8 +185,6 @@ const BookingPage = (props) => {
   //     cabin: 'economy',
   //   },
   // };
-
-  
 
   const steps = [
     'Enter Passengers Details',
