@@ -5,8 +5,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Schedule from './pages/admin/Schedule';
 import FlightCreation from './pages/admin/FlightCreation';
 import SelectSeat from './pages/user/signed/SelectSeat';
-import LandingPage from './pages/user/signed/LandingPage';
-import FlightReservation from './pages/user/signed/FlightReservation';
+import BookingPage from './pages/user/signed/BookingPage';
+import FlightReservation from './components/user/FlightReservation';
 
 function App() {
   const user = true;
@@ -17,6 +17,9 @@ function App() {
         <Switch>
           <Route exact path={['/', '/schedule']} component={Schedule}></Route>
           <Route exact path='/addFlight' component={FlightCreation}></Route>
+          <Route exact path='/selectSeat' component={SelectSeat}></Route>
+          <Route exact path='/user' component={BookingPage}></Route>
+          <Route exact path='/flights' component={FlightReservation}></Route>
         </Switch>
         {user && (
           <Switch>

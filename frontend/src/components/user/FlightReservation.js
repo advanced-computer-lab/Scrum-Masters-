@@ -21,10 +21,15 @@ import {
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import UserFlightCard from '../../../components/user/UserFlightCard';
+import UserFlightCard from './UserFlightCard';
 
-const FlightReservation = ({ data, nextPage }) => {
-  console.log(data);
+const FlightReservation = ({
+  data,
+  nextPage,
+  handleDepartureFlight,
+  handleArrivalFlight,
+  isDeparture,
+}) => {
   const [page, setPage] = React.useState(0);
   const [count, setCount] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -71,12 +76,6 @@ const FlightReservation = ({ data, nextPage }) => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  };
-
-  const nextPageTable = () => {
-    const newValue = count + 1;
-    setCount(newValue);
-    nextPage(newValue);
   };
 
   return (
@@ -149,7 +148,11 @@ const FlightReservation = ({ data, nextPage }) => {
                     </TableCell>
                     <TableCell align='center' style={{ fontStyle: 'italic' }}>
                       <Button
+                        id={row._id}
                         onClick={() => {
+                          isDeparture
+                            ? handleDepartureFlight(row._id)
+                            : handleArrivalFlight(row._id);
                           const newValue = count + 1;
                           setCount(newValue);
                           nextPage(newValue);

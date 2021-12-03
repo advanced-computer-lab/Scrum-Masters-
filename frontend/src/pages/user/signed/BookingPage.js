@@ -8,28 +8,34 @@ import Stepper from '@mui/material/Stepper';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import Check from '@mui/icons-material/Check';
-import FlightIcon from '@mui/icons-material/Flight';
-import SettingsIcon from '@mui/icons-material/Settings';
+
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
-import VideoLabelIcon from '@mui/icons-material/VideoLabel';
 import StepConnector, {
   stepConnectorClasses,
 } from '@mui/material/StepConnector';
-import FlightLandSharpIcon from '@mui/icons-material/FlightLandSharp';
-import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import SearchFlight from '../../../components/user/forms/SearchFlight';
 import { Container } from 'react-bootstrap';
-import FlightReservation from './FlightReservation';
+import FlightReservation from '../../../components/user/FlightReservation';
 
-const LandingPage = () => {
-  const [departuredata, setDepartureData] = useState();
-  const [arrivaldata, setArrivalData] = useState();
+const BookingPage = () => {
+  const [departuredata, setDepartureData] = useState(); //contains data of all departing flights that the user can choose from
+  const [arrivaldata, setArrivalData] = useState(); //contains data of all arriving flights that the user can choose from
   const [actualStep, setActualStep] = useState(0);
   const [activeStep, setActiveStep] = useState(actualStep - 1);
   const [skipped, setSkipped] = useState(new Set());
+  const [departureFlight, setDepartureFlight] = useState(0); //for the selected departure flight
+  const [arrivalFlight, setArrivalFlight] = useState(0); //for the selected arrival flight
 
+  const handleDepartureFlight = async (code) => {
+    const newDeparture = code;
+    setDepartureFlight(newDeparture);
+  };
+
+  const handleArrivalFlight = async (code) => {
+    const newArrival = code;
+    await setArrivalFlight(newArrival);
+  };
   const nextPage = (count) => {
     let newSkipped = skipped;
     setActualStep((prevActiveStep) => prevActiveStep + 1);
@@ -187,8 +193,25 @@ const LandingPage = () => {
           ))}
         </Stepper>
       )}
-      {actualStep === 0 && <FlightReservation data={res} nextPage={nextPage} />}
-      {actualStep === 1 && <FlightReservation data={res} nextPage={nextPage} />}
+      {actualStep === 0 && (
+        <FlightReservation
+          data={res}
+          nextPage={nextPage}
+          isDeparture={true}
+          handleArrivalFlight={handleArrivalFlight}
+          handleDepartureFlight={handleDepartureFlight}
+        />
+      )}
+      {actualStep === 1 && (
+        <FlightReservation
+          data={res}
+          nextPage={nextPage}
+          handleArrivalFlight={handleArrivalFlight}
+          handleDepartureFlight={handleDepartureFlight}
+          isDeparture={false}
+        />
+      )}
+
       {actualStep === 2 && <SearchFlight />}
       <Box
         sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}
@@ -214,4 +237,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default BookingPage;
