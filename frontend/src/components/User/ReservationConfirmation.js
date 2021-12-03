@@ -51,6 +51,7 @@ import PassengerDeets from './forms/PassengerDeets';
 const axios = require("axios").default;
 
 const BookTicket = () => {
+  var j="maram";
    var  i=8;
    
    const [open, setOpen] = React.useState(false);
@@ -131,7 +132,7 @@ const BookTicket = () => {
     
       
     
-    /*  <><Container >
+     <><Container >
         <Box  > Who's Traveling*/
         <div>
         {dynamicRender()}
@@ -308,7 +309,7 @@ const BookTicket = () => {
                         <Grid item xs={6}>
                           <Item>
                             <TodayIcon />
-                            Departure Flight Date
+                            Departure Flight Date+{j}
                           </Item>
                         </Grid>
                         <Grid item xs={6}>
@@ -483,7 +484,7 @@ const BookTicket = () => {
               variant: "fill",
             }}
           >Finalize reservation</Button>
-        </Container></>*/
+        </Container></>
        
     );
 };

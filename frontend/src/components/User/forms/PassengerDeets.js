@@ -6,7 +6,7 @@ import { useState } from "react";
 import Stack from "@mui/material/Stack";
 import { Container } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import { DialogActions } from "@mui/material";
+import { Checkbox, DialogActions } from "@mui/material";
 import { DialogContent } from "@mui/material";
 import { DialogTitle } from "@mui/material";
 import { Dialog } from "@mui/material";
@@ -44,6 +44,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 
 
 const PassengerDeets = () => {
+  const [passengers,setPassengersDeets]=useState([]);
   const [expanded, setExpanded] = React.useState(false);
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -71,10 +72,12 @@ return(
           <Typography sx={{ color: 'text.secondary' }}></Typography>
         </AccordionSummary>
         <AccordionDetails>
-        <Stack direction="row" spacing={3} style={{ marginTop: "30px" }}>
-        <Stack direction='column' spacing={3}>
+        <Stack direction="row" spacing={30} style={{ marginTop: "30px" }}>
+        <Stack direction='column' spacing={3} height="200px" width="300px">
         <TextField
             required
+            height="5px"
+            width="200px"
             backgroundcolor="#f2f2f2"
             type="String"
             position="left"
@@ -106,9 +109,10 @@ return(
             //  shrink: true,
            // }}
              /> 
+            
              </Stack>
             
-             <Stack direction ='column' spacing={3}>  
+             <Stack direction ='column' spacing={3} height="300px" width="350px">  
             <TextField
             required
             backgroundcolor="#f2f2f2"
@@ -144,10 +148,31 @@ return(
            // }}
             />
              </Stack>
-             
-          
+            < Stack direction="column" spacing={4}>
+            <TextField
+            required
+            backgroundcolor="#f2f2f2"
+            type="Date"
+            // placeholder=''
+            //label="Date Of Birth"
+            variant="filled"
+            name="dateOfBirth"
+           //value={}
+           // onChange={(event) => {
+            //  setDepartureTime(event.target.value);
+            //} }
+           // InputLabelProps={{
+            //  shrink: true,
+           // }}
+             /> 
+             </Stack>
+            
             
              </Stack>
+             <div>
+              <input type="checkbox" id= "designillustration" name="medium" required marginTop="5px" />
+               <span>I hereby confirm that provided information is accurate as represented on official documents of ticket carrier</span>
+            </div>
              
           <Typography>
            

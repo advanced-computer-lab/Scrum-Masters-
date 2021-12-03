@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "@duffel/components": "^2.0.1",
-    "@emotion/react": "^11.5.0",
-    "@emotion/styled": "^11.3.0",
+    "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
     "@fontsource/alegreya": "^4.5.0",
     "@fontsource/ceviche-one": "^4.5.0",
     "@fontsource/henny-penny": "^4.5.0",
