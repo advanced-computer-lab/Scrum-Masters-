@@ -81,7 +81,7 @@ router.post("/search", async (req, res) => {
 
 /** req 
  * { 
- *    noOfAdults: 3,
+ *  noOfAdults: 3,
     noOfChildren: 0,
     arrivalDate: '2021-11-02T00:00:00.000Z',
     cabin: 'economy'
