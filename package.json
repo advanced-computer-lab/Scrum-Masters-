@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/advanced-computer-lab/Scrum-Masters-#readme",
   "dependencies": {
-    "@material-ui/data-grid": "^4.0.0-alpha.37",
+    "@duffel/components": "^2.0.1",
+    "@material-ui/core": "^4.12.3",
+    "@trendmicro/react-dropdown": "^1.4.0",
     "concurrently": "^6.3.0",
     "install": "^0.13.0",
     "nodemon": "^2.0.14",
