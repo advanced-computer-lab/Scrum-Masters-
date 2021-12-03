@@ -6,7 +6,7 @@ import Schedule from './pages/admin/Schedule';
 import FlightCreation from './pages/admin/FlightCreation';
 import SelectSeat from './pages/user/signed/SelectSeat';
 import LandingPage from './pages/user/signed/LandingPage';
-import FlightReservation from './pages/user/signed/FlightReservation';
+import FlightReservation from './components/user/FlightReservation';
 
 function App() {
   return (
