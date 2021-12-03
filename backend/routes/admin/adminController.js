@@ -92,12 +92,11 @@ async function getTickets(tickets, flightNumber) {
     console.log("new ticket", ticket);
     const t = new Ticket(ticket);
     createdTickets.push(t._id);
-    console.log("the ticket t ",t)
-    
-      t.save().then().catch()  
-    
-      });
-  console.log("saved tickets ",createdTickets)
+    console.log("the ticket t ", t);
+
+    t.save().then().catch();
+  });
+  console.log("saved tickets ", createdTickets);
   return createdTickets;
 }
 
