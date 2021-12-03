@@ -100,7 +100,7 @@ const SearchFlight = () => {
     else{
       //console.log(query);
       history.push({
-        pathname: '/',
+        pathname: '/flights',
         state:query
       });
     }
