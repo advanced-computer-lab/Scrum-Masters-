@@ -36,7 +36,11 @@ import EventSeatIcon from '@mui/icons-material/EventSeat';
 //import { Invoice } from 'react-simple-invoice';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Input from "@mui/material/Input";
-
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import PassengerDeets from './forms/PassengerDeets';
 
 
 
@@ -47,36 +51,39 @@ import Input from "@mui/material/Input";
 const axios = require("axios").default;
 
 const BookTicket = () => {
-   var  i=0;
+   var  i=8;
+   
    const [open, setOpen] = React.useState(false);
    const [checked, setChecked] = React.useState(false);
+   const [expanded, setExpanded] = React.useState(false);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [inputFields, setInputField] = useState([{ FirstName: '', LastName : '', NationalID: '', Gender:''}]) 
+ /* const [inputFields, setInputField] = useState([{ FirstName: '', LastName : '', PassportNumber: '', Gender:'',DateOfBirth:''}]) 
   const showAlert = () => {
    setOpen(true);
- };
- /*const handleChange = () => {
-  setChecked(!checked);
-};*/
-let handleChange = (i, e) => {
+ };*/
+ const handleChange = (panel) => (event, isExpanded) => {
+  setExpanded(isExpanded ? panel : false);
+};
+/*let handleChangelol = (i, e) => {
   let newInputFields = [...inputFields];
   newInputFields[i][e.target.name] = e.target.value;
   setInputField(newInputFields);
-} 
-for(i=0;i<5;i++){
+} */
+//for(i=0;i<5;i++){
 
 
-let addInput = () => {
-  setInputField([...inputFields, { FirstName: '', LastName: '', NationalID:'', Gender:'' }])
+/*let addInput = () => {
+  setInputField([...inputFields, { FirstName: '', LastName: '', NationalID:'', Gender:'' ,Type:''}])
 }
-}
+//}*/
 
-let removeFormFields = (i) => {
+/*let removeFormFields = (i) => {
   let newInputFields = [...inputFields];
   newInputFields.splice(i, 1);
   setInputField(newInputFields)
-}
+}*/
  //const onclose = () => {
    //setOpen(false);
    //return false;
@@ -104,18 +111,54 @@ let removeFormFields = (i) => {
       textAlign: 'center',
       color: theme.palette.text.secondary,
     }));
-    return (
-      <><Container >
-        <Box  > Who's Traveling
-          <form>
-            {inputFields.map((inputField,index)=>(
+    const dynamicRender = () =>{
+      var l=[];
+      for(let m=0; m<i; m++){
+         l.push(<PassengerDeets>
+          </PassengerDeets>)
+        
+  
+  
+          }
+      return  l;
+         
+       
+              
+      
+        
+    }
+    return (  
+    
+      
+    
+    /*  <><Container >
+        <Box  > Who's Traveling*/
+        <div>
+        {dynamicRender()}
+        </div>
+         /* <form>
+            
            
            
            
           <Stack direction="row" spacing={10} style={{ marginTop: "30px" }}>
             
-         <div key={index}>
-          <TextField
+         <div >
+         <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
+        >
+          <Typography sx={{ width: '33%', flexShrink: 0 }}>
+            Passenger Info
+          </Typography>
+          <Typography sx={{ color: 'text.secondary' }}></Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Stack direction ='row' spacing={4}>
+            <Stack direction='column' spacing={3}>
+        <TextField
             required
             backgroundcolor="#f2f2f2"
             type="String"
@@ -124,7 +167,7 @@ let removeFormFields = (i) => {
             variant="filled"
             label="First Name"
             name="First Name"
-            value={inputField.FirstName}
+           // value={inputField.FirstName}
            // onChange={(event) => {
             //  setFlightNumber(event.target.value);
            // } }
@@ -132,9 +175,23 @@ let removeFormFields = (i) => {
              // shrink: true,
             //}}
              />
-            </div>
-            <div key={index}>
-          <TextField
+             <TextField
+            required
+            backgroundcolor="#f2f2f2"
+            type="Text"
+             placeholder='Gender'
+            label="Gender"
+            variant="filled"
+            name="Gender"
+          // value={inputField.Gender}
+           // onChange={(event) => {
+            //  setDepartureTime(event.target.value);
+            //} }
+           // InputLabelProps={{
+            //  shrink: true,
+           // }}
+             />   
+            <TextField
             required
             backgroundcolor="#f2f2f2"
             type="String"
@@ -142,7 +199,7 @@ let removeFormFields = (i) => {
             label="Last Name"
             variant="filled"
             name="departureTime"
-           value={inputField.LastName}
+           //value={inputField.LastName}
            // onChange={(event) => {
             //  setDepartureTime(event.target.value);
             //} }
@@ -150,17 +207,33 @@ let removeFormFields = (i) => {
            //   shrink: true,
            // }}
             />
-             </div>
-            <div key={index}>
+            </Stack>
+            <Stack direction='column' spacing={3}>
+            <TextField
+            required
+            backgroundcolor="#f2f2f2"
+            type="String"
+             placeholder='Last Name'
+            label="Last Name"
+            variant="filled"
+            name="departureTime"
+           //value={inputField.LastName}
+           // onChange={(event) => {
+            //  setDepartureTime(event.target.value);
+            //} }
+           // InputLabelProps={{
+           //   shrink: true,
+           // }}
+            />
             <TextField
             required
             backgroundcolor="#f2f2f2"
             type="Number"
-            placeholder='National ID'
+            placeholder='Passport Number'
             label="National ID Number"
             variant="filled"
             name="departureTime"
-            value={inputField.NationalID}
+            //value={inputField.NationalID}
            // onChange={(event) => {
             //  setDepartureTime(event.target.value);
             //} }
@@ -168,8 +241,8 @@ let removeFormFields = (i) => {
            //   shrink: true,
            // }}
             />    
-             </div>
-            <div key={index}>
+             
+            
             <TextField
             required
             backgroundcolor="#f2f2f2"
@@ -178,7 +251,7 @@ let removeFormFields = (i) => {
             label="Gender"
             variant="filled"
             name="Gender"
-           value={inputField.Gender}
+           //value={inputField.Gender}
            // onChange={(event) => {
             //  setDepartureTime(event.target.value);
             //} }
@@ -186,12 +259,25 @@ let removeFormFields = (i) => {
             //  shrink: true,
            // }}
              />   
+             </Stack>
+             </Stack>
+
+          <Typography>
+           
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+         
+          
+             </div>
+            <div >
+            
             
           </div>
           
         </Stack>
-             ) )}
-         </form>
+           
+           )  </form>
          
          
         </Box>
@@ -307,7 +393,7 @@ let removeFormFields = (i) => {
             </Modal>
 
             <Button
-               onClick={()=>addInput()}
+               //onClick={()=>addInput()}
                type="SUBMIT"
               aria-label="Add"
               //onClick={handleOpen}
@@ -397,7 +483,7 @@ let removeFormFields = (i) => {
               variant: "fill",
             }}
           >Finalize reservation</Button>
-        </Container></>
+        </Container></>*/
        
     );
 };
