@@ -1,35 +1,35 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
-import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import RemoveCircleRoundedIcon from "@mui/icons-material/RemoveCircleRounded";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemText from "@mui/material/ListItemText";
-import FromToInput from "../../../utilities/FromToInput";
-import PassengersButton from "../../../utilities/PassengersButton";
-import TextField from "@mui/material/TextField";
-import { Autocomplete } from "@mui/material";
-import FlightTakeoffRoundedIcon from "@mui/icons-material/FlightTakeoffRounded";
-import SearchIcon from "@mui/icons-material/Search";
-import InputAdornment from "@mui/material/InputAdornment";
-import FlightLandRounded from "@mui/icons-material/FlightLandRounded";
-import axios from "axios";
-import { Tooltip } from "@mui/material";
-import { DialogActions } from "@mui/material";
-import { DialogContent } from "@mui/material";
-import { DialogTitle } from "@mui/material";
-import { Dialog } from "@mui/material";
-import { DialogContentText } from "@mui/material";
+import React from 'react';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemText from '@mui/material/ListItemText';
+import FromToInput from '../../../utilities/FromToInput';
+import PassengersButton from '../../../utilities/PassengersButton';
+import TextField from '@mui/material/TextField';
+import { Autocomplete } from '@mui/material';
+import FlightTakeoffRoundedIcon from '@mui/icons-material/FlightTakeoffRounded';
+import SearchIcon from '@mui/icons-material/Search';
+import InputAdornment from '@mui/material/InputAdornment';
+import FlightLandRounded from '@mui/icons-material/FlightLandRounded';
+import axios from 'axios';
+import { Tooltip } from '@mui/material';
+import { DialogActions } from '@mui/material';
+import { DialogContent } from '@mui/material';
+import { DialogTitle } from '@mui/material';
+import { Dialog } from '@mui/material';
+import { DialogContentText } from '@mui/material';
 
 const SearchFlight = () => {
   useEffect(() => {
     axios
-      .get("http://localhost:8081/user/search/flights")
+      .get('http://localhost:8081/user/search/flights')
       .then((res) => {
         setFrom(res.data.from);
         setTo(res.data.to);
@@ -39,17 +39,16 @@ const SearchFlight = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const cabins = ["economy", "business", "first class"];
+  const cabins = ['economy', 'business', 'first class'];
 
   const [query, setQuery] = useState();
   const [from, setFrom] = useState();
   const [to, setTo] = useState();
   const [error, setError] = useState(false);
   const [open, setOpen] = React.useState(false);
-  const [errorMessage,setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
 
   const history = useHistory();
-
 
   const cabinProps = {
     options: cabins,
@@ -84,27 +83,25 @@ const SearchFlight = () => {
   };
 
   const onSubmit = () => {
-    if(!query.noOfChildren){
+    if (!query.noOfChildren) {
       query.noOfChildren = 0;
     }
-    if(!query.noOfAdults){
+    if (!query.noOfAdults) {
       query.noOfAdults = 0;
     }
-    
-    if((query.noOfAdults + query.noOfChildren)===0){
-      console.log("the total is 0")
+
+    if (query.noOfAdults + query.noOfChildren === 0) {
+      console.log('the total is 0');
       setError(true);
-      setErrorMessage("Please choose at least 1 passenger")
+      setErrorMessage('Please choose at least 1 passenger');
       showAlert();
-    }
-    else{
+    } else {
       //console.log(query);
       history.push({
-        pathname: '/flights',
-        state:query
+        pathname: '/user',
+        state: query,
       });
     }
-    
   };
 
   function decrementAdultCount() {
@@ -135,29 +132,29 @@ const SearchFlight = () => {
       container
       rowSpacing={5}
       columnSpacing={{ xs: 1, sm: 2, md: 2 }}
-      style={{ marginTop: "20px" }}
+      style={{ marginTop: '20px' }}
     >
       <Grid item xs={6} md={2}>
         <div>
           <Autocomplete
             {...fromProps}
-            id="blur-on-select"
-            name="departureAirport"
+            id='blur-on-select'
+            name='departureAirport'
             required
             onChange={(e, newValue) =>
-              setQuery({ ...query, ["departureAirport"]: newValue })
+              setQuery({ ...query, ['departureAirport']: newValue })
             }
             blurOnSelect
             clearOnEscape
-            size="30px"
+            size='30px'
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder="from"
+                placeholder='from'
                 InputProps={{
                   ...params.InputProps,
                   startAdornment: (
-                    <InputAdornment position="start">
+                    <InputAdornment position='start'>
                       <FlightTakeoffRoundedIcon />
                     </InputAdornment>
                   ),
@@ -172,23 +169,23 @@ const SearchFlight = () => {
         <div>
           <Autocomplete
             {...toProps}
-            id="blur-on-select"
-            name="arrivalAirport"
+            id='blur-on-select'
+            name='arrivalAirport'
             onChange={(e, newValue) =>
-              setQuery({ ...query, ["arrivalAirport"]: newValue })
+              setQuery({ ...query, ['arrivalAirport']: newValue })
             }
             required
             blurOnSelect
             clearOnEscape
-            size="30px"
+            size='30px'
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder="to"
+                placeholder='to'
                 InputProps={{
                   ...params.InputProps,
                   startAdornment: (
-                    <InputAdornment position="start">
+                    <InputAdornment position='start'>
                       <FlightLandRounded></FlightLandRounded>
                     </InputAdornment>
                   ),
@@ -204,18 +201,18 @@ const SearchFlight = () => {
           <IconButton
             onClick={() => {
               decrementAdultCount();
-              setQuery({ ...query, ["noOfAdults"]: adultCount + 1 });
+              setQuery({ ...query, ['noOfAdults']: adultCount + 1 });
             }}
           >
             <RemoveCircleRoundedIcon />
           </IconButton>
           <TextField
-            name="noOfAdults"
-            label="Adults"
-            type="number"
+            name='noOfAdults'
+            label='Adults'
+            type='number'
             value={adultCount}
             onChange={onChange}
-            style={{ marginTop: "5%", float: "center" }}
+            style={{ marginTop: '5%', float: 'center' }}
             disabled={true}
           >
             {/* {adultCount}{" "} */}
@@ -223,7 +220,7 @@ const SearchFlight = () => {
           <IconButton
             onClick={() => {
               incrementAdultCount();
-              setQuery({ ...query, ["noOfAdults"]: adultCount + 1 });
+              setQuery({ ...query, ['noOfAdults']: adultCount + 1 });
             }}
           >
             <AddCircleIcon />
@@ -235,25 +232,25 @@ const SearchFlight = () => {
           <IconButton
             onClick={() => {
               decrementChildrenCount();
-              setQuery({ ...query, ["noOfChildren"]: childrenCount + 1 });
+              setQuery({ ...query, ['noOfChildren']: childrenCount + 1 });
             }}
           >
             <RemoveCircleRoundedIcon />
           </IconButton>
           <TextField
-            name="noOfChildren"
-            type="number"
-            label="Children"
+            name='noOfChildren'
+            type='number'
+            label='Children'
             value={childrenCount}
             disabled={true}
-            style={{ marginTop: "5%", float: "center" }}
+            style={{ marginTop: '5%', float: 'center' }}
           >
             {/* {adultCount}{" "} */}
           </TextField>
           <IconButton
             onClick={() => {
               incrementChildrenCount();
-              setQuery({ ...query, ["noOfChildren"]: childrenCount + 1 });
+              setQuery({ ...query, ['noOfChildren']: childrenCount + 1 });
             }}
           >
             <AddCircleIcon />
@@ -263,9 +260,9 @@ const SearchFlight = () => {
 
       <Grid item xs={6} md={2}>
         <TextField
-          id="outlined-search"
-          label="Departure Date"
-          type="date"
+          id='outlined-search'
+          label='Departure Date'
+          type='date'
           InputLabelProps={{
             shrink: true,
             style: {
@@ -274,24 +271,24 @@ const SearchFlight = () => {
               // padding: "1px",
             },
           }}
-          name="departureDate"
+          name='departureDate'
           onChange={onChange}
         />
       </Grid>
       <Grid item xs={6} md={2}>
         <TextField
-          id="outlined-search"
-          label="Arrival Date"
-          type="date"
+          id='outlined-search'
+          label='Arrival Date'
+          type='date'
           InputLabelProps={{
             shrink: true,
             style: {
-              backgroundColor: "white",
-              width: "auto",
-              padding: "1px",
+              backgroundColor: 'white',
+              width: 'auto',
+              padding: '1px',
             },
           }}
-          name="arrivalDate"
+          name='arrivalDate'
           onChange={onChange}
         />
       </Grid>
@@ -299,58 +296,57 @@ const SearchFlight = () => {
         <div>
           <Autocomplete
             {...cabinProps}
-            id="blur-on-select"
+            id='blur-on-select'
             // name="cabin"
             blurOnSelect
             clearOnEscape
-            size="30px"
+            size='30px'
             onChange={(e, newValue) =>
-              setQuery({ ...query, ["cabin"]: newValue })
+              setQuery({ ...query, ['cabin']: newValue })
             }
             renderInput={(params) => (
-              <TextField {...params} placeholder="Cabin" />
+              <TextField {...params} placeholder='Cabin' />
             )}
           />
         </div>
       </Grid>
 
       <Grid item xs={6} md={2}>
-        <Tooltip title="Search" arrow placement="right">
-          <IconButton aria-label="delete" onClick={onSubmit} size="large">
-            <SearchIcon size="large" style={{ color: "#48bfe3" }} />
+        <Tooltip title='Search' arrow placement='right'>
+          <IconButton aria-label='delete' onClick={onSubmit} size='large'>
+            <SearchIcon size='large' style={{ color: '#48bfe3' }} />
           </IconButton>
         </Tooltip>
       </Grid>
       {error && (
-            <Dialog open={open} onClose={alertClose}>
-              <DialogTitle
-                id="alert-dialog-title"
-                color="purple"
-                style={{ textAlign: "center" }}
-              >
-                {"Cannot Search for flight"}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  {errorMessage}
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions style={{ justifyContent: "center" }}>
-                <Button
-                  onClick={() => {
-                    alertClose();
-                    setError(false);
-                    window.location.reload(false);
-                  }}
-                  autoFocus
-                >
-                  close
-                </Button>
-              </DialogActions>
-            </Dialog>
-          )}
+        <Dialog open={open} onClose={alertClose}>
+          <DialogTitle
+            id='alert-dialog-title'
+            color='purple'
+            style={{ textAlign: 'center' }}
+          >
+            {'Cannot Search for flight'}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id='alert-dialog-description'>
+              {errorMessage}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions style={{ justifyContent: 'center' }}>
+            <Button
+              onClick={() => {
+                alertClose();
+                setError(false);
+                window.location.reload(false);
+              }}
+              autoFocus
+            >
+              close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </Grid>
-    
   );
 };
 
