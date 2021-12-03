@@ -33,7 +33,8 @@ const BookingPage = () => {
   };
 
   const handleArrivalFlight = async (code) => {
-    await setArrivalFlight(code);
+    const newArrival = code;
+    await setArrivalFlight(newArrival);
   };
   const nextPage = (count) => {
     let newSkipped = skipped;
