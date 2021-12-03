@@ -1,9 +1,9 @@
-import { React, useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
-import SearchFlight from "../../components/admin/forms/SearchFlight";
-import ViewFlights from "../../components/admin/ViewFlights";
-import axios from "axios";
-import Typography from "@mui/material/Typography";
+import { React, useEffect, useState } from 'react';
+import { Container } from 'react-bootstrap';
+import SearchFlight from '../../components/admin/forms/SearchFlight';
+import ViewFlights from '../../components/admin/ViewFlights';
+import axios from 'axios';
+import Typography from '@mui/material/Typography';
 
 const Schedule = () => {
   const [data, setData] = useState();
@@ -16,15 +16,15 @@ const Schedule = () => {
     if (e) {
       try {
         console.log(
-          "this is the target value " +
+          'this is the target value ' +
             e.target.value +
-            " with length " +
+            ' with length ' +
             e.target.value.length
         );
         if (e.target.value.length !== 0) {
           if (
-            e.target.name === "departureAirport" ||
-            e.target.name === "arrivalAirport"
+            e.target.name === 'departureAirport' ||
+            e.target.name === 'arrivalAirport'
           )
             await setValues({
               ...values,
@@ -52,7 +52,7 @@ const Schedule = () => {
   };
   useEffect(() => {
     axios
-      .post("http://localhost:8081/admin/search", values)
+      .post('http://localhost:8081/admin/search', values)
       .then((res) => {
         setData(res.data);
       })
@@ -68,10 +68,10 @@ const Schedule = () => {
       >
         Flights Schedule
       </Typography> */}
-      <div style={{ marginTop: "2%" }}>
+      <div style={{ marginTop: '2%' }}>
         <SearchFlight onSubmit={onSubmit} onChange={onChange} />
       </div>
-      <div style={{ marginTop: "2%" }}>
+      <div style={{ marginTop: '2%' }}>
         <ViewFlights flights={data} onDelete={onDelete} onUpdate={onUpdate} />
       </div>
     </Container>

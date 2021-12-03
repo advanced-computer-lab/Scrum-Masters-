@@ -18,12 +18,13 @@ import Schedule from "./pages/admin/Schedule";
 import FlightCreation from "./pages/admin/FlightCreation";
 import SelectSeat from "./pages/user/signed/SelectSeat";
 import LandingPage from "./pages/user/signed/LandingPage";*/
+import BookingPage from './pages/user/signed/BookingPage';
 
 function App() {
   const user = true;
   return (
     <Router>
-      <div className="App">
+      <div className='App'>
         <TopBar isUser={user} />
         <Switch>
           <Route exact path={['/', '/schedule']} component={Schedule}></Route>
@@ -39,6 +40,11 @@ function App() {
             <Route exact path="/selectSeat" component={SelectSeat}></Route>
             <Route exact path="/user" component={LandingPage}></Route>
             <Route exact path="/itenirary" component={Itenirary}></Route>
+        </Switch>
+        {user && (
+          <Switch>
+            <Route exact path='/selectSeat' component={SelectSeat}></Route>
+            <Route exact path='/user' component={BookingPage}></Route>
           </Switch>
         )}
       </div>

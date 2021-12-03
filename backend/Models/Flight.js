@@ -1,7 +1,8 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 //const Schema = mongoose.Schema;
 
-const flightSchema = mongoose.Schema( // check for unique flight numbers within the day
+const flightSchema = mongoose.Schema(
+  // check for unique flight numbers within the day
   {
     flightNumber: {
       type: Number,
@@ -44,21 +45,27 @@ const flightSchema = mongoose.Schema( // check for unique flight numbers within 
         default: 0,
         required: true,
       },
-      childPrice:{
+      childPrice: {
         type: Number,
         default: 750,
         required: true,
       },
-      adultPrice:{
+      adultPrice: {
         type: Number,
         default: 1000,
         required: true,
       },
       availableSeats: {
         type: Number,
-        default: function(){return this.economy.noOfSeats},
+        default: function () {
+          return this.economy.noOfSeats;
+        },
         required: true,
-      }
+      },
+      baggageAllowance: {
+        type: Number,
+        default: 2,
+      },
     },
 
     business: {
@@ -67,21 +74,27 @@ const flightSchema = mongoose.Schema( // check for unique flight numbers within 
         default: 0,
         required: true,
       },
-      childPrice:{
+      childPrice: {
         type: Number,
         default: 1100,
         required: true,
       },
-      adultPrice:{
+      adultPrice: {
         type: Number,
         default: 1800,
         required: true,
       },
       availableSeats: {
         type: Number,
-        default: function(){return this.business.noOfSeats},
+        default: function () {
+          return this.business.noOfSeats;
+        },
         required: true,
-      }
+      },
+      baggageAllowance: {
+        type: Number,
+        default: 2,
+      },
     },
 
     firstClass: {
@@ -90,69 +103,76 @@ const flightSchema = mongoose.Schema( // check for unique flight numbers within 
         default: 0,
         required: true,
       },
-      childPrice:{
+      childPrice: {
         type: Number,
         default: 1500,
         required: true,
       },
-      adultPrice:{
+      adultPrice: {
         type: Number,
         default: 3000,
         required: true,
       },
       availableSeats: {
         type: Number,
-        default: function(){return this.firstClass.noOfSeats},
+        default: function () {
+          return this.firstClass.noOfSeats;
+        },
         required: true,
       },
       baggageAllowance: {
-        type : Number,
-        default : 3
-      }
+        type: Number,
+        default: 3,
+      },
     },
-  
-
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 flightSchema
-  .virtual("noOfSeats")
+  .virtual('noOfSeats')
   .get(function () {
-    return this.firstClass.noOfSeats + this.business.noOfSeats + this.economy.noOfSeats;
+    return (
+      this.firstClass.noOfSeats +
+      this.business.noOfSeats +
+      this.economy.noOfSeats
+    );
   })
   .set(function (noOfSeats) {
     this.noOfSeats = noOfSeats;
   });
 
-  flightSchema
-  .virtual("availableSeats")
+flightSchema
+  .virtual('availableSeats')
   .get(function () {
-    return this.firstClass.availableSeats + this.business.availableSeats + this.economy.availableSeats;
+    return (
+      this.firstClass.availableSeats +
+      this.business.availableSeats +
+      this.economy.availableSeats
+    );
   })
   .set(function (availableSeats) {
     this.availableSeats = availableSeats;
   });
 
-
 flightSchema
-  .virtual("duration")
+  .virtual('duration')
   .get(function () {
-    d1 = new Date(Date.parse("2017-05-02T" + this.departureTime));
-    d2 = new Date(Date.parse("2017-05-02T" + this.arrivalTime));
+    d1 = new Date(Date.parse('2017-05-02T' + this.departureTime));
+    d2 = new Date(Date.parse('2017-05-02T' + this.arrivalTime));
     d3 = new Date(d2 - d1);
     d0 = new Date(0);
 
     return (
       d3.getHours() -
       d0.getHours() +
-      "h " +
+      'h ' +
       (d3.getMinutes() - d0.getMinutes()) +
-      "m"
+      'm'
     );
   })
   .set(function (duration) {
     this.duration = duration;
   });
 
-const Flight = mongoose.model("Flight", flightSchema);
+const Flight = mongoose.model('Flight', flightSchema);
 module.exports = Flight;
