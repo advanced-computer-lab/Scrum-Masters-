@@ -77,7 +77,7 @@ router.get("/reserved/:flightId", (req, res) => {
 
 //user
 router.get("/profile/:id", async (req, res) => {
-  User.findbyId(req.params.id)
+  User.findById(req.params.id)
     .then((result) => {
       res.send(result);
       console.log(result);
@@ -85,6 +85,17 @@ router.get("/profile/:id", async (req, res) => {
     .catch((err) => {
       res.status(404).send(err);
     });
+});
+router.post("/profile", async (req, res) => {
+  const insertion = req.body;
+  const user = new User(insertion);
+  user
+    .save()
+    .then((result) => {
+      res.send(result);
+      console.log(result);
+    })
+    .catch((err) => res.status(400).send(err));
 });
 router.patch("/profile/update/:id", async (req, res) => {
   User.findByIdAndUpdate(req.params.id, req.body, { new: true })
