@@ -69,6 +69,7 @@ const ViewFlightSummary = ({ input1, input2 }) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  
   const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
     padding: theme.spacing(1),
@@ -159,7 +160,7 @@ const ViewFlightSummary = ({ input1, input2 }) => {
               <ConfirmationNumberIcon /> Total Number of Tickets per reservation:{input1.details.noOfAdults+input1.details.noOfChildren+input2.details.noOfAdults+input2.details.noOfChildren }
             </Item>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} >
             <Item>
               <EventSeatIcon />
               Class Cabin:{input1.details.cabin}
