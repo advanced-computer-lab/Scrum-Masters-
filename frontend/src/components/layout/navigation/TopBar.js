@@ -84,7 +84,7 @@ const TopBar = (props) => {
                     },
                   }}
                   onClick={guestClick}
-                  href='/user'
+                  href='/search'
                 >
                   {' '}
                   Sign In{' '}
