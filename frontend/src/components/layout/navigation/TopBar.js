@@ -1,13 +1,13 @@
-import { React, useState } from "react";
-import { Nav, Container, Navbar } from "react-bootstrap";
-import { Button } from "@mui/material";
-import { purple } from "@mui/material/colors";
-import { Link } from "react-router-dom";
-import logo from "../../../images/logo-white.png";
-import ProfileButton from "../../admin/buttons/ProfileButton";
-import "@fontsource/henny-penny";
-import "../../../styles/custom.css";
-import UserProfile from "../../user/existing/buttons/UserProfile";
+import { React, useState } from 'react';
+import { Nav, Container, Navbar } from 'react-bootstrap';
+import { Button } from '@mui/material';
+import { purple } from '@mui/material/colors';
+import { Link } from 'react-router-dom';
+import logo from '../../../images/logo-white.png';
+import ProfileButton from '../../admin/buttons/ProfileButton';
+import '@fontsource/henny-penny';
+import '../../../styles/custom.css';
+import UserProfile from '../../user/existing/buttons/UserProfile';
 const TopBar = (props) => {
   const [admin, setAdmin] = useState(props.admin);
   const [existing, setExisting] = useState(props.existing);
@@ -16,48 +16,48 @@ const TopBar = (props) => {
     setAdmin(false);
     props.onSignIn();
   };
-   const logOutClick = () => {
-     setExisting(false);
-     setAdmin(false);
-     props.onSignOut();
-   };
+  const logOutClick = () => {
+    setExisting(false);
+    setAdmin(false);
+    props.onSignOut();
+  };
   return (
     <Navbar
       collapseOnSelect
-      expand="lg"
-      sticky="top"
-      variant="dark"
-      style={{ backgroundColor: "#5f2daf", color: "white" }}
-      className="container-fluid"
+      expand='lg'
+      sticky='top'
+      variant='dark'
+      style={{ backgroundColor: '#5f2daf', color: 'white' }}
+      className='container-fluid'
     >
       <Container>
         <Navbar.Brand
-          href="/"
+          href='/'
           style={{
-            fontSize: "21pt",
-            fontFamily: "Henny Penny",
+            fontSize: '21pt',
+            fontFamily: 'Henny Penny',
           }}
         >
           <img
             src={logo}
-            width="65"
-            height="40"
-            className="d-inline-block align-top"
-            alt="logo"
-            style={{ marginRight: "3%" }}
+            width='65'
+            height='40'
+            className='d-inline-block align-top'
+            alt='logo'
+            style={{ marginRight: '3%' }}
           />
           Cloud 9
         </Navbar.Brand>
         <Container style={{ paddingRight: 0 }}>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Toggle aria-controls='responsive-navbar-nav' />
           {admin && (
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="me-auto"></Nav>
+            <Navbar.Collapse id='responsive-navbar-nav'>
+              <Nav className='me-auto'></Nav>
               <Nav>
-                <Nav.Link href="/schedule" style={{ color: "white" }} exact>
+                <Nav.Link href='/schedule' style={{ color: 'white' }} exact>
                   View Schedule
                 </Nav.Link>
-                <Nav.Link href="/addFlight" style={{ color: "white" }} exact>
+                <Nav.Link href='/addFlight' style={{ color: 'white' }} exact>
                   Add a New Flight
                 </Nav.Link>
                 <ProfileButton />
@@ -65,45 +65,45 @@ const TopBar = (props) => {
             </Navbar.Collapse>
           )}
           {!existing && !admin && (
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="me-auto"></Nav>
+            <Navbar.Collapse id='responsive-navbar-nav'>
+              <Nav className='me-auto'></Nav>
               <Nav>
-                <Nav.Link href="/book" style={{ color: "white" }} exact>
+                <Nav.Link href='/search' style={{ color: 'white' }} exact>
                   Book a Flight
                 </Nav.Link>
                 {/* <Nav.Link href="/user"> */}
                 <Button
-                  variant="contained"
-                  style={{ marginLeft: "30px" }}
+                  variant='contained'
+                  style={{ marginLeft: '30px' }}
                   sx={{
-                    color: "#7400b8",
-                    backgroundColor: "#ffffff",
-                    "&:hover": {
-                      backgroundColor: "#e9e9e9",
-                      color: "#7400b8",
+                    color: '#7400b8',
+                    backgroundColor: '#ffffff',
+                    '&:hover': {
+                      backgroundColor: '#e9e9e9',
+                      color: '#7400b8',
                     },
                   }}
                   onClick={guestClick}
-                  href="/user"
+                  href='/user'
                 >
-                  {" "}
-                  Sign In{" "}
+                  {' '}
+                  Sign In{' '}
                 </Button>
                 {/* </Nav.Link> */}
               </Nav>
             </Navbar.Collapse>
           )}
           {existing && (
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="me-auto"></Nav>
+            <Navbar.Collapse id='responsive-navbar-nav'>
+              <Nav className='me-auto'></Nav>
               <Nav>
-                <Nav.Link href="/book" style={{ color: "white" }} exact>
+                <Nav.Link href='/search' style={{ color: 'white' }} exact>
                   Book a Flight
                 </Nav.Link>
-                <Nav.Link href="/reservation" style={{ color: "white" }} exact>
+                <Nav.Link href='/reservation' style={{ color: 'white' }} exact>
                   My Bookings
                 </Nav.Link>
-                <UserProfile logOutClick={logOutClick}/>
+                <UserProfile logOutClick={logOutClick} />
               </Nav>
             </Navbar.Collapse>
           )}
