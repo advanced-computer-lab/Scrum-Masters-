@@ -9,7 +9,6 @@ import SelectSeat from './pages/user/signed/SelectSeat';
 import BookingPage from './pages/user/signed/BookingPage';
 import FlightReservation from './components/user/FlightReservation';
 import SearchingPage from './pages/user/signed/SearchingPage';
-import hi from './pages/user/signed/hi';
 import Account from './pages/user/signed/Account';
 
 function App() {

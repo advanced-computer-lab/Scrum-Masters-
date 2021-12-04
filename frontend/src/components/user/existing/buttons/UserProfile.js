@@ -61,7 +61,7 @@ const UserProfile = (props) => {
         <MenuItem style={{ opacity: "1" }} component={Link} to="/account">
           <Avatar sx={{ width: 32, height: 32 }} /> View Profile
         </MenuItem>
-        <MenuItem onClick={props.logOutClick} component={Link} to="/user">
+        <MenuItem onClick={props.logOutClick} component={Link} to="/search">
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

@@ -6,7 +6,7 @@ import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import SeatMap from "../../../components/user/existing/SeatMap";
 
-const SelectSeat = () => {
+const SelectSeat = (props) => {
   const [departureFlight, setDepartureFlight] = useState();
   const [returnFlight, setReturnFlight] = useState();
   const [departureSeats, setDepartureSeats] = useState();
@@ -42,35 +42,20 @@ const SelectSeat = () => {
   };
 
   useEffect(() => {
+     console.log("props departure flight", props.departureFlight.flight[0]);
+    setDepartureFlight(props.departureFlight.flight[0]);
+    setReturnFlight(props.returnFlight.flight[0]);
     axios
-      .post("http://localhost:8081/user/search", {
-        _id: "61a67c27e60d868d8b93a41a",
-      })
-      .then((res) => {
-        setDepartureFlight(res.data);
-      })
-      .catch((err) => console.log(err));
-    axios
-      .post("http://localhost:8081/user/search", {
-        _id: "61a67c48e60d868d8b93a41c",
-      })
-      .then((res) => {
-        setReturnFlight(res.data);
-        console.log(res.data);
-      })
-      .catch((err) => console.log(err));
-
-    axios
-      .get(`http://localhost:8081/user/reserved/61a67c27e60d868d8b93a41a`)
+      .get(`http://localhost:8081/user/reserved/${props.departureId}`)
       .then((result) => {
-        console.log("departure flight", result.data);
+        console.log("departure flight seats", result.data);
         setDepartureSeats(result.data);
       })
       .catch((err) => console.log(err));
     axios
-      .get(`http://localhost:8081/user/reserved/61a67c48e60d868d8b93a41c`)
+      .get(`http://localhost:8081/user/reserved/${props.returnId}`)
       .then((result) => {
-        console.log("return flight", result.data);
+        console.log("return flight seats", result.data);
         setReturnSeats(result.data);
       })
       .catch((err) => console.log(err));
@@ -81,51 +66,50 @@ const SelectSeat = () => {
     setLoading(false);
   };
   return (
-    <Container>
-      <div
-        style={{
-          boxShadow: "0 3px 10px rgb(105 48 195 / 60%)",
-        }}
+    // <Container>
+    <div
+      style={{
+        boxShadow: "0 3px 10px rgb(105 48 195 / 60%)",
+      }}
+    >
+      <Typography
+        variant="h6"
+        gutterBottom
+        component="header"
+        align="left"
+        color="dimgrey"
+        fontStyle="italic"
+        style={{ marginTop: "1%", marginLeft: "2%" }}
       >
-        <Typography
-          variant="h6"
-          gutterBottom
-          component="header"
-          align="left"
-          // fontWeight="lighter"
-          color="dimgrey"
-          fontStyle="italic"
-          style={{ marginTop: "1%", marginLeft: "2%" }}
-        >
-          Select your preferred seats.
-        </Typography>
-        {loading && (
-          <Loader
-            type="Plane"
-            color="#4ea8de"
-            height={100}
-            width={100}
-            timeout={5000}
+        Select your preferred seats.
+      </Typography>
+      {loading && (
+        <Loader
+          type="Plane"
+          color="#4ea8de"
+          height={100}
+          width={100}
+          timeout={5000}
+        />
+      )}
+      {departureFlight &&
+        returnFlight &&
+        departureSeats &&
+        returnSeats &&
+        passengers && (
+          <SeatMap
+            flights={[departureFlight, returnFlight]}
+            departureSeats={departureSeats}
+            returnSeats={returnSeats}
+            departureCabin="business"
+            returnCabin="economy"
+            passengers={passengers}
+            loading={loading}
+            onFetch={onFetch}
           />
         )}
-        {departureFlight &&
-          returnFlight &&
-          departureSeats &&
-          returnSeats &&
-          passengers && (
-            <SeatMap
-              flights={[departureFlight, returnFlight]}
-              departureSeats={departureSeats}
-              returnSeats={returnSeats}
-              departureCabin="business"
-              returnCabin="economy"
-              passengers={passengers}
-              loading={loading}
-              onFetch={onFetch}
-            />
-          )}
-      </div>
-    </Container>
+    </div>
+    // </Container>
   );
 };
 
