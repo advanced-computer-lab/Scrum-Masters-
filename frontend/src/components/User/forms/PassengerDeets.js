@@ -42,25 +42,57 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 
 
-
+//Ask Ahmed Serry how to pass Data
 const PassengerDeets = () => {
-  const [passengers,setPassengersDeets]=useState([]);
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [gender, setGender] = useState("");
+  const [passportNumber, setPAssportNumber] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [expanded, setExpanded] = React.useState(false);
+  const [values,setValues]=useState();
+  const onChange = async (e) => {
+    if (e) {
+      try {
+        console.log(
+          'this is the target value ' +
+            e.target.value +
+            ' with length ' +
+            e.target.value.length
+        );
+        if (e.target.value.length !== 0) {
+         
+           await setValues({ ...values, [e.target.name]: e.target.value });
+        } else {
+          let name = e.target.name;
+          delete values[name];
+        }
+        await console.log(values);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-
+ const  myObj = {"firstName":firstName,"lastName":lastName,"Gender":gender,"dateOfBirth":dateOfBirth};
+ const printObj = () =>{
+   console.log(myObj);
+ }
 
 
 return(
+
 <Box  >
           <form>
            
-           
+          
           
             
          
-         <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} spacing={4} >
+        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} spacing={4} >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"
@@ -85,14 +117,16 @@ return(
             variant="filled"
             label="First Name"
             name="First Name"
-           // value={}
-           // onChange={(event) => {
-            //  setFlightNumber(event.target.value);
-           // } }
+            value={firstName}
+           onChange={(event) => {
+            setFirstName(event.target.value);
+          }}
+           
            // InputLabelProps={{
              // shrink: true,
             //}}
              />
+            
              <TextField
             required
             backgroundcolor="#f2f2f2"
@@ -101,10 +135,10 @@ return(
             label="Gender"
             variant="filled"
             name="Gender"
-           //value={}
-           // onChange={(event) => {
-            //  setDepartureTime(event.target.value);
-            //} }
+            value={gender}
+            onChange={(event) => {
+              setGender(event.target.value);
+            }}
            // InputLabelProps={{
             //  shrink: true,
            // }}
@@ -121,10 +155,10 @@ return(
             label="Last Name"
             variant="filled"
             name="lastName"
-          // value={}
-           // onChange={(event) => {
-            //  setDepartureTime(event.target.value);
-            //} }
+            value={lastName}
+            onChange={(event) => {
+              setLastName(event.target.value);
+            }}
            // InputLabelProps={{
            //   shrink: true,
            // }}
@@ -139,10 +173,10 @@ return(
             label="Passport Number"
             variant="filled"
             name="passportNumber"
-          // value={}
-           // onChange={(event) => {
-            //  setDepartureTime(event.target.value);
-            //} }
+           value={passportNumber}
+           onChange={(event) => {
+            setPAssportNumber(event.target.value);
+          }}
            // InputLabelProps={{
            //   shrink: true,
            // }}
@@ -157,20 +191,23 @@ return(
             //label="Date Of Birth"
             variant="filled"
             name="dateOfBirth"
-           //value={}
-           // onChange={(event) => {
-            //  setDepartureTime(event.target.value);
-            //} }
+            value={dateOfBirth}
+            onChange={(event) => {
+              setDateOfBirth(event.target.value);
+              printObj();
+            }}
+           //  } }
            // InputLabelProps={{
             //  shrink: true,
            // }}
              /> 
              </Stack>
             
-            
+             
              </Stack>
              <div>
               <input type="checkbox" id= "designillustration" name="medium" required marginTop="5px" />
+              
                <span>I hereby confirm that provided information is accurate as represented on official documents of ticket carrier</span>
             </div>
              
@@ -184,7 +221,7 @@ return(
       </Accordion>
          
     
-             
+            
             
             <div >
             

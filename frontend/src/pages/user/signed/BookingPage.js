@@ -17,6 +17,11 @@ import StepConnector, {
 import SearchFlight from '../../../components/user/forms/SearchFlight';
 import { Container } from 'react-bootstrap';
 import FlightReservation from '../../../components/user/FlightReservation';
+import ViewFlightSummary from '../../../components/user/existing/FlightSummary';
+
+import PassInfo from '../../../components/user/AddPassengerInfo';
+import Passengers from '../../../components/user/existing/Passengers';
+
 
 const BookingPage = (props) => {
   console.log('in BookingPage props', props);
@@ -28,17 +33,25 @@ const BookingPage = (props) => {
   const [skipped, setSkipped] = useState(new Set());
   const [departureFlight, setDepartureFlight] = useState(0); //for the selected departure flight
   const [arrivalFlight, setArrivalFlight] = useState(0); //for the selected arrival flight
-
+  const [noOfForms, setNoOfForms]=useState(0);
   const [departureInput, setDepartureInput] = useState({}); //input to maram and donia
   const [arrivalInput, setArrivalInput] = useState({});
-
+  const[maramObject,setMaramObject]=useState({firstName:"",lastName:"",Gender:"",dateOfBirth:""});
+  const handleMaram = async (code) => {
+    const newMaram=code;
+    setMaramObject(newMaram);
+    console.log("ehna wasalna hena 3ady");
+    console.log(newMaram);
+    
+  }
   const handleDepartureFlight = async (code) => {
     const newDeparture = code;
     setDepartureFlight(newDeparture);
+    const departureFlightData = props.props[0].flights.filter(
+      (flight) => flight._id === newDeparture
+    )[0];
     setDepartureInput({
-      flight: props.props[0].flights.filter(
-        (flight) => flight._id === newDeparture
-      ),
+      flight: departureFlightData,
       details: props.props[0].details,
     });
   };
@@ -46,14 +59,20 @@ const BookingPage = (props) => {
   const handleArrivalFlight = async (code) => {
     const newArrival = code;
     await setArrivalFlight(newArrival);
+    const arrivalFlightData = props.props[1].flights.filter(
+      (flight) => flight._id === newArrival
+    )[0];
     setArrivalInput({
-      flight: props.props[1].flights.filter(
-        (flight) => flight._id === newArrival
-      ),
+      flight: arrivalFlightData,
       details: props.props[0].details,
     });
     console.log(departureInput);
   };
+  const handleNoOfForms = () =>{
+
+  }
+  
+
   const nextPage = (count) => {
     let newSkipped = skipped;
     setActualStep((prevActiveStep) => prevActiveStep + 1);
@@ -180,11 +199,12 @@ const BookingPage = (props) => {
         />
       )}
 
-      {actualStep === 2 && <SearchFlight />}
+      {actualStep === 2 && <Passengers adults={departureInput.details.noOfAdults} children={+departureInput.details.noOfChildren} maram={handleMaram}/>}
       <Box
         sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}
         style={{ float: 'right' }}
       >
+        
         {actualStep >= 1 && (
           <Button
             color='inherit'
@@ -195,12 +215,26 @@ const BookingPage = (props) => {
             Back
           </Button>
         )}
+        
+        
         {activeStep >= 0 && (
           <Button onClick={handleNext}>
             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
           </Button>
         )}
       </Box>
+      {actualStep === 3 && <ViewFlightSummary input1={departureInput} input2={arrivalInput}/>}
+      <Box
+        sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}
+        style={{ float: 'right' }}
+      >
+        
+        
+        
+        
+        
+      </Box>
+
     </Container>
   );
 };
