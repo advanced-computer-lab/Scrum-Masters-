@@ -1,57 +1,65 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require("mongoose");
 
-function isUser(type){
-    return type!="admin";
+function isUser(type) {
+  return type != "admin";
 }
 
+const userSchema = mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: isUser(this.type),
+    },
 
-const userSchema=new Schema({
+    lastName: {
+      type: String,
+      required: isUser(this.type),
+    },
+    homeAddress: {
+      // type: String,
+      // required: isUser(this.type),
+      type: mongoose.Schema({
+        address: { type: String, required: isUser(this.type) },
+        city: { type: String, required: isUser(this.type) },
+        zipCode: { type: Number, required: isUser(this.type) },
+      }),
+      required: isUser(this.type),
+    },
+    email: {
+      //UNIQUE
+      type: String,
+      required: isUser(this.type), //should be true in all cases
+    },
+    countryCode: {
+      //2 letter code
+      type: String,
+      required: isUser(this.type),
+    },
+    phoneNumber: {
+      // type: Array,
+      type: Number, //maybe string
+      required: isUser(this.type),
+    },
+    passportNumber: {
+      type: String,
+      required: isUser(this.type),
+      //should be unique
+    },
+    gender: {
+      type: String,
+      enum: ["female", "male"],
+      required: true,
+    },
 
-firstName: {
-    type: String,
-    required:isUser(this.type)
-  }, 
-
-  lastName: {
-    type: String,
-    required:isUser(this.type)
+    type: {
+      type: String,
+      required: true,
+    },
+    //password SPRINT 3
   },
-  homeAddress: {
-    type: String,
-    required:isUser(this.type)
+  { toJSON: { virtuals: true }, toObject: { virtuals: true } }
+);
 
-  },
-  
-  email: {
-    type: String,
-    required:isUser(this.type)
-  },
-  countryCode: {
-    type: Number,
-    required:isUser(this.type)
-},
-  
- 
-
-  phoneNumber: {
-    type: Array,
-    required:isUser(this.type)
-
-  },
-
-  passportNumber: {
-    type: Number,
-    required:isUser(this.type)
-  },
-
-  type: {
-      type:String,
-      required:true
-  
-
-  }
-});
-
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 module.exports = User;
+//validate email
