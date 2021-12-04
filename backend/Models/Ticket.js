@@ -17,11 +17,6 @@ const ticketSchema = mongoose.Schema(
       enum: ["adult", "child"],
       required: true,
     },
-    cabin: {
-      type: String,
-      enum: ["first", "business", "economy"],
-      required: true,
-    },
     firstName: {
       type: String,
       required: true,

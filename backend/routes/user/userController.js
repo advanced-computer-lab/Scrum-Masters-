@@ -2,7 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 const Flight = require("../../Models/Flight");
+const Reservation = require("../../Models/Reservation");
 const Ticket = require("../../Models/Ticket");
+const User = require("../../Models/User");
 
 router.get("/search/flights", async (req, res) => {
   try {
@@ -53,7 +55,7 @@ router.post("/search", async (req, res) => {
         (flight) =>
           flight.economy.availableSeats >=
           criteria.noOfChildren + criteria.noOfAdults
-      ); 
+      );
     }
     if (criteria.cabin === "business") {
       //console.log("ehna true");
@@ -81,10 +83,10 @@ router.post("/search", async (req, res) => {
           criteria.noOfChildren + criteria.noOfAdults
       );
     }
-    
-    var output = []
-    output.push({flights:query1,details:criteria})
-    output.push({flights:query2,details:criteria})
+
+    var output = [];
+    output.push({ flights: query1, details: criteria });
+    output.push({ flights: query2, details: criteria });
     console.log(output);
     res.json(output);
     /*
@@ -100,68 +102,63 @@ router.post("/search", async (req, res) => {
 
 /** req 
  * { 
- *  noOfAdults: 3,
-    noOfChildren: 0,
-    arrivalDate: '2021-11-02T00:00:00.000Z', return date 
+ *  details: {
+ * noOfAdults: 3,
+    noOfChildren: 0, 
     cabin: 'economy'
-    flightId
- * }
-*/
- //route for departing Flights
-router.get("/search/departingFlights/", async (req, res) => {
-  try {
-    var departingFlight = await Flight.findById({
-      _id: req.params.flightId,
-    });
-
-    var query = await Flight.find({
-      departureAirport: departingFlight.arrivalAirport,
-      arrivalAirport: departingFlight.departureAirport,
-      departureDate: criteria.arrivalDate,
-    });
-
-    if (criteria.cabin === "economy") {
-      query = query.filter(
-        (flight) =>
-          flight.economy.availableSeats >=
-          criteria.noOfChildren + criteria.noOfAdults
-      );
-    }
-    if (criteria.cabin === "business") {
-      //console.log("ehna true");
-      query = query.filter(
-        (flight) =>
-          flight.business.availableSeats >=
-          criteria.noOfChildren + criteria.noOfAdults
-      );
-    }
-    if (criteria.cabin === "first") {
-      //console.log("ehna true");
-      query = query.filter(
-        (flight) =>
-          flight.firstClass.availableSeats >=
-          criteria.noOfChildren + criteria.noOfAdults
-      );
-    }
-    var output = {
-      flights: query,
-      details: criteria,
-    };
-
-    res.json(output); 
-  } catch (error) {
-    res.json({ message: error });
   }
-});
+ * }
+  departinFlight:{
+    flight details
+  },
+  returnFlight: {
+    flight details
+  },
 
-// router.get("/search/returnFlight/:flightId", async (req, res) => {
-//   try {
-//     const flight = await Flight.findById(req.params.flightId);
-//     res.json(flight);
-//   } catch (error) {
-//     res.json({ message: error });
-//   }
-// });
+  totalPrice: val
+
+*/
+//route for creating reservation
+router.post("/create/reservation/:userId", async (req, res) => {
+
+const reservation = new Reservation({
+  userId:req.params.userId,
+  cabinClass:req.body.details.cabin,
+  departingFlightId : req.body.departingFlight._id,
+  returnFlightId: req.body.returnFlight._id,
+  totalPrice: req.body.totalPrice
+})
+var 
+try {
+  const savedReservation = await reservation.save();
+  
+  var totalSeats = req.body.details.noOfAdults + req.body.details.noOfChildren
+  // decreasing seats of the flight
+  if(req.body.details.cabin === "economy")
+  await Flight.findByIdAndUpdate(req.body.departingFlight._id,{ "$inc": { "economy.availableSeats": -totalSeats } })
+  if(req.body.details.cabin === "business")
+  await Flight.findByIdAndUpdate(req.body.departingFlight._id,{ "$inc": { "business.availableSeats": -totalSeats } })
+  if(req.body.details.cabin === "first")
+  await Flight.findByIdAndUpdate(req.body.departingFlight._id,{ "$inc": { "firstClass.availableSeats": -totalSeats } })
+
+  res.json(savedReservation);
+
+} catch (error) {
+  console.log(error);
+}
+
+/** response
+ *  -----
+ * 
+ * save the reservation first
+ * 
+ * save the tickets with reference to this reservation 
+ * 
+ * 
+ * 
+ */
+
+});
 
 router.get("/reserved/:flightId", (req, res) => {
   Ticket.find(
