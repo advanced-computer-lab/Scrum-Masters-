@@ -1016,7 +1016,7 @@
     padding: 0;
     flex-direction: row;
     align-items: initial;
-    max-height: calc(100vh - 190px);
+    max-height: calc(100vh - 210px);
   }
 
   .duffel-components .seat-selection__confirmation {

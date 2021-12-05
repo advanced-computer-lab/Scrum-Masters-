@@ -4,6 +4,7 @@ import { Modal } from "@mui/material";
 import axios from "axios";
 import Loader from "react-loader-spinner";
 import { SeatSelection } from "@duffel/components";
+import { Alert } from "@mui/material";
 // import "@duffel/components/dist/SeatSelection.min.css";
 import "../../../styles/seatMap.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -12,6 +13,7 @@ const SeatMap = (props) => {
   //props: flights: array[dep,ret]
   // depseats,return seats
   //dep and return cabin
+  const [error, setError] = useState(false);
   const [passengers, setPassengers] = useState(props.passengers);
   const [firstCabin, setFirstCabin] = useState([]);
   const [businessCabin, setBusinessCabin] = useState([]);
@@ -613,9 +615,15 @@ const SeatMap = (props) => {
     var x = document.getElementsByClassName(
       "passenger-selection-passenger__seat-designator"
     );
-    Array.from(x).forEach((y) => {
-      console.log(y.innerText);
-    });
+    if (Array.from(x).length !== passengers.length * 2) {
+      setError(true);
+       setTimeout(() => {
+         setError(false);
+       }, 5000);
+    }
+    else {
+     props.handleSeats(Array.from(x));
+    }
   };
   return (
     <div>
@@ -628,6 +636,11 @@ const SeatMap = (props) => {
           timeout={5000} //3 secs
         />
       )} */}
+      {error && (
+        <Alert severity="error">
+          Select seats for all passengers for all flights.
+        </Alert>
+      )}
       {seatMaps && offer && passengers && !loading && (
         <SeatSelection
           passengers={passengers}

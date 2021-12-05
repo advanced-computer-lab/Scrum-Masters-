@@ -5,7 +5,7 @@ const ticketSchema = mongoose.Schema(
   {
     seatNum: {
       type: String,
-      required: true,
+      required: true,  
     },
     ticketType: {
       type: String,
@@ -22,7 +22,7 @@ const ticketSchema = mongoose.Schema(
       required: true,
     },
     lastName: {
-      type: String,
+      type: String, 
       required: true,
     },
     cabin: {
