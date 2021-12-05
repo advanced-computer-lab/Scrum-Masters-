@@ -110,13 +110,13 @@ const FlightCard = (props) => {
                       {row.arrivalTime}
                     </TableCell>
                     <TableCell align="center" style={{ fontStyle: "italic" }}>
-                      {row.noOfEconomy}
+                      {row.economy.noOfSeats}
                     </TableCell>
                     <TableCell align="center" style={{ fontStyle: "italic" }}>
-                      {row.noOfBusiness}
+                      {row.business.noOfSeats}
                     </TableCell>
                     <TableCell align="center" style={{ fontStyle: "italic" }}>
-                      {row.noOfFirstClass}
+                      {row.firstClass.noOfSeats}
                     </TableCell>
                     <TableCell align="center" style={{ fontStyle: "italic" }}>
                       {row.noOfSeats}
