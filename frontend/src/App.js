@@ -10,6 +10,7 @@ import BookingPage from "./pages/user/signed/BookingPage";
 import SearchingPage from "./pages/user/signed/SearchingPage";
 import viewFlightSummary from "./components/user/existing/FlightSummary";
 
+
 function App() {
   const user = true;
   var test1 = Array(4).fill({});
