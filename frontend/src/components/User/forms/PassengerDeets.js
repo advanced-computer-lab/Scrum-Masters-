@@ -14,8 +14,11 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 
 //Ask Ahmed Serry how to pass Data
 const PassengerDeets = (props) => {
-  const [expanded, setExpanded] = React.useState(props.index === 0);
-  const [values, setValues] = useState({ type: props.type.toLowerCase(), cabin:props.cabin });
+  const [expanded, setExpanded] = React.useState(true); //props.index===0
+  const [values, setValues] = useState({
+    type: props.type,
+    cabin: props.cabin,
+  });
   const onChange = async (e, name) => {
     if (e) {
       try {
@@ -57,7 +60,7 @@ const PassengerDeets = (props) => {
         <Accordion
           expanded={expanded}
           onChange={handleChange("panel1")}
-          spacing={4}
+          spacing={1}
           sx={{
             margin: "10px",
           }}
@@ -75,7 +78,7 @@ const PassengerDeets = (props) => {
                 display: "inline",
               }}
             >
-              {props.type},
+              {props.type.charAt(0).toUpperCase() + props.type.substring(1)},
             </Typography>
             <Typography
               sx={{
@@ -89,13 +92,8 @@ const PassengerDeets = (props) => {
             <Typography sx={{ color: "text.secondary" }}></Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Stack direction="row" spacing={30} style={{ marginTop: "30px" }}>
-              <Stack
-                direction="column"
-                spacing={3}
-                height="200px"
-                width="300px"
-              >
+            <Stack direction="row" justifyContent="center" spacing={12}>
+              <Stack direction="column" spacing={3} width="25%">
                 <TextField
                   required
                   height="5px"
@@ -107,6 +105,7 @@ const PassengerDeets = (props) => {
                   variant="filled"
                   label="First Name"
                   name="firstName"
+                  defaultValue={values.firstName}
                   onChange={onChange}
                   InputLabelProps={{
                     shrink: true,
@@ -121,6 +120,7 @@ const PassengerDeets = (props) => {
                   label="Gender"
                   variant="filled"
                   name="gender"
+                  defaultValue={values.gender}
                   onChange={onChange}
                   InputLabelProps={{
                     shrink: true,
@@ -128,12 +128,7 @@ const PassengerDeets = (props) => {
                 />
               </Stack>
 
-              <Stack
-                direction="column"
-                spacing={3}
-                height="300px"
-                width="350px"
-              >
+              <Stack direction="column" spacing={3} width="25%">
                 <TextField
                   required
                   backgroundcolor="#f2f2f2"
@@ -142,6 +137,7 @@ const PassengerDeets = (props) => {
                   label="Last Name"
                   variant="filled"
                   name="lastName"
+                  defaultValue={values.lastName}
                   onChange={onChange}
                   InputLabelProps={{
                     shrink: true,
@@ -156,13 +152,14 @@ const PassengerDeets = (props) => {
                   label="Passport Number"
                   variant="filled"
                   name="passportNumber"
+                  defaultValue={values.passportNumber}
                   onChange={onChange}
                   InputLabelProps={{
                     shrink: true,
                   }}
                 />
               </Stack>
-              <Stack direction="column" spacing={4}>
+              <Stack direction="column" spacing={3} width="25%">
                 <TextField
                   required
                   backgroundcolor="#f2f2f2"
@@ -170,6 +167,7 @@ const PassengerDeets = (props) => {
                   // placeholder=''
                   label="Date Of Birth"
                   variant="filled"
+                  defaultValue={values.dateOfBirth}
                   name="dateOfBirth"
                   onChange={onChange}
                   //  } }

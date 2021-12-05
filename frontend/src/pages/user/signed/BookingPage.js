@@ -41,12 +41,6 @@ const BookingPage = (props) => {
     Gender: "",
     dateOfBirth: "",
   });
-  const handleMaram = async (code) => {
-    const newMaram = code;
-    setMaramObject(newMaram);
-    console.log("ehna wasalna hena 3ady");
-    console.log(newMaram);
-  };
 
   const handleTravellers = (passengers) => {
     setTravellers(passengers);
@@ -206,7 +200,7 @@ const BookingPage = (props) => {
       {actualStep === 2 && (
         <Passengers
           adults={departureInput.details.noOfAdults}
-          children={+departureInput.details.noOfChildren}
+          children={departureInput.details.noOfChildren}
           cabin={departureInput.details.cabin}
           handleTravellers={handleTravellers}
         />
@@ -219,6 +213,11 @@ const BookingPage = (props) => {
           departureId={departureFlight}
           returnId={arrivalFlight}
           cabin={departureInput.details.cabin}
+          numberPassengers={
+            departureInput.details.noOfAdults +
+            departureInput.details.noOfChildren
+          }
+          handleTravellers={handleTravellers}
         />
       )}
       {actualStep === 4 && (

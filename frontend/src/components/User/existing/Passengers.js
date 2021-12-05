@@ -44,7 +44,7 @@ const Passengers = (props) => {
         <PassengerDeets
           index={m}
           handlePassengers={handlePassengers}
-          type="Adult"
+          type="adult"
           cabin={props.cabin}
         />
       );
@@ -54,7 +54,7 @@ const Passengers = (props) => {
         <PassengerDeets
           index={m + props.adults}
           handlePassengers={handlePassengers}
-          type="Child"
+          type="child"
           cabin={props.cabin}
         />
       );
@@ -80,7 +80,7 @@ const Passengers = (props) => {
 
           <span>
             I hereby confirm that provided information is accurate as
-            represented on official documents of ticket carrier
+            represented on official documents of each ticket carrier.
           </span>
         </div>
       </Container>
