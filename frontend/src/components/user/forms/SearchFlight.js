@@ -163,6 +163,7 @@ const SearchFlight = () => {
                   <TextField
                     {...params}
                     placeholder='from'
+                    label='From'
                     InputProps={{
                       ...params.InputProps,
                       startAdornment: (
@@ -192,6 +193,7 @@ const SearchFlight = () => {
                 size='30px'
                 renderInput={(params) => (
                   <TextField
+                    label='To'
                     {...params}
                     placeholder='to'
                     required
@@ -220,6 +222,7 @@ const SearchFlight = () => {
                 <RemoveCircleRoundedIcon />
               </IconButton>
               <TextField
+                required
                 name='noOfAdults'
                 label='Adults'
                 type='number'
@@ -250,6 +253,7 @@ const SearchFlight = () => {
                 <RemoveCircleRoundedIcon />
               </IconButton>
               <TextField
+                required
                 name='noOfChildren'
                 type='number'
                 label='Children'
@@ -290,7 +294,7 @@ const SearchFlight = () => {
           <Grid item xs={6} md={2}>
             <TextField
               id='outlined-search'
-              label='Arrival Date'
+              label='Return date'
               type='date'
               InputLabelProps={{
                 shrink: true,
@@ -310,6 +314,7 @@ const SearchFlight = () => {
               <Autocomplete
                 {...cabinProps}
                 id='blur-on-select'
+                label='Cabin'
                 required
                 blurOnSelect
                 clearOnEscape
@@ -318,7 +323,7 @@ const SearchFlight = () => {
                   setQuery({ ...query, ['cabin']: newValue })
                 }
                 renderInput={(params) => (
-                  <TextField {...params} placeholder='Cabin' />
+                  <TextField {...params} placeholder='Cabin' label='Cabin' />
                 )}
               />
             </div>
