@@ -11,6 +11,8 @@ import { DialogContent } from "@mui/material";
 import { DialogTitle } from "@mui/material";
 import { Dialog } from "@mui/material";
 import { DialogContentText } from "@mui/material";
+//import  Error  from "../../snackbars/Error";
+
 
 const axios = require("axios").default;
 
@@ -27,6 +29,8 @@ const InsertFlight = () => {
   const [noOfFirstClass, setNoOfFirstClass] = useState("");
   const [flight, setFlight] = useState();
   const [open, setOpen] = React.useState(false);
+  const [error, setError] = React.useState(false);
+  const [message, setMessage] = React.useState("");
   var Data = {};
   const history = useHistory();
   const showAlert = () => {
@@ -52,17 +56,24 @@ const InsertFlight = () => {
       arrivalDate,
       departureAirport,
       arrivalAirport,
-      economy:{noOfSeats:noOfEconomy},
+      economy: { noOfSeats: noOfEconomy },
       business: { noOfSeats: noOfBusiness },
-      firstClass:{noOfSeats:noOfFirstClass},
+      firstClass: { noOfSeats: noOfFirstClass },
     };
 
     axios
       .post("http://localhost:8081/admin/create", Data)
       .then((res) => {
-        console.log(res.data);
-        setFlight(res.data);
-        showAlert();
+        console.log("this is the res", res);
+        console.log("This is the res data object", res.data);
+        if (res.data.message) {
+          setError(true);
+          setMessage(res.data.message);
+          showAlert();
+        } else {
+          setFlight(res.data);
+          showAlert();
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -297,7 +308,7 @@ const InsertFlight = () => {
             {" "}
             Add Flight{" "}
           </Button>
-          {flight && (
+          {flight && !error && (
             <Dialog open={open} onClose={alertClose}>
               <DialogTitle
                 id="alert-dialog-title"
@@ -321,7 +332,8 @@ const InsertFlight = () => {
                   <br />
                   Business Class Seats: <b>{flight.business.noOfSeats}</b>.{" "}
                   <br />
-                  First Class Seats:<b> {flight.firstClass.noOfSeats}</b>. <br />
+                  First Class Seats:<b> {flight.firstClass.noOfSeats}</b>.{" "}
+                  <br />
                   Total Seats: <b>{flight.noOfSeats}</b>.
                 </DialogContentText>
               </DialogContent>
@@ -337,6 +349,37 @@ const InsertFlight = () => {
                   autoFocus
                 >
                   Add More Flights
+                </Button>
+              </DialogActions>
+            </Dialog>
+          )}
+
+          {/* handling error */}
+
+          {error && (
+            <Dialog open={open} onClose={alertClose}>
+              <DialogTitle
+                id="alert-dialog-title"
+                color="purple"
+                style={{ textAlign: "center" }}
+              >
+                {"Cannot insert Flight."}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {message}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions style={{ justifyContent: "center" }}>
+                <Button
+                  onClick={() => {
+                    alertClose();
+                    setError(false);
+                    window.location.reload(false);
+                  }}
+                  autoFocus
+                >
+                  close
                 </Button>
               </DialogActions>
             </Dialog>

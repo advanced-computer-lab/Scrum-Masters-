@@ -1,7 +1,7 @@
 {
   "name": "scrum-masters-",
   "version": "1.0.0",
-  "description": "",
+  "description": "The project has 3 **`package.json`** files in the following Tree (note: it's just a high level explanation for the main directories, the words between barckets are not real directorires/files)",
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"cd backend && nodemon app\" \"cd frontend && npm start\" "
@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/advanced-computer-lab/Scrum-Masters-#readme",
   "dependencies": {
+    "@duffel/components": "^2.0.1",
+    "@material-ui/core": "^4.12.3",
+    "@trendmicro/react-dropdown": "^1.4.0",
     "concurrently": "^6.3.0",
     "install": "^0.13.0",
     "nodemon": "^2.0.14",

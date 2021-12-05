@@ -1,8 +1,8 @@
 import React from 'react';
-import SearchFlight from '../../../components/user/forms/SearchFlight';
 import { Container } from 'react-bootstrap';
+import SearchFlight from '../../../components/user/forms/SearchFlight';
 
-const LandingPage = () => {
+const SearchingPage = () => {
   return (
     <Container>
       <SearchFlight />
@@ -10,4 +10,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default SearchingPage;

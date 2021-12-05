@@ -17,17 +17,17 @@ const ticketSchema = mongoose.Schema(
       enum: ["adult", "child"],
       required: true,
     },
-    cabin: {
-      type: String,
-      enum: ["first", "business", "economy"],
-      required: true,
-    },
     firstName: {
       type: String,
       required: true,
     },
     lastName: {
       type: String,
+      required: true,
+    },
+    cabin: {
+      type: String,
+      enum: ["first", "business", "economy"],
       required: true,
     },
 
@@ -43,6 +43,7 @@ const ticketSchema = mongoose.Schema(
       ref: "Reservation",
       required: true,
     },
+
     price: {
       type: Number,
     },

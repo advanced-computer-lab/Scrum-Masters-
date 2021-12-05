@@ -3,68 +3,222 @@ const mongoose = require("mongoose");
 const router = express.Router();
 const Flight = require("../../Models/Flight");
 const Reservation = require("../../Models/Reservation");
-
 const Ticket = require("../../Models/Ticket");
+const User = require("../../Models/User");
+
+router.get("/search/flights", async (req, res) => {
+  try {
+    const from = await Flight.distinct("departureAirport");
+    const to = await Flight.distinct("arrivalAirport");
+    console.log("from", from);
+    console.log("to", to);
+    const output = {
+      from: from,
+      to: to,
+    };
+    res.json(output);
+  } catch (error) {
+    res.status(404).json({ message: "invalid search" });
+  }
+});
 
 router.post("/search", async (req, res) => {
   const criteria = req.body;
-  console.log(req.body);
+  console.log("criteria", criteria);
+  /* {
+    noOfChildren: val, 
+    noOfAdults: val,
+    departureAirpot:val, 
+    arrivalAirport:val,  cai  dxb
+    departureDate: val,
+    arrivalDate: val, of return flight
+    cabin: val
+  }*/
+  // passing all the required fields
+  if (
+    !req.body.departureAirport ||
+    !req.body.arrivalAirport ||
+    !req.body.departureDate ||
+    !req.body.arrivalDate ||
+    !req.body.cabin
+  ) {
+    res.json({ message: "please choose all the fields" });
+    return;
+  }
+  // checking at least one passenger
+  if (!criteria.noOfChildren) {
+    criteria.noOfChildren = 0;
+  }
+  if (!criteria.noOfAdults) {
+    criteria.noOfAdults = 0;
+  }
+
+  if (criteria.noOfAdults + criteria.noOfChildren === 0) {
+    res.json({ message: "please choose at least one passenger" });
+    return;
+  }
+
+  // getting return and arrival flights
   try {
-    var query = await Flight.find(criteria);
-    if (criteria.economy && criteria.economy.availableSeats) {
-      //console.log("ehna true");
-      query = query.filter(
+    var query1 = await Flight.find({
+      departureAirport: criteria.departureAirport,
+      arrivalAirport: criteria.arrivalAirport,
+      departureDate: criteria.departureDate,
+    });
+    var query2 = await Flight.find({
+      departureAirport: criteria.arrivalAirport,
+      arrivalAirport: criteria.departureAirport,
+      arrivalDate: criteria.arrivalDate,
+    });
+
+    // from and to are not the same
+    if (criteria.departureAirport === criteria.arrivalAirport) {
+      res.json({
+        message: "You can not specify the from and to with the same values",
+      });
+      return;
+    }
+
+    // overlapping dates
+    if (new Date(criteria.arrivalDate) < new Date(criteria.departureDate)) {
+      res.json({
+        message: "cannot have an arrival date before the departure date",
+      });
+      return;
+    }
+
+    // no round trips 
+    if (query1.length === 0 || query2.length === 0) {
+      res.json({
+        message:
+          "We are sorry, there are no round trips available for your criteria",
+      });
+      return;
+    }
+
+    // console.log("query before filtering", query);
+    if (criteria.cabin === "economy") {
+      query1 = query1.filter(
         (flight) =>
-          flight.economy.availableSeats >= criteria.economy.availableSeats
+          flight.economy.availableSeats >=
+          criteria.noOfChildren + criteria.noOfAdults
+      );
+      query2 = query2.filter(
+        (flight) =>
+          flight.economy.availableSeats >=
+          criteria.noOfChildren + criteria.noOfAdults
       );
     }
-    if (criteria.business && criteria.business.availableSeats) {
+    if (criteria.cabin === "business") {
       //console.log("ehna true");
-      query = query.filter(
+      query1 = query1.filter(
         (flight) =>
-          flight.business.availableSeats >= criteria.business.availableSeats
+          flight.business.availableSeats >=
+          criteria.noOfChildren + criteria.noOfAdults
+      );
+      query2 = query2.filter(
+        (flight) =>
+          flight.business.availableSeats >=
+          criteria.noOfChildren + criteria.noOfAdults
       );
     }
-    if (criteria.firstClass && criteria.firstClass.availableSeats) {
+    if (criteria.cabin === "first") {
       //console.log("ehna true");
-      query = query.filter(
+      query1 = query1.filter(
         (flight) =>
-          flight.firstClass.availableSeats >= criteria.firstClass.availableSeats
+          flight.firstClass.availableSeats >=
+          criteria.noOfChildren + criteria.noOfAdults
+      );
+      query2 = query2.filter(
+        (flight) =>
+          flight.firstClass.availableSeats >=
+          criteria.noOfChildren + criteria.noOfAdults
       );
     }
-    // if(criteria.cabinClass){
-    //   query.forEach(flight=>{flight.cabinClass = criteria.cabinClass})
-    // }
-    console.log(query);
-    res.json(query);
+
+    var output = [];
+    output.push({ flights: query1, details: criteria });
+    output.push({ flights: query2, details: criteria });
+    console.log(output);
+    res.json(output);
+    /*
+    {
+      [flights] , cabin:val
+    }
+    */
   } catch (err) {
     console.log(err);
     res.json({ message: err });
   }
 });
 
-router.get(
-  "/search/departingFlight/:flightId/:cabinClass",
-  async (req, res) => {
-    try {
-      var flight = await Flight.findById(req.params.flightId);
-      res.json(flight); //cabin class
-    } catch (error) {
-      res.json({ message: error });
-    }
+/** req 
+ * { 
+ * details: {
+ *  
+ *  noOfAdults: 3,
+    noOfChildren: 0, 
+    cabin: 'economy'
   }
-);
+ * }
+  departinFlight:{
+    flight details
+  },
+  returnFlight: {
+    flight details
+  },
 
-router.get("/search/returnFlight/:flightId", async (req, res) => {
+  totalPrice: val
+
+*/
+//route for creating reservation
+router.post("/create/reservation/:userId", async (req, res) => {
+  const reservation = new Reservation({
+    userId: req.params.userId,
+    cabinClass: req.body.details.cabin,
+    departingFlightId: req.body.departingFlight._id,
+    returnFlightId: req.body.returnFlight._id,
+    totalPrice: req.body.totalPrice,
+  });
+
   try {
-    const flight = await Flight.findById(req.params.flightId);
-    res.json(flight);
+    const savedReservation = await reservation.save();
+
+    var totalSeats =
+      req.body.details.noOfAdults + req.body.details.noOfChildren;
+    // decreasing seats of the flight
+    if (req.body.details.cabin === "economy")
+      await Flight.findByIdAndUpdate(req.body.departingFlight._id, {
+        $inc: { "economy.availableSeats": -totalSeats },
+      });
+    if (req.body.details.cabin === "business")
+      await Flight.findByIdAndUpdate(req.body.departingFlight._id, {
+        $inc: { "business.availableSeats": -totalSeats },
+      });
+    if (req.body.details.cabin === "first")
+      await Flight.findByIdAndUpdate(req.body.departingFlight._id, {
+        $inc: { "firstClass.availableSeats": -totalSeats },
+      });
+
+    res.json(savedReservation);
   } catch (error) {
-    res.json({ message: error });
+    console.log(error);
   }
+
+  /** response
+   *  -----
+   *
+   * save the reservation first
+   *
+   * save the tickets with reference to this reservation
+   *
+   *
+   *
+   */
 });
 
 router.get("/reserved/:flightId", (req, res) => {
+  
   Ticket.find(
     { flightId: req.params.flightId },
     { seatNum: 1, cabin: 1, _id: 0 }
@@ -80,6 +234,40 @@ router.delete("/delete/reservation/:id", (req, res) => {
   Reservation.findByIdAndRemove(req.params.id)
     .then((Reservation) => res.json({ mgs: "Reservation deleted successfully" }))
     .catch((err) => res.status(404).json({ error: "No such a Reservation" }));
+})
+//user
+
+router.get("/profile/:id", async (req, res) => {
+  User.findById(req.params.id)
+    .then((result) => {
+      res.send(result);
+      console.log(result);
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    });
+});
+router.post("/profile", async (req, res) => {
+  const insertion = req.body;
+  const user = new User(insertion);
+  user
+    .save()
+    .then((result) => {
+      res.send(result);
+      console.log(result);
+    })
+    .catch((err) => res.status(400).send(err));
+});
+router.patch("/profile/update/:id", async (req, res) => {
+  User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then((result) => {
+      //new:true returns modified document not original
+      res.send(result);
+      console.log(result);
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    });
 });
 
 module.exports = router;
