@@ -5,7 +5,7 @@ const Flight = require("../../Models/Flight");
 const Reservation = require("../../Models/Reservation");
 const Ticket = require("../../Models/Ticket");
 const User = require("../../Models/User");
-var airports = require("airport-codes");
+//var airports = require("airport-codes");
 
 router.get("/search/flights", async (req, res) => {
   try {
@@ -234,7 +234,13 @@ router.get("/reserved/:flightId", (req, res) => {
 router.delete("/delete/reservation/:id", (req, res) => {
   Reservation.findByIdAndRemove(req.params.id)
     .then((Reservation) =>
-      res.json({ mgs: "Reservation deleted successfully" })
+      {
+        console.log(Reservation)
+        if(Reservation!=null)
+        res.json({ mgs: "Reservation deleted successfully" })
+        else{res.json({ mgs: "Reservation already deleted" })}
+      }
+     
     )
     .catch((err) => res.status(404).json({ error: "No such a Reservation" }));
 });
@@ -251,6 +257,7 @@ router.get("/reservations/:id", async (req, res) => {
         // console.log("the departing flight",departingFlight);
         // console.log("the return flight",arrivalFlight);
         const entry = {
+
           departingFlight: {
             flightNumber: reservation.departingFlightId.flightNumber,
             departureDate: reservation.departingFlightId.departureDate,
@@ -267,6 +274,8 @@ router.get("/reservations/:id", async (req, res) => {
             arrivalTime: reservation.returnFlightId.arrivalTime,
             cabin: reservation.cabinClass,
           },
+          reservationId:reservation._id,
+          totalPrice: reservation.totalPrice
         };
         console.log("the entry", entry);
         output.push(entry);
@@ -279,7 +288,7 @@ router.get("/reservations/:id", async (req, res) => {
 });
 /**
  * {
- *  departingFlight:{
+ *  [departingFlight:{
  *
  *  flightNumber: val,
  *  departureDate:val,
@@ -298,7 +307,7 @@ router.get("/reservations/:id", async (req, res) => {
  *  cabin: val
  *
  *  }
- *
+ *]
  *
  * }
  */

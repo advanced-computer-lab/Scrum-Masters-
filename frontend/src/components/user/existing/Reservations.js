@@ -3,9 +3,16 @@ import { DataGrid } from '@mui/x-data-grid';
 import { GridCellParams } from '@mui/x-data-grid';
 import emailjs from "emailjs-com"
 import axios from "axios";
+import { Container } from "react-bootstrap";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import {
     Button,
     Box,
+    Modal,
     Collapse,
     IconButton,
     Table,
@@ -15,27 +22,80 @@ import {
     TableContainer,
     TableFooter,
     TableHead,
-    TableRow,
+    TableRow,Stack,
     Tooltip,
     Typography,
     tableCellClasses,
     styled,
+    Divider,
     Paper,
   } from '@mui/material';
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
-export default function BasicTable() {
+// export default function AlertDialog() {
+//     const [open, setOpen] = React.useState(false);
+  
+//     const handleClickOpen = () => {
+//       setOpen(true);
+//     };
+  
+//     const handleClose = () => {
+//       setOpen(false);
+//     };
+export default function BasicTable(onDelete) {
+    const [open, setOpen] = useState(false);
+    const [totalPrice, setTotalPrice] = useState();
+    // const [deleteRes, setdeleteRes] = useState(true);
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    }
     const [data, getData] = useState([]);
+    const getDate = (input) => {
+        const date = new Date(input);
+        return (
+          date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()
+        );
+      };
+      const deleteReservation = (reservationId) => {
+          console.log("an hena" , reservationId)
+            axios
+          .delete(`http://localhost:8081/user/delete/reservation/${reservationId}`)
+          .then((res) => {
+            sendEmail();
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        //onDelete();
+
+        window.location.reload(false);
+ 
+        const sendEmail = () => {
+            //e.preventDefault();
+        
+            emailjs.sendForm('gmail', 'template_ryeq8rf', totalPrice, 'user_i6KjynhTdTItE6MZB2wkB')
+              .then((result) => {
+                  console.log(result.text);
+              }, (error) => {
+                  console.log(error.text);
+              });
+             // e.target.reset();
+          };    
+    };
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+      };
     const ViewReservations = () => {
         useEffect(() => {
             axios
@@ -54,71 +114,107 @@ export default function BasicTable() {
           color: theme.palette.common.white,
         },
       }));
-//     const ViewReservations = () => {
-//         useEffect(() => {
-//             axios
-//               .get("http://localhost:8081/user/reservations/61aa2eb9d3eee0b9e4921105")
-//               .then((res) => {
-//                 getData(res.data);
-//                 console.log(res.data);
-//               })
-//               .catch((err) => console.log(err));
-//           },[])
-//     }
-//     ViewReservations();
+      const StyledTableElement = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.head}`]: {
+            border:'2px',
+            color: theme.palette.common.white,
+        },
+      }));
+      
   return (
+    <Container>
+    <div style={{ marginTop: '2%' ,marginBottom:'2%'}}>
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
               <StyledTableCell/>
-            <StyledTableCell>Departing date</StyledTableCell>
-            <StyledTableCell align="right">Departing time</StyledTableCell>
-            <StyledTableCell align="right">Arrival date</StyledTableCell>
-            <StyledTableCell align="right">Arrival time</StyledTableCell>
-            <StyledTableCell align="right">Depature</StyledTableCell>
-            <StyledTableCell align="right">Arrival</StyledTableCell>
-            <StyledTableCell align="right">FlightNo.</StyledTableCell>
-            <StyledTableCell align="right">Cabin</StyledTableCell>
-            <StyledTableCell align="right">   </StyledTableCell>
+            <StyledTableCell align="center">Flight Number</StyledTableCell>
+            <StyledTableCell align="center">Depature date</StyledTableCell>
+            <StyledTableCell align="center">Depature time</StyledTableCell>
+            <StyledTableCell align="center">Arrival date</StyledTableCell>
+            <StyledTableCell align="center">Arrival time</StyledTableCell>
+            <StyledTableCell align="center">Cabin</StyledTableCell>
+            <StyledTableCell align="center"></StyledTableCell>
 
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {data.map((row) => (
             <TableRow
               key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              sx={{ '&:last-child td, &:last-child th': { border: '0px' } }}
             >
-                <TableCell></TableCell>
-              <TableCell component="th" scope="row">
-                {row.name}
+              <TableCell style={{width: '12%'}}>
+              <Stack spacing={2} divider={<Divider orientation="horizontal" flexItem />}>
+                            <div>Departing Flight</div>
+                            <div>Arrival Flight</div>
+                            </Stack>
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
-              <TableCell></TableCell>
+              <StyledTableElement align="center"><Stack spacing={2}
+                                        divider={<Divider orientation="horizontal" flexItem />}>
+                                        <div>{row.departingFlight.flightNumber}</div>
+                                        <div>{row.arrivalFlight.flightNumber}</div>
+                                        </Stack></StyledTableElement>
+              <TableCell align="center"><Stack spacing={2}
+                                        divider={<Divider orientation="horizontal" flexItem />}>
+                                        <div>{getDate(row.departingFlight.departureDate)}</div>
+                                        <div>{getDate(row.arrivalFlight.departureDate)}</div>
+                                        </Stack></TableCell>
+              <TableCell align="center"><Stack spacing={2}
+                                        divider={<Divider orientation="horizontal" flexItem />}>
+                                        <div>{row.departingFlight.departureTime}</div>
+                                        <div>{row.arrivalFlight.departureTime}</div>
+                                        </Stack></TableCell>
+              <TableCell align="center">{<Stack spacing={2}
+                                        divider={<Divider orientation="horizontal" flexItem />}>
+                                        <div>{getDate(row.departingFlight.arrivalDate)}</div>
+                                        <div>{getDate(row.arrivalFlight.arrivalDate)}</div>
+                                        </Stack>}</TableCell>
+              <TableCell align="center"><Stack spacing={2}
+                                        divider={<Divider orientation="horizontal" flexItem />}>
+                                        <div>{row.departingFlight.arrivalTime}</div>
+                                        <div>{row.arrivalFlight.arrivalTime}</div>
+                                        </Stack></TableCell>
+              <TableCell align="center">{row.departingFlight.cabin==='first'?'First Class':row.departingFlight.cabin.charAt(0).toUpperCase()+row.departingFlight.cabin.substring(1)}</TableCell>
+
+              <TableCell style={{width: '7%'}}><div>
+      <Button color='error' variant="outlined" onClick={()=>{
+          handleClickOpen();
+          }}>
+        Cancel
+      </Button>
+     { open && (<Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Are you sure you want to cancel your reservation?
+          </Typography>
+          <Button onClick={()=>{setTotalPrice(row.totalPrice);deleteReservation(row.reservationId);}}>Yes</Button>
+        </Box>
+      </Modal>)
+}
+    </div></TableCell>
             </TableRow>
+            
+            
+            
           ))}
+        
         </TableBody>
       </Table>
     </TableContainer>
+    </div>
+    </Container>
   );
 }
 
 
-// const sendEmail = (e) => {
-//     e.preventDefault();
 
-//     emailjs.sendForm('gmail', 'template_ryeq8rf', e.target, 'user_i6KjynhTdTItE6MZB2wkB')
-//       .then((result) => {
-//           console.log(result.text);
-//       }, (error) => {
-//           console.log(error.text);
-//       });
-//       e.target.reset();
-//   };
 
 
 // const columns = [
