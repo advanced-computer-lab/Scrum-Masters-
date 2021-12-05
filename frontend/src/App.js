@@ -1,25 +1,3 @@
-<<<<<<< HEAD
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import TopBar from "./components/layout/navigation/TopBar";
-import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Schedule from "./pages/admin/Schedule";
-import FlightCreation from "./pages/admin/FlightCreation";
-import SelectSeat from "./pages/user/signed/SelectSeat";
-import BookingPage from "./pages/user/signed/BookingPage";
-import FlightReservation from "./components/user/FlightReservation";
-import SearchingPage from "./pages/user/signed/SearchingPage";
-import Account from "./pages/user/signed/Account";
-import ViewFlightSummary from "./components/user/existing/FlightSummary";
-
-import DataGridDemo from "./components/user/existing/Reservations";
-import Itenirary from "./pages/user/signed/viewItenirary";
-
-//import Reservations from "./components/user/existing/Reservations";
-//import Reservation from "../../backend/Models/Reservation";
-//import Reservation from "../../backend/Models/Reservation";
-=======
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TopBar from './components/layout/navigation/TopBar';
@@ -33,10 +11,9 @@ import BookingPage from './pages/user/signed/BookingPage';
 import SearchingPage from './pages/user/signed/SearchingPage';
 import Account from './pages/user/signed/Account';
 import ViewFlightSummary from './components/user/existing/FlightSummary';
-import Itenerary from './pages/user/signed/viewItenirary';
+import Itenerary from './pages/user/signed/viewItenerary';
 import DataGridDemo from './components/user/existing/Reservations';
 import { Container } from 'react-bootstrap';
->>>>>>> dev
 
 
 function App() {
@@ -89,11 +66,7 @@ function App() {
             path='/confirmation'
             component={ViewFlightSummary}
           ></Route>
-<<<<<<< HEAD
-          <Route exact path="/Itenirary" component={Itenirary}></Route>
-=======
           <Route exact path='/itenerary' component={Itenerary}></Route>
->>>>>>> dev
         </Switch>
 
         {!admin && !existing && (
