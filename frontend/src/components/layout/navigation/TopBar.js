@@ -21,11 +21,7 @@ const TopBar = (props) => {
     setAdmin(false);
     props.onSignOut();
   };
-  const adminClick = () => {
-    setAdmin(true);
-    setExisting(false);
-    props.onAdmin();
-  };
+
   return (
     <Navbar
       collapseOnSelect
@@ -89,7 +85,7 @@ const TopBar = (props) => {
                     },
                   }}
                   onClick={guestClick}
-                  href='/search'
+                  href='/'
                 >
                   {' '}
                   Sign In{' '}
@@ -119,7 +115,7 @@ const TopBar = (props) => {
             <Navbar.Collapse id='responsive-navbar-nav'>
               <Nav className='me-auto'></Nav>
               <Nav>
-                <Nav.Link href='/search' style={{ color: 'white' }} exact>
+                <Nav.Link href='/' style={{ color: 'white' }} exact>
                   Book a Flight
                 </Nav.Link>
                 <Nav.Link href='/reservation' style={{ color: 'white' }} exact>

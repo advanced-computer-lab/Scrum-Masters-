@@ -14,9 +14,6 @@ import ViewFlightSummary from './components/user/existing/FlightSummary';
 import Itenerary from './pages/user/signed/viewItenirary';
 import DataGridDemo from './components/user/existing/Reservations';
 import { Container } from 'react-bootstrap';
-//import Reservations from "./components/user/existing/Reservations";
-//import Reservation from "../../backend/Models/Reservation";
-//import Reservation from "../../backend/Models/Reservation";
 
 function App() {
   const [admin, setAdmin] = useState(
@@ -32,8 +29,13 @@ function App() {
     console.log(JSON.parse(window.sessionStorage.getItem('existing')));
   };
   const onSignOut = () => {
+    console.log('we are signing out');
     window.sessionStorage.setItem('existing', false);
     window.sessionStorage.setItem('admin', false);
+    setAdmin(false);
+    setExisting(false);
+    console.log(JSON.parse(window.sessionStorage.getItem('admin')));
+    console.log(JSON.parse(window.sessionStorage.getItem('existing')));
   };
   const onAdmin = () => {
     window.sessionStorage.setItem('existing', false);
@@ -65,32 +67,30 @@ function App() {
           ></Route>
           <Route exact path='/itenerary' component={Itenerary}></Route>
         </Switch>
-        {/* {existing && ( */}
-        {/* <Switch> */}
-        {/* <Route exact path="/selectSeat" component={SelectSeat}></Route> */}
-        {/* </Switch> */}
-        {/* )} */}
+
+        {!admin && !existing && (
+          <Container>
+            <footer style={{ float: 'right' }}>
+              <Button
+                variant='contained'
+                style={{ marginLeft: '30px' }}
+                sx={{
+                  color: '#7400b8',
+                  backgroundColor: '#ffffff',
+                  '&:hover': {
+                    backgroundColor: '#e9e9e9',
+                    color: '#7400b8',
+                  },
+                }}
+                onClick={admin ? onSignIn : onAdmin}
+                href={!admin ? '/schedule' : './'}
+              >
+                {!admin ? 'Admin Sign in' : 'User Sign in'}
+              </Button>
+            </footer>
+          </Container>
+        )}
       </div>
-      <Container>
-        <footer style={{ float: 'right' }}>
-          <Button
-            variant='contained'
-            style={{ marginLeft: '30px' }}
-            sx={{
-              color: '#7400b8',
-              backgroundColor: '#ffffff',
-              '&:hover': {
-                backgroundColor: '#e9e9e9',
-                color: '#7400b8',
-              },
-            }}
-            onClick={admin ? onSignIn : onAdmin}
-            href={!admin ? '/schedule' : './'}
-          >
-            {!admin ? 'Admin Sign in' : 'User Sign in'}
-          </Button>
-        </footer>
-      </Container>
     </Router>
   );
 }

@@ -241,7 +241,13 @@ const BookingPage = (props) => {
         )}
       </div>
       <Box
-        sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          pt: 2,
+          marginTop: '2%',
+          width: '100%',
+        }}
         style={{ float: 'right' }}
       >
         {actualStep >= 1 && actualStep !== 2 && (
