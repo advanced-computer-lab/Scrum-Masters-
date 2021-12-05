@@ -5,10 +5,13 @@ const Flight = require("../../Models/Flight");
 const Reservation = require("../../Models/Reservation");
 const Ticket = require("../../Models/Ticket");
 const User = require("../../Models/User");
+var airports = require('airport-codes');
 
 router.get("/search/flights", async (req, res) => {
   try {
+    
     const from = await Flight.distinct("departureAirport");
+    //const from = airports.find().get('iata')
     const to = await Flight.distinct("arrivalAirport");
     console.log("from", from);
     console.log("to", to);
@@ -169,7 +172,7 @@ router.post("/search", async (req, res) => {
   },
 
   totalPrice: val
-
+}
 */
 //route for creating reservation
 router.post("/create/reservation/:userId", async (req, res) => {

@@ -43,7 +43,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import PersonIcon from '@mui/icons-material/Person';
 
 import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
+//import 'reactjs-popup/dist/index.css';
 
 const ViewFlightSummary = ({ input1, input2 }) => {
     console.log("FlightSummaryInput1",input1);
