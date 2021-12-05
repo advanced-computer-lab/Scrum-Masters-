@@ -234,6 +234,7 @@ const BookingPage = (props) => {
               departureInput.details.noOfChildren
             }
             handleTravellers={handleTravellers}
+            nextPage={nextPage}
           />
         )}
         {actualStep === 4 && (
