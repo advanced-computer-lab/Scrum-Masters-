@@ -329,7 +329,11 @@ const BookingPage = (props) => {
           />
         )}
         {actualStep === 3 && (
-          <ViewFlightSummary input1={departureInput} input2={arrivalInput} />
+          <ViewFlightSummary
+            input1={departureInput}
+            input2={arrivalInput}
+            nextPage={nextPage}
+          />
         )}
         {actualStep === 4 && (
           <SelectSeat
