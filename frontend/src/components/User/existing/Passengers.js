@@ -76,13 +76,8 @@ const Passengers = (props) => {
             />
 
             <span>
-<<<<<<< HEAD
               I hereby confirm that provided information is accurate as
               represented on official documents of ticket carrier(s).
-=======
-             I hereby confirm that provided information is accurate as
-            represented on official documents of each ticket carrier.
->>>>>>> dev
             </span>
           </div>
           <Box

@@ -225,20 +225,13 @@ const BookingPage = (props) => {
         />
       )}
       {actualStep === 3 && (
-        <SelectSeat
-          passengers={travellers}
-          departureFlight={departureInput}
-          returnFlight={arrivalInput}
-          departureId={departureFlight}
-          returnId={arrivalFlight}
-          cabin={departureInput.details.cabin}
-          numberPassengers={
-            departureInput.details.noOfAdults +
-            departureInput.details.noOfChildren
-          }
-          handleTravellers={handleTravellers}
-        />
+        <Itenirary input1={departureInput} input2={arrivalInput} />
       )}
+      <Box
+        sx={{ display: "flex", flexDirection: "row", pt: 2 }}
+        style={{ float: "right" }}
+      ></Box>
+      )
       {actualStep === 4 && (
         <ViewFlightSummary input1={departureInput} input2={arrivalInput} />
       )}
@@ -264,13 +257,7 @@ const BookingPage = (props) => {
         )}
       </Box>
       
-      {actualStep === 5 && (
-        <Itenirary input1={departureInput} input2={arrivalInput} />
-      )}
-      <Box
-        sx={{ display: "flex", flexDirection: "row", pt: 2 }}
-        style={{ float: "right" }}
-      ></Box>
+      
     </Container>
   );
 };

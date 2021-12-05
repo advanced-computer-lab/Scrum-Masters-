@@ -11,8 +11,10 @@ import FlightReservation from "./components/user/FlightReservation";
 import SearchingPage from "./pages/user/signed/SearchingPage";
 import Account from "./pages/user/signed/Account";
 import ViewFlightSummary from "./components/user/existing/FlightSummary";
-import Itenerary from "./pages/user/signed/viewItenirary";
+
 import DataGridDemo from "./components/user/existing/Reservations";
+import Itenirary from "./pages/user/signed/viewItenirary";
+
 //import Reservations from "./components/user/existing/Reservations";
 //import Reservation from "../../backend/Models/Reservation";
 //import Reservation from "../../backend/Models/Reservation";
@@ -58,7 +60,7 @@ function App() {
             path="/confirmation"
             component={ViewFlightSummary}
           ></Route>
-          <Route exact path="/itenerary" component={Itenerary}></Route>
+          <Route exact path="/Itenirary" component={Itenirary}></Route>
         </Switch>
         {/* {existing && ( */}
         {/* <Switch> */}
