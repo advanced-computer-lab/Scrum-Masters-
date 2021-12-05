@@ -1,32 +1,32 @@
-const express = require("express");
-const mongoose = require("mongoose");
+const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
-const Flight = require("../../Models/Flight");
-const Reservation = require("../../Models/Reservation");
-const Ticket = require("../../Models/Ticket");
-const User = require("../../Models/User");
-var airports = require("airport-codes");
+const Flight = require('../../Models/Flight');
+const Reservation = require('../../Models/Reservation');
+const Ticket = require('../../Models/Ticket');
+const User = require('../../Models/User');
+var airports = require('airport-codes');
 
-router.get("/search/flights", async (req, res) => {
+router.get('/search/flights', async (req, res) => {
   try {
-    const from = await Flight.distinct("departureAirport");
+    const from = await Flight.distinct('departureAirport');
     //const from = airports.find().get('iata')
-    const to = await Flight.distinct("arrivalAirport");
-    console.log("from", from);
-    console.log("to", to);
+    const to = await Flight.distinct('arrivalAirport');
+    console.log('from', from);
+    console.log('to', to);
     const output = {
       from: from,
       to: to,
     };
     res.json(output);
   } catch (error) {
-    res.status(404).json({ message: "invalid search" });
+    res.status(404).json({ message: 'invalid search' });
   }
 });
 
-router.post("/search", async (req, res) => {
+router.post('/search', async (req, res) => {
   const criteria = req.body;
-  console.log("criteria", criteria); //theerasfadfad
+  console.log('criteria', criteria); //theerasfadfad
   /* {
     noOfChildren: val, 
     noOfAdults: val,
@@ -44,7 +44,7 @@ router.post("/search", async (req, res) => {
     !req.body.arrivalDate ||
     !req.body.cabin
   ) {
-    res.json({ message: "please choose all the fields" });
+    res.json({ message: 'please choose all the fields' });
     return;
   }
   // checking at least one passenger
@@ -56,7 +56,7 @@ router.post("/search", async (req, res) => {
   }
 
   if (criteria.noOfAdults + criteria.noOfChildren === 0) {
-    res.json({ message: "please choose at least one passenger" });
+    res.json({ message: 'please choose at least one passenger' });
     return;
   }
 
@@ -76,7 +76,7 @@ router.post("/search", async (req, res) => {
     // from and to are not the same
     if (criteria.departureAirport === criteria.arrivalAirport) {
       res.json({
-        message: "You can not specify the from and to with the same values",
+        message: 'You can not specify the from and to with the same values',
       });
       return;
     }
@@ -84,7 +84,7 @@ router.post("/search", async (req, res) => {
     // overlapping dates
     if (new Date(criteria.arrivalDate) < new Date(criteria.departureDate)) {
       res.json({
-        message: "cannot have an arrival date before the departure date",
+        message: 'cannot have an arrival date before the departure date',
       });
       return;
     }
@@ -92,7 +92,7 @@ router.post("/search", async (req, res) => {
     // no round trips
 
     // console.log("query before filtering", query);
-    if (criteria.cabin === "economy") {
+    if (criteria.cabin === 'economy') {
       query1 = query1.filter(
         (flight) =>
           flight.economy.availableSeats >=
@@ -104,7 +104,7 @@ router.post("/search", async (req, res) => {
           criteria.noOfChildren + criteria.noOfAdults
       );
     }
-    if (criteria.cabin === "business") {
+    if (criteria.cabin === 'business') {
       //console.log("ehna true");
       query1 = query1.filter(
         (flight) =>
@@ -117,7 +117,7 @@ router.post("/search", async (req, res) => {
           criteria.noOfChildren + criteria.noOfAdults
       );
     }
-    if (criteria.cabin === "first") {
+    if (criteria.cabin === 'first') {
       //console.log("ehna true");
       query1 = query1.filter(
         (flight) =>
@@ -133,7 +133,7 @@ router.post("/search", async (req, res) => {
     if (query1.length === 0 || query2.length === 0) {
       res.json({
         message:
-          "We are sorry, there are no round trips available for your criteria",
+          'We are sorry, there are no round trips available for your criteria',
       });
       return;
     }
@@ -173,7 +173,7 @@ router.post("/search", async (req, res) => {
 }
 */
 //route for creating reservation
-router.post("/create/reservation/:userId", async (req, res) => {
+router.post('/create/reservation/:userId', async (req, res) => {
   const reservation = new Reservation({
     userId: req.params.userId,
     cabinClass: req.body.details.cabin,
@@ -188,29 +188,29 @@ router.post("/create/reservation/:userId", async (req, res) => {
     var totalSeats =
       req.body.details.noOfAdults + req.body.details.noOfChildren;
     // decreasing seats of the flight
-    if (req.body.details.cabin === "economy") {
+    if (req.body.details.cabin === 'economy') {
       await Flight.findByIdAndUpdate(req.body.departingFlightId, {
-        $inc: { "economy.availableSeats": -totalSeats },
+        $inc: { 'economy.availableSeats': -totalSeats },
       });
       await Flight.findByIdAndUpdate(req.body.returnFlightId, {
-        $inc: { "economy.availableSeats": -totalSeats },
+        $inc: { 'economy.availableSeats': -totalSeats },
       });
     }
-    if (req.body.details.cabin === "business") {
+    if (req.body.details.cabin === 'business') {
       await Flight.findByIdAndUpdate(req.body.departingFlightId, {
-        $inc: { "business.availableSeats": -totalSeats },
+        $inc: { 'business.availableSeats': -totalSeats },
       });
-       await Flight.findByIdAndUpdate(req.body.returnFlightId, {
-         $inc: { "business.availableSeats": -totalSeats },
-       });
+      await Flight.findByIdAndUpdate(req.body.returnFlightId, {
+        $inc: { 'business.availableSeats': -totalSeats },
+      });
     }
-    if (req.body.details.cabin === "first") {
+    if (req.body.details.cabin === 'first') {
       await Flight.findByIdAndUpdate(req.body.departingFlightId, {
-        $inc: { "firstClass.availableSeats": -totalSeats },
+        $inc: { 'firstClass.availableSeats': -totalSeats },
       });
-       await Flight.findByIdAndUpdate(req.body.returnFlightId, {
-         $inc: { "firstClass.availableSeats": -totalSeats },
-       });
+      await Flight.findByIdAndUpdate(req.body.returnFlightId, {
+        $inc: { 'firstClass.availableSeats': -totalSeats },
+      });
     }
 
     res.json(savedReservation);
@@ -235,7 +235,7 @@ router.post("/create/reservation/:userId", async (req, res) => {
  *
  * } */
 
-router.post("/create/ticket", async (req, res) => {
+router.post('/create/ticket', async (req, res) => {
   const ticket = new Ticket(req.body);
   try {
     const savedTicket = await ticket.save();
@@ -245,7 +245,7 @@ router.post("/create/ticket", async (req, res) => {
   }
 });
 
-router.get("/reserved/:flightId", (req, res) => {
+router.get('/reserved/:flightId', (req, res) => {
   Ticket.find(
     { flightId: req.params.flightId },
     { seatNum: 1, cabin: 1, _id: 0 }
@@ -257,52 +257,28 @@ router.get("/reserved/:flightId", (req, res) => {
     });
 });
 
-router.delete("/delete/reservation/:id", async (req, res) => {
+router.delete('/delete/reservation/:id', async (req, res) => {
   // removing reservation
 
   Reservation.findByIdAndRemove(req.params.id)
-    .then((reservation) => {
-      Ticket.deleteMany({ reservationId: req.params.id })
-        .then(async (tickets) => {
-          
-          // incremeting the total seats of the reserved flights
-
-          tickets.forEach((ticket)=>{
-            console.log("We are in this ticket",ticket);
-              
-                  if(ticket.cabin ==="economy"){
-                    Flight.findByIdAndUpdate(ticket.flightId, {
-                      $inc: { "economy.availableSeats":1},
-                    }).then(console.log("decreased the number of seats")).catch()
-                  }
-                  if(ticket.cabin ==="business"){
-                    Flight.findByIdAndUpdate(ticket.flightId, {
-                      $inc: { "business.availableSeats":1},
-                    }).then(console.log("decreased the number of seats")).catch()
-                  }
-                  if(ticket.cabin ==="first"){
-                    Flight.findByIdAndUpdate(ticket.flightId, {
-                      $inc: { "firstClass.availableSeats":1},
-                    }).then(console.log("decreased the number of seats")).catch()
-                  }
-          })
-
-
-        })
-        .catch();
-
-      res.json({ mgs: "Reservation deleted successfully" });
+    .then((Reservation) => {
+      console.log(Reservation);
+      if (Reservation != null)
+        res.json({ mgs: 'Reservation deleted successfully' });
+      else {
+        res.json({ mgs: 'Reservation already deleted' });
+      }
     })
-    .catch((err) => res.status(404).json({ error: "No such a Reservation" }));
+    .catch((err) => res.status(404).json({ error: 'No such a Reservation' }));
 });
 //user
-router.get("/reservations/:id", async (req, res) => {
+router.get('/reservations/:id', async (req, res) => {
   //console.log("backend", req.params.id);
   try {
     const reservations = await Reservation.find({ userId: req.params.id })
-      .populate("departingFlightId")
-      .populate("returnFlightId"); //
-    console.log("the reservations", reservations);
+      .populate('departingFlightId')
+      .populate('returnFlightId'); //
+    console.log('the reservations', reservations);
 
     var output = [];
     reservations.forEach(async (reservation) => {
@@ -325,8 +301,10 @@ router.get("/reservations/:id", async (req, res) => {
           arrivalTime: reservation.returnFlightId.arrivalTime,
           cabin: reservation.cabinClass,
         },
+        reservationId: reservation.id,
+        totalPrice: reservation.totalPrice,
       };
-      console.log("the entry", entry);
+      console.log('the entry', entry);
       output.push(entry);
     });
 
@@ -360,7 +338,7 @@ router.get("/reservations/:id", async (req, res) => {
  *
  * }
  */
-router.get("/profile/:id", async (req, res) => {
+router.get('/profile/:id', async (req, res) => {
   User.findById(req.params.id)
     .then((result) => {
       res.send(result);
@@ -370,7 +348,7 @@ router.get("/profile/:id", async (req, res) => {
       res.status(404).send(err);
     });
 });
-router.post("/profile", async (req, res) => {
+router.post('/profile', async (req, res) => {
   const insertion = req.body;
   const user = new User(insertion);
   user
@@ -381,7 +359,7 @@ router.post("/profile", async (req, res) => {
     })
     .catch((err) => res.status(400).send(err));
 });
-router.patch("/profile/update/:id", async (req, res) => {
+router.patch('/profile/update/:id', async (req, res) => {
   User.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((result) => {
       //new:true returns modified document not original
