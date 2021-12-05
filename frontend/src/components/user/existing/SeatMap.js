@@ -161,22 +161,22 @@ const SeatMap = (props) => {
           ],
         }
       );
-      var economySeats = flight[0].economy.noOfSeats;
+      var economySeats = flight.economy.noOfSeats;
       var type = index === 0 ? "departing" : "returning";
       var i =
-        Math.ceil(flight[0].firstClass.noOfSeats / 6) +
-        Math.ceil(flight[0].business.noOfSeats / 6) +
+        Math.ceil(flight.firstClass.noOfSeats / 6) +
+        Math.ceil(flight.business.noOfSeats / 6) +
         1;
       var totalAvailable =
-        Math.ceil(flight[0].economy.noOfSeats / 6) +
-        Math.ceil(flight[0].business.noOfSeats / 6) +
-        Math.ceil(flight[0].firstClass.noOfSeats / 6);
+        Math.ceil(flight.economy.noOfSeats / 6) +
+        Math.ceil(flight.business.noOfSeats / 6) +
+        Math.ceil(flight.firstClass.noOfSeats / 6);
       for (i; i <= totalAvailable; i++) {
         if (
           i ===
-          Math.ceil(flight[0].economy.noOfSeats / 12) +
-            Math.ceil(flight[0].business.noOfSeats / 6) +
-            Math.ceil(flight[0].firstClass.noOfSeats / 6)
+          Math.ceil(flight.economy.noOfSeats / 12) +
+            Math.ceil(flight.business.noOfSeats / 6) +
+            Math.ceil(flight.firstClass.noOfSeats / 6)
         )
           rows.push({
             sections: [
@@ -338,14 +338,14 @@ const SeatMap = (props) => {
         //   ],
         // }
       );
-      var businessSeats = flight[0].business.noOfSeats;
+      var businessSeats = flight.business.noOfSeats;
       var type = index === 0 ? "departing" : "returning";
-      var i = Math.ceil(flight[0].firstClass.noOfSeats / 6) + 1;
+      var i = Math.ceil(flight.firstClass.noOfSeats / 6) + 1;
       for (
         i;
         i <=
-        Math.ceil(flight[0].business.noOfSeats / 6) +
-          Math.ceil(flight[0].firstClass.noOfSeats / 6);
+        Math.ceil(flight.business.noOfSeats / 6) +
+          Math.ceil(flight.firstClass.noOfSeats / 6);
         i++
       ) {
         var sections = [];
@@ -489,9 +489,9 @@ const SeatMap = (props) => {
           ],
         }
       );
-      var firstSeats = flight[0].firstClass.noOfSeats;
+      var firstSeats = flight.firstClass.noOfSeats;
       var type = index === 0 ? "departing" : "returning";
-      for (i = 1; i <= Math.ceil(flight[0].firstClass.noOfSeats / 6); i++) {
+      for (i = 1; i <= Math.ceil(flight.firstClass.noOfSeats / 6); i++) {
         var sections = [];
         var elements = [];
         var char = "A";
@@ -594,19 +594,19 @@ const SeatMap = (props) => {
 
   useEffect(() => {
     createOffer(
-      props.flights[0][0].departureAirport,
-      props.flights[0][0].arrivalAirport,
+      props.flights[0].departureAirport,
+      props.flights[0].arrivalAirport,
       props.passengers,
-      props.flights[0][0].duration,
-      props.flights[1][0].duration
+      props.flights[0].duration,
+      props.flights[1].duration
     );
     setTimeout(() => {}, 4000);
     createFirstCabin();
     createBusinessCabin();
     createEconomyCabin();
     createSeatMaps();
-    props.onFetch();
     setLoading(false);
+    props.onFetch();
   }, []);
 
   const onSubmit = () => {
