@@ -41,15 +41,35 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import PersonIcon from '@mui/icons-material/Person';
-
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '"#5e60ce"',
+    boxShadow: 24,
+    p: 4,
+  };
+
+
+
 
 const ViewFlightSummary = ({ input1, input2 }) => {
     console.log("FlightSummaryInput1",input1);
     console.log("FlightSummaryInput2",input2);
     var x=0;
-
+    const [show, setShow] = useState(false);
+  
+    const handleShow = () => setShow(true);
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  
   const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
     padding: theme.spacing(1),
@@ -140,7 +160,7 @@ const ViewFlightSummary = ({ input1, input2 }) => {
               <ConfirmationNumberIcon /> Total Number of Tickets per reservation:{input1.details.noOfAdults+input1.details.noOfChildren+input2.details.noOfAdults+input2.details.noOfChildren }
             </Item>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} >
             <Item>
               <EventSeatIcon />
               Class Cabin:{input1.details.cabin}
@@ -153,11 +173,32 @@ const ViewFlightSummary = ({ input1, input2 }) => {
             </Item>
           </Grid>
         </Grid>
+        <div>
+        <Button onClick={handleOpen}> Confirm & proceed to choose seat
+
+        </Button>
+        <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2" fontFamily="cursive" color="#5e60ce">
+            Nope!
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }} fontFamily="cursive">
+           Please Log in before proceeding with your reservation!
+           <div>
+               <Button >
+                   Sign-In
+               </Button>
+           </div>
+          </Typography>
+        </Box>
+      </Modal>
+        </div>
         
-        <Popup trigger={<Button> Confirm & proceed to choose seats</Button>} position="right center">
-            
-        <div>Popup content here !!</div>
-         </Popup>
         
         
       </Container>
