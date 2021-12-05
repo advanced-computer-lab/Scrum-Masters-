@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const User = require('./User');
 const Ticket = require('./Ticket').schema;
 
+
 const ReservationSchema = mongoose.Schema(
   {
     userId: {
