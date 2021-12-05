@@ -97,8 +97,9 @@ const SearchFlight = ({ onSignIn }) => {
           setErrorMessage(res.data.message);
           showAlert();
         } else {
-          setOutput(res.data);
-          setSearchDone(true);
+          setOutput(res.data);   
+          console.log("search flight", res.data);
+          setTimeout(()=>{setSearchDone(true);},3000);
         }
 
         // history.push({
@@ -139,7 +140,7 @@ const SearchFlight = ({ onSignIn }) => {
   // };
   return (
     <div>
-      {searchDone && <BookingPage props={(output, onSignIn)} />}
+      {searchDone && <BookingPage props={output} />}
       {!searchDone && (
         <Grid
           container

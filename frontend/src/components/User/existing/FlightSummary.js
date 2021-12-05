@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { useState } from 'react';
-import Stack from '@mui/material/Stack';
-import { Container } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
-import { DialogActions } from '@mui/material';
-import { DialogContent } from '@mui/material';
-import { DialogTitle } from '@mui/material';
-import { Dialog } from '@mui/material';
-import { DialogContentText } from '@mui/material';
-=======
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -26,7 +11,6 @@ import { DialogContent } from "@mui/material";
 import { DialogTitle } from "@mui/material";
 import { Dialog } from "@mui/material";
 import { DialogContentText } from "@mui/material";
->>>>>>> maram
 //import Ticket from "../../../../backend/Models/Ticket";
 //import Reservation from "../../../../backend/Models/Reservation";
 //import * as React from 'react';
@@ -72,7 +56,7 @@ const style = {
   p: 4,
 };
 
-const ViewFlightSummary = ({ input1, input2, handlePrice }) => {
+const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
     console.log("FlightSummaryInput1",input1);
     console.log("FlightSummaryInput2",input2);
     var x=0;
