@@ -237,7 +237,8 @@ router.delete("/delete/reservation/:id", (req, res) => {
 })
 //user
 router.get("/reservations/:id", (req, res) => {
-  Reservation.find({userId : req.params.id})
+  console.log("backend",req.params.id)
+  Reservation.find({userId :req.params.id})
     .then((result) => res.json(result))
     .catch((err) => console.log(err));
 });

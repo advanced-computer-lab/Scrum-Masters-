@@ -12,6 +12,10 @@ import SearchingPage from "./pages/user/signed/SearchingPage";
 import Account from "./pages/user/signed/Account";
 import ViewFlightSummary from "./components/user/existing/FlightSummary";
 import Itenerary from "./pages/user/signed/viewItenirary";
+import DataGridDemo from "./components/user/existing/Reservations";
+//import Reservations from "./components/user/existing/Reservations";
+//import Reservation from "../../backend/Models/Reservation";
+//import Reservation from "../../backend/Models/Reservation";
 
 function App() {
   const [admin, setAdmin] = useState(
@@ -47,6 +51,7 @@ function App() {
           <Route exact path="/selectSeat" component={SelectSeat}></Route>
           <Route exact path="/account" component={Account}></Route>
           <Route exact path="/search" component={SearchingPage}></Route>
+          <Route exact path="/reservations" component={DataGridDemo}></Route>
           <Route
             exact
             path="/confirmation"
