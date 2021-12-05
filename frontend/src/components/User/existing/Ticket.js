@@ -47,7 +47,8 @@ const Ticket = (props) => {
             flexShrink: 0,
             fontWeight: "bold",
             display: "contents",
-            textAlign:"left"
+            textAlign:"left",
+            fontWeight:"Bold",
           }}
         >
           {props.ticket.firstName} {props.ticket.lastName},&nbsp;
@@ -66,7 +67,8 @@ const Ticket = (props) => {
           sx={{
             // width: "5%",
             flexShrink: 0,
-            
+            color:"#7400b8",
+            fontWeight:"Bold",
             marginLeft:"auto"
           }}
         >
@@ -74,67 +76,67 @@ const Ticket = (props) => {
         </Typography>
         </AccordionSummary>
         <AccordionDetails>
-            <Stack direction="row" spacing={12} justifyContent="center">
+            <Stack direction="row" spacing={12} justifyContent="center" >
                 <Stack direction="column" spacing={3}>
-                    <div>
+                    <div style={{fontWeight:"Bold"}}>
                         Flight Number
                     </div>
-                    <div>
+                    <div style={{fontSize:"small", marginTop:"2px"}}>
                         {props.flight.flightNumber}
                     </div>
-                    <div >
+                    <div style={{fontWeight:"Bold"}}>
                         Cabin Class
                     </div>
-                    <div>
+                    <div style={{fontSize:"small",marginTop:"2px"}}>
                      {props.ticket.cabin}
                     </div>
-                    <div>
+                    <div style={{fontWeight:"Bold"}} >
                      Price
                     </div>
-                    <div>
+                    <div style={{fontSize:"small",marginTop:"2px"}}>
                         {props.ticket.price}
                     </div>
                     </Stack>
                 <Stack direction="column" spacing={3}>
-                    <div>
+                    <div style={{fontWeight:"Bold"}}>
                         
                         Departure Airport
                     </div>
-                    <div>
+                    <div style={{fontSize:"small",marginTop:"2px"}}>
                       {props.flight.departureAirport}
                     </div>
-                    <div>
+                    <div style={{fontWeight:"Bold"}}>
                         Arrival Airport
                     </div>
-                    <div>
+                    <div style={{fontSize:"small",marginTop:"2px"}}>
                         {props.flight.arrivalAirport}
                     </div>
-                    <div>
+                    <div style={{fontWeight:"Bold"}}>
                         Seat Number
                         </div>
-                    <div>
+                    <div style={{fontSize:"small",marginTop:"2px"}}>
                         {props.ticket.seatNum}
                     </div>
                     </Stack>
                 <Stack direction="column" spacing={3}>
-                    <div>
+                    <div style={{fontWeight:"Bold"}}>
                         Departure Date
                     </div>
-                    <div>
+                    <div style={{fontSize:"small",marginTop:"2px"}}>
                         {getDate(props.flight.departureDate)}, {props.flight.departureTime}
 
                     </div>
-                    <div>
+                    <div style={{fontWeight:"Bold"}}>
                        Arrival Date
                     </div>
-                    <div>
+                    <div style={{fontSize:"small",marginTop:"2px"}}>
                         {getDate(props.flight.arrivalDate)}, {props.flight.arrivalTime}
 
                     </div>
-                    <div>
+                    <div style={{fontWeight:"Bold"}}>
                        Status
                     </div>
-                    <div>
+                    <div style={{fontSize:"small",marginTop:"2px"}}>
                         Confirmed
 
                     </div>
