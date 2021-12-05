@@ -25,6 +25,11 @@ const ticketSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    cabin: {
+      type: String,
+      enum: ["first", "business", "economy"],
+      required: true,
+    },
 
     //extra
 
@@ -38,7 +43,7 @@ const ticketSchema = mongoose.Schema(
       ref: "Reservation",
       required: true,
     },
-    
+
     price: {
       type: Number,
     },
