@@ -26,7 +26,7 @@ router.get("/search/flights", async (req, res) => {
 
 router.post("/search", async (req, res) => {
   const criteria = req.body;
-  console.log("criteria", criteria);
+  console.log("criteria", criteria); //theerasfadfad
   /* {
     noOfChildren: val, 
     noOfAdults: val,
