@@ -99,7 +99,7 @@ const SearchFlight = ({ onSignIn }) => {
         } else {
           setOutput(res.data);   
           console.log("search flight", res.data);
-          setTimeout(()=>{setSearchDone(true);},3000);
+          setSearchDone(true);
         }
 
         // history.push({

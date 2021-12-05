@@ -322,7 +322,7 @@ const BookingPage = (props) => {
             isDeparture={false}
           />
         )}
-        {actualStep === 3 && (
+        {actualStep === 2 && (
           <Passengers
             adults={departureInput.details.noOfAdults}
             children={departureInput.details.noOfChildren}
