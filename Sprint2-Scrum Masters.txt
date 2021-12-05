@@ -1,0 +1,27 @@
+Scrum Masters:
+
+Donia Sharaf 46-0391
+
+Yousef Sameh 46-1566
+
+Ahmed Serry 46-13429
+
+Maram Benamer 46-8504
+
+Seif Maged 46-1691
+
+
+
+Task Allocation:
+
+
+Donia Sharaf: Seat Map - Book Ticket API - Additional Styling - Itenerary Component - User Profile Component(Along with -Select Seat Component
+
+Ahmed Serry: Searching+Selecting Departure and Return Flights+View Selected Flight details FrontEnd + Progress bar Component+Participated in SelectSeat Component
+
+Yousef Sameh: Delete Reservation Component (BackEnd & FrontEnd) + Sending Email + View Reservation BackEnd
+
+Seif:Searching+Selecting Departure and Return Flights+View Selected Flight details BackEnd + Participated in  Delete Reservation Component+ Validations + Ticket & Reservation schema(s)
+
+Maram:Participated in Itenirary Component- View Flight Summary FrontEnd and functionality-Confirmation has to be done after signing in pop up with dummy button
+
