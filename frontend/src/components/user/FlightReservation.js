@@ -55,6 +55,7 @@ const FlightReservation = ({
     );
   };
   const getPrice = (cabinClass, row) => {
+    console.log(data.details);
     return cabinClass === 'economy'
       ? row.economy.adultPrice
       : cabinClass === 'first'
