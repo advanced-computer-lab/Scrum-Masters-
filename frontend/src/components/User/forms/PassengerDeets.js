@@ -83,12 +83,12 @@ const PassengerDeets = (props) => {
               sx={{
                 width: "5%",
                 flexShrink: 0,
-                display: "inline",
+                display: "contents",
               }}
             >
-              {props.cabin.charAt(0).toUpperCase() + props.cabin.substring(1)}
+              {props.cabin.charAt(0).toUpperCase() + props.cabin.substring(1)} Class
             </Typography>
-            <Typography sx={{ color: "text.secondary" }}></Typography>
+            {/* <Typography sx={{ color: "text.secondary" }}></Typography> */}
           </AccordionSummary>
           <AccordionDetails>
             <Stack direction="row" justifyContent="center" spacing={12}>

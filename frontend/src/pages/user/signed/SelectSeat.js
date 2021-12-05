@@ -41,17 +41,18 @@ const SelectSeat = (props) => {
     );
   };
   const handleSeats = (seats) => {
-     seats.forEach((y) => {
-       console.log(y.innerText); //seat number
-     });
+    seats.forEach((y) => {
+      console.log(y.innerText); //seat number
+    });
     var travellers = props.passengers;
     travellers.forEach((traveller, index) => {
-       traveller.departureSeat= seats[index].innerText
-       traveller.returnSeat= seats[index+props.numberPassengers].innerText
-    })
+      traveller.departureSeat = seats[index].innerText;
+      traveller.returnSeat = seats[index + props.numberPassengers].innerText;
+    });
+    console.log("pre");
+    props.handleReservation(travellers);
     console.log("ttt", travellers);
-    props.handleTravellers(travellers);
-  }
+  };
 
   useEffect(() => {
     console.log("props", props);
@@ -73,7 +74,7 @@ const SelectSeat = (props) => {
       })
       .catch((err) => console.log(err));
     createPassengers(props.passengers);
-   // setTimeout(() => {}, 4000);
+    // setTimeout(() => {}, 4000);
   }, []);
   const onFetch = () => {
     setLoading(false);
@@ -118,8 +119,8 @@ const SelectSeat = (props) => {
             returnCabin={props.cabin}
             passengers={passengers}
             loading={loading}
-          onFetch={onFetch}
-          handleSeats={handleSeats}
+            onFetch={onFetch}
+            handleSeats={handleSeats}
           />
         )}
     </div>
