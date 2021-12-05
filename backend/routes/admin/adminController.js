@@ -39,6 +39,14 @@ router.post("/create", async (req, res) => {
   console.log(req.body);
   const insertion = req.body;
 
+  if(insertion.departureAirport === insertion.arrivalAirport){
+    res.json({
+      message: "the departure and arrival airports cannot be the same.",
+    });
+    return;
+  }
+
+
   if (new Date(insertion.arrivalDate) < new Date(insertion.departureDate)) {
     //throw new Error("End date of lab must be valid and after start date");
     res.json({

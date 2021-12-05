@@ -5,10 +5,10 @@ const Flight = require("../../Models/Flight");
 const Reservation = require("../../Models/Reservation");
 const Ticket = require("../../Models/Ticket");
 const User = require("../../Models/User");
+var airports = require("airport-codes");
 
 router.get("/search/flights", async (req, res) => {
   try {
-    
     const from = await Flight.distinct("departureAirport");
     //const from = airports.find().get('iata')
     const to = await Flight.distinct("arrivalAirport");
@@ -89,7 +89,7 @@ router.post("/search", async (req, res) => {
       return;
     }
 
-    // no round trips 
+    // no round trips
     if (query1.length === 0 || query2.length === 0) {
       res.json({
         message:
@@ -220,7 +220,6 @@ router.post("/create/reservation/:userId", async (req, res) => {
 });
 
 router.get("/reserved/:flightId", (req, res) => {
-  
   Ticket.find(
     { flightId: req.params.flightId },
     { seatNum: 1, cabin: 1, _id: 0 }
@@ -234,20 +233,75 @@ router.get("/reserved/:flightId", (req, res) => {
 
 router.delete("/delete/reservation/:id", (req, res) => {
   Reservation.findByIdAndRemove(req.params.id)
-    .then((Reservation) => res.json({ mgs: "Reservation deleted successfully" }))
+    .then((Reservation) =>
+      res.json({ mgs: "Reservation deleted successfully" })
+    )
     .catch((err) => res.status(404).json({ error: "No such a Reservation" }));
-})
-//user
-router.get("/reservations/:id", (req, res) => {
-  console.log("backend",req.params.id)
-  Reservation.find({userId :req.params.id})
-    .then((result) => {res.json(result)
-      if (result.length === 0){
-        console.log('No reservations')
-      }
-    } )
-    .catch((err) => console.log(err));
 });
+//user
+router.get("/reservations/:id", async (req, res) => {
+  //console.log("backend", req.params.id);
+  try {
+    const reservations = await Reservation.find({ userId: req.params.id }).populate('departingFlightId').populate('returnFlightId'); //
+    console.log("the reservations", reservations);
+
+    var output = [];
+    reservations.forEach(async (reservation) => {
+
+        // console.log("the departing flight",departingFlight);
+        // console.log("the return flight",arrivalFlight);
+        const entry = {
+          departingFlight: {
+            flightNumber: reservation.departingFlightId.flightNumber,
+            departureDate: reservation.departingFlightId.departureDate,
+            departureTime: reservation.departingFlightId.departureTime,
+            arrivalDate: reservation.departingFlightId.arrivalDate,
+            arrivalTime: reservation.departingFlightId.arrivalTime,
+            cabin: reservation.cabinClass,
+          },
+          arrivalFlight: {
+            flightNumber: reservation.returnFlightId.flightNumber,
+            departureDate: reservation.returnFlightId.departureDate,
+            departureTime: reservation.returnFlightId.departureTime,
+            arrivalDate: reservation.returnFlightId.arrivalDate,
+            arrivalTime: reservation.returnFlightId.arrivalTime,
+            cabin: reservation.cabinClass,
+          },
+        };
+        console.log("the entry", entry);
+        output.push(entry);
+    });
+
+    res.json(output);
+  } catch (error) {
+    console.log(error);
+  }
+});
+/**
+ * {
+ *  departingFlight:{
+ *
+ *  flightNumber: val,
+ *  departureDate:val,
+ *  departureTime:val,
+ *  arrivalDate:val,
+ *  arrivalTime: val,
+ *  cabin: val
+ *
+ *  },
+ *  arrivalFlight:{
+ *   flightnumber: val,
+ *  departureDate:val,
+ *  departureTime:val,
+ *  arrivalDate:val,
+ *  arrivalTime: val,
+ *  cabin: val
+ *
+ *  }
+ *
+ *
+ * }
+ */
 router.get("/profile/:id", async (req, res) => {
   User.findById(req.params.id)
     .then((result) => {
