@@ -76,7 +76,13 @@ const BookingPage = (props) => {
     console.log(departureInput);
   };
   const handleNoOfForms = () => {};
-
+  const handleNextForm = (e) => {
+    let newSkipped = skipped;
+    e.preventDefault();
+    setActualStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep((count) => count + 1);
+    setSkipped(newSkipped);
+  };
   const nextPage = (count) => {
     let newSkipped = skipped;
     setActualStep((prevActiveStep) => prevActiveStep + 1);
@@ -174,7 +180,7 @@ const BookingPage = (props) => {
   };
   const handleEnable = () => (activeStep === '0' ? false : true);
   return (
-    <Container component='form' id='passenger-form'>
+    <Container>
       {actualStep > 1 && (
         <Stepper
           alternativeLabel
@@ -215,6 +221,8 @@ const BookingPage = (props) => {
           children={+departureInput.details.noOfChildren}
           cabin={departureInput.details.cabin}
           handleTravellers={handleTravellers}
+          handleNext={handleNextForm}
+          handleBack={handleBack}
         />
       )}
       {actualStep === 3 && (
@@ -224,7 +232,7 @@ const BookingPage = (props) => {
         sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}
         style={{ float: 'right' }}
       >
-        {actualStep >= 1 && (
+        {actualStep >= 1 && actualStep !== 2 && (
           <Button
             color='inherit'
             disabled={actualStep === 0}
@@ -235,7 +243,7 @@ const BookingPage = (props) => {
           </Button>
         )}
 
-        {activeStep >= 0 && (
+        {activeStep >= 0 && actualStep !== 2 && (
           <Button onClick={handleNext} type='submit'>
             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
           </Button>

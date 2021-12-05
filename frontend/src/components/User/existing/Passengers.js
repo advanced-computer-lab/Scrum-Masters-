@@ -63,7 +63,7 @@ const Passengers = (props) => {
     <div>
       {' '}
       <Container>
-        <Box>
+        <Box component='form' id='passenger-form' onSubmit={props.handleNext}>
           <div>{dynamicRender()}</div>
           <div>
             <input
@@ -80,7 +80,21 @@ const Passengers = (props) => {
               represented on official documents of ticket carrier
             </span>
           </div>
-          {/* <Button type='submit'> hi</Button> */}
+          <Box
+            sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}
+            style={{ float: 'right' }}
+          >
+            <Button color='inherit' onClick={props.handleBack} sx={{ mr: 1 }}>
+              Back
+            </Button>
+            <Button
+              // onSubmit={props.handleNext}
+              // onClick={props.handleNext}
+              type='submit'
+            >
+              Next
+            </Button>
+          </Box>
         </Box>
       </Container>
     </div>
