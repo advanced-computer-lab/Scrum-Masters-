@@ -46,6 +46,8 @@ const BookingPage = (props) => {
     Gender: '',
     dateOfBirth: '',
   });
+  const handlePrice = (price)=>{
+    setTotal(price);  }
   const handleTravellers = (passengers) => {
     setTravellers(passengers);
     console.log('booking page passengers', passengers);
@@ -73,8 +75,9 @@ const BookingPage = (props) => {
       })
       .then((result) => {
         console.log('Reservation Done', result);
-        nextPage();
         handleTickets(result.data._id);
+        setTimeout(()=>{},4000);
+        nextPage();
       })
       .catch((err) => console.log(err));
   };
@@ -318,7 +321,7 @@ const BookingPage = (props) => {
             isDeparture={false}
           />
         )}
-        {actualStep === 2 && (
+        {actualStep === 3 && (
           <Passengers
             adults={departureInput.details.noOfAdults}
             children={departureInput.details.noOfChildren}
@@ -328,8 +331,8 @@ const BookingPage = (props) => {
             handleBack={handleBack}
           />
         )}
-        {actualStep === 3 && (
-          <ViewFlightSummary input1={departureInput} input2={arrivalInput} />
+        {actualStep === 2 && (
+          <ViewFlightSummary input1={departureInput} input2={arrivalInput} handlePrice={handlePrice}/>
         )}
         {actualStep === 4 && (
           <SelectSeat
@@ -347,7 +350,7 @@ const BookingPage = (props) => {
           />
         )}
         {actualStep === 5 && (
-        <Itenerary />
+        <Itenerary departureTickets={departureTickets} returnTickets={returnTickets} departureFlight={departureInput.flight} returnFlight={arrivalInput.flight} totalPrice={total}/>
       )}
       </div>
       <Box

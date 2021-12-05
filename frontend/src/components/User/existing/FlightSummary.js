@@ -103,7 +103,12 @@ const ViewFlightSummary = ({ input1, input2, handlePrice }) => {
   }, []);
   
 
- 
+  const getDate = (input) => {
+    const date = new Date(input);
+    return (
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
+    );
+  };
 
   return (
     <>
@@ -119,7 +124,7 @@ const ViewFlightSummary = ({ input1, input2, handlePrice }) => {
           <Grid item xs={6}>
             <Item>
               <TodayIcon />
-              Departure Flight Trip Date:{input1.details.departureDate}
+              Departure Flight Date:{getDate(input1.details.departureDate)}
             </Item>
           </Grid>
           <Grid item xs={6}>
@@ -150,7 +155,7 @@ const ViewFlightSummary = ({ input1, input2, handlePrice }) => {
             <Item>
 
               <TodayIcon />
-              Return Flight Date{""}:{input2.flight.departureDate}
+              Return Flight Date{""}:{getDate(input2.flight.departureDate)}
             </Item>
           </Grid>
           <Grid item xs={6}>
