@@ -253,7 +253,7 @@ const BookingPage = (props) => {
           </Button>
         )}
 
-        {activeStep >= 0 && actualStep !== 2 && (
+        {activeStep >= 0 && actualStep !== 2 && actualStep !== 3 && (
           <Button onClick={handleNext} type='submit'>
             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
           </Button>
