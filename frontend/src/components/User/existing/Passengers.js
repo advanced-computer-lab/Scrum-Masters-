@@ -74,16 +74,16 @@ const Passengers = (props) => {
               required
               marginTop='5px'
             />
-           
 
             <span>
               I hereby confirm that provided information is accurate as
               represented on official documents of ticket carrier(s).
+            </span>
+          </div>
+          <Box
             sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}
             style={{ float: 'right' }}
           >
-          </div>
-
             <Button color='inherit' onClick={props.handleBack} sx={{ mr: 1 }}>
               Back
             </Button>

@@ -8,28 +8,18 @@ import Stepper from '@mui/material/Stepper';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import StepConnector, {
   stepConnectorClasses,
-<<<<<<< HEAD
 } from "@mui/material/StepConnector";
 import SearchFlight from "../../../components/user/forms/SearchFlight";
 import { Container } from "react-bootstrap";
+import SelectSeat from "../../../pages/user/signed/SelectSeat"
 import FlightReservation from "../../../components/user/FlightReservation";
 import ViewFlightSummary from "../../../components/user/existing/FlightSummary";
 import Passengers from "../../../components/user/existing/Passengers";
 import Itenirary from "./viewItenirary";
-=======
-} from '@mui/material/StepConnector';
-import SearchFlight from '../../../components/user/forms/SearchFlight';
-import { Container } from 'react-bootstrap';
-import FlightReservation from '../../../components/user/FlightReservation';
-import SelectSeat from './SelectSeat';
-import ViewFlightSummary from '../../../components/user/existing/FlightSummary';
-import Passengers from '../../../components/user/existing/Passengers';
->>>>>>> 3f14d86dcb7d00bf80b3c2d235d7836099f4804f
 
 const BookingPage = (props) => {
   console.log('in BookingPage props', props);
@@ -274,7 +264,6 @@ const BookingPage = (props) => {
           </Button>
         )}
       </Box>
-<<<<<<< HEAD
       {actualStep === 3 && (
         <ViewFlightSummary input1={departureInput} input2={arrivalInput} handlePrice={handlePrice}/>
       )}
@@ -289,8 +278,6 @@ const BookingPage = (props) => {
         sx={{ display: "flex", flexDirection: "row", pt: 2 }}
         style={{ float: "right" }}
       ></Box>
-=======
->>>>>>> 3f14d86dcb7d00bf80b3c2d235d7836099f4804f
     </Container>
   );
 };
