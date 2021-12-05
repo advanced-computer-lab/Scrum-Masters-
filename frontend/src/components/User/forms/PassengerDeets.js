@@ -15,7 +15,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 //Ask Ahmed Serry how to pass Data
 const PassengerDeets = (props) => {
   const [expanded, setExpanded] = React.useState(props.index === 0);
-  const [values, setValues] = useState();
+  const [values, setValues] = useState({ type: props.type.toLowerCase(), cabin:props.cabin });
   const onChange = async (e, name) => {
     if (e) {
       try {
@@ -59,7 +59,7 @@ const PassengerDeets = (props) => {
           onChange={handleChange("panel1")}
           spacing={4}
           sx={{
-            margin:"10px"
+            margin: "10px",
           }}
         >
           <AccordionSummary
@@ -69,7 +69,7 @@ const PassengerDeets = (props) => {
           >
             <Typography
               sx={{
-                width:"6%",
+                width: "6%",
                 flexShrink: 0,
                 fontWeight: "bold",
                 display: "inline",
@@ -84,7 +84,7 @@ const PassengerDeets = (props) => {
                 display: "inline",
               }}
             >
-              {props.cabin.charAt(0).toUpperCase()+props.cabin.substring(1)}
+              {props.cabin.charAt(0).toUpperCase() + props.cabin.substring(1)}
             </Typography>
             <Typography sx={{ color: "text.secondary" }}></Typography>
           </AccordionSummary>

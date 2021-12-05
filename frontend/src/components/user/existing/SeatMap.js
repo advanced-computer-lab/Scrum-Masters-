@@ -593,7 +593,6 @@ const SeatMap = (props) => {
   };
 
   useEffect(() => {
-    console.log(props);
     createOffer(
       props.flights[0].departureAirport,
       props.flights[0].arrivalAirport,
@@ -606,8 +605,8 @@ const SeatMap = (props) => {
     createBusinessCabin();
     createEconomyCabin();
     createSeatMaps();
-    props.onFetch();
     setLoading(false);
+    props.onFetch();
   }, []);
 
   const onSubmit = () => {

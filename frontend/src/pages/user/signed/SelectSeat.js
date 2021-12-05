@@ -32,8 +32,8 @@ const SelectSeat = (props) => {
   const createPassengers = (list) => {
     //passengers are the users with their details
     setPassengers(
-      list.map((passenger) => ({
-        id: passenger.id, //user
+      list.map((passenger, index) => ({
+        id: "pas_" + (index + 1), //user
         name: passenger.firstName + " " + passenger.lastName, //user
         cabin: passenger.cabin, //cabin
         type: passenger.type, //passed from search/reservation
@@ -42,9 +42,10 @@ const SelectSeat = (props) => {
   };
 
   useEffect(() => {
-     console.log("props departure flight", props.departureFlight.flight[0]);
-    setDepartureFlight(props.departureFlight.flight[0]);
-    setReturnFlight(props.returnFlight.flight[0]);
+    console.log("props", props);
+    console.log("props departure flight", props.departureFlight.flight);
+    setDepartureFlight(props.departureFlight.flight);
+    setReturnFlight(props.returnFlight.flight);
     axios
       .get(`http://localhost:8081/user/reserved/${props.departureId}`)
       .then((result) => {
@@ -59,8 +60,13 @@ const SelectSeat = (props) => {
         setReturnSeats(result.data);
       })
       .catch((err) => console.log(err));
-    createPassengers(list);
-    // setTimeout(() => setLoading(false), 5000);
+    createPassengers(props.passengers);
+    setTimeout(() => {}, 4000);
+    console.log("departure flight", departureFlight);
+    console.log("return flight", returnFlight);
+    console.log("passengers", passengers);
+    console.log("dep setas", departureSeats);
+    console.log("return seats", returnSeats);
   }, []);
   const onFetch = () => {
     setLoading(false);
@@ -89,7 +95,7 @@ const SelectSeat = (props) => {
           color="#4ea8de"
           height={100}
           width={100}
-          timeout={5000}
+          // timeout={5000}
         />
       )}
       {departureFlight &&
@@ -101,8 +107,8 @@ const SelectSeat = (props) => {
             flights={[departureFlight, returnFlight]}
             departureSeats={departureSeats}
             returnSeats={returnSeats}
-            departureCabin="business"
-            returnCabin="economy"
+            departureCabin={props.cabin}
+            returnCabin={props.cabin}
             passengers={passengers}
             loading={loading}
             onFetch={onFetch}
