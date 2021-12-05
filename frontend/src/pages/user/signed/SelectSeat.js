@@ -86,7 +86,7 @@ const SelectSeat = (props) => {
         boxShadow: "0 3px 10px rgb(105 48 195 / 60%)",
       }}
     >
-      <Typography
+      {/* <Typography
         variant="h6"
         gutterBottom
         component="header"
@@ -96,7 +96,7 @@ const SelectSeat = (props) => {
         style={{ marginTop: "1%", marginLeft: "2%" }}
       >
         Select your preferred seats.
-      </Typography>
+      </Typography> */}
       {loading && (
         <Loader
           type="Plane"

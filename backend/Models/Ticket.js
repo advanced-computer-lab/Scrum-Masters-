@@ -47,6 +47,12 @@ const ticketSchema = mongoose.Schema(
     price: {
       type: Number,
     },
+    passportNumber: {
+      type:String
+    },
+    dateOfBirth: {
+      type:Date
+    }
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

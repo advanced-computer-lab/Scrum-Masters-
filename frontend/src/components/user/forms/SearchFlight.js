@@ -145,30 +145,30 @@ const SearchFlight = () => {
           container
           rowSpacing={5}
           columnSpacing={{ xs: 1, sm: 2, md: 2 }}
-          style={{ marginTop: '20px' }}
+          style={{ marginTop: "20px" }}
         >
-          <Grid item xs={6} md={2}>
+          <Grid item xs={1} md={2}>
             <div>
               <Autocomplete
                 {...fromProps}
-                id='blur-on-select'
-                name='departureAirport'
+                id="blur-on-select"
+                name="departureAirport"
                 required
                 onChange={(e, newValue) =>
-                  setQuery({ ...query, ['departureAirport']: newValue })
+                  setQuery({ ...query, ["departureAirport"]: newValue })
                 }
                 blurOnSelect
                 clearOnEscape
-                size='30px'
+                size="30px"
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    placeholder='from'
-                    label='From'
+                    placeholder="From"
+                    label="From"
                     InputProps={{
                       ...params.InputProps,
                       startAdornment: (
-                        <InputAdornment position='start'>
+                        <InputAdornment position="start">
                           <FlightTakeoffRoundedIcon />
                         </InputAdornment>
                       ),
@@ -183,25 +183,25 @@ const SearchFlight = () => {
             <div>
               <Autocomplete
                 {...toProps}
-                id='blur-on-select'
-                name='arrivalAirport'
+                id="blur-on-select"
+                name="arrivalAirport"
                 onChange={(e, newValue) =>
-                  setQuery({ ...query, ['arrivalAirport']: newValue })
+                  setQuery({ ...query, ["arrivalAirport"]: newValue })
                 }
                 required
                 blurOnSelect
                 clearOnEscape
-                size='30px'
+                size="30px"
                 renderInput={(params) => (
                   <TextField
-                    label='To'
+                    label="To"
                     {...params}
-                    placeholder='to'
+                    placeholder="To"
                     required
                     InputProps={{
                       ...params.InputProps,
                       startAdornment: (
-                        <InputAdornment position='start'>
+                        <InputAdornment position="start">
                           <FlightLandRounded></FlightLandRounded>
                         </InputAdornment>
                       ),
@@ -212,7 +212,7 @@ const SearchFlight = () => {
               />
             </div>
           </Grid>
-          <Grid item xs={6} md={2}>
+          <Grid item xs={2} md={2}>
             <ButtonGroup disableElevation>
               <IconButton
                 onClick={() => {
@@ -224,9 +224,9 @@ const SearchFlight = () => {
               </IconButton>
               <TextField
                 required
-                name='noOfAdults'
-                label='Adults'
-                type='number'
+                name="noOfAdults"
+                label="Adults"
+                type="number"
                 value={adultCount}
                 onChange={onChange}
                 disabled={true}
@@ -236,14 +236,14 @@ const SearchFlight = () => {
               <IconButton
                 onClick={() => {
                   incrementAdultCount();
-                  setQuery({ ...query, ['noOfAdults']: adultCount + 1 });
+                  setQuery({ ...query, ["noOfAdults"]: adultCount + 1 });
                 }}
               >
                 <AddCircleIcon />
               </IconButton>
             </ButtonGroup>
           </Grid>
-          <Grid item xs={6} md={2}>
+          <Grid item xs={1} md={2}>
             <ButtonGroup disableElevation>
               <IconButton
                 onClick={() => {
@@ -255,9 +255,9 @@ const SearchFlight = () => {
               </IconButton>
               <TextField
                 required
-                name='noOfChildren'
-                type='number'
-                label='Children'
+                name="noOfChildren"
+                type="number"
+                label="Children"
                 value={childrenCount}
                 disabled={true}
               >
@@ -266,7 +266,7 @@ const SearchFlight = () => {
               <IconButton
                 onClick={() => {
                   incrementChildrenCount();
-                  setQuery({ ...query, ['noOfChildren']: childrenCount + 1 });
+                  setQuery({ ...query, ["noOfChildren"]: childrenCount + 1 });
                 }}
               >
                 <AddCircleIcon />
@@ -274,11 +274,11 @@ const SearchFlight = () => {
             </ButtonGroup>
           </Grid>
 
-          <Grid item xs={6} md={2}>
+          <Grid item xs={1} md={2}>
             <TextField
-              id='outlined-search'
-              label='Departure Date'
-              type='date'
+              id="outlined-search"
+              label="Departure Date"
+              type="date"
               required
               InputLabelProps={{
                 shrink: true,
@@ -288,39 +288,47 @@ const SearchFlight = () => {
                   // padding: "1px",
                 },
               }}
-              name='departureDate'
+              name="departureDate"
               onChange={onChange}
             />
           </Grid>
-          <Grid item xs={6} md={2}>
+          <Grid item xs={1} md={2}>
             <TextField
-              id='outlined-search'
-              label='Return date'
-              type='date'
+              id="outlined-search"
+              label="Return date"
+              type="date"
               InputLabelProps={{
                 shrink: true,
                 style: {
-                  backgroundColor: 'white',
-                  width: 'auto',
-                  padding: '1px',
+                  backgroundColor: "white",
+                  width: "auto",
+                  padding: "1px",
                 },
               }}
-              name='arrivalDate'
+              name="arrivalDate"
               onChange={onChange}
               required
             />
           </Grid>
-          <Grid item xs={6} md={2}>
+          <Grid item xs={1} md={2}>
             {console.log(cabinProps)}
             <div>
               <Autocomplete
                 {...cabinProps}
-                id='blur-on-select'
-                label='Cabin'
+                id="blur-on-select"
+                label="Cabin"
                 required
                 blurOnSelect
                 clearOnEscape
-                size='30px'
+                size="30px"
+                InputLabelProps={{
+                  shrink: true,
+                  style: {
+                    backgroundColor: "white",
+                    width: "auto",
+                    padding: "1px",
+                  },
+                }}
                 onChange={(e, newValue) =>
                   setQuery({
                     ...query,
@@ -331,40 +339,40 @@ const SearchFlight = () => {
                   })
                 }
                 renderInput={(params) => (
-                  <TextField {...params} placeholder='Cabin' label='Cabin' />
+                  <TextField {...params} placeholder="Cabin" label="Cabin" />
                 )}
               />
             </div>
           </Grid>
 
           <Grid item xs={6} md={2}>
-            <Tooltip title='Search' arrow placement='right'>
+            <Tooltip title="Search" arrow placement="right">
               <IconButton
-                aria-label='delete'
+                aria-label="delete"
                 onClick={onSubmit}
-                size='large'
-                type='SUBMIT'
-                style={{ float: 'left' }}
+                size="large"
+                type="SUBMIT"
+                style={{ float: "left" }}
               >
-                <SearchIcon size='large' style={{ color: '#48bfe3' }} />
+                <SearchIcon size="large" style={{ color: "#48bfe3" }} />
               </IconButton>
             </Tooltip>
           </Grid>
           {error && (
             <Dialog open={open} onClose={alertClose}>
               <DialogTitle
-                id='alert-dialog-title'
-                color='purple'
-                style={{ textAlign: 'center' }}
+                id="alert-dialog-title"
+                color="purple"
+                style={{ textAlign: "center" }}
               >
-                {'Cannot Search for flight'}
+                {"Cannot search for flight."}
               </DialogTitle>
               <DialogContent>
-                <DialogContentText id='alert-dialog-description'>
+                <DialogContentText id="alert-dialog-description">
                   {errorMessage}
                 </DialogContentText>
               </DialogContent>
-              <DialogActions style={{ justifyContent: 'center' }}>
+              <DialogActions style={{ justifyContent: "center" }}>
                 <Button
                   onClick={() => {
                     alertClose();

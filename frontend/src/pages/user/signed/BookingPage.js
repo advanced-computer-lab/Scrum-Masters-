@@ -36,6 +36,8 @@ const BookingPage = (props) => {
   const [departureInput, setDepartureInput] = useState({}); //input to maram and donia
   const [arrivalInput, setArrivalInput] = useState({});
   const [travellers, setTravellers] = useState();
+  const [departureTickets, setDepartureTickets] = useState([]);
+  const [returnTickets, setReturnTickets] = useState([]);
   const [total, setTotal] = useState(0);
   const [maramObject, setMaramObject] = useState({
     firstName: "",
@@ -58,27 +60,107 @@ const BookingPage = (props) => {
       details: props.props[0].details,
     });
   };
- const handleReservation = (passengers) => {
-   console.log("handle reservation here");
-   handleTravellers(passengers);
-   axios
-     .post(`http://localhost:8081/user/create/reservation/${userId}`, {
-       details: departureInput.details,
-       departingFlightId: departureFlight,
-       returnFlightId: arrivalFlight,
-       totalPrice: total,
-     })
-     .then((result) => {
-       console.log("Reservation Done", result);
-      //  handleTickets(result.data._id);
-     })
-     .catch((err) => console.log(err));
+  const handleReservation = (passengers) => {
+    console.log("handle reservation here");
+    handleTravellers(passengers);
+    axios
+      .post(`http://localhost:8081/user/create/reservation/${userId}`, {
+        details: departureInput.details,
+        departingFlightId: departureFlight,
+        returnFlightId: arrivalFlight,
+        totalPrice: total,
+      })
+      .then((result) => {
+        console.log("Reservation Done", result);
+        handleTickets(result.data._id);
+      })
+      .catch((err) => console.log(err));
   };
-  // const handleTickets = (reservationId) => {
-  //   travellers.forEach((traveller) => {
-      
-  //   })
-  // }
+  const getIndividualPrice = (flight, type, cabin) => {
+    if (type === "adult") {
+      switch (cabin) {
+        case "economy":
+          return flight.economy.adultPrice;
+        case "business":
+          return flight.business.adultPrice;
+        case "first":
+          return flight.firstClass.adultPrice;
+        default:
+          return 0;
+      }
+    } else {
+      switch (cabin) {
+        case "economy":
+          return flight.economy.childPrice;
+        case "business":
+          return flight.business.childPrice;
+        case "first":
+          return flight.firstClass.childPrice;
+        default:
+          return 0;
+      }
+    }
+  };
+  const handleTickets = (reservationId) => {
+    var departs = departureTickets;
+    var returns = returnTickets;
+    travellers.forEach((traveller) => {
+      axios
+        .post(`http://localhost:8081/user/create/ticket`, {
+          seatNum: traveller.departureSeat,
+          ticketType: "departing",
+          passengerType: traveller.type,
+          firstName: traveller.firstName,
+          lastName: traveller.lastName,
+          cabin: traveller.cabin,
+          flightId: departureFlight,
+          reservationId: reservationId,
+          price: getIndividualPrice(
+            departureInput.flight,
+            traveller.type,
+            traveller.cabin
+          ),
+          passportNumber: traveller.passportNumber,
+          dateOfBirth: traveller.dateOfBirth,
+        })
+        .then((result) => {
+          console.log("ticket Done", result);
+          departs.push(result.data);
+          setDepartureTickets(departs);
+          console.log("dep", departs);
+        })
+        .catch((err) => console.log(err));
+      axios
+        .post(`http://localhost:8081/user/create/ticket`, {
+          seatNum: traveller.returnSeat,
+          ticketType: "return",
+          passengerType: traveller.type,
+          firstName: traveller.firstName,
+          lastName: traveller.lastName,
+          cabin: traveller.cabin,
+          flightId: arrivalFlight,
+          reservationId: reservationId,
+          price: getIndividualPrice(
+            arrivalInput.flight,
+            traveller.type,
+            traveller.cabin
+          ),
+          passportNumber: traveller.passportNumber,
+          dateOfBirth: traveller.dateOfBirth,
+        })
+        .then((result) => {
+          console.log("ticket Done return", result);
+          returns.push(result.data);
+          setReturnTickets(returns);
+          console.log("ree", returns);
+        })
+        .catch((err) => console.log(err));
+    });
+    // setDepartureTickets(departs);
+    // setReturnTickets(returns);
+    // console.log(departs);
+    // console.log("re", returns);
+  };
   const handleArrivalFlight = async (code) => {
     const newArrival = code;
     await setArrivalFlight(newArrival);
@@ -197,7 +279,7 @@ const BookingPage = (props) => {
   return (
     <Container>
       {actualStep > 1 && (
-        <div style={{ marginTop: '2%' }}>
+        <div style={{ marginTop: "2%" }}>
           <Stepper
             alternativeLabel
             activeStep={activeStep}
@@ -213,7 +295,7 @@ const BookingPage = (props) => {
           </Stepper>
         </div>
       )}
-      <div style={{ marginTop: '2%' }}>
+      <div style={{ marginTop: "2%" }}>
         {actualStep === 0 && (
           <FlightReservation
             data={departureData}
@@ -254,7 +336,7 @@ const BookingPage = (props) => {
               departureInput.details.noOfAdults +
               departureInput.details.noOfChildren
             }
-            handleTravellers={handleTravellers}
+            handleReservation={handleReservation}
           />
         )}
         {actualStep === 4 && (
@@ -263,13 +345,14 @@ const BookingPage = (props) => {
       </div>
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'row',
+          display: "flex",
+          flexDirection: "row",
           pt: 2,
-          marginTop: '2%',
-          width: '100%',
+          marginTop: "2%",
+          width: "100%",
+          justifyContent: "end",
         }}
-        style={{ float: 'right' }}
+        style={{ float: "right" }}
       >
         {actualStep >= 1 && actualStep !== 2 && (
           <Button
