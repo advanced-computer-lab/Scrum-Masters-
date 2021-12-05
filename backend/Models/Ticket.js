@@ -38,6 +38,7 @@ const ticketSchema = mongoose.Schema(
       ref: "Reservation",
       required: true,
     },
+    
     price: {
       type: Number,
     },
