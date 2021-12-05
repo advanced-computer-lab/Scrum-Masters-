@@ -7,6 +7,7 @@ const Ticket = require("../../Models/Ticket");
 //const User = require('../../Models/User')
 
 const { check } = require("express-validator");
+const { find } = require("../../Models/Flight");
 
 router.get("/search", async (req, res) => {
   try {
@@ -32,20 +33,16 @@ router.post("/search", async (req, res) => {
 });
 
 router.post("/create", async (req, res) => {
-  
-  
-  
   // define each field in req.body is better (for apis :) )
   console.log(req.body);
   const insertion = req.body;
 
-  if(insertion.departureAirport === insertion.arrivalAirport){
+  if (insertion.departureAirport === insertion.arrivalAirport) {
     res.json({
       message: "the departure and arrival airports cannot be the same.",
     });
     return;
   }
-
 
   if (new Date(insertion.arrivalDate) < new Date(insertion.departureDate)) {
     //throw new Error("End date of lab must be valid and after start date");
@@ -54,7 +51,6 @@ router.post("/create", async (req, res) => {
     });
     return;
   }
-
 
   //unique flightnumber within the day
   var query = await Flight.find({
@@ -67,8 +63,10 @@ router.post("/create", async (req, res) => {
   }
   console.log("the body", insertion);
   const flight = new Flight(insertion);
-  if(flight.duration <0){
-    res.json({ message: "cannot insert, the arrival time is before the departure time." });
+  if (flight.duration < 0) {
+    res.json({
+      message: "cannot insert, the arrival time is before the departure time.",
+    });
     return;
   }
   try {
@@ -90,10 +88,28 @@ router.patch("/update/:id", async (req, res) => {
       res.status(404).send(err);
     });
 });
-router.delete("/delete/:id", (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   Flight.findByIdAndRemove(req.params.id, req.body)
     .then((flight) => res.json({ mgs: "flight deleted successfully" }))
     .catch((err) => res.status(404).json({ error: "No such a flight" }));
+  // delete the reservations
+  try {
+    await Reservation.deleteMany({
+      $or: [
+        { departingFlightId: req.params.id },
+        { returnFlightId: req.params.id },
+      ],
+    });
+  } catch (error) {
+    console.log(error);
+  }
+//delete the tickets
+  try {
+    await Ticket.deleteMany({ flightId: req.params.id });
+  } catch (error) {
+    console.log(error);
+  }
+ //email to a user that the reservation is cancelled ? 
 });
 
 module.exports = router;

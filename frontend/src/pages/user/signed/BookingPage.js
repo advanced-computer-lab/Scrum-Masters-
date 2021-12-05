@@ -12,17 +12,19 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import StepConnector, {
   stepConnectorClasses,
-} from "@mui/material/StepConnector";
-import SearchFlight from "../../../components/user/forms/SearchFlight";
-import { Container } from "react-bootstrap";
-import SelectSeat from "../../../pages/user/signed/SelectSeat"
-import FlightReservation from "../../../components/user/FlightReservation";
-import ViewFlightSummary from "../../../components/user/existing/FlightSummary";
-import Passengers from "../../../components/user/existing/Passengers";
-import Itenirary from "./viewItenirary";
+} from '@mui/material/StepConnector';
+import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
+import SearchFlight from '../../../components/user/forms/SearchFlight';
+import { Container } from 'react-bootstrap';
+import FlightReservation from '../../../components/user/FlightReservation';
+import SelectSeat from './SelectSeat';
+import ViewFlightSummary from '../../../components/user/existing/FlightSummary';
+import Passengers from '../../../components/user/existing/Passengers';
+import Itenerary from "./viewItenerary";
 
 const BookingPage = (props) => {
   console.log('in BookingPage props', props);
+  var userId = '61aa2eb9d3eee0b9e4921105';
   const [departureData, setDepartureData] = useState(props.props[0]); //contains data of all departing flights that the user can choose from
   // console.log('in BookingPage', departureData);
   const [arrivalData, setArrivalData] = useState(props.props[1]); //contains data of all arriving flights that the user can choose from
@@ -35,18 +37,15 @@ const BookingPage = (props) => {
   const [departureInput, setDepartureInput] = useState({}); //input to maram and donia
   const [arrivalInput, setArrivalInput] = useState({});
   const [travellers, setTravellers] = useState();
-  const [total, setTotal] = useState();
-  const handlePrice = (price) => {
-    console.log("total price booking page", price);
-    setTotal(price);
-  };
+  const [departureTickets, setDepartureTickets] = useState([]);
+  const [returnTickets, setReturnTickets] = useState([]);
+  const [total, setTotal] = useState(0);
   const [maramObject, setMaramObject] = useState({
     firstName: '',
     lastName: '',
     Gender: '',
     dateOfBirth: '',
   });
-
   const handleTravellers = (passengers) => {
     setTravellers(passengers);
     console.log('booking page passengers', passengers);
@@ -62,7 +61,108 @@ const BookingPage = (props) => {
       details: props.props[0].details,
     });
   };
-
+  const handleReservation = (passengers) => {
+    console.log('handle reservation here');
+    handleTravellers(passengers);
+    axios
+      .post(`http://localhost:8081/user/create/reservation/${userId}`, {
+        details: departureInput.details,
+        departingFlightId: departureFlight,
+        returnFlightId: arrivalFlight,
+        totalPrice: total,
+      })
+      .then((result) => {
+        console.log('Reservation Done', result);
+        nextPage();
+        handleTickets(result.data._id);
+      })
+      .catch((err) => console.log(err));
+  };
+  const getIndividualPrice = (flight, type, cabin) => {
+    if (type === 'adult') {
+      switch (cabin) {
+        case 'economy':
+          return flight.economy.adultPrice;
+        case 'business':
+          return flight.business.adultPrice;
+        case 'first':
+          return flight.firstClass.adultPrice;
+        default:
+          return 0;
+      }
+    } else {
+      switch (cabin) {
+        case 'economy':
+          return flight.economy.childPrice;
+        case 'business':
+          return flight.business.childPrice;
+        case 'first':
+          return flight.firstClass.childPrice;
+        default:
+          return 0;
+      }
+    }
+  };
+  const handleTickets = (reservationId) => {
+    var departs = departureTickets;
+    var returns = returnTickets;
+    travellers.forEach((traveller) => {
+      axios
+        .post(`http://localhost:8081/user/create/ticket`, {
+          seatNum: traveller.departureSeat,
+          ticketType: 'departing',
+          passengerType: traveller.type,
+          firstName: traveller.firstName,
+          lastName: traveller.lastName,
+          cabin: traveller.cabin,
+          flightId: departureFlight,
+          reservationId: reservationId,
+          price: getIndividualPrice(
+            departureInput.flight,
+            traveller.type,
+            traveller.cabin
+          ),
+          passportNumber: traveller.passportNumber,
+          dateOfBirth: traveller.dateOfBirth,
+        })
+        .then((result) => {
+          console.log('ticket Done', result);
+          departs.push(result.data);
+          setDepartureTickets(departs);
+          console.log('dep', departs);
+        })
+        .catch((err) => console.log(err));
+      axios
+        .post(`http://localhost:8081/user/create/ticket`, {
+          seatNum: traveller.returnSeat,
+          ticketType: 'return',
+          passengerType: traveller.type,
+          firstName: traveller.firstName,
+          lastName: traveller.lastName,
+          cabin: traveller.cabin,
+          flightId: arrivalFlight,
+          reservationId: reservationId,
+          price: getIndividualPrice(
+            arrivalInput.flight,
+            traveller.type,
+            traveller.cabin
+          ),
+          passportNumber: traveller.passportNumber,
+          dateOfBirth: traveller.dateOfBirth,
+        })
+        .then((result) => {
+          console.log('ticket Done return', result);
+          returns.push(result.data);
+          setReturnTickets(returns);
+          console.log('ree', returns);
+        })
+        .catch((err) => console.log(err));
+    });
+    // setDepartureTickets(departs);
+    // setReturnTickets(returns);
+    // console.log(departs);
+    // console.log("re", returns);
+  };
   const handleArrivalFlight = async (code) => {
     const newArrival = code;
     await setArrivalFlight(newArrival);
@@ -75,7 +175,6 @@ const BookingPage = (props) => {
     });
     console.log(departureInput);
   };
-  const handleNoOfForms = () => {};
   const handleNextForm = (e) => {
     let newSkipped = skipped;
     e.preventDefault();
@@ -152,8 +251,9 @@ const BookingPage = (props) => {
 
     const icons = {
       1: <GroupAddIcon />,
-      2: <AirlineSeatReclineNormalIcon />,
-      3: <ConfirmationNumberIcon />,
+      2: <ConfirmationNumberIcon />,
+      3: <AirlineSeatReclineNormalIcon />,
+      4: <AirplaneTicketIcon />,
     };
 
     return (
@@ -168,8 +268,9 @@ const BookingPage = (props) => {
 
   const steps = [
     'Enter Passengers Details',
-    'Select Seats',
     'Confirm Reservation',
+    'Select Seats',
+    'Itenirary',
   ];
 
   const handleOnClick = () => {
@@ -182,64 +283,85 @@ const BookingPage = (props) => {
   return (
     <Container>
       {actualStep > 1 && (
-        <Stepper
-          alternativeLabel
-          activeStep={activeStep}
-          connector={<ColorlibConnector />}
-        >
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel StepIconComponent={ColorlibStepIcon}>
-                {label}
-              </StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+        <div style={{ marginTop: '2%' }}>
+          <Stepper
+            alternativeLabel
+            activeStep={activeStep}
+            connector={<ColorlibConnector />}
+          >
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel StepIconComponent={ColorlibStepIcon}>
+                  {label}
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </div>
       )}
-      {actualStep === 0 && (
-        <FlightReservation
-          data={departureData}
-          nextPage={nextPage}
-          isDeparture={true}
-          handleArrivalFlight={handleArrivalFlight}
-          handleDepartureFlight={handleDepartureFlight}
-        />
+      <div style={{ marginTop: '2%' }}>
+        {actualStep === 0 && (
+          <FlightReservation
+            data={departureData}
+            nextPage={nextPage}
+            isDeparture={true}
+            handleArrivalFlight={handleArrivalFlight}
+            handleDepartureFlight={handleDepartureFlight}
+          />
+        )}
+        {actualStep === 1 && (
+          <FlightReservation
+            data={arrivalData}
+            nextPage={nextPage}
+            handleArrivalFlight={handleArrivalFlight}
+            handleDepartureFlight={handleDepartureFlight}
+            isDeparture={false}
+          />
+        )}
+        {actualStep === 2 && (
+          <Passengers
+            adults={departureInput.details.noOfAdults}
+            children={departureInput.details.noOfChildren}
+            cabin={departureInput.details.cabin}
+            handleTravellers={handleTravellers}
+            handleNext={handleNextForm}
+            handleBack={handleBack}
+          />
+        )}
+        {actualStep === 3 && (
+          <ViewFlightSummary input1={departureInput} input2={arrivalInput} />
+        )}
+        {actualStep === 4 && (
+          <SelectSeat
+            passengers={travellers}
+            departureFlight={departureInput}
+            returnFlight={arrivalInput}
+            departureId={departureFlight}
+            returnId={arrivalFlight}
+            cabin={departureInput.details.cabin}
+            numberPassengers={
+              departureInput.details.noOfAdults +
+              departureInput.details.noOfChildren
+            }
+            handleReservation={handleReservation}
+          />
+        )}
+        {actualStep === 5 && (
+        <Itenerary />
       )}
-      {actualStep === 1 && (
-        <FlightReservation
-          data={arrivalData}
-          nextPage={nextPage}
-          handleArrivalFlight={handleArrivalFlight}
-          handleDepartureFlight={handleDepartureFlight}
-          isDeparture={false}
-        />
-      )}
-      {actualStep === 2 && (
-        <Passengers
-          adults={departureInput.details.noOfAdults}
-          children={departureInput.details.noOfChildren}
-          cabin={departureInput.details.cabin}
-          handleTravellers={handleTravellers}
-          handleNext={handleNextForm}
-          handleBack={handleBack}
-        />
-      )}
-      {actualStep === 3 && (
-        <Itenirary input1={departureInput} input2={arrivalInput} />
-      )}
+      </div>
       <Box
-        sx={{ display: "flex", flexDirection: "row", pt: 2 }}
-        style={{ float: "right" }}
-      ></Box>
-      )
-      {actualStep === 4 && (
-        <ViewFlightSummary input1={departureInput} input2={arrivalInput} />
-      )}
-      <Box
-        sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          pt: 2,
+          marginTop: '2%',
+          width: '100%',
+          justifyContent: 'end',
+        }}
         style={{ float: 'right' }}
       >
-        {actualStep >= 1 && actualStep !== 2 && (
+        {actualStep >= 1 && actualStep !== 2 && actualStep !== 5 && (
           <Button
             color='inherit'
             disabled={actualStep === 0}
@@ -250,7 +372,7 @@ const BookingPage = (props) => {
           </Button>
         )}
 
-        {activeStep >= 0 && actualStep !== 2 && actualStep !== 3 && (
+        {activeStep >= 0 && actualStep !== 2 && actualStep !== 4 && (
           <Button onClick={handleNext} type='submit'>
             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
           </Button>

@@ -26,7 +26,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const Itenirary = (input1, input2) => {
+const Itenerary = (input1, input2) => {
  
  //console.log(input1.flight);
  console.log("hehehe");
@@ -38,4 +38,4 @@ const Itenirary = (input1, input2) => {
    
   );
 };
-export default Itenirary;
+export default Itenerary;

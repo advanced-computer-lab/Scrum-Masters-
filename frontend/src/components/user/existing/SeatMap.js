@@ -89,6 +89,8 @@ const SeatMap = (props) => {
           base_currency: "EGP",
           base_amount: "2329.36",
           available_services: [],
+          allowed_passenger_identity_document_types: [],
+          conditions: {},
         }
       : {};
     setOffer(obj);
@@ -617,12 +619,11 @@ const SeatMap = (props) => {
     );
     if (Array.from(x).length !== passengers.length * 2) {
       setError(true);
-       setTimeout(() => {
-         setError(false);
-       }, 5000);
-    }
-    else {
-     props.handleSeats(Array.from(x));
+      setTimeout(() => {
+        setError(false);
+      }, 5000);
+    } else {
+      props.handleSeats(Array.from(x));
     }
   };
   return (
