@@ -15,7 +15,10 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 //Ask Ahmed Serry how to pass Data
 const PassengerDeets = (props) => {
   const [expanded, setExpanded] = React.useState(props.index === 0);
-  const [values, setValues] = useState();
+  const [values, setValues] = useState({
+    type: props.type.toLowerCase(),
+    cabin: props.cabin,
+  });
   const onChange = async (e, name) => {
     if (e) {
       try {

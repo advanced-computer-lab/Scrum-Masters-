@@ -17,6 +17,7 @@ import StepConnector, {
 import SearchFlight from '../../../components/user/forms/SearchFlight';
 import { Container } from 'react-bootstrap';
 import FlightReservation from '../../../components/user/FlightReservation';
+import SelectSeat from './SelectSeat';
 import ViewFlightSummary from '../../../components/user/existing/FlightSummary';
 import Passengers from '../../../components/user/existing/Passengers';
 
@@ -214,7 +215,6 @@ const BookingPage = (props) => {
           isDeparture={false}
         />
       )}
-
       {actualStep === 2 && (
         <Passengers
           adults={departureInput.details.noOfAdults}
@@ -226,6 +226,16 @@ const BookingPage = (props) => {
         />
       )}
       {actualStep === 3 && (
+        <SelectSeat
+          passengers={travellers}
+          departureFlight={departureInput}
+          returnFlight={arrivalInput}
+          departureId={departureFlight}
+          returnId={arrivalFlight}
+          cabin={departureInput.details.cabin}
+        />
+      )}
+      {actualStep === 4 && (
         <ViewFlightSummary input1={departureInput} input2={arrivalInput} />
       )}
       <Box

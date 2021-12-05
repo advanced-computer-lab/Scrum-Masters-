@@ -15,7 +15,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const Itenirary = () => {
+const Itenerary = () => {
 
 
 
@@ -68,4 +68,4 @@ const Itenirary = () => {
 </Grid>
 )
 }
-export default Itenirary;
+export default Itenerary;
