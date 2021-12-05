@@ -118,7 +118,7 @@ const TopBar = (props) => {
                 <Nav.Link href='/' style={{ color: 'white' }} exact>
                   Book a Flight
                 </Nav.Link>
-                <Nav.Link href='/reservation' style={{ color: 'white' }} exact>
+                <Nav.Link href='/reservations' style={{ color: 'white' }} exact>
                   My Bookings
                 </Nav.Link>
                 <UserProfile logOutClick={logOutClick} />

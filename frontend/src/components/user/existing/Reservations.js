@@ -59,41 +59,46 @@ export default function BasicTable(onDelete) {
       date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()
     );
   };
-  const deleteReservation = (reservationId) => {
+  const deleteReservation = (reservationId, price) => {
+    setTotalPrice(price);
+    handleClose();
     console.log('an hena', reservationId);
     axios
       .delete(`http://localhost:8081/user/delete/reservation/${reservationId}`)
       .then((res) => {
-        // sendEmail();
+        sendEmail(price);
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
     //onDelete();
+  };
 
-    window.location.reload(false);
+  const sendEmail = (price) => {
+    var templateParams = {
+      totalPrice: price,
+      reply_to: 'Check this out!',
+      from_name: 'Cloud 9',
+    };
+    emailjs
+      .send(
+        'service_ACL',
+        'template_ryeq8rf',
+        templateParams,
+        'user_i6KjynhTdTItE6MZB2wkB'
+      )
+      .then(
+        function (response) {
+          console.log('SUCCESS!', response.status, response.text);
 
-    // const sendEmail = () => {
-    //   //e.preventDefault();
-
-    //   emailjs
-    //     .sendForm(
-    //       'gmail',
-    //       'template_ryeq8rf',
-    //       totalPrice,
-    //       'user_i6KjynhTdTItE6MZB2wkB'
-    //     )
-    //     .then(
-    //       (result) => {
-    //         console.log(result.text);
-    //       },
-    //       (error) => {
-    //         console.log(error.text);
-    //       }
-    //     );
-    //   // e.target.reset();
-    // };
+          window.location.reload(false);
+        },
+        function (error) {
+          console.log('FAILED...', error);
+          // window.location.reload(false);
+        }
+      );
   };
   const style = {
     position: 'absolute',
@@ -243,10 +248,14 @@ export default function BasicTable(onDelete) {
                             >
                               Are you sure you want to cancel your reservation?
                             </Typography>
+                            <Button onClick={handleClose}>No </Button>
                             <Button
                               onClick={() => {
-                                setTotalPrice(row.totalPrice);
-                                deleteReservation(row.reservationId);
+                                // setTotalPrice(row.totalPrice);
+                                deleteReservation(
+                                  row.reservationId,
+                                  row.totalPrice
+                                );
                               }}
                             >
                               Yes
