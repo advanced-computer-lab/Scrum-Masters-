@@ -261,42 +261,16 @@ router.delete('/delete/reservation/:id', async (req, res) => {
   // removing reservation
 
   Reservation.findByIdAndRemove(req.params.id)
-    .then((reservation) => {
-      Ticket.deleteMany({ reservationId: req.params.id })
-        .then(async (tickets) => {
-          // incremeting the total seats of the reserved flights
-
-          tickets.forEach((ticket) => {
-            console.log('We are in this ticket', ticket);
-
-            if (ticket.cabin === 'economy') {
-              Flight.findByIdAndUpdate(ticket.flightId, {
-                $inc: { 'economy.availableSeats': 1 },
-              })
-                .then(console.log('decreased the number of seats'))
-                .catch();
-            }
-            if (ticket.cabin === 'business') {
-              Flight.findByIdAndUpdate(ticket.flightId, {
-                $inc: { 'business.availableSeats': 1 },
-              })
-                .then(console.log('decreased the number of seats'))
-                .catch();
-            }
-            if (ticket.cabin === 'first') {
-              Flight.findByIdAndUpdate(ticket.flightId, {
-                $inc: { 'firstClass.availableSeats': 1 },
-              })
-                .then(console.log('decreased the number of seats'))
-                .catch();
-            }
-          });
-        })
-        .catch();
-
-      res.json({ mgs: 'Reservation deleted successfully' });
-    })
-    .catch((err) => res.status(404).json({ error: 'No such a Reservation' }));
+    .then((Reservation) =>
+      {
+        console.log(Reservation)
+        if(Reservation!=null)
+        res.json({ mgs: "Reservation deleted successfully" })
+        else{res.json({ mgs: "Reservation already deleted" })}
+      }
+     
+    )
+    .catch((err) => res.status(404).json({ error: "No such a Reservation" }));
 });
 
 //user
@@ -341,7 +315,7 @@ router.get('/reservations/:id', async (req, res) => {
 });
 /**
  * {
- *  departingFlight:{
+ *  [departingFlight:{
  *
  *  flightNumber: val,
  *  departureDate:val,
@@ -360,7 +334,7 @@ router.get('/reservations/:id', async (req, res) => {
  *  cabin: val
  *
  *  }
- *
+ *]
  *
  * }
  */
