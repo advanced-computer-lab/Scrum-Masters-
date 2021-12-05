@@ -70,7 +70,6 @@ const BookingPage = (props) => {
     });
     console.log(departureInput);
   };
-  const handleNoOfForms = () => {};
   const handleNextForm = (e) => {
     let newSkipped = skipped;
     e.preventDefault();
@@ -177,68 +176,78 @@ const BookingPage = (props) => {
   return (
     <Container>
       {actualStep > 1 && (
-        <Stepper
-          alternativeLabel
-          activeStep={activeStep}
-          connector={<ColorlibConnector />}
-        >
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel StepIconComponent={ColorlibStepIcon}>
-                {label}
-              </StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+        <div style={{ marginTop: '2%' }}>
+          <Stepper
+            alternativeLabel
+            activeStep={activeStep}
+            connector={<ColorlibConnector />}
+          >
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel StepIconComponent={ColorlibStepIcon}>
+                  {label}
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </div>
       )}
-      {actualStep === 0 && (
-        <FlightReservation
-          data={departureData}
-          nextPage={nextPage}
-          isDeparture={true}
-          handleArrivalFlight={handleArrivalFlight}
-          handleDepartureFlight={handleDepartureFlight}
-        />
-      )}
-      {actualStep === 1 && (
-        <FlightReservation
-          data={arrivalData}
-          nextPage={nextPage}
-          handleArrivalFlight={handleArrivalFlight}
-          handleDepartureFlight={handleDepartureFlight}
-          isDeparture={false}
-        />
-      )}
-      {actualStep === 2 && (
-        <Passengers
-          adults={departureInput.details.noOfAdults}
-          children={departureInput.details.noOfChildren}
-          cabin={departureInput.details.cabin}
-          handleTravellers={handleTravellers}
-          handleNext={handleNextForm}
-          handleBack={handleBack}
-        />
-      )}
-      {actualStep === 3 && (
-        <SelectSeat
-          passengers={travellers}
-          departureFlight={departureInput}
-          returnFlight={arrivalInput}
-          departureId={departureFlight}
-          returnId={arrivalFlight}
-          cabin={departureInput.details.cabin}
-          numberPassengers={
-            departureInput.details.noOfAdults +
-            departureInput.details.noOfChildren
-          }
-          handleTravellers={handleTravellers}
-        />
-      )}
-      {actualStep === 4 && (
-        <ViewFlightSummary input1={departureInput} input2={arrivalInput} />
-      )}
+      <div style={{ marginTop: '2%' }}>
+        {actualStep === 0 && (
+          <FlightReservation
+            data={departureData}
+            nextPage={nextPage}
+            isDeparture={true}
+            handleArrivalFlight={handleArrivalFlight}
+            handleDepartureFlight={handleDepartureFlight}
+          />
+        )}
+        {actualStep === 1 && (
+          <FlightReservation
+            data={arrivalData}
+            nextPage={nextPage}
+            handleArrivalFlight={handleArrivalFlight}
+            handleDepartureFlight={handleDepartureFlight}
+            isDeparture={false}
+          />
+        )}
+        {actualStep === 2 && (
+          <Passengers
+            adults={departureInput.details.noOfAdults}
+            children={departureInput.details.noOfChildren}
+            cabin={departureInput.details.cabin}
+            handleTravellers={handleTravellers}
+            handleNext={handleNextForm}
+            handleBack={handleBack}
+          />
+        )}
+        {actualStep === 3 && (
+          <SelectSeat
+            passengers={travellers}
+            departureFlight={departureInput}
+            returnFlight={arrivalInput}
+            departureId={departureFlight}
+            returnId={arrivalFlight}
+            cabin={departureInput.details.cabin}
+            numberPassengers={
+              departureInput.details.noOfAdults +
+              departureInput.details.noOfChildren
+            }
+            handleTravellers={handleTravellers}
+          />
+        )}
+        {actualStep === 4 && (
+          <ViewFlightSummary input1={departureInput} input2={arrivalInput} />
+        )}
+      </div>
       <Box
-        sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          pt: 2,
+          marginTop: '2%',
+          width: '100%',
+        }}
         style={{ float: 'right' }}
       >
         {actualStep >= 1 && actualStep !== 2 && (
