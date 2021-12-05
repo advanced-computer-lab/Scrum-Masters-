@@ -5,7 +5,6 @@ const Flight = require("../../Models/Flight");
 const Reservation = require("../../Models/Reservation");
 const Ticket = require("../../Models/Ticket");
 const User = require("../../Models/User");
-var airports = require('airport-codes');
 
 router.get("/search/flights", async (req, res) => {
   try {
@@ -242,7 +241,11 @@ router.delete("/delete/reservation/:id", (req, res) => {
 router.get("/reservations/:id", (req, res) => {
   console.log("backend",req.params.id)
   Reservation.find({userId :req.params.id})
-    .then((result) => res.json(result))
+    .then((result) => {res.json(result)
+      if (result.length === 0){
+        console.log('No reservations')
+      }
+    } )
     .catch((err) => console.log(err));
 });
 router.get("/profile/:id", async (req, res) => {
