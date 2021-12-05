@@ -231,6 +231,22 @@ router.post("/create/reservation/:userId", async (req, res) => {
    */
 });
 
+/**{
+ *  tickets 
+ * 
+ * } */
+
+router.post("/create/ticket", async(req,res)=>{
+  const ticket = new Ticket(req.body);
+  try {
+  const savedTicket = await ticket.save();
+  res.json(savedTicket);
+} catch (error) {
+  res.status(404).json({message:error})
+}
+
+});
+
 router.get("/reserved/:flightId", (req, res) => {
   Ticket.find(
     { flightId: req.params.flightId },

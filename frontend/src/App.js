@@ -11,7 +11,7 @@ import BookingPage from './pages/user/signed/BookingPage';
 import SearchingPage from './pages/user/signed/SearchingPage';
 import Account from './pages/user/signed/Account';
 import ViewFlightSummary from './components/user/existing/FlightSummary';
-import Itenerary from './pages/user/signed/viewItenirary';
+import Itenerary from './pages/user/signed/viewItenirary'; 
 import DataGridDemo from './components/user/existing/Reservations';
 import { Container } from 'react-bootstrap';
 
