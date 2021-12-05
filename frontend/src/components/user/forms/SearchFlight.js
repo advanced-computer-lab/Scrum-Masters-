@@ -97,7 +97,8 @@ const SearchFlight = ({}) => {
           setErrorMessage(res.data.message);
           showAlert();
         } else {
-          setOutput(res.data);
+          setOutput(res.data);   
+          console.log("search flight", res.data);
           setSearchDone(true);
         }
 

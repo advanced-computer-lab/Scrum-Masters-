@@ -22,7 +22,7 @@ import FlightReservation from '../../../components/user/FlightReservation';
 import SelectSeat from './SelectSeat';
 import ViewFlightSummary from '../../../components/user/existing/FlightSummary';
 import Passengers from '../../../components/user/existing/Passengers';
-import Itenerary from './viewItenirary';
+import Itenerary from './viewItenerary';
 
 const BookingPage = (props) => {
   console.log('in BookingPage props', props);
@@ -49,6 +49,9 @@ const BookingPage = (props) => {
     Gender: '',
     dateOfBirth: '',
   });
+  const handlePrice = (price) => {
+    setTotal(price);
+  };
   const handleTravellers = (passengers) => {
     setTravellers(passengers);
     console.log('booking page passengers', passengers);
@@ -91,8 +94,9 @@ const BookingPage = (props) => {
       })
       .then((result) => {
         console.log('Reservation Done', result);
-        nextPage();
         handleTickets(result.data._id);
+        setTimeout(() => {}, 4000);
+        nextPage();
       })
       .catch((err) => console.log(err));
   };
@@ -353,6 +357,7 @@ const BookingPage = (props) => {
             input1={departureInput}
             input2={arrivalInput ? arrivalInput : null}
             nextPage={nextPage}
+            handlePrice={handlePrice}
           />
         )}
         {actualStep === 3 && (
@@ -380,7 +385,6 @@ const BookingPage = (props) => {
             handleReservation={handleReservation}
           />
         )}
-
         {actualStep === 5 && (
           <Itenerary
             departureTickets={departureTickets}
