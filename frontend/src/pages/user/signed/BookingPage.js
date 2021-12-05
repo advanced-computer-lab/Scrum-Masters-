@@ -14,6 +14,7 @@ import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import StepConnector, {
   stepConnectorClasses,
 } from '@mui/material/StepConnector';
+import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import SearchFlight from '../../../components/user/forms/SearchFlight';
 import { Container } from 'react-bootstrap';
 import FlightReservation from '../../../components/user/FlightReservation';
@@ -250,8 +251,9 @@ const BookingPage = (props) => {
 
     const icons = {
       1: <GroupAddIcon />,
-      2: <AirlineSeatReclineNormalIcon />,
-      3: <ConfirmationNumberIcon />,
+      2: <ConfirmationNumberIcon />,
+      3: <AirlineSeatReclineNormalIcon />,
+      4: <AirplaneTicketIcon />,
     };
 
     return (
@@ -266,8 +268,9 @@ const BookingPage = (props) => {
 
   const steps = [
     'Enter Passengers Details',
-    'Select Seats',
     'Confirm Reservation',
+    'Select Seats',
+    'Itenirary',
   ];
 
   const handleOnClick = () => {
@@ -326,6 +329,9 @@ const BookingPage = (props) => {
           />
         )}
         {actualStep === 3 && (
+          <ViewFlightSummary input1={departureInput} input2={arrivalInput} />
+        )}
+        {actualStep === 4 && (
           <SelectSeat
             passengers={travellers}
             departureFlight={departureInput}
@@ -340,9 +346,6 @@ const BookingPage = (props) => {
             handleReservation={handleReservation}
           />
         )}
-        {actualStep === 4 && (
-          <ViewFlightSummary input1={departureInput} input2={arrivalInput} />
-        )}
       </div>
       <Box
         sx={{
@@ -355,7 +358,7 @@ const BookingPage = (props) => {
         }}
         style={{ float: 'right' }}
       >
-        {actualStep >= 1 && actualStep !== 2 && (
+        {actualStep >= 1 && actualStep !== 2 && actualStep !== 5 && (
           <Button
             color='inherit'
             disabled={actualStep === 0}
@@ -366,7 +369,7 @@ const BookingPage = (props) => {
           </Button>
         )}
 
-        {activeStep >= 0 && actualStep !== 2 && actualStep !== 3 && (
+        {activeStep >= 0 && actualStep !== 2 && actualStep !== 4 && (
           <Button onClick={handleNext} type='submit'>
             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
           </Button>
