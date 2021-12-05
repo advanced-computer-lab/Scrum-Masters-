@@ -14,9 +14,9 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 
 //Ask Ahmed Serry how to pass Data
 const PassengerDeets = (props) => {
-  const [expanded, setExpanded] = React.useState(props.index === 0);
+  const [expanded, setExpanded] = React.useState(true); //props.index===0
   const [values, setValues] = useState({
-    type: props.type.toLowerCase(),
+    type: props.type,
     cabin: props.cabin,
   });
   const onChange = async (e, name) => {
@@ -69,114 +69,115 @@ const PassengerDeets = (props) => {
           aria-controls='panel1bh-content'
           id='panel1bh-header'
         >
-          <Typography
-            sx={{
-              width: '6%',
-              flexShrink: 0,
-              fontWeight: 'bold',
-              display: 'inline',
-            }}
-          >
-            {props.type},
-          </Typography>
-          <Typography
-            sx={{
-              width: '5%',
-              flexShrink: 0,
-              display: 'inline',
-            }}
-          >
-            {props.cabin.charAt(0).toUpperCase() + props.cabin.substring(1)}
-          </Typography>
-          <Typography sx={{ color: 'text.secondary' }}></Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Stack direction='row' spacing={30} style={{ marginTop: '30px' }}>
-            <Stack direction='column' spacing={3} height='200px' width='300px'>
-              <TextField
-                required
-                height='5px'
-                width='200px'
-                backgroundcolor='#f2f2f2'
-                type='String'
-                position='left'
-                placeholder='First Name'
-                variant='filled'
-                label='First Name'
-                name='firstName'
-                onChange={onChange}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
+            <Typography
+              sx={{
+                width: "6%",
+                flexShrink: 0,
+                fontWeight: "bold",
+                display: "inline",
+              }}
+            >
+              {props.type.charAt(0).toUpperCase() + props.type.substring(1)},
+            </Typography>
+            <Typography
+              sx={{
+                width: "5%",
+                flexShrink: 0,
+                display: "inline",
+              }}
+            >
+              {props.cabin.charAt(0).toUpperCase() + props.cabin.substring(1)}
+            </Typography>
+            <Typography sx={{ color: "text.secondary" }}></Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Stack direction="row" justifyContent="center" spacing={12}>
+              <Stack direction="column" spacing={3} width="25%">
+                <TextField
+                  required
+                  height="5px"
+                  width="200px"
+                  backgroundcolor="#f2f2f2"
+                  type="String"
+                  position="left"
+                  placeholder="First Name"
+                  variant="filled"
+                  label="First Name"
+                  name="firstName"
+                  defaultValue={values.firstName}
+                  onChange={onChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
 
-              <TextField
-                required
-                backgroundcolor='#f2f2f2'
-                type='Text'
-                placeholder='Gender'
-                label='Gender'
-                variant='filled'
-                name='gender'
-                onChange={onChange}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
+                <TextField
+                  required
+                  backgroundcolor="#f2f2f2"
+                  type="Text"
+                  placeholder="Gender"
+                  label="Gender"
+                  variant="filled"
+                  name="gender"
+                  defaultValue={values.gender}
+                  onChange={onChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Stack>
+
+              <Stack direction="column" spacing={3} width="25%">
+                <TextField
+                  required
+                  backgroundcolor="#f2f2f2"
+                  type="String"
+                  placeholder="Last Name"
+                  label="Last Name"
+                  variant="filled"
+                  name="lastName"
+                  defaultValue={values.lastName}
+                  onChange={onChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+
+                <TextField
+                  required
+                  backgroundcolor="#f2f2f2"
+                  type="String"
+                  placeholder="Passport Number"
+                  label="Passport Number"
+                  variant="filled"
+                  name="passportNumber"
+                  defaultValue={values.passportNumber}
+                  onChange={onChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Stack>
+              <Stack direction="column" spacing={3} width="25%">
+                <TextField
+                  required
+                  backgroundcolor="#f2f2f2"
+                  type="Date"
+                  // placeholder=''
+                  label="Date Of Birth"
+                  variant="filled"
+                  defaultValue={values.dateOfBirth}
+                  name="dateOfBirth"
+                  onChange={onChange}
+                  //  } }
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Stack>
             </Stack>
-
-            <Stack direction='column' spacing={3} height='300px' width='350px'>
-              <TextField
-                required
-                backgroundcolor='#f2f2f2'
-                type='String'
-                placeholder='Last Name'
-                label='Last Name'
-                variant='filled'
-                name='lastName'
-                onChange={onChange}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-
-              <TextField
-                required
-                backgroundcolor='#f2f2f2'
-                type='String'
-                placeholder='Passport Number'
-                label='Passport Number'
-                variant='filled'
-                name='passportNumber'
-                onChange={onChange}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Stack>
-            <Stack direction='column' spacing={4}>
-              <TextField
-                required
-                backgroundcolor='#f2f2f2'
-                type='Date'
-                // placeholder=''
-                label='Date Of Birth'
-                variant='filled'
-                name='dateOfBirth'
-                onChange={onChange}
-                //  } }
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Stack>
-          </Stack>
-
-          <Typography></Typography>
         </AccordionDetails>
       </Accordion>
-
-      <div></div>
     </Box>
   );
 };
