@@ -8,6 +8,7 @@ import Stepper from '@mui/material/Stepper';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
@@ -25,6 +26,8 @@ import Passengers from '../../../components/user/existing/Passengers';
 const BookingPage = (props) => {
   console.log('in BookingPage props', props);
   var userId = '61aa2eb9d3eee0b9e4921105';
+  const [arrivalInput, setArrivalInput] = useState({});
+  const [loading, setLoading] = useState(false);
   const [departureData, setDepartureData] = useState(props.props[0]); //contains data of all departing flights that the user can choose from
   // console.log('in BookingPage', departureData);
   const [arrivalData, setArrivalData] = useState(props.props[1]); //contains data of all arriving flights that the user can choose from
@@ -35,7 +38,6 @@ const BookingPage = (props) => {
   const [arrivalFlight, setArrivalFlight] = useState(0); //for the selected arrival flight
   const [noOfForms, setNoOfForms] = useState(0);
   const [departureInput, setDepartureInput] = useState({}); //input to maram and donia
-  const [arrivalInput, setArrivalInput] = useState({});
   const [travellers, setTravellers] = useState();
   const [departureTickets, setDepartureTickets] = useState([]);
   const [returnTickets, setReturnTickets] = useState([]);
@@ -60,6 +62,21 @@ const BookingPage = (props) => {
       flight: departureFlightData,
       details: props.props[0].details,
     });
+  };
+  const handleArrivalFlight = async (code) => {
+    const newArrival = code;
+    await setLoading(true);
+    await setArrivalFlight(newArrival);
+    const arrivalFlightData = props.props[1].flights.filter(
+      (flight) => flight._id === newArrival
+    )[0];
+    await setArrivalInput({
+      flight: arrivalFlightData,
+      details: props.props[0].details,
+    });
+    setTimeout(() => {}, 4000);
+    setLoading(false);
+    console.log('arrivalInput is set to ', arrivalInput);
   };
   const handleReservation = (passengers) => {
     console.log('handle reservation here');
@@ -163,18 +180,7 @@ const BookingPage = (props) => {
     // console.log(departs);
     // console.log("re", returns);
   };
-  const handleArrivalFlight = async (code) => {
-    const newArrival = code;
-    await setArrivalFlight(newArrival);
-    const arrivalFlightData = props.props[1].flights.filter(
-      (flight) => flight._id === newArrival
-    )[0];
-    setArrivalInput({
-      flight: arrivalFlightData,
-      details: props.props[0].details,
-    });
-    console.log(departureInput);
-  };
+
   const handleNextForm = (e) => {
     let newSkipped = skipped;
     e.preventDefault();
@@ -250,8 +256,8 @@ const BookingPage = (props) => {
     const { active, completed, className } = props;
 
     const icons = {
-      1: <GroupAddIcon />,
-      2: <ConfirmationNumberIcon />,
+      1: <ConfirmationNumberIcon />,
+      2: <GroupAddIcon />,
       3: <AirlineSeatReclineNormalIcon />,
       4: <AirplaneTicketIcon />,
     };
@@ -267,8 +273,8 @@ const BookingPage = (props) => {
   }
 
   const steps = [
-    'Enter Passengers Details',
     'Confirm Reservation',
+    'Enter Passengers Details',
     'Select Seats',
     'Itenirary',
   ];
@@ -300,25 +306,55 @@ const BookingPage = (props) => {
         </div>
       )}
       <div style={{ marginTop: '2%' }}>
+        {loading && <CircularProgress />}
         {actualStep === 0 && (
-          <FlightReservation
-            data={departureData}
-            nextPage={nextPage}
-            isDeparture={true}
-            handleArrivalFlight={handleArrivalFlight}
-            handleDepartureFlight={handleDepartureFlight}
-          />
+          <div>
+            <h2
+              style={{
+                float: 'left',
+                fontFamily: 'family:initial',
+                marginLeft: '0.1%',
+              }}
+            >
+              Select Departure Flight
+            </h2>
+            <FlightReservation
+              data={departureData}
+              nextPage={nextPage}
+              isDeparture={true}
+              handleArrivalFlight={handleArrivalFlight}
+              handleDepartureFlight={handleDepartureFlight}
+            />
+          </div>
         )}
         {actualStep === 1 && (
-          <FlightReservation
-            data={arrivalData}
+          <div>
+            <h2
+              style={{
+                float: 'left',
+                fontFamily: 'family:initial',
+                marginLeft: '0.1%',
+              }}
+            >
+              Select Return Flight
+            </h2>
+            <FlightReservation
+              data={arrivalData}
+              nextPage={nextPage}
+              handleArrivalFlight={handleArrivalFlight}
+              handleDepartureFlight={handleDepartureFlight}
+              isDeparture={false}
+            />
+          </div>
+        )}
+        {!loading && actualStep === 2 && (
+          <ViewFlightSummary
+            input1={departureInput}
+            input2={arrivalInput ? arrivalInput : null}
             nextPage={nextPage}
-            handleArrivalFlight={handleArrivalFlight}
-            handleDepartureFlight={handleDepartureFlight}
-            isDeparture={false}
           />
         )}
-        {actualStep === 2 && (
+        {actualStep === 3 && (
           <Passengers
             adults={departureInput.details.noOfAdults}
             children={departureInput.details.noOfChildren}
@@ -326,13 +362,6 @@ const BookingPage = (props) => {
             handleTravellers={handleTravellers}
             handleNext={handleNextForm}
             handleBack={handleBack}
-          />
-        )}
-        {actualStep === 3 && (
-          <ViewFlightSummary
-            input1={departureInput}
-            input2={arrivalInput}
-            nextPage={nextPage}
           />
         )}
         {actualStep === 4 && (
@@ -362,7 +391,7 @@ const BookingPage = (props) => {
         }}
         style={{ float: 'right' }}
       >
-        {actualStep >= 1 && actualStep !== 2 && actualStep !== 5 && (
+        {actualStep >= 1 && actualStep !== 3 && actualStep !== 5 && (
           <Button
             color='inherit'
             disabled={actualStep === 0}
@@ -373,7 +402,7 @@ const BookingPage = (props) => {
           </Button>
         )}
 
-        {activeStep >= 0 && actualStep !== 2 && actualStep !== 4 && (
+        {activeStep >= 0 && actualStep !== 3 && actualStep !== 4 && (
           <Button onClick={handleNext} type='submit'>
             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
           </Button>

@@ -27,7 +27,7 @@ import { Dialog } from '@mui/material';
 import { DialogContentText } from '@mui/material';
 import BookingPage from '../../../pages/user/signed/BookingPage';
 
-const SearchFlight = ({ onSignIn }) => {
+const SearchFlight = ({}) => {
   useEffect(() => {
     axios
       .get('http://localhost:8081/user/search/flights')
@@ -139,7 +139,7 @@ const SearchFlight = ({ onSignIn }) => {
   // };
   return (
     <div>
-      {searchDone && <BookingPage props={(output, onSignIn)} />}
+      {searchDone && <BookingPage props={output} />}
       {!searchDone && (
         <Grid
           container
