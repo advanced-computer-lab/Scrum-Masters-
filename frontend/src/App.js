@@ -12,9 +12,8 @@ import SearchingPage from './pages/user/signed/SearchingPage';
 import Account from './pages/user/signed/Account';
 import ViewFlightSummary from './components/user/existing/FlightSummary';
 import Itenerary from './pages/user/signed/viewItenerary';
-import DataGridDemo from './components/user/existing/Reservations';
+import Reservations from './components/user/existing/Reservations';
 import { Container } from 'react-bootstrap';
-
 
 function App() {
   const [admin, setAdmin] = useState(
@@ -60,7 +59,7 @@ function App() {
           <Route exact path='/selectSeat' component={SelectSeat}></Route>
           <Route exact path='/account' component={Account}></Route>
           <Route exact path='/' component={SearchingPage}></Route>
-          <Route exact path='/reservations' component={DataGridDemo}></Route>
+          <Route exact path='/reservations' component={Reservations}></Route>
           <Route
             exact
             path='/confirmation'

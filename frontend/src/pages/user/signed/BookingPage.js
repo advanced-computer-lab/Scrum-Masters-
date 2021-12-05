@@ -206,7 +206,7 @@ const BookingPage = (props) => {
     setActualStep((prevActiveStep) => prevActiveStep + 1);
     setActiveStep((count) => count + 1);
     setSkipped(newSkipped);
-    if (actualStep === 5) history.push('/account');
+    if (actualStep === 5) history.push('/reservations');
   };
   const handleBack = () => {
     setActualStep((prevActiveStep) => prevActiveStep - 1);

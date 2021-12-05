@@ -261,18 +261,16 @@ router.delete('/delete/reservation/:id', async (req, res) => {
   // removing reservation
 
   Reservation.findByIdAndRemove(req.params.id)
-    .then((Reservation) =>
-      {
-        console.log(Reservation)
-        if(Reservation!=null)
-        res.json({ mgs: "Reservation deleted successfully" })
-        else{res.json({ mgs: "Reservation already deleted" })}
+    .then((Reservation) => {
+      console.log(Reservation);
+      if (Reservation != null)
+        res.json({ mgs: 'Reservation deleted successfully' });
+      else {
+        res.json({ mgs: 'Reservation already deleted' });
       }
-     
-    )
-    .catch((err) => res.status(404).json({ error: "No such a Reservation" }));
+    })
+    .catch((err) => res.status(404).json({ error: 'No such a Reservation' }));
 });
-
 //user
 router.get('/reservations/:id', async (req, res) => {
   //console.log("backend", req.params.id);
@@ -303,6 +301,8 @@ router.get('/reservations/:id', async (req, res) => {
           arrivalTime: reservation.returnFlightId.arrivalTime,
           cabin: reservation.cabinClass,
         },
+        reservationId: reservation.id,
+        totalPrice: reservation.totalPrice,
       };
       console.log('the entry', entry);
       output.push(entry);
@@ -315,7 +315,7 @@ router.get('/reservations/:id', async (req, res) => {
 });
 /**
  * {
- *  [departingFlight:{
+ *  departingFlight:{
  *
  *  flightNumber: val,
  *  departureDate:val,
@@ -334,7 +334,7 @@ router.get('/reservations/:id', async (req, res) => {
  *  cabin: val
  *
  *  }
- *]
+ *
  *
  * }
  */
