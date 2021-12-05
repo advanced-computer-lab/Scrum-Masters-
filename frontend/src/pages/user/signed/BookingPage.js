@@ -1,4 +1,5 @@
 import { React, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -49,6 +50,7 @@ const BookingPage = (props) => {
     Gender: '',
     dateOfBirth: '',
   });
+  const history = useHistory();
   const handlePrice = (price) => {
     setTotal(price);
   };
@@ -204,6 +206,7 @@ const BookingPage = (props) => {
     setActualStep((prevActiveStep) => prevActiveStep + 1);
     setActiveStep((count) => count + 1);
     setSkipped(newSkipped);
+    if (actualStep === 5) history.push('/account');
   };
   const handleBack = () => {
     setActualStep((prevActiveStep) => prevActiveStep - 1);

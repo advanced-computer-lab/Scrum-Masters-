@@ -298,6 +298,7 @@ router.delete('/delete/reservation/:id', async (req, res) => {
     })
     .catch((err) => res.status(404).json({ error: 'No such a Reservation' }));
 });
+
 //user
 router.get('/reservations/:id', async (req, res) => {
   //console.log("backend", req.params.id);
