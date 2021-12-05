@@ -220,19 +220,18 @@ router.post("/create/reservation/:userId", async (req, res) => {
 });
 
 /**{
- *  tickets 
- * 
+ *  tickets
+ *
  * } */
 
-router.post("/create/ticket", async(req,res)=>{
+router.post("/create/ticket", async (req, res) => {
   const ticket = new Ticket(req.body);
   try {
-  const savedTicket = await ticket.save();
-  res.json(savedTicket);
-} catch (error) {
-  res.status(404).json({message:error})
-}
-
+    const savedTicket = await ticket.save();
+    res.json(savedTicket);
+  } catch (error) {
+    res.status(404).json({ message: error });
+  }
 });
 
 router.get("/reserved/:flightId", (req, res) => {
@@ -247,45 +246,77 @@ router.get("/reserved/:flightId", (req, res) => {
     });
 });
 
-router.delete("/delete/reservation/:id", (req, res) => {
+router.delete("/delete/reservation/:id", async (req, res) => {
+  // removing reservation
+
   Reservation.findByIdAndRemove(req.params.id)
-    .then((Reservation) =>
-      res.json({ mgs: "Reservation deleted successfully" })
-    )
+    .then((reservation) => {
+      Ticket.deleteMany({ reservationId: req.params.id })
+        .then(async (tickets) => {
+          
+          // incremeting the total seats of the reserved flights
+
+          tickets.forEach((ticket)=>{
+            console.log("We are in this ticket",ticket);
+              
+                  if(ticket.cabin ==="economy"){
+                    Flight.findByIdAndUpdate(ticket.flightId, {
+                      $inc: { "economy.availableSeats":1},
+                    }).then(console.log("decreased the number of seats")).catch()
+                  }
+                  if(ticket.cabin ==="business"){
+                    Flight.findByIdAndUpdate(ticket.flightId, {
+                      $inc: { "business.availableSeats":1},
+                    }).then(console.log("decreased the number of seats")).catch()
+                  }
+                  if(ticket.cabin ==="first"){
+                    Flight.findByIdAndUpdate(ticket.flightId, {
+                      $inc: { "firstClass.availableSeats":1},
+                    }).then(console.log("decreased the number of seats")).catch()
+                  }
+          })
+
+
+        })
+        .catch();
+
+      res.json({ mgs: "Reservation deleted successfully" });
+    })
     .catch((err) => res.status(404).json({ error: "No such a Reservation" }));
 });
 //user
 router.get("/reservations/:id", async (req, res) => {
   //console.log("backend", req.params.id);
   try {
-    const reservations = await Reservation.find({ userId: req.params.id }).populate('departingFlightId').populate('returnFlightId'); //
+    const reservations = await Reservation.find({ userId: req.params.id })
+      .populate("departingFlightId")
+      .populate("returnFlightId"); //
     console.log("the reservations", reservations);
 
     var output = [];
     reservations.forEach(async (reservation) => {
-
-        // console.log("the departing flight",departingFlight);
-        // console.log("the return flight",arrivalFlight);
-        const entry = {
-          departingFlight: {
-            flightNumber: reservation.departingFlightId.flightNumber,
-            departureDate: reservation.departingFlightId.departureDate,
-            departureTime: reservation.departingFlightId.departureTime,
-            arrivalDate: reservation.departingFlightId.arrivalDate,
-            arrivalTime: reservation.departingFlightId.arrivalTime,
-            cabin: reservation.cabinClass,
-          },
-          arrivalFlight: {
-            flightNumber: reservation.returnFlightId.flightNumber,
-            departureDate: reservation.returnFlightId.departureDate,
-            departureTime: reservation.returnFlightId.departureTime,
-            arrivalDate: reservation.returnFlightId.arrivalDate,
-            arrivalTime: reservation.returnFlightId.arrivalTime,
-            cabin: reservation.cabinClass,
-          },
-        };
-        console.log("the entry", entry);
-        output.push(entry);
+      // console.log("the departing flight",departingFlight);
+      // console.log("the return flight",arrivalFlight);
+      const entry = {
+        departingFlight: {
+          flightNumber: reservation.departingFlightId.flightNumber,
+          departureDate: reservation.departingFlightId.departureDate,
+          departureTime: reservation.departingFlightId.departureTime,
+          arrivalDate: reservation.departingFlightId.arrivalDate,
+          arrivalTime: reservation.departingFlightId.arrivalTime,
+          cabin: reservation.cabinClass,
+        },
+        arrivalFlight: {
+          flightNumber: reservation.returnFlightId.flightNumber,
+          departureDate: reservation.returnFlightId.departureDate,
+          departureTime: reservation.returnFlightId.departureTime,
+          arrivalDate: reservation.returnFlightId.arrivalDate,
+          arrivalTime: reservation.returnFlightId.arrivalTime,
+          cabin: reservation.cabinClass,
+        },
+      };
+      console.log("the entry", entry);
+      output.push(entry);
     });
 
     res.json(output);
