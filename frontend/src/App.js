@@ -1,6 +1,7 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TopBar from './components/layout/navigation/TopBar';
+import { Button } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Schedule from './pages/admin/Schedule';
@@ -12,6 +13,7 @@ import Account from './pages/user/signed/Account';
 import ViewFlightSummary from './components/user/existing/FlightSummary';
 import Itenerary from './pages/user/signed/viewItenirary';
 import DataGridDemo from './components/user/existing/Reservations';
+import { Container } from 'react-bootstrap';
 //import Reservations from "./components/user/existing/Reservations";
 //import Reservation from "../../backend/Models/Reservation";
 //import Reservation from "../../backend/Models/Reservation";
@@ -33,6 +35,10 @@ function App() {
     window.sessionStorage.setItem('existing', false);
     window.sessionStorage.setItem('admin', false);
   };
+  const onAdmin = () => {
+    window.sessionStorage.setItem('existing', false);
+    window.sessionStorage.setItem('admin', true);
+  };
   return (
     <Router>
       <div className='App'>
@@ -42,14 +48,15 @@ function App() {
           existing={existing}
           onSignIn={onSignIn}
           onSignOut={onSignOut}
+          onAdmin={onAdmin}
         />
         <Switch>
-          <Route exact path={['/', '/schedule']} component={Schedule}></Route>
+          <Route exact path={'/schedule'} component={Schedule}></Route>
           <Route exact path='/addFlight' component={FlightCreation}></Route>
           <Route exact path='/user' component={BookingPage}></Route>
           <Route exact path='/selectSeat' component={SelectSeat}></Route>
           <Route exact path='/account' component={Account}></Route>
-          <Route exact path='/search' component={SearchingPage}></Route>
+          <Route exact path='/' component={SearchingPage}></Route>
           <Route exact path='/reservations' component={DataGridDemo}></Route>
           <Route
             exact
@@ -64,6 +71,26 @@ function App() {
         {/* </Switch> */}
         {/* )} */}
       </div>
+      <Container>
+        <footer style={{ float: 'right' }}>
+          <Button
+            variant='contained'
+            style={{ marginLeft: '30px' }}
+            sx={{
+              color: '#7400b8',
+              backgroundColor: '#ffffff',
+              '&:hover': {
+                backgroundColor: '#e9e9e9',
+                color: '#7400b8',
+              },
+            }}
+            onClick={admin ? onSignIn : onAdmin}
+            href={!admin ? '/schedule' : './'}
+          >
+            {!admin ? 'Admin Sign in' : 'User Sign in'}
+          </Button>
+        </footer>
+      </Container>
     </Router>
   );
 }
