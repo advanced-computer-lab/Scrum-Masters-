@@ -178,8 +178,8 @@ router.post("/create/reservation/:userId", async (req, res) => {
   const reservation = new Reservation({
     userId: req.params.userId,
     cabinClass: req.body.details.cabin,
-    departingFlightId: req.body.departingFlight._id,
-    returnFlightId: req.body.returnFlight._id,
+    departingFlightId: req.body.departingFlightId,
+    returnFlightId: req.body.returnFlightId,
     totalPrice: req.body.totalPrice,
   });
 
@@ -189,18 +189,30 @@ router.post("/create/reservation/:userId", async (req, res) => {
     var totalSeats =
       req.body.details.noOfAdults + req.body.details.noOfChildren;
     // decreasing seats of the flight
-    if (req.body.details.cabin === "economy")
-      await Flight.findByIdAndUpdate(req.body.departingFlight._id, {
+    if (req.body.details.cabin === "economy") {
+      await Flight.findByIdAndUpdate(req.body.departingFlightId, {
         $inc: { "economy.availableSeats": -totalSeats },
       });
-    if (req.body.details.cabin === "business")
-      await Flight.findByIdAndUpdate(req.body.departingFlight._id, {
+      await Flight.findByIdAndUpdate(req.body.returnFlightId, {
+        $inc: { "economy.availableSeats": -totalSeats },
+      });
+    }
+    if (req.body.details.cabin === "business") {
+      await Flight.findByIdAndUpdate(req.body.departingFlightId, {
         $inc: { "business.availableSeats": -totalSeats },
       });
-    if (req.body.details.cabin === "first")
-      await Flight.findByIdAndUpdate(req.body.departingFlight._id, {
+       await Flight.findByIdAndUpdate(req.body.returnFlightId, {
+         $inc: { "business.availableSeats": -totalSeats },
+       });
+    }
+    if (req.body.details.cabin === "first") {
+      await Flight.findByIdAndUpdate(req.body.departingFlightId, {
         $inc: { "firstClass.availableSeats": -totalSeats },
       });
+       await Flight.findByIdAndUpdate(req.body.returnFlightId, {
+         $inc: { "firstClass.availableSeats": -totalSeats },
+       });
+    }
 
     res.json(savedReservation);
   } catch (error) {

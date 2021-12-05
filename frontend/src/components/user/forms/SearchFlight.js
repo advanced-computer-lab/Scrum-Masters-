@@ -40,7 +40,7 @@ const SearchFlight = () => {
       .catch((err) => console.log(err));
   }, []);
   //
-  const cabins = ['economy', 'business', 'first class'];
+  const cabins = ["Economy", "Business", "First Class"];
 
   const [query, setQuery] = useState({});
   const [from, setFrom] = useState();
@@ -55,7 +55,7 @@ const SearchFlight = () => {
 
   const cabinProps = {
     options: cabins,
-    getOptionLabel: (option) => option,
+    // getOptionLabel: (option) => option,
   };
 
   const fromProps = {
@@ -88,11 +88,11 @@ const SearchFlight = () => {
   const onSubmit = () => {
     //console.log(query);
     axios
-      .post('http://localhost:8081/user/search/', query)
+      .post("http://localhost:8081/user/search/", query)
       .then((res) => {
-        console.log('waiting for message', res.data);
+        console.log("waiting for message", res.data);
         if (res.data.message) {
-          console.log('it is true');
+          console.log("it is true");
           setError(true);
           setErrorMessage(res.data.message);
           showAlert();
@@ -114,6 +114,7 @@ const SearchFlight = () => {
   };
 
   function decrementAdultCount() {
+    console.log(adultCount);
     setAdultCount((prevCount) => (prevCount === 0 ? 0 : prevCount - 1));
   }
   function incrementAdultCount() {
@@ -216,7 +217,7 @@ const SearchFlight = () => {
               <IconButton
                 onClick={() => {
                   decrementAdultCount();
-                  setQuery({ ...query, ['noOfAdults']: adultCount + 1 });
+                  setQuery({ ...query, ["noOfAdults"]: adultCount - 1 });
                 }}
               >
                 <RemoveCircleRoundedIcon />
@@ -247,7 +248,7 @@ const SearchFlight = () => {
               <IconButton
                 onClick={() => {
                   decrementChildrenCount();
-                  setQuery({ ...query, ['noOfChildren']: childrenCount + 1 });
+                  setQuery({ ...query, ["noOfChildren"]: childrenCount - 1 });
                 }}
               >
                 <RemoveCircleRoundedIcon />
@@ -310,6 +311,7 @@ const SearchFlight = () => {
             />
           </Grid>
           <Grid item xs={6} md={2}>
+            {console.log(cabinProps)}
             <div>
               <Autocomplete
                 {...cabinProps}
@@ -320,7 +322,13 @@ const SearchFlight = () => {
                 clearOnEscape
                 size='30px'
                 onChange={(e, newValue) =>
-                  setQuery({ ...query, ['cabin']: newValue })
+                  setQuery({
+                    ...query,
+                    ["cabin"]:
+                      newValue === "First Class"
+                        ? "first"
+                        : newValue.toLowerCase(),
+                  })
                 }
                 renderInput={(params) => (
                   <TextField {...params} placeholder='Cabin' label='Cabin' />
