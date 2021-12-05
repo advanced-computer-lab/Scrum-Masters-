@@ -1,16 +1,13 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import { useState } from "react";
-import { Container } from "react-bootstrap";
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import * as React from 'react';
+import { useState } from 'react';
+import { Container } from 'react-bootstrap';
+import PassengerDeets from '../forms/PassengerDeets';
+import Button from '@mui/material/Button';
 
-import Paper from "@mui/material/Paper";
-import PassengerDeets from "../forms/PassengerDeets";
 const Passengers = (props) => {
-  // var serry=noOfPass+2;
-  console.log("lol", props.noOfPass);
-  //var j="maram";
-  // var  i=8;
-  // const[forms,setNoOfForms]=React.useState(props.noOfPass);
+  console.log('lol', props.noOfPass);
   const [passengers, setPassengers] = useState(
     Array(props.adults + props.children).fill({})
   );
@@ -21,21 +18,21 @@ const Passengers = (props) => {
     props.handleTravellers(passengers);
   };
   const style = {
-    position: "left",
+    position: 'left',
 
     height: 500,
     width: 900,
-    bgcolor: "white",
-    border: "2px solid #000",
+    bgcolor: 'white',
+    border: '2px solid #000',
     boxShadow: 12,
     p: 4,
-    align: "center",
+    align: 'center',
 
-    location: "center",
-    position: "relative",
-    top: "100px",
-    right: "60%",
-    left: "20%",
+    location: 'center',
+    position: 'relative',
+    top: '100px',
+    right: '60%',
+    left: '20%',
   };
   const dynamicRender = () => {
     var l = [];
@@ -44,7 +41,7 @@ const Passengers = (props) => {
         <PassengerDeets
           index={m}
           handlePassengers={handlePassengers}
-          type="Adult"
+          type="adult"
           cabin={props.cabin}
         />
       );
@@ -54,7 +51,7 @@ const Passengers = (props) => {
         <PassengerDeets
           index={m + props.adults}
           handlePassengers={handlePassengers}
-          type="Child"
+          type="child"
           cabin={props.cabin}
         />
       );
@@ -64,25 +61,41 @@ const Passengers = (props) => {
 
   return (
     <div>
-      {" "}
+      {' '}
       <Container>
-        <Box>
+        <Box component='form' id='passenger-form' onSubmit={props.handleNext}>
           <div>{dynamicRender()}</div>
-        </Box>
-        <div>
-          <input
-            type="checkbox"
-            id="designillustration"
-            name="medium"
-            required
-            marginTop="5px"
-          />
+          <div>
+            <input
+              required
+              type='checkbox'
+              id='designillustration'
+              name='medium'
+              required
+              marginTop='5px'
+            />
 
-          <span>
-            I hereby confirm that provided information is accurate as
-            represented on official documents of ticket carrier
-          </span>
-        </div>
+            <span>
+             I hereby confirm that provided information is accurate as
+            represented on official documents of each ticket carrier.
+            </span>
+          </div>
+          <Box
+            sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}
+            style={{ float: 'right' }}
+          >
+            <Button color='inherit' onClick={props.handleBack} sx={{ mr: 1 }}>
+              Back
+            </Button>
+            <Button
+              // onSubmit={props.handleNext}
+              // onClick={props.handleNext}
+              type='submit'
+            >
+              Next
+            </Button>
+          </Box>
+        </Box>
       </Container>
     </div>
   );

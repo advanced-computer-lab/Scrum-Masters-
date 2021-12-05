@@ -233,7 +233,13 @@ router.get("/reserved/:flightId", (req, res) => {
     });
 });
 
+router.delete("/delete/reservation/:id", (req, res) => {
+  Reservation.findByIdAndRemove(req.params.id)
+    .then((Reservation) => res.json({ mgs: "Reservation deleted successfully" }))
+    .catch((err) => res.status(404).json({ error: "No such a Reservation" }));
+})
 //user
+
 router.get("/profile/:id", async (req, res) => {
   User.findById(req.params.id)
     .then((result) => {

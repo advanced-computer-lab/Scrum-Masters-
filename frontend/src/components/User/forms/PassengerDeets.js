@@ -1,33 +1,36 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 
-import { useState } from "react";
-import Stack from "@mui/material/Stack";
+import { useState } from 'react';
+import Stack from '@mui/material/Stack';
 
-import Typography from "@mui/material/Typography";
+import Typography from '@mui/material/Typography';
 
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
 
 //Ask Ahmed Serry how to pass Data
 const PassengerDeets = (props) => {
-  const [expanded, setExpanded] = React.useState(props.index === 0);
-  const [values, setValues] = useState({ type: props.type.toLowerCase(), cabin:props.cabin });
+  const [expanded, setExpanded] = React.useState(true); //props.index===0
+  const [values, setValues] = useState({
+    type: props.type,
+    cabin: props.cabin,
+  });
   const onChange = async (e, name) => {
     if (e) {
       try {
         console.log(e);
         if (e.target) {
-          if (e.target.name === "passportNumber") {
+          if (e.target.name === 'passportNumber') {
             await setValues({
               ...values,
               [e.target.name]: e.target.value.toUpperCase(),
             });
           } else {
-            if (e.target.name === "firstName" || e.target.name === "lastName") {
+            if (e.target.name === 'firstName' || e.target.name === 'lastName') {
               await setValues({
                 ...values,
                 [e.target.name]:
@@ -41,7 +44,7 @@ const PassengerDeets = (props) => {
         } else {
           await setValues({ ...values, [name]: e });
         }
-        await console.log("update", values);
+        await console.log('update', values);
       } catch (error) {
         console.log(error);
       }
@@ -53,20 +56,19 @@ const PassengerDeets = (props) => {
 
   return (
     <Box>
-      <form>
-        <Accordion
-          expanded={expanded}
-          onChange={handleChange("panel1")}
-          spacing={4}
-          sx={{
-            margin: "10px",
-          }}
+      <Accordion
+        expanded={expanded}
+        onChange={handleChange('panel1')}
+        spacing={4}
+        sx={{
+          margin: '10px',
+        }}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls='panel1bh-content'
+          id='panel1bh-header'
         >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1bh-content"
-            id="panel1bh-header"
-          >
             <Typography
               sx={{
                 width: "6%",
@@ -75,7 +77,7 @@ const PassengerDeets = (props) => {
                 display: "inline",
               }}
             >
-              {props.type},
+              {props.type.charAt(0).toUpperCase() + props.type.substring(1)},
             </Typography>
             <Typography
               sx={{
@@ -89,13 +91,8 @@ const PassengerDeets = (props) => {
             <Typography sx={{ color: "text.secondary" }}></Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Stack direction="row" spacing={30} style={{ marginTop: "30px" }}>
-              <Stack
-                direction="column"
-                spacing={3}
-                height="200px"
-                width="300px"
-              >
+            <Stack direction="row" justifyContent="center" spacing={12}>
+              <Stack direction="column" spacing={3} width="25%">
                 <TextField
                   required
                   height="5px"
@@ -107,6 +104,7 @@ const PassengerDeets = (props) => {
                   variant="filled"
                   label="First Name"
                   name="firstName"
+                  defaultValue={values.firstName}
                   onChange={onChange}
                   InputLabelProps={{
                     shrink: true,
@@ -121,6 +119,7 @@ const PassengerDeets = (props) => {
                   label="Gender"
                   variant="filled"
                   name="gender"
+                  defaultValue={values.gender}
                   onChange={onChange}
                   InputLabelProps={{
                     shrink: true,
@@ -128,12 +127,7 @@ const PassengerDeets = (props) => {
                 />
               </Stack>
 
-              <Stack
-                direction="column"
-                spacing={3}
-                height="300px"
-                width="350px"
-              >
+              <Stack direction="column" spacing={3} width="25%">
                 <TextField
                   required
                   backgroundcolor="#f2f2f2"
@@ -142,6 +136,7 @@ const PassengerDeets = (props) => {
                   label="Last Name"
                   variant="filled"
                   name="lastName"
+                  defaultValue={values.lastName}
                   onChange={onChange}
                   InputLabelProps={{
                     shrink: true,
@@ -156,13 +151,14 @@ const PassengerDeets = (props) => {
                   label="Passport Number"
                   variant="filled"
                   name="passportNumber"
+                  defaultValue={values.passportNumber}
                   onChange={onChange}
                   InputLabelProps={{
                     shrink: true,
                   }}
                 />
               </Stack>
-              <Stack direction="column" spacing={4}>
+              <Stack direction="column" spacing={3} width="25%">
                 <TextField
                   required
                   backgroundcolor="#f2f2f2"
@@ -170,6 +166,7 @@ const PassengerDeets = (props) => {
                   // placeholder=''
                   label="Date Of Birth"
                   variant="filled"
+                  defaultValue={values.dateOfBirth}
                   name="dateOfBirth"
                   onChange={onChange}
                   //  } }
@@ -179,13 +176,8 @@ const PassengerDeets = (props) => {
                 />
               </Stack>
             </Stack>
-
-            <Typography></Typography>
-          </AccordionDetails>
-        </Accordion>
-
-        <div></div>
-      </form>
+        </AccordionDetails>
+      </Accordion>
     </Box>
   );
 };
