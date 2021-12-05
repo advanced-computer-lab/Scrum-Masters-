@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Stack from "@mui/material/Stack";
 import { Container } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
@@ -59,7 +59,7 @@ const style = {
 
 
 
-const ViewFlightSummary = ({ input1, input2 }) => {
+const ViewFlightSummary = ({ input1, input2, handlePrice }) => {
     console.log("FlightSummaryInput1",input1);
     console.log("FlightSummaryInput2",input2);
     var x=0;
@@ -67,9 +67,25 @@ const ViewFlightSummary = ({ input1, input2 }) => {
   
     const handleShow = () => setShow(true);
     const [open, setOpen] = React.useState(false);
+    const[totalPrice, setTotalPrice]=useState();
     const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  
+    const handleClose = () => setOpen(false);
+    const calculatePrice = () =>{
+      var adults=input1.details.noOfAdults;
+      var children=input2.details.noOfChildren;
+      console.log("calculate");
+      var price=0;
+    switch(input1.details.cabin){
+        case "economy":price=(input2.flight.economy.adultPrice*adults +input2.flight.economy.childPrice*children+input1.flight.economy.adultPrice*adults+input1.flight.economy.childPrice*children);break;
+        case "business":price=(input2.flight.business.adultPrice*adults +input2.flight.business.childPrice*children+input1.flight.business.adultPrice*adults +input1.flight.business.childPrice*children);break;
+        case "first":price=(input2.flight.firstClass.adultPrice*adults +input2.flight.firstClass.childPrice*children+input1.flight.firstClass.adultPrice*adults +input1.flight.firstClass.childPrice*children);break;    
+    }
+    console.log("why",price);
+    setTotalPrice(price);
+    handlePrice(price);
+
+  }
+
   const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
     padding: theme.spacing(1),
@@ -82,7 +98,9 @@ const ViewFlightSummary = ({ input1, input2 }) => {
    setOpen(true);
  };*/
  
-      
+ useEffect(() => {
+   calculatePrice();
+  }, []);
   
 
  
@@ -169,7 +187,7 @@ const ViewFlightSummary = ({ input1, input2 }) => {
           <Grid item xs={6}>
             <Item>
               <AttachMoneyIcon />
-              Total Price of Reservation:{""}
+              Total Price of Reservation:{totalPrice}
             </Item>
           </Grid>
         </Grid>

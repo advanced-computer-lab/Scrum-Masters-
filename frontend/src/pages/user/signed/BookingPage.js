@@ -19,6 +19,7 @@ import { Container } from "react-bootstrap";
 import FlightReservation from "../../../components/user/FlightReservation";
 import ViewFlightSummary from "../../../components/user/existing/FlightSummary";
 import Passengers from "../../../components/user/existing/Passengers";
+import Itenirary from "./viewItenirary";
 
 const BookingPage = (props) => {
   console.log("in BookingPage props", props);
@@ -34,6 +35,11 @@ const BookingPage = (props) => {
   const [departureInput, setDepartureInput] = useState({}); //input to maram and donia
   const [arrivalInput, setArrivalInput] = useState({});
   const [travellers, setTravellers] = useState();
+  const [total, setTotal] = useState();
+  const handlePrice = (price) => {
+    console.log("total price booking page", price);
+    setTotal(price);
+  };
   const [maramObject, setMaramObject] = useState({
     firstName: "",
     lastName: "",
@@ -233,7 +239,14 @@ const BookingPage = (props) => {
         )}
       </Box>
       {actualStep === 3 && (
-        <ViewFlightSummary input1={departureInput} input2={arrivalInput} />
+        <ViewFlightSummary input1={departureInput} input2={arrivalInput} handlePrice={handlePrice}/>
+      )}
+      <Box
+        sx={{ display: "flex", flexDirection: "row", pt: 2 }}
+        style={{ float: "right" }}
+      ></Box>
+      {actualStep === 4 && (
+        <Itenirary input1={departureInput} input2={arrivalInput} />
       )}
       <Box
         sx={{ display: "flex", flexDirection: "row", pt: 2 }}
