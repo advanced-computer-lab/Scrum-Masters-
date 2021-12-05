@@ -42,7 +42,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import PersonIcon from '@mui/icons-material/Person';
 import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
+//import 'reactjs-popup/dist/index.css';
 
 const style = {
     position: 'absolute',

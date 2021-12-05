@@ -46,12 +46,6 @@ const BookingPage = (props) => {
     Gender: '',
     dateOfBirth: '',
   });
-  const handleMaram = async (code) => {
-    const newMaram = code;
-    setMaramObject(newMaram);
-    console.log('ehna wasalna hena 3ady');
-    console.log(newMaram);
-  };
 
   const handleTravellers = (passengers) => {
     setTravellers(passengers);
@@ -223,7 +217,7 @@ const BookingPage = (props) => {
       {actualStep === 2 && (
         <Passengers
           adults={departureInput.details.noOfAdults}
-          children={+departureInput.details.noOfChildren}
+          children={departureInput.details.noOfChildren}
           cabin={departureInput.details.cabin}
           handleTravellers={handleTravellers}
           handleNext={handleNextForm}
@@ -238,6 +232,11 @@ const BookingPage = (props) => {
           departureId={departureFlight}
           returnId={arrivalFlight}
           cabin={departureInput.details.cabin}
+          numberPassengers={
+            departureInput.details.noOfAdults +
+            departureInput.details.noOfChildren
+          }
+          handleTravellers={handleTravellers}
         />
       )}
       {actualStep === 4 && (
@@ -264,14 +263,8 @@ const BookingPage = (props) => {
           </Button>
         )}
       </Box>
-      {actualStep === 3 && (
-        <ViewFlightSummary input1={departureInput} input2={arrivalInput} handlePrice={handlePrice}/>
-      )}
-      <Box
-        sx={{ display: "flex", flexDirection: "row", pt: 2 }}
-        style={{ float: "right" }}
-      ></Box>
-      {actualStep === 4 && (
+      
+      {actualStep === 5 && (
         <Itenirary input1={departureInput} input2={arrivalInput} />
       )}
       <Box

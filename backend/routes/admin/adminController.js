@@ -31,40 +31,53 @@ router.post("/search", async (req, res) => {
   }
 });
 
-router.post(
-  "/create",
-  check("arrivalDate").custom((value, { req }) => {
-    console.log("The type of arrivalDate",typeof value)
-    if (new Date(value) < new Date(req.body.departureDate)) {
-      //throw new Error("End date of lab must be valid and after start date");
-      res.json({ message: "cannot have an arrival date before the departure date" });
-      return;
-    }
-    return true;
-  }),
-  async (req, res) => {
-    // define each field in req.body is better (for apis :) )
-    console.log(req.body);
-    const insertion = req.body;
-    //unique flightnumber within the day
-    var query = await Flight.find({
-      flightNumber: req.body.flightNumber,
-      departurDate: req.body.departurDate,
+router.post("/create", async (req, res) => {
+  
+  
+  
+  // define each field in req.body is better (for apis :) )
+  console.log(req.body);
+  const insertion = req.body;
+
+  if(insertion.departureAirport === insertion.arrivalAirport){
+    res.json({
+      message: "the departure and arrival airports cannot be the same.",
     });
-    if ((await query).length > 0) {
-      res.json({ message: "cannot insert the same flight in the same day" });
-      return;
-    }
-    console.log("the body", insertion);
-    const flight = new Flight(insertion);
-    try {
-      const savedFlight = await flight.save();
-      res.json(savedFlight);
-    } catch (err) {
-      console.log(err);
-    }
+    return;
   }
-);
+
+
+  if (new Date(insertion.arrivalDate) < new Date(insertion.departureDate)) {
+    //throw new Error("End date of lab must be valid and after start date");
+    res.json({
+      message: "cannot have an arrival date before the departure date",
+    });
+    return;
+  }
+
+
+  //unique flightnumber within the day
+  var query = await Flight.find({
+    flightNumber: req.body.flightNumber,
+    departurDate: req.body.departurDate,
+  });
+  if ((await query).length > 0) {
+    res.json({ message: "cannot insert the same flight in the same day." });
+    return;
+  }
+  console.log("the body", insertion);
+  const flight = new Flight(insertion);
+  if(flight.duration <0){
+    res.json({ message: "cannot insert, the arrival time is before the departure time." });
+    return;
+  }
+  try {
+    const savedFlight = await flight.save();
+    res.json(savedFlight);
+  } catch (err) {
+    console.log(err);
+  }
+});
 router.patch("/update/:id", async (req, res) => {
   Flight.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((result) => {

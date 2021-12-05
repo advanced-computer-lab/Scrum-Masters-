@@ -141,6 +141,7 @@ const SearchFlight = () => {
     <div>
       {searchDone && <BookingPage props={output} />}
       {!searchDone && (
+        
         <Grid
           container
           rowSpacing={5}
