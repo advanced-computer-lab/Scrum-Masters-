@@ -5,7 +5,45 @@ const Flight = require("../../Models/Flight");
 
 router.post("/search", async (req, res) => {
   const criteria = req.body;
+<<<<<<< HEAD
   console.log(req.body);
+=======
+  console.log("criteria", criteria); //theerasfadfad
+  /* {
+    noOfChildren: val, 
+    noOfAdults: val,
+    departureAirpot:val, 
+    arrivalAirport:val,  cai  dxb
+    departureDate: val,
+    arrivalDate: val, of return flight
+    cabin: val
+  }*/
+  // passing all the required fields
+  if (
+    !req.body.departureAirport ||
+    !req.body.arrivalAirport ||
+    !req.body.departureDate ||
+    !req.body.arrivalDate ||
+    !req.body.cabin
+  ) {
+    res.json({ message: "please choose all the fields" });
+    return;
+  }
+  // checking at least one passenger
+  if (!criteria.noOfChildren) {
+    criteria.noOfChildren = 0;
+  }
+  if (!criteria.noOfAdults) {
+    criteria.noOfAdults = 0;
+  }
+
+  if (criteria.noOfAdults + criteria.noOfChildren === 0) {
+    res.json({ message: "please choose at least one passenger" });
+    return;
+  }
+
+  // getting return and arrival flights
+>>>>>>> 28b00b7b3e9ca17c602bdd20c92db1239c24d8f8
   try {
     var query = await Flight.find(criteria);
     if (criteria.economy.availableSeats) {
