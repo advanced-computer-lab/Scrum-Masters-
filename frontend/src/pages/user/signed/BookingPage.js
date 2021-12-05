@@ -70,7 +70,6 @@ const BookingPage = (props) => {
     });
     console.log(departureInput);
   };
-  const handleNoOfForms = () => {};
   const handleNextForm = (e) => {
     let newSkipped = skipped;
     e.preventDefault();
