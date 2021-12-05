@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -11,6 +12,21 @@ import { DialogContent } from '@mui/material';
 import { DialogTitle } from '@mui/material';
 import { Dialog } from '@mui/material';
 import { DialogContentText } from '@mui/material';
+=======
+import * as React from "react";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import { useState,useEffect } from "react";
+import Stack from "@mui/material/Stack";
+import { Container } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+import { DialogActions } from "@mui/material";
+import { DialogContent } from "@mui/material";
+import { DialogTitle } from "@mui/material";
+import { Dialog } from "@mui/material";
+import { DialogContentText } from "@mui/material";
+>>>>>>> maram
 //import Ticket from "../../../../backend/Models/Ticket";
 //import Reservation from "../../../../backend/Models/Reservation";
 //import * as React from 'react';
@@ -56,26 +72,44 @@ const style = {
   p: 4,
 };
 
-const ViewFlightSummary = ({ input1, input2, nextPage }) => {
-  console.log('FlightSummaryInput1', input1);
-  console.log('FlightSummaryInput2', input2);
-  var x = 0;
-  const [show, setShow] = useState(false);
-  const [existing, setExisting] = useState(
-    JSON.parse(window.sessionStorage.getItem('existing')) || false
-  );
-  const handleShow = () => setShow(true);
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const onSignIn = () => {
-    window.sessionStorage.setItem('existing', true);
-    window.sessionStorage.setItem('admin', false);
-    console.log(JSON.parse(window.sessionStorage.getItem('admin')));
-    console.log(JSON.parse(window.sessionStorage.getItem('existing')));
-    setOpen(false);
-    nextPage();
-  };
+const ViewFlightSummary = ({ input1, input2, handlePrice }) => {
+    console.log("FlightSummaryInput1",input1);
+    console.log("FlightSummaryInput2",input2);
+    var x=0;
+    const [show, setShow] = useState(false);
+  
+    const handleShow = () => setShow(true);
+    const [open, setOpen] = React.useState(false);
+    const[totalPrice, setTotalPrice]=useState();
+    const [existing, setExisting] = useState(
+        JSON.parse(window.sessionStorage.getItem('existing')) || false
+      );
+      const onSignIn = () => {
+        window.sessionStorage.setItem('existing', true);
+        window.sessionStorage.setItem('admin', false);
+        console.log(JSON.parse(window.sessionStorage.getItem('admin')));
+        console.log(JSON.parse(window.sessionStorage.getItem('existing')));
+        setOpen(false);
+        nextPage();
+      };
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const calculatePrice = () =>{
+      var adults=input1.details.noOfAdults;
+      var children=input2.details.noOfChildren;
+      console.log("calculate");
+      var price=0;
+    switch(input1.details.cabin){
+        case "economy":price=(input2.flight.economy.adultPrice*adults +input2.flight.economy.childPrice*children+input1.flight.economy.adultPrice*adults+input1.flight.economy.childPrice*children);break;
+        case "business":price=(input2.flight.business.adultPrice*adults +input2.flight.business.childPrice*children+input1.flight.business.adultPrice*adults +input1.flight.business.childPrice*children);break;
+        case "first":price=(input2.flight.firstClass.adultPrice*adults +input2.flight.firstClass.childPrice*children+input1.flight.firstClass.adultPrice*adults +input1.flight.firstClass.childPrice*children);break;    
+    }
+    console.log("why",price);
+    setTotalPrice(price);
+    handlePrice(price);
+
+  }
+
   const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
     padding: theme.spacing(1),
@@ -87,6 +121,18 @@ const ViewFlightSummary = ({ input1, input2, nextPage }) => {
   const showAlert = () => {
    setOpen(true);
  };*/
+ 
+ useEffect(() => {
+   calculatePrice();
+  }, []);
+  
+
+  const getDate = (input) => {
+    const date = new Date(input);
+    return (
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
+    );
+  };
 
   return (
     <>
@@ -101,7 +147,7 @@ const ViewFlightSummary = ({ input1, input2, nextPage }) => {
           <Grid item xs={6}>
             <Item>
               <TodayIcon />
-              Departure Flight Trip Date:{input1.details.departureDate}
+              Departure Flight Date:{getDate(input1.details.departureDate)}
             </Item>
           </Grid>
           <Grid item xs={6}>
@@ -129,7 +175,7 @@ const ViewFlightSummary = ({ input1, input2, nextPage }) => {
           <Grid item xs={6}>
             <Item>
               <TodayIcon />
-              Return Flight Date{''}:{input2.flight.departureDate}
+              Return Flight Date{""}:{getDate(input2.flight.departureDate)}
             </Item>
           </Grid>
           <Grid item xs={6}>
@@ -170,7 +216,7 @@ const ViewFlightSummary = ({ input1, input2, nextPage }) => {
           <Grid item xs={6}>
             <Item>
               <AttachMoneyIcon />
-              Total Price of Reservation:{''}
+              Total Price of Reservation:{totalPrice}
             </Item>
           </Grid>
         </Grid>

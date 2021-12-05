@@ -8,7 +8,6 @@ import Stepper from '@mui/material/Stepper';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import StepConnector, {
@@ -21,6 +20,7 @@ import FlightReservation from '../../../components/user/FlightReservation';
 import SelectSeat from './SelectSeat';
 import ViewFlightSummary from '../../../components/user/existing/FlightSummary';
 import Passengers from '../../../components/user/existing/Passengers';
+import Itenerary from "./viewItenerary";
 
 const BookingPage = (props) => {
   console.log('in BookingPage props', props);
@@ -46,6 +46,8 @@ const BookingPage = (props) => {
     Gender: '',
     dateOfBirth: '',
   });
+  const handlePrice = (price)=>{
+    setTotal(price);  }
   const handleTravellers = (passengers) => {
     setTravellers(passengers);
     console.log('booking page passengers', passengers);
@@ -73,8 +75,9 @@ const BookingPage = (props) => {
       })
       .then((result) => {
         console.log('Reservation Done', result);
-        nextPage();
         handleTickets(result.data._id);
+        setTimeout(()=>{},4000);
+        nextPage();
       })
       .catch((err) => console.log(err));
   };
@@ -318,7 +321,7 @@ const BookingPage = (props) => {
             isDeparture={false}
           />
         )}
-        {actualStep === 2 && (
+        {actualStep === 3 && (
           <Passengers
             adults={departureInput.details.noOfAdults}
             children={departureInput.details.noOfChildren}
@@ -330,8 +333,7 @@ const BookingPage = (props) => {
         )}
         {actualStep === 3 && (
           <ViewFlightSummary
-            input1={departureInput}
-            input2={arrivalInput}
+          input1={departureInput} input2={arrivalInput} handlePrice={handlePrice}
             nextPage={nextPage}
           />
         )}
@@ -350,6 +352,9 @@ const BookingPage = (props) => {
             handleReservation={handleReservation}
           />
         )}
+        {actualStep === 5 && (
+        <Itenerary departureTickets={departureTickets} returnTickets={returnTickets} departureFlight={departureInput.flight} returnFlight={arrivalInput.flight} totalPrice={total}/>
+      )}
       </div>
       <Box
         sx={{
@@ -379,6 +384,8 @@ const BookingPage = (props) => {
           </Button>
         )}
       </Box>
+      
+      
     </Container>
   );
 };
