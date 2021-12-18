@@ -115,6 +115,7 @@ return result;
     stripeKey ="pk_test_51K6M8qJJwEGtsc7Jg1PpI8uJfikDdlKuDksccokEyc3JjTgyysXvjGb1lWZIbyOCjPfNnbs4cBflSwG5xUzmfKq500JtPtmY3p"
     token=""
     name=""
+    amount={props.totalPrice *100}
     >
       <Button style={{
        backgroundcolor:"pink",
