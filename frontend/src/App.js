@@ -13,7 +13,10 @@ import Account from './pages/user/signed/Account';
 import ViewFlightSummary from './components/user/existing/FlightSummary';
 import Itenerary from './pages/user/signed/viewItenerary';
 import Reservations from './components/user/existing/Reservations';
+import PaymentComponent from './components/user/forms/PaymentComponent';
 import { Container } from 'react-bootstrap';
+import StripeCheckout from "react-stripe-checkout";
+
 
 function App() {
   const [admin, setAdmin] = useState(
@@ -66,6 +69,13 @@ function App() {
             component={ViewFlightSummary}
           ></Route>
           <Route exact path='/itenerary' component={Itenerary}></Route>
+          <Route exact path='/payment'> <Container>
+                        <PaymentComponent
+                            keys={{
+                                stripe: "pk_test_51K6M8qJJwEGtsc7Jg1PpI8uJfikDdlKuDksccokEyc3JjTgyysXvjGb1lWZIbyOCjPfNnbs4cBflSwG5xUzmfKq500JtPtmY3p",
+                            }}
+                        />
+                    </Container></Route>
         </Switch>
 
         {!admin && !existing && (

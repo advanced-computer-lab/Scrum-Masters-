@@ -5,6 +5,8 @@ const cors = require('cors');
 const app = express();
 app.use(express.json());
 const dotenv = require("dotenv").config();
+const stripe = require('stripe')(process.env.SECRETSTRIPE);
+
 app.use(cors());
 //DB CONNECTION
 

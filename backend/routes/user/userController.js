@@ -6,6 +6,7 @@ const Reservation = require('../../Models/Reservation');
 const Ticket = require('../../Models/Ticket');
 const User = require('../../Models/User');
 var airports = require('airport-codes');
+const stripe= require("stripe")(process.env.SECRETSTRIPE);
 
 router.get('/search/flights', async (req, res) => {
   try {
@@ -234,7 +235,7 @@ router.post('/create/reservation/:userId', async (req, res) => {
  *  tickets
  *
  * } */
-
+ 
 router.post('/create/ticket', async (req, res) => {
   const ticket = new Ticket(req.body);
   try {
@@ -348,6 +349,105 @@ router.get('/profile/:id', async (req, res) => {
       res.status(404).send(err);
     });
 });
+router.post('/payment', async (req, res) => {
+  const{product,token}=req.body;
+  console.log("PRODUCT",product);
+  console.log("TOKEN",token);
+  return stripe.customers.create({
+    email:token.email,
+    name:token.name
+
+  }).then(customer =>{
+    stripe.charges.create({
+      amount:product.totalPrice,
+      currency:'usd',
+      customer:customer.id,
+      receipt_email:token.email,
+      description:'paying for  reseflightrvation'
+    })
+  })
+  .then(result => res.status(200).json(result))
+  .catch(err =>console.log(err));
+ 
+});
+
+// router.post('/sendmail', async (req,res) => {
+// const nodeMailer =require('nodemailer')
+// const transporter = nodemailer.createTransport({
+//   service:"hotmail",
+//   auth: {
+//     user:"maramACL@outlook.com",
+//     pass:"Benamer1!"
+//   },
+//   tls:{
+//       rejectUnauthorized:false
+//   }
+
+
+// })
+// const options ={
+//   from:"maramACL@outlook.com",
+//   to:"marambenamer@yahoo.com",
+//   subject:"Email trial",
+//   text:"Let's see"
+// };
+// transporter.sendMail(options,  function(err,info){
+// if(err){
+//   console.log("error!",err);
+//   return;
+// }
+// console.log("mail sent successfully");
+// })
+// });
+
+
+
+
+
+
+
+
+
+
+ 
+
+// })
+// app.post('/confirm-payment', async (req, res) => {
+
+//   //extract payment type from the client request
+//   const paymentType = String(req.body.payment_type);
+
+//   //handle confirmed stripe transaction
+//   if (paymentType == "stripe") {
+
+//     //get payment id for stripe
+//     const clientid = String(req.body.payment_id);
+
+//     //get the transaction based on the provided id
+//     stripe.paymentIntents.retrieve(
+//       clientid,
+//       function(err, paymentIntent) {
+
+//         //handle errors
+//         if (err){
+//           console.log(err);
+//         }
+        
+//         //respond to the client that the server confirmed the transaction
+//         if (paymentIntent.status === 'succeeded') {
+
+//           /*YOUR CODE HERE*/  
+          
+//           console.log("confirmed stripe payment: " + clientid);
+//           res.json({success: true});
+//         } else {
+//           res.json({success: false});
+//         }
+//       }
+//     );
+//   } 
+  
+
 router.post('/profile', async (req, res) => {
   const insertion = req.body;
   const user = new User(insertion);
