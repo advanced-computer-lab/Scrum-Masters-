@@ -114,7 +114,7 @@ const PassengerDeets = (props) => {
                 <TextField
                   required
                   backgroundcolor="#f2f2f2"
-                  type="Text"
+                  type="Radio Button"
                   placeholder="Gender"
                   label="Gender"
                   variant="filled"
@@ -173,6 +173,7 @@ const PassengerDeets = (props) => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  InputProps={{inputProps: { min: "1898-12-24", max: "today"} }}
                 />
               </Stack>
             </Stack>

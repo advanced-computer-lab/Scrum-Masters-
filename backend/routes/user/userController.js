@@ -7,6 +7,7 @@ const Ticket = require('../../Models/Ticket');
 const User = require('../../Models/User');
 var airports = require('airport-codes');
 const stripe= require("stripe")(process.env.SECRETSTRIPE);
+const nodemailer=require("nodemailer");
 
 router.get('/search/flights', async (req, res) => {
   try {
@@ -350,6 +351,24 @@ router.get('/profile/:id', async (req, res) => {
     });
 });
 router.post('/payment', async (req, res) => {
+  const nodeMailer =require('nodemailer')
+const transporter = nodemailer.createTransport({
+  service:"hotmail",
+  auth: {
+    user:"maramACL@outlook.com",
+    pass:"Benamer1!"
+  },
+  tls:{
+      rejectUnauthorized:false
+  }
+})
+const options ={
+  from:"maramACL@outlook.com",
+  to:"marambenamer@yahoo.com",
+  subject:"Email trial",
+  text:"Let's see"
+};
+
   const{product,token}=req.body;
   console.log("PRODUCT",product);
   console.log("TOKEN",token);
@@ -363,43 +382,49 @@ router.post('/payment', async (req, res) => {
       currency:'usd',
       customer:customer.id,
       receipt_email:token.email,
-      description:'paying for  reseflightrvation'
+      description:'paying for flight reservation'
+    },
+    transporter.sendMail(options,  function(err,info){
+      if(err){
+      console.log("error!",err);
+      return;
+      }
+    console.log("mail sent successfully");
+    })
+    )
+      .catch(err =>console.log(err));
+     
     })
   })
-  .then(result => res.status(200).json(result))
-  .catch(err =>console.log(err));
  
+router.post('/sendmail', async(req,res) => {
+const nodeMailer =require('nodemailer')
+const transporter = nodemailer.createTransport({
+  service:"hotmail",
+  auth: {
+    user:"maramACL@outlook.com",
+    pass:"Benamer1!"
+  }
+ 
+
+
+})
+const options ={
+  from:"maramACL@outlook.com",
+  to:"marambenamer@yahoo.com",
+  subject:"Email trial",
+  text:"Let's see"+req.body
+};
+transporter.sendMail(options,  function(err,info){
+if(err){
+  console.log("error!",err);
+  return;
+}
+console.log("mail sent successfully");
+console.log(req.body.totalPrice);
+})
 });
 
-// router.post('/sendmail', async (req,res) => {
-// const nodeMailer =require('nodemailer')
-// const transporter = nodemailer.createTransport({
-//   service:"hotmail",
-//   auth: {
-//     user:"maramACL@outlook.com",
-//     pass:"Benamer1!"
-//   },
-//   tls:{
-//       rejectUnauthorized:false
-//   }
-
-
-// })
-// const options ={
-//   from:"maramACL@outlook.com",
-//   to:"marambenamer@yahoo.com",
-//   subject:"Email trial",
-//   text:"Let's see"
-// };
-// transporter.sendMail(options,  function(err,info){
-// if(err){
-//   console.log("error!",err);
-//   return;
-// }
-// console.log("mail sent successfully");
-// })
-// });
-
 
 
 
@@ -411,7 +436,7 @@ router.post('/payment', async (req, res) => {
 
  
 
-// })
+
 // app.post('/confirm-payment', async (req, res) => {
 
 //   //extract payment type from the client request

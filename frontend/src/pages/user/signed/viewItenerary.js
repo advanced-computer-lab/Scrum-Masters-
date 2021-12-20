@@ -24,6 +24,7 @@ const nodemailer =require('nodemailer');
 
 
 const Itenerary = (props) => {
+ // console.log(props.departureFlight.arrivalAirport,props.departureFlight.arrivalDate);
   const [product,setProduct] =useState({
     name:"Pay for reservation",
     price: "10",
@@ -71,6 +72,15 @@ const dynamicTickets=()=>{
 })
 return result;
 }
+const handler =()=>{
+  console.log("GIRL I BE TRYNNA REACH SOMEWHERE!!!!"+ props.departureFlight.arrivalAirport);
+  const lol = props.departureFlight.arrivalAirport;
+  axios.post("http://localhost:8081/user/sendmail",props.departureFlight)
+   .then(console.log("done!!"));
+}
+const printer =()=>{
+  console.log(props.ticket.seatNum);
+}
 
   return (
    
@@ -116,8 +126,9 @@ return result;
     token=""
     name=""
     amount={props.totalPrice *100}
+    currency="EGP"
     >
-      <Button style={{
+      <Button  onClick={handler} style={{
        backgroundcolor:"pink",
        fontSize:"15px"
        
@@ -128,16 +139,21 @@ return result;
       }}>
           Make Payment
           </Button>
+          
      </StripeCheckout>
      
      <div> 
-       
+       <Button onClick={handler}>
+         E-mail me a copy of my itenerary
+       </Button>
+       <Button></Button>
        </div>
        </div>
   
      {dynamicTickets()}
      </div>)}
    </div>
+ 
   );
 };
 export default Itenerary;

@@ -16,6 +16,8 @@ import Reservations from './components/user/existing/Reservations';
 import PaymentComponent from './components/user/forms/PaymentComponent';
 import { Container } from 'react-bootstrap';
 import StripeCheckout from "react-stripe-checkout";
+import SendingMail from './components/user/forms/SendingMail';
+
 
 
 function App() {
@@ -69,7 +71,11 @@ function App() {
             component={ViewFlightSummary}
           ></Route>
           <Route exact path='/itenerary' component={Itenerary}></Route>
-          <Route exact path='/payment'> <Container>
+          <Route exact path="/sendmail" component ={SendingMail}>
+            <Container>
+              <SendingMail/>
+              </Container> </Route>
+          <Route exact path='/payment' component ={PaymentComponent}> <Container>
                         <PaymentComponent
                             keys={{
                                 stripe: "pk_test_51K6M8qJJwEGtsc7Jg1PpI8uJfikDdlKuDksccokEyc3JjTgyysXvjGb1lWZIbyOCjPfNnbs4cBflSwG5xUzmfKq500JtPtmY3p",
