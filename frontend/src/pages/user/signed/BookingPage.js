@@ -182,10 +182,6 @@ const BookingPage = (props) => {
         })
         .catch((err) => console.log(err));
     });
-    // setDepartureTickets(departs);
-    // setReturnTickets(returns);
-    // console.log(departs);
-    // console.log("re", returns);
   };
 
   const handleNextForm = (e) => {
@@ -375,6 +371,7 @@ const BookingPage = (props) => {
         )}
         {actualStep === 4 && (
           <SelectSeat
+            edit={true}
             passengers={travellers}
             departureFlight={departureInput}
             returnFlight={arrivalInput}

@@ -11,8 +11,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-
-//Ask Ahmed Serry how to pass Data
 const PassengerDeets = (props) => {
   const [expanded, setExpanded] = React.useState(true); //props.index===0
   const [values, setValues] = useState({
@@ -86,7 +84,7 @@ const PassengerDeets = (props) => {
                 display: "inline",
               }}
             >
-              {props.cabin.charAt(0).toUpperCase() + props.cabin.substring(1)}
+              {props.cabin.charAt(0).toUpperCase() + props.cabin.substring(1)} Class
             </Typography>
             <Typography sx={{ color: "text.secondary" }}></Typography>
           </AccordionSummary>

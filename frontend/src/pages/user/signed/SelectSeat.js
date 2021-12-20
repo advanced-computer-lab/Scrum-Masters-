@@ -11,6 +11,7 @@ const SelectSeat = (props) => {
   const [returnFlight, setReturnFlight] = useState();
   const [departureSeats, setDepartureSeats] = useState();
   const [returnSeats, setReturnSeats] = useState();
+   const [returnTickets, setReturnTickets] = useState([]);
   const [passengers, setPassengers] = useState();
   const [loading, setLoading] = useState(true);
   var list = [
@@ -29,16 +30,73 @@ const SelectSeat = (props) => {
       type: "adult",
     },
   ];
-  const createPassengers = (list) => {
+  const oldTicket = [
+    {
+      _id: {
+        $oid: "61a397588a78e73125836658",
+      },
+      seatNum: "1D",
+      ticketType: "departing",
+      passengerType: "adult",
+      cabin: "first",
+      firstName: "Donia",
+      lastName: "Sharaf",
+      flightId: {
+        $oid: "61a67c27e60d868d8b93a41a",
+      },
+      reservationId: {
+        $oid: "619ed9e949f05686f3d77d5e",
+      },
+      price: 10000,
+      __v: 0,
+    },
+    {
+      _id: {
+        $oid: "61a397588a78e73125836658",
+      },
+      seatNum: "1C",
+      ticketType: "departing",
+      passengerType: "adult",
+      cabin: "first",
+      firstName: "Donia",
+      lastName: "Sharaf",
+      flightId: {
+        $oid: "61a67c27e60d868d8b93a41a",
+      },
+      reservationId: {
+        $oid: "619ed9e949f05686f3d77d5e",
+      },
+      price: 10000,
+      __v: 0,
+    },
+  ];
+  const [departureTickets, setDepartureTickets] = useState(oldTicket);
+  const createPassengers = (list) => { 
     //passengers are the users with their details
-    setPassengers(
-      list.map((passenger, index) => ({
-        id: "pas_" + (index + 1), //user
-        name: passenger.firstName + " " + passenger.lastName, //user
-        cabin: passenger.cabin, //cabin
-        type: passenger.type, //passed from search/reservation
-      }))
-    );
+    console.log("boolean", departureTickets);
+    if (props.edit === true) {
+      //pass departure & arrival tickets, use either one to generate info, use both and sort them from BE
+      setPassengers(
+        list.map((passenger, index) => ({
+          id: "pas_" + (index + 1),
+          name: passenger.firstName + " " + passenger.lastName,
+          cabin: passenger.cabin,
+          type: passenger.passengerType,
+          ...(departureTickets.length > 0 && { departureSeat: departureTickets[index].seatNum }),
+          ...(returnTickets.length > 0 && { returnSeat: returnTickets[index].seatNum }),
+        }))
+      );
+    }
+    //passengers are the users with their details
+    else
+      setPassengers(
+        list.map((passenger, index) => ({
+          id: "pas_" + (index + 1), //user
+          name: passenger.firstName + " " + passenger.lastName, //user
+          cabin: passenger.cabin, //cabin
+          type: passenger.type, //passed from search/reservation
+        }))
+      );
   };
   const handleSeats = (seats) => {
     seats.forEach((y) => {
@@ -50,7 +108,7 @@ const SelectSeat = (props) => {
       traveller.returnSeat = seats[index + props.numberPassengers].innerText;
     });
     console.log("pre");
-    props.handleReservation(travellers);
+    if (!props.edit) props.handleReservation(travellers);
     console.log("ttt", travellers);
   };
 
@@ -58,7 +116,7 @@ const SelectSeat = (props) => {
     console.log("props", props);
     console.log("props departure flight", props.departureFlight.flight);
     setDepartureFlight(props.departureFlight.flight);
-    setReturnFlight(props.returnFlight.flight);
+    setReturnFlight(props.returnFlight.flight); //props + return tickets
     axios
       .get(`http://localhost:8081/user/reserved/${props.departureId}`)
       .then((result) => {
@@ -73,7 +131,14 @@ const SelectSeat = (props) => {
         setReturnSeats(result.data);
       })
       .catch((err) => console.log(err));
-    createPassengers(props.passengers);
+    if (props.edit === true) {
+      if(oldTicket.length>0)
+        createPassengers(oldTicket);
+      else if (returnTickets.length > 0)
+        createPassengers(returnTickets);
+    }
+    //edit: pass either tickets
+    else createPassengers(props.passengers);
     // setTimeout(() => {}, 4000);
   }, []);
   const onFetch = () => {
@@ -86,17 +151,6 @@ const SelectSeat = (props) => {
         boxShadow: "0 3px 10px rgb(105 48 195 / 60%)",
       }}
     >
-      {/* <Typography
-        variant="h6"
-        gutterBottom
-        component="header"
-        align="left"
-        color="dimgrey"
-        fontStyle="italic"
-        style={{ marginTop: "1%", marginLeft: "2%" }}
-      >
-        Select your preferred seats.
-      </Typography> */}
       {loading && (
         <Loader
           type="Plane"
@@ -120,7 +174,8 @@ const SelectSeat = (props) => {
             passengers={passengers}
             loading={loading}
             onFetch={onFetch}
-            handleSeats={handleSeats}
+          handleSeats={handleSeats}
+          edit={props.edit}
           />
         )}
     </div>

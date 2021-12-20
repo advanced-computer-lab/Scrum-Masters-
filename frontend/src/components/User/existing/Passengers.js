@@ -71,7 +71,6 @@ const Passengers = (props) => {
               type='checkbox'
               id='designillustration'
               name='medium'
-              required
               marginTop='5px'
             />
 

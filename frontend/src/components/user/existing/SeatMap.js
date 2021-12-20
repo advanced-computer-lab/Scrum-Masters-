@@ -10,9 +10,6 @@ import "../../../styles/seatMap.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 const SeatMap = (props) => {
-  //props: flights: array[dep,ret]
-  // depseats,return seats
-  //dep and return cabin
   const [error, setError] = useState(false);
   const [passengers, setPassengers] = useState(props.passengers);
   const [firstCabin, setFirstCabin] = useState([]);
@@ -21,6 +18,65 @@ const SeatMap = (props) => {
   const [offer, setOffer] = useState(); //from, to, reserving users
   const [seatMaps, setSeatMaps] = useState();
   const [loading, setLoading] = useState(props.loading);
+  const [depatureTickets, setDepartureTickets] = useState(
+    props.departureTickets || []
+  );
+  const [returnTickets, setReturnTickets] = useState(props.returnTickets || []);
+  const [initial, setInitial] = useState({});
+  console.log(props.passengers, "seat map");
+  const createInitial = () => {
+    console.log(passengers);
+    var pre = { seg_1: {}, seg_2: {} }
+    passengers.forEach((passenger) => {
+      if (passenger.departureSeat) {
+        pre.seg_1[passenger.id] = {
+          designator: passenger.departureSeat,
+          service: {
+            total_currency: "EGP",
+            total_amount: "0.0",
+            passenger_id: passenger.id,
+            id: "ase_" + passenger.departureSeat + "0",
+          },
+        }
+      }
+         if (passenger.returnSeat) {
+        pre.seg_2[passenger.id] = {
+          designator: passenger.returnSeat,
+          service: {
+            total_currency: "EGP",
+            total_amount: "0.0",
+            passenger_id: passenger.id,
+            id: "ase_" + passenger.returnSeat + "1",
+          },
+        }
+      }
+    })
+    console.log(pre);
+    setInitial(pre);
+    };
+  const isEditable = (seatNumber, cabinClass, flight) => {
+    if (!props.edit)
+      return false;
+    var flag = false;
+    if (flight === "departing") {
+      for (let passenger of passengers) {
+        if(passenger.departureSeat)//departureTickets
+        if (passenger.cabin === cabinClass && passenger.departureSeat === seatNumber) {
+          flag = true;
+          break;
+        }
+      }
+    } else {
+      for (let passenger of passengers) {
+        if(passenger.returnSeat)
+        if (passenger.cabin === cabinClass && passenger.returnSeat === seatNumber) {
+          flag = true;
+          break;
+        }
+      }
+    }
+    return flag;
+  };
   const isAvailable = (seatNumber, cabinClass, flight) => {
     if (flight === "departing")
       return !props.departureSeats.every(
@@ -501,13 +557,14 @@ const SeatMap = (props) => {
         var char = "A";
         for (let j = 1; j < 3 && firstSeats > 0; j++, firstSeats--) {
           var flag = isAvailable("" + i + char, "first", type);
+          var editable = isEditable("" + i + char, "first", type);
           var seat = {
             type: "seat",
             name: "",
             disclosures: [],
             designator: "" + i + char,
-            ...(flag && { available_services: [] }),
-            ...(!flag && {
+            ...(flag && !editable && { available_services: [] }),
+            ...((!flag || editable) && {
               // eslint-disable-next-line no-loop-func
               available_services: passengers.map((passenger, p) => ({
                 id: "ase_" + i + char + index,
@@ -524,13 +581,14 @@ const SeatMap = (props) => {
         elements = [];
         for (let j = 1; j < 3 && firstSeats > 0; j++, firstSeats--) {
           flag = isAvailable("" + i + char, "first", type);
+          editable = isEditable("" + i + char, "first", type);
           seat = {
             type: "seat",
             name: "",
             disclosures: [],
             designator: "" + i + char,
-            ...(flag && { available_services: [] }),
-            ...(!flag && {
+            ...(flag && !editable && { available_services: [] }),
+            ...((!flag || editable) && {
               // eslint-disable-next-line no-loop-func
               available_services: passengers.map((passenger, p) => ({
                 id: "ase_" + i + char + index,
@@ -595,7 +653,6 @@ const SeatMap = (props) => {
       rows = [];
     });
   };
-
   useEffect(() => {
     createOffer(
       props.flights[0].departureAirport,
@@ -604,7 +661,8 @@ const SeatMap = (props) => {
       props.flights[0].duration,
       props.flights[1].duration
     );
-    setTimeout(() => {}, 4000);
+    setTimeout(() => { }, 4000);
+    if (props.edit) createInitial();
     createFirstCabin();
     createBusinessCabin();
     createEconomyCabin();
@@ -648,6 +706,7 @@ const SeatMap = (props) => {
           offer={offer}
           seatMaps={seatMaps}
           onSubmit={onSubmit}
+          initialSeatSelection={initial}
         ></SeatSelection>
       )}
     </div>
