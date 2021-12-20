@@ -187,7 +187,7 @@ router.get("/edit/history/:resId", async (req, res) => {
     arrivalDate: oldReservation.returnFlightId.arrivalDate,
     cabin: oldReservation.cabinClass,
   };
-  res.json({input:output,oldReservation});
+  res.json({ input: output, oldReservation });
 });
 
 /** res is:
@@ -468,17 +468,39 @@ router.get("/reserved/:flightId", (req, res) => {
 
 router.delete("/delete/reservation/:id", async (req, res) => {
   // removing reservation
+  try {
+    const reservation = await Reservation.findByIdAndRemove(req.params.id);
 
-  Reservation.findByIdAndRemove(req.params.id)
-    .then((Reservation) => {
-      console.log(Reservation);
-      if (Reservation != null)
-        res.json({ mgs: "Reservation deleted successfully" });
-      else {
-        res.json({ mgs: "Reservation already deleted" });
-      }
-    })
-    .catch((err) => res.status(404).json({ error: "No such a Reservation" }));
+    const tickets = await Ticket.deleteMany({ reservationId: req.params.id });
+
+    const numOfSeats = tickets.length;
+
+    if (reservation.cabinClass === "economy") {
+      Flight.findByIdAndUpdate(ticket.flightId, {
+        $inc: { "economy.availableSeats": numOfSeats },
+      })
+        .then(console.log("decreased the number of seats"))
+        .catch();
+    }
+    if (reservation.cabinClass === "business") {
+      Flight.findByIdAndUpdate(ticket.flightId, {
+        $inc: { "business.availableSeats": numOfSeats },
+      })
+        .then(console.log("decreased the number of seats"))
+        .catch();
+    }
+    if (reservation.cabinClass === "first") {
+      Flight.findByIdAndUpdate(ticket.flightId, {
+        $inc: { "firstClass.availableSeats": numOfSeats },
+      })
+        .then(console.log("decreased the number of seats"))
+        .catch();
+    }
+
+    res.json({ mgs: "Reservation deleted successfully" });
+  } catch (error) {
+    res.json({ message: error });
+  }
 });
 //user
 router.get("/reservations/:id", async (req, res) => {
