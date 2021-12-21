@@ -14,6 +14,7 @@ import ViewFlightSummary from './components/user/existing/FlightSummary';
 import Itenerary from './pages/user/signed/viewItenerary';
 import Reservations from './components/user/existing/Reservations';
 import { Container } from 'react-bootstrap';
+import SignUpForm from './components/user/forms/Signup';
 
 function App() {
   const [admin, setAdmin] = useState(
@@ -60,6 +61,7 @@ function App() {
           <Route exact path='/account' component={Account}></Route>
           <Route exact path='/' component={SearchingPage}></Route>
           <Route exact path='/reservations' component={Reservations}></Route>
+          <Route exact path='/signup' component={SignUpForm}></Route>
           <Route
             exact
             path='/confirmation'
