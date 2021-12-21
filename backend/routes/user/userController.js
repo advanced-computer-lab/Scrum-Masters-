@@ -413,7 +413,7 @@ const options ={
   from:"maramACL@outlook.com",
   to:"marambenamer@yahoo.com",
   subject:"Email trial",
-  text:"Let's see"+req.body
+  text:JSON.stringify(req.body)
 };
 transporter.sendMail(options,  function(err,info){
 if(err){
@@ -421,7 +421,7 @@ if(err){
   return;
 }
 console.log("mail sent successfully");
-console.log(req.body.totalPrice);
+console.log(req.body);
 })
 });
 

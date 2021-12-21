@@ -24,7 +24,9 @@ const nodemailer =require('nodemailer');
 
 
 const Itenerary = (props) => {
- // console.log(props.departureFlight.arrivalAirport,props.departureFlight.arrivalDate);
+  console.log(props);
+  console.log(props);
+  console.log("YOUR OBJECT IS HERE"+props);
   const [product,setProduct] =useState({
     name:"Pay for reservation",
     price: "10",
@@ -75,7 +77,7 @@ return result;
 const handler =()=>{
   console.log("GIRL I BE TRYNNA REACH SOMEWHERE!!!!"+ props.departureFlight.arrivalAirport);
   const lol = props.departureFlight.arrivalAirport;
-  axios.post("http://localhost:8081/user/sendmail",props.departureFlight)
+  axios.post("http://localhost:8081/user/sendmail",props)
    .then(console.log("done!!"));
 }
 const printer =()=>{

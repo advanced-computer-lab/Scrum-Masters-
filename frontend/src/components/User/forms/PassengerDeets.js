@@ -173,7 +173,7 @@ const PassengerDeets = (props) => {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  InputProps={{inputProps: { min: "1898-12-24", max: "today"} }}
+                  InputProps={{inputProps: { min: "1898-12-24", max: "2021-12-21"} }}
                 />
               </Stack>
             </Stack>

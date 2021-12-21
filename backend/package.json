@@ -7,6 +7,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
+  
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -23,6 +24,8 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-validator": "^6.13.0",
+    "jtest": "0.0.1",
+    "mongodb-memory-server": "^8.0.4",
     "mongoose": "^6.0.12",
     "nodemailer": "^6.7.2",
     "nodemon": "^2.0.14",
