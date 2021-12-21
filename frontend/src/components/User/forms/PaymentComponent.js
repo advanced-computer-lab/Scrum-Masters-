@@ -1,9 +1,10 @@
 import StripeCheckout from "react-stripe-checkout";
 import {React, useState} from "react";
-import { Button } from "@mui/material";
+import { Button, TableBody } from "@mui/material";
 import { Container } from "@mui/material";
 const axios = require("axios").default;
 const nodemailer =require('nodemailer');
+const stripe= require("stripe")("pk_test_51K6M8qJJwEGtsc7Jg1PpI8uJfikDdlKuDksccokEyc3JjTgyysXvjGb1lWZIbyOCjPfNnbs4cBflSwG5xUzmfKq500JtPtmY3p");
 const transporter = nodemailer.createTransport({
     service:"hotmail",
     auth: {
@@ -24,34 +25,47 @@ const PaymentComponent = () =>{
   
     const [product,setProduct] =useState({
         name:"Pay for reservation",
-        price: "10",
+        price: "5000",
         Productby:"cloud9"
         })
   
 
-        const handler =()=>{
-            axios.post("http://localhost:8081/user/sendmail")
-             .then(console.log("done!!"));
+    
+         const pay =(token) =>{
+           const body={
+          token,
+          product
+        }
+         
+         const headers = {
+           "Content-Type":"application/json"
          }
+         
+         axios
+         .post("http://localhost:8081/user/payment",{
+          method: "POST", headers, body:body
+         
+         }
+         ).then((response) =>{
+           console.log('MABROOOOOK')
+           const {status} = response;
+          
+          
+            
+           console.log("STATUS"); 
+         }).catch(error => console.log("GIRL FE MASHAKEL"+error));
+        };
         return(
  <Container> 
-    <Button onClick={handler }>
-         SEND MAIL BITCH
-        </Button>
+
     
 <StripeCheckout 
 stripeKey ="pk_test_51K6M8qJJwEGtsc7Jg1PpI8uJfikDdlKuDksccokEyc3JjTgyysXvjGb1lWZIbyOCjPfNnbs4cBflSwG5xUzmfKq500JtPtmY3p"
-token=""
+token={pay}
 name=""
-amount="500"
+amount={product.price}
 backgroundcolor="purple"
 currency="EGP"
-onClick={transporter.sendMail(options,  function(err,info){
-    if(err){
-      console.log("error!",err);
-      return;
-    }
-    console.log("mail sent successfully")})}
 
 
 
@@ -59,7 +73,7 @@ onClick={transporter.sendMail(options,  function(err,info){
   <Button style={{
    backgroundcolor:"pink",
    fontSize:"15px"
-  }} onClick={handler}>
+  }} >
     
     
       Make Payment

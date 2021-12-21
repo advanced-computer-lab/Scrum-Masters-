@@ -20,6 +20,7 @@ import SendingMail from './components/user/forms/SendingMail';
 
 
 
+
 function App() {
   const [admin, setAdmin] = useState(
     JSON.parse(window.sessionStorage.getItem('admin')) || false
@@ -71,7 +72,10 @@ function App() {
             component={ViewFlightSummary}
           ></Route>
           <Route exact path='/itenerary' component={Itenerary}></Route>
+       
+         
           <Route exact path="/sendmail" component ={SendingMail}>
+           
             <Container>
               <SendingMail/>
               </Container> </Route>

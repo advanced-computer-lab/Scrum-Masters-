@@ -6,7 +6,7 @@ const Reservation = require('../../Models/Reservation');
 const Ticket = require('../../Models/Ticket');
 const User = require('../../Models/User');
 var airports = require('airport-codes');
-const stripe= require("stripe")(process.env.SECRETSTRIPE);
+const stripe= require("stripe")('sk_test_51K6M8qJJwEGtsc7J7C3w0qhtQfyAWcCC1I1NtcnOzoZ8dNC3JZJJXsumPXAMib64wYRAqPzvyRiVYGF5RPnGnSm600KZNScrI5');
 const nodemailer=require("nodemailer");
 
 router.get('/search/flights', async (req, res) => {
@@ -357,45 +357,53 @@ const transporter = nodemailer.createTransport({
   auth: {
     user:"maramACL@outlook.com",
     pass:"Benamer1!"
-  },
-  tls:{
-      rejectUnauthorized:false
   }
+ 
+
+
 })
 const options ={
   from:"maramACL@outlook.com",
   to:"marambenamer@yahoo.com",
   subject:"Email trial",
-  text:"Let's see"
+  text:"MARAM ENTY LESSA DAF3A NOW"
 };
+    console.log(req.body);
+    const{product,token}=req.body;
+  
+    return stripe.customers.create({
+      email: req.body.body.token.email,
+      source: "tok_visa"
+  
+    }).then(customer =>{
+      stripe.charges.create({
+        amount:req.body.body.product.price,
+        currency:'usd',
+        customer:customer.id,
+        description:'paying for flight reservation'
+      },
+      
 
-  const{product,token}=req.body;
-  console.log("PRODUCT",product);
-  console.log("TOKEN",token);
-  return stripe.customers.create({
-    email:token.email,
-    name:token.name
+      )
+    }).then(result=> res.status(200).send(result)
+    
+   
 
-  }).then(customer =>{
-    stripe.charges.create({
-      amount:product.totalPrice,
-      currency:'usd',
-      customer:customer.id,
-      receipt_email:token.email,
-      description:'paying for flight reservation'
-    },
-    transporter.sendMail(options,  function(err,info){
+    
+    ).then(transporter.sendMail(options,  function(err,info){
       if(err){
-      console.log("error!",err);
-      return;
+        console.log("error!",err);
+        return;
       }
-    console.log("mail sent successfully");
-    })
-    )
-      .catch(err =>console.log(err));
-     
-    })
-  })
+      console.log("mail sent successfully");
+      console.log(req.body);
+      }))
+        .catch(err =>console.log(err));
+       
+      })
+  
+    
+
  
 router.post('/sendmail', async(req,res) => {
 const nodeMailer =require('nodemailer')
@@ -494,6 +502,27 @@ router.patch('/profile/update/:id', async (req, res) => {
     .catch((err) => {
       res.status(404).send(err);
     });
+});
+router.post('/create-checkout-session', async (req, res) => {
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: 'T-shirt',
+          },
+          unit_amount: 2000,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: 'https://example.com/success',
+    cancel_url: 'https://example.com/cancel',
+  });
+
+  res.redirect(303, session.url);
 });
 
 module.exports = router;
