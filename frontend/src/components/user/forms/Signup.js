@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import image from '/Users/youssefsameh/Documents/GitHub/Scrum-Masters-/Scrum-Masters-/frontend/src/components/user/forms/airplaneSU.jpg'
 import image3 from '/Users/youssefsameh/Documents/GitHub/Scrum-Masters-/Scrum-Masters-/frontend/src/components/user/forms/Signup3.jpg'
 import { Grid, Stack } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
