@@ -171,17 +171,17 @@ router.get("/edit/history/:resId", async (req, res) => {
   console.log("------------\n the old tickets", oldTickets);
 
   // calculate the number of adults and number of children
-  // var noOfAdults = 0;
-  // var noOfChildren = 0;
+  var noOfAdults = 0;
+  var noOfChildren = 0;
 
-  // oldTickets.forEach((ticket) => {
-  //   ticket.passengerType === "adult" ? noOfAdults++ : noOfChildren++;
-  // });
+  oldTickets.forEach((ticket) => {
+    ticket.passengerType === "adult" ? noOfAdults++ : noOfChildren++;
+  });
 
   var output = {
-    // noOfChildren,
-    // noOfAdults,
-    departureAirpot: oldReservation.departingFlightId.departureAirport,
+    noOfChildren,
+    noOfAdults,
+    departureAirport: oldReservation.departingFlightId.departureAirport,
     arrivalAirport: oldReservation.departingFlightId.arrivalAirport,
     departureDate: oldReservation.departingFlightId.departureDate,
     arrivalDate: oldReservation.returnFlightId.arrivalDate,
@@ -190,22 +190,29 @@ router.get("/edit/history/:resId", async (req, res) => {
   res.json({ input: output, oldReservation });
 });
 
-/** res is:
- * 
- * noOfChildren: val, lesa
-    noOfAdults: val, lesa 
-    departureAirpot:val, 
-    arrivalAirport:val,  cai  dxb
-    departureDate: val,
-    arrivalDate: val, of return flight
-    cabin: val 
- */
 
-router.post("/edit/search", async (req, res) => {
-  const criteria = req.body.input;
-  console.log("criteria", criteria); //theerasfadfad
+router.post("/edit/search/:resId", async (req, res) => {
+  /**
+   * req is: 
+   *  {
+   *    noOfChildren: val, lesa
+        noOfAdults: val, lesa 
+        departureAirpot:val, 
+        arrivalAirport:val,  cai  dxb
+        departureDate: val,
+        arrivalDate: val, of return flight
+        cabin: val 
+   *  }
+   */
+
+  const criteria = req.body;
+
+  const oldReservation = await Reservation.findById(req.params.resId)
+    .populate("departingFlightId")
+    .populate("returnFlightId");
+  
+  
   /* {
-    input:{
       noOfChildren: val, (?)
       noOfAdults: val, (?)
       departureAirpot:val, 
@@ -214,9 +221,7 @@ router.post("/edit/search", async (req, res) => {
       arrivalDate: val, of return flight
       cabin: val
     }
-    oldReservation:{
-        reservation details
-    }
+    
   }*/
   // passing all the required fields
   if (
@@ -320,42 +325,17 @@ router.post("/edit/search", async (req, res) => {
       return;
     }
 
-    var output = [];
-    output.push({ flights: query1, details: criteria });
-    output.push({ flights: query2, details: criteria });
-    console.log(output);
+    // var output = [];
+    // output.push({ flights: query1, details: criteria, oldReservation });
+    // output.push({ flights: query2, details: criteria, oldReservation });
+    // console.log(output);
     res.json({
-      roundTripFlights: output,
-      oldReservation,
+      departingFlights: query1,
+      returningFlights:query2,
+      details:criteria,
+      oldReservation
     });
     /*
-    {
-      [
-        flights: [departingflights],
-        details: {
-                 noOfChildren: val, 
-                 noOfAdults: val,
-                 departureAirpot:val, 
-                 arrivalAirport:val,  cai  dxb
-                 departureDate: val,
-                 arrivalDate: val, of return flight
-                 cabin: val
-                }
-        ,
-        flights: [returningflights],
-        details: {
-                 noOfChildren: val, 
-                 noOfAdults: val,
-                 departureAirpot:val, 
-                 arrivalAirport:val,  cai  dxb
-                 departureDate: val,
-                 arrivalDate: val, of return flight
-                 cabin: val
-                }
-
-        
-      ] 
-    }
     */
   } catch (err) {
     console.log(err);
