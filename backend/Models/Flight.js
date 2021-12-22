@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 //const Schema = mongoose.Schema;
 
 const flightSchema = mongoose.Schema(
@@ -45,15 +45,17 @@ const flightSchema = mongoose.Schema(
         default: 0,
         required: true,
       },
-      childPrice: {
-        type: Number,
-        default: 750,
-        required: true,
-      },
       adultPrice: {
         type: Number,
         default: 1000,
         required: true,
+      },
+      childPrice: {
+        type: Number,
+        default: function () {
+          return this.economy.adultPrice * 0.6;
+        }, // 60% of the specified adult price
+        //required: true,
       },
       availableSeats: {
         type: Number,
@@ -74,15 +76,17 @@ const flightSchema = mongoose.Schema(
         default: 0,
         required: true,
       },
-      childPrice: {
-        type: Number,
-        default: 1100,
-        required: true,
-      },
       adultPrice: {
         type: Number,
         default: 1800,
         required: true,
+      },
+      childPrice: {
+        type: Number,
+        default: function () {
+          return this.business.adultPrice * 0.6;
+        }, // 60% of the specified adult price
+        //required: true,
       },
       availableSeats: {
         type: Number,
@@ -103,15 +107,17 @@ const flightSchema = mongoose.Schema(
         default: 0,
         required: true,
       },
-      childPrice: {
-        type: Number,
-        default: 1500,
-        required: true,
-      },
       adultPrice: {
         type: Number,
         default: 3000,
         required: true,
+      },
+      childPrice: {
+        type: Number,
+        default: function () {
+          return this.firstClass.adultPrice * 0.6;
+        }, // 60% of the specified adult price
+        //        required: true,
       },
       availableSeats: {
         type: Number,
@@ -129,7 +135,7 @@ const flightSchema = mongoose.Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 flightSchema
-  .virtual('noOfSeats')
+  .virtual("noOfSeats")
   .get(function () {
     return (
       this.firstClass.noOfSeats +
@@ -142,7 +148,7 @@ flightSchema
   });
 
 flightSchema
-  .virtual('availableSeats')
+  .virtual("availableSeats")
   .get(function () {
     return (
       this.firstClass.availableSeats +
@@ -155,24 +161,24 @@ flightSchema
   });
 
 flightSchema
-  .virtual('duration')
+  .virtual("duration")
   .get(function () {
-    d1 = new Date(Date.parse('2017-05-02T' + this.departureTime));
-    d2 = new Date(Date.parse('2017-05-02T' + this.arrivalTime));
+    d1 = new Date(Date.parse("2017-05-02T" + this.departureTime));
+    d2 = new Date(Date.parse("2017-05-02T" + this.arrivalTime));
     d3 = new Date(d2 - d1);
     d0 = new Date(0);
 
     return (
       d3.getHours() -
       d0.getHours() +
-      'h ' +
+      "h " +
       (d3.getMinutes() - d0.getMinutes()) +
-      'm'
+      "m"
     );
   })
   .set(function (duration) {
     this.duration = duration;
   });
 
-const Flight = mongoose.model('Flight', flightSchema);
+const Flight = mongoose.model("Flight", flightSchema);
 module.exports = Flight;
