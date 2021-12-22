@@ -9,67 +9,6 @@ var airports = require('airport-codes');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-router.post("/register", async (req, res) => {
-  const user = req.body;
-
-  const takenEmail = await User.findOne({ email: user.email });
-
-  console.log("The email" + takenEmail);
-
-  if (takenEmail) {
-    return res.json({ message: "The email is already taken" });
-  } else {
-    user.password = await bcrypt.hash(user.password, 10);
-
-    const dbUser = new User({
-      name: user.name,
-      email: user.email.toLowerCase(),
-      password: user.password,
-    });
-
-    dbUser.save();
-    res.json(dbUser);
-  }
-});
-
-router.post("/login", async (req, res) => {
-  
-  //const JWT_SECRET= "adhaskaslfjdahfaskjfhafasjlsdjlasjkldasd"
-  
-  const userLoggingIn = req.body;
-
-  const dbUser = await User.findOne({ email: userLoggingIn.email });
-
-  console.log("found user \n" + dbUser)
-
-  if (!dbUser) {
-    return res.json({ message: "incorrect email or password" });
-  }
-
-  var isCorrect = await bcrypt.compare(userLoggingIn.password, dbUser.password);
-   console.log("is it correct? " + isCorrect)
-  if (isCorrect) {
-    const payload = {
-      _id: dbUser._id,
-      email: dbUser.email,
-    };
-
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: 86400 },
-      (err, token) => {
-        if (err) return res.json({ message: "an error occured" });
-        return res.json({
-          message: "Success",
-          token: "Bearer" + token,
-        });
-      }
-    );
-  }
-  else{
-    return res.json({ message: "incorrect email or password" });  }
-});
 
 router.get('/search/flights', async (req, res) => {
   try {
