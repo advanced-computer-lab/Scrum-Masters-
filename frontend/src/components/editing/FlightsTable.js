@@ -23,17 +23,11 @@ import {
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-const FlightReservation = ({
-  data,
-  nextPage,
-  handleDepartureFlight,
-  handleArrivalFlight,
-  isDeparture,
-}) => {
+const FlightsTable = () => {
   const [page, setPage] = React.useState(0);
   const [count, setCount] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  console.log('props of flight reservation', data);
+  const newCabinClass = data.details.cabin ? data.details.cabin : null;
   const cabinClass = data.details.cabin ? data.details.cabin : null;
   const [open, setOpen] = React.useState(false);
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -43,7 +37,6 @@ const FlightReservation = ({
     '&:nth-of-type(4n-2)': {
       backgroundColor: theme.palette.action.hover,
     },
-    // hide last border
     '&:last-child td, &:last-child th': {
       border: 0,
     },
@@ -63,7 +56,6 @@ const FlightReservation = ({
       ? row.firstClass.adultPrice
       : row.business.adultPrice;
   };
-  //useEffect(() => {}, []);
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: '#5e60ce',
@@ -153,7 +145,9 @@ const FlightReservation = ({
                       {getDate(row.arrivalDate)}
                     </TableCell>
                     <TableCell align='center'>
-                      {getPrice(cabinClass, row) + '£'}
+                      {getPrice(cabinClass, row) -
+                        getPrice(newCabinClass, row) +
+                        '£'}
                     </TableCell>
                     <TableCell align='center' style={{ fontStyle: 'italic' }}>
                       <Button
@@ -257,4 +251,4 @@ const FlightReservation = ({
   );
 };
 
-export default FlightReservation;
+export default FlightsTable;
