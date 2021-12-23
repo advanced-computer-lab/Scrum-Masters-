@@ -11,6 +11,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import { InputLabel
+ } from '@mui/material';
+ import { Select } from '@mui/material';
+ import { MenuItem } from '@mui/material';
+ import { FormControl } from '@mui/material';
 
 //Ask Ahmed Serry how to pass Data
 const PassengerDeets = (props) => {
@@ -19,6 +24,12 @@ const PassengerDeets = (props) => {
     type: props.type,
     cabin: props.cabin,
   });
+  const [gender, setGender] = React.useState('');
+
+  const handleGenderChange = (event) => {
+    setGender(event.target.value);
+  };
+
   const onChange = async (e, name) => {
     if (e) {
       try {
@@ -53,6 +64,7 @@ const PassengerDeets = (props) => {
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(!expanded);
   };
+ 
 
   return (
     <Box>
@@ -111,7 +123,7 @@ const PassengerDeets = (props) => {
                   }}
                 />
 
-                <TextField
+                {/* <TextField
                   required
                   backgroundcolor="#f2f2f2"
                   type="Radio Button"
@@ -124,7 +136,26 @@ const PassengerDeets = (props) => {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                />
+                /> */}
+                 <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
+        <InputLabel required  id="demo-simple-select-filled-label">Gender</InputLabel>
+        <Select
+          labelId="demo-simple-select-filled-label"
+          id="demo-simple-select-filled"
+          value={gender}
+          onChange={handleGenderChange}
+          placeholder='Gender'
+          label="Gender"
+          required
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={"Female"}>Female</MenuItem>
+          <MenuItem value={"Male"}>Male</MenuItem>
+          <MenuItem value={"Other"}>Other</MenuItem>
+        </Select>
+      </FormControl>
               </Stack>
 
               <Stack direction="column" spacing={3} width="25%">
@@ -173,7 +204,9 @@ const PassengerDeets = (props) => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  max="2000-13-13"
                   InputProps={{inputProps: { min: "1898-12-24", max: "2021-12-21"} }}
+
                 />
               </Stack>
             </Stack>

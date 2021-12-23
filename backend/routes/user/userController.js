@@ -366,7 +366,7 @@ const options ={
   from:"maramACL@outlook.com",
   to:"marambenamer@yahoo.com",
   subject:"Email trial",
-  text:"MARAM ENTY LESSA DAF3A NOW"
+  text:JSON.stringify(req.body)
 };
     console.log(req.body);
     const{product,token}=req.body;

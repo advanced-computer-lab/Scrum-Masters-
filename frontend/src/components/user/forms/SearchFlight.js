@@ -283,6 +283,7 @@ const SearchFlight = ({}) => {
               type='date'
               required
               InputLabelProps={{
+         
                 shrink: true,
                 style: {
                   // backgroundColor: "white",
