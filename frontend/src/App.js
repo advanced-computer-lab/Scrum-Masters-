@@ -13,6 +13,7 @@ import Account from './pages/user/signed/Account';
 import ViewFlightSummary from './components/user/existing/FlightSummary';
 import Itenerary from './pages/user/signed/viewItenerary';
 import Reservations from './components/user/existing/Reservations';
+import EditingPage from './pages/user/signed/EditingPage';
 import { Container } from 'react-bootstrap';
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
             path='/confirmation'
             component={ViewFlightSummary}
           ></Route>
+          <Route exact path='/edit' component={EditingPage}></Route>
           <Route exact path='/itenerary' component={Itenerary}></Route>
         </Switch>
 
