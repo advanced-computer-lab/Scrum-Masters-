@@ -26,6 +26,7 @@ import { DialogTitle } from '@mui/material';
 import { Dialog } from '@mui/material';
 import { DialogContentText } from '@mui/material';
 import BookingPage from '../../../pages/user/signed/BookingPage';
+import moment from 'moment';
 
 const SearchFlight = ({}) => {
   useEffect(() => {
@@ -76,6 +77,9 @@ const SearchFlight = ({}) => {
     setOpen(false);
     return false;
   };
+
+  const current = new Date();
+  const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
 
   const [adultCount, setAdultCount] = useState(0);
   const [childrenCount, setChildrenCount] = useState(0);
@@ -281,6 +285,7 @@ const SearchFlight = ({}) => {
               id='outlined-search'
               label='Departure Date'
               type='date'
+              //minDate={moment().toDate()}
               required
               InputLabelProps={{
                 shrink: true,
