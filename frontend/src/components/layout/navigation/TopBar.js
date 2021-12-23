@@ -18,22 +18,23 @@ import axios from "axios";
 const TopBar = (props) => {
   const [admin, setAdmin] = useState(props.admin);
   const [existing, setExisting] = useState(props.existing);
-  const [values,setValues]=useState();
+  const [values, setValues] = useState();
   const guestClick = () => {
-    setExisting(true);
-    setAdmin(false);
-    // axios.post("http://localhost:8081/auth/login",values).then(
-    //   result=>{
-    //     console.log(result);
-    //     if(result.message==="Success")
-    //     {
-    //       window.sessionStorage.setItem('token', result.token);
-    //       props.onSignIn();
-    //     }
-    //   }
-    // )
+    axios
+      .post("http://localhost:8081/auth/login", values)
+      .then((result) => {
+        console.log("result", result);
+        if (result.data.message === "Success") {
+          window.sessionStorage.setItem("token", result.data.token);
+          props.onSignIn();
+          setExisting(true);
+          setAdmin(false);
+        }
+        //else error alert incorrect credentials
+      })
+      .catch((err) => console.log(err));
 
-   // props.onSignIn();
+    // props.onSignIn();
   };
   const logOutClick = () => {
     setExisting(false);
@@ -54,7 +55,7 @@ const TopBar = (props) => {
       try {
         console.log(e);
         if (e.target) {
-         await setValues({ ...values, [e.target.name]: e.target.value });
+          await setValues({ ...values, [e.target.name]: e.target.value });
         } else {
           await setValues({ ...values, [name]: e });
         }
@@ -155,7 +156,6 @@ const TopBar = (props) => {
                       fullWidth
                       variant="standard"
                       onChange={onChange}
-
                     />
                   </DialogContent>
                   <DialogActions>

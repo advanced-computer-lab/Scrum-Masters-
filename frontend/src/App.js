@@ -30,6 +30,7 @@ function App() {
   const onSignOut = () => {
     window.sessionStorage.setItem('existing', false);
     window.sessionStorage.setItem('admin', false);
+    window.sessionStorage.removeItem("token");
     setAdmin(false);
     setExisting(false);
   };

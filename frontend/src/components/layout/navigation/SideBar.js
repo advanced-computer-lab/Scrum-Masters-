@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -19,19 +19,22 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import PasswordIcon from "@mui/icons-material/Password";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import Profile from "../../user/forms/Profile";
+import Password from "../../user/forms/Password";
 import { Container } from "react-bootstrap";
-
+import jwt_decode from "jwt-decode";
+import axios from "axios";
 const drawerWidth = 240;
 
 const SideBar = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(1);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
   const onClick = (e) => {
-    switch (e.currentTarget.Id) {
+    console.log(e.currentTarget.id, "ploop");
+    switch (e.currentTarget.id) {
       case "btn-info" && active !== 0:
         setActive(0);
         break;
@@ -55,7 +58,7 @@ const SideBar = (props) => {
           </ListItemIcon>
           <ListItemText primary="Account Information" />
         </ListItem>
-        <ListItem button id="btn-password">
+        <ListItem button id="btn-password" onClick={onClick}>
           <ListItemIcon>
             <PasswordIcon />
           </ListItemIcon>
@@ -140,7 +143,10 @@ const SideBar = (props) => {
         }}
       >
         {/* <Toolbar /> */}
-        <Container>{active === 0 && <Profile />}</Container>
+        <Container>
+          {active === 0 && <Profile />}
+          {active === 1 && <Password />}
+        </Container>
       </Box>
     </Box>
   );
