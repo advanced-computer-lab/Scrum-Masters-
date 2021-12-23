@@ -1,6 +1,6 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const router = express.Router();
+const mongoose = require("mongoose");
 const Flight = require("../Models/Flight");
 const Reservation = require("../Models/Reservation");
 const Ticket = require("../Models/Ticket");
@@ -38,6 +38,7 @@ router.post("/login", async (req, res) => {
 
   const userLoggingIn = req.body;
 
+  console.log(userLoggingIn, "body");
   const dbUser = await User.findOne({ email: userLoggingIn.email });
 
   console.log("found user \n" + dbUser);
@@ -45,7 +46,6 @@ router.post("/login", async (req, res) => {
   if (!dbUser) {
     return res.json({ message: "Incorrect Email." });
   }
-
   var isCorrect = await bcrypt.compare(userLoggingIn.password, dbUser.password);
   console.log("is it correct? " + isCorrect);
   if (isCorrect) {

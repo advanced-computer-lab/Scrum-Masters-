@@ -12,47 +12,35 @@ import CallIcon from "@mui/icons-material/Call";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import PublicIcon from "@mui/icons-material/Public";
 import Button from "@mui/material/Button";
+import image4 from '/Users/youssefsameh/Documents/GitHub/Scrum-Masters-/Scrum-Masters-/frontend/src/components/user/Signup4.jpg'
 
-function SignUpFinal() {
-  <div>
-    <Stack spacing={2} sx={{ width: 300 }}></Stack>
-    <TextField
-      fullWidth="true"
-      required
-      id="outlined-basic"
-      label="Username"
-      variant="outlined"
-    />
-    <TextField
-      required
-      id="outlined-basic"
-      label="Password"
-      variant="outlined"
-    />
-  </div>;
-}
+
+
 export default function SignUpForm() {
+    const[visibility,setVisibility]= React.useState(true)
   return (
     <>
       <div>
-        <img src={image3} style={{ height: 750, width: 900, float: "left" }} />
+        <img src={image4} style={{ height: 750, width: 900, float: "left" }} />
       </div>
+      
       <Box
         component="form"
         sx={{
           "& .MuiTextField-root": { m: 1, width: "50ch" },
         }}
         noValidate
-        autoComplete="off"
+        autoComplete="on"
       >
-        <div
+        <div >
+          <Stack spacing={2} sx={{ width: 300 }} >
+          <div
           style={{ fontWeight: "bold", fontSize: "30px", textAlignLast: "end" }}
         >
           Register
         </div>
-        <div style={{ marginTop: "2%", marginBottom: "2%", marginLeft: "5%" }}>
-          <Stack spacing={2} sx={{ width: 300 }}>
-            <TextField
+            {!visibility &&
+            (<div><TextField
               fullWidth="true"
               required
               id="outlined-basic"
@@ -67,7 +55,7 @@ export default function SignUpForm() {
             />
             <Autocomplete
               id="country-select-demo"
-              sx={{ width: 200 }}
+              sx={{ width: 200  }}
               options={countries}
               autoHighlight
               getOptionLabel={(option) => option.label}
@@ -110,20 +98,56 @@ export default function SignUpForm() {
               label="Mobile Number"
               variant="outlined"
             />
+            <Stack direction="row" spacing={2} sx={{ width: 520 }}>
+            <TextField
+              required
+              id="outlined-basic"
+              label="Adress"
+              variant="outlined"
+            />
+            <TextField
+              required
+              id="outlined-basic"
+              label="City"
+              variant="outlined"
+            />
+            <TextField
+              required
+              id="outlined-basic"
+              label="ZIP Code"
+              variant="outlined"
+            />
+            </Stack>
             <TextField
               required
               id="outlined-basic"
               label="Passport Number"
               variant="outlined"
-            />
+            /></div>)}
+            {visibility &&(<div>
+    <Stack spacing={2} sx={{ width: 300 }}></Stack>
+    <TextField
+      required
+      id="outlined-basic"
+      label="Username"
+      variant="outlined"
+    />
+    <TextField
+      required
+      id="outlined-basic"
+      label="Password"
+      variant="outlined"
+    />
+  </div>)}
           </Stack>
         </div>
         <div>
-          <Button variant="contained" onClick={SignUpFinal()}>
-            Next
+          <Button variant="contained" onClick={() => setVisibility(false)} sx={{ width: 500 , float: "left" , marginLeft: "10px" , marginTop: "10px"}}>
+            {visibility?"Next":"Sign Up"} 
           </Button>
         </div>
       </Box>
+      
     </>
   );
 }
