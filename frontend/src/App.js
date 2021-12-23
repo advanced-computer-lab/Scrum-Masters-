@@ -62,6 +62,7 @@ function App() {
           <Route exact path='/' component={SearchingPage}></Route>
           <Route exact path='/reservations' component={Reservations}></Route>
           <Route exact path='/signup' component={SignUpForm}></Route>
+          
           <Route
             exact
             path='/confirmation'
@@ -73,22 +74,6 @@ function App() {
         {!admin && !existing && (
           <Container>
             <footer style={{ float: 'right' }}>
-              <Button
-                variant='contained'
-                style={{ marginLeft: '30px' }}
-                sx={{
-                  color: '#7400b8',
-                  backgroundColor: '#ffffff',
-                  '&:hover': {
-                    backgroundColor: '#e9e9e9',
-                    color: '#7400b8',
-                  },
-                }}
-                onClick={admin ? onSignIn : onAdmin}
-                href={!admin ? '/schedule' : './'}
-              >
-                {!admin ? 'Admin Sign in' : 'User Sign in'}
-              </Button>
             </footer>
           </Container>
         )}

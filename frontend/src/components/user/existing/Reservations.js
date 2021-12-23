@@ -9,6 +9,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import EditIcon from '@mui/icons-material/Edit';
 import {
   Button,
   Box,
@@ -31,16 +32,7 @@ import {
   Divider,
   Paper,
 } from '@mui/material';
-// export default function AlertDialog() {
-//     const [open, setOpen] = React.useState(false);
 
-//     const handleClickOpen = () => {
-//       setOpen(true);
-//     };
-
-//     const handleClose = () => {
-//       setOpen(false);
-//     };
 export default function BasicTable(onDelete) {
   const [open, setOpen] = useState(false);
   const [totalPrice, setTotalPrice] = useState();
@@ -151,6 +143,7 @@ export default function BasicTable(onDelete) {
                 <StyledTableCell align='center'>Arrival time</StyledTableCell>
                 <StyledTableCell align='center'>Cabin</StyledTableCell>
                 <StyledTableCell align='center'></StyledTableCell>
+                <StyledTableCell align='center'></StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -221,7 +214,9 @@ export default function BasicTable(onDelete) {
                       : row.departingFlight.cabin.charAt(0).toUpperCase() +
                         row.departingFlight.cabin.substring(1)}
                   </TableCell>
-
+                  <TableCell><IconButton aria-label="edite" color="primary">
+                                <EditIcon />
+                              </IconButton></TableCell>
                   <TableCell style={{ width: '7%' }}>
                     <div>
                       <Button
