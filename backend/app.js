@@ -22,7 +22,8 @@ mongoose
 app.use(cors({ origin: true, credentials: true }));
 app.use('/admin', require('./routes/admin/adminController'));
 app.use('/user', require('./routes/user/userController'));
-app.use("/auth", require("./routes/authenticationController"));
+app.use('/auth', require('./routes/authenticationController'));
+
 
 const port = process.env.PORT || 8081;
 app.listen(port, () => {
