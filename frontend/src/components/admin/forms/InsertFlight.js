@@ -31,6 +31,10 @@ const InsertFlight = () => {
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [message, setMessage] = React.useState("");
+  const [economyPrice,setEconomyPrice]=useState(0);
+  const [businessPrice,setBusinessPrice]=useState(0);
+  const [firstPrice,setFirstPrice]=useState(0);
+
   var Data = {};
   const history = useHistory();
   const showAlert = () => {
@@ -59,6 +63,11 @@ const InsertFlight = () => {
       economy: { noOfSeats: noOfEconomy },
       business: { noOfSeats: noOfBusiness },
       firstClass: { noOfSeats: noOfFirstClass },
+      business:{adultPrice:businessPrice},
+      economy:{adultPrice:economyPrice},
+      firstClass:{adultPrice:firstPrice}
+
+
     };
 
     axios
@@ -274,6 +283,60 @@ const InsertFlight = () => {
                 }}
               />
             </div>
+            <Stack direction="column">
+            <div>
+            <TextField
+                required
+                type="Number"
+                label="Economy Price"
+                variant="standard"
+                // placeholder='Arrival Time'
+                name="economyPrice"
+                value={economyPrice}
+                onChange={(event) => {
+                  setEconomyPrice(event.target.value);
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+               </div>
+               <div>
+            <TextField
+                required
+                type="Number"
+                label="First Class Price"
+                variant="standard"
+                // placeholder='Arrival Time'
+                name="firstPrice"
+                value={firstPrice}
+                onChange={(event) => {
+                  setFirstPrice(event.target.value);
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+               </div>
+               <div>
+            <TextField
+                required
+                type="Number"
+                label="Business Price"
+                variant="standard"
+                // placeholder='Arrival Time'
+                name="businessPrice"
+                value={businessPrice}
+                onChange={(event) => {
+                  setBusinessPrice(event.target.value);
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+               </div>
+              </Stack>
+           
           </Stack>
         </Stack>
         <React.Fragment>
@@ -334,7 +397,14 @@ const InsertFlight = () => {
                   <br />
                   First Class Seats:<b> {flight.firstClass.noOfSeats}</b>.{" "}
                   <br />
+                  Economy Ticket Price:<b>{flight.economy.adultPrice}</b>
+                  <br />
+                  First Class Ticket Price:<b>{flight.firstClass.adultPrice}</b>
+                  <br />
+                 Business Ticket Price:<b>{flight.business.adultPrice}</b>
+                 <br />
                   Total Seats: <b>{flight.noOfSeats}</b>.
+               
                 </DialogContentText>
               </DialogContent>
               <DialogActions style={{ justifyContent: "center" }}>
