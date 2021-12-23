@@ -22,16 +22,16 @@ const TopBar = (props) => {
   const guestClick = () => {
     setExisting(true);
     setAdmin(false);
-    axios.post("http://localhost:8081/auth/login",values).then(
-      result=>{
-        console.log(result);
-        if(result.message==="Success")
-        {
-          window.sessionStorage.setItem('token', result.token);
-          props.onSignIn();
-        }
-      }
-    )
+    // axios.post("http://localhost:8081/auth/login",values).then(
+    //   result=>{
+    //     console.log(result);
+    //     if(result.message==="Success")
+    //     {
+    //       window.sessionStorage.setItem('token', result.token);
+    //       props.onSignIn();
+    //     }
+    //   }
+    // )
 
    // props.onSignIn();
   };
