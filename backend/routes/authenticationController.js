@@ -4,16 +4,11 @@ const router = express.Router();
 const Flight = require("../Models/Flight");
 const Reservation = require("../Models/Reservation");
 const Ticket = require("../Models/Ticket");
-const express = require("express");
-const mongoose = require("mongoose");
-const router = express.Router();
-const Flight = require("../Models/Flight");
-const Reservation = require("../Models/Reservation");
-const Ticket = require("../Models/Ticket");
 const User = require("../Models/User");
 var airports = require("airport-codes");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const jwt_decode = require("jwt-decode");
 
 router.post("/register", async (req, res) => {
   const user = req.body; // email and password
@@ -55,7 +50,7 @@ router.post("/login", async (req, res) => {
   console.log("is it correct? " + isCorrect);
   if (isCorrect) {
     const payload = {
-      _id: dbUser._id,
+      id: dbUser._id,
       email: dbUser.email,
     };
 
@@ -64,7 +59,10 @@ router.post("/login", async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: 86400 },
       (err, token) => {
-        if (err) return res.json({ message: "An error occured." });
+        if (err) {
+          console.log(err);
+          return res.json({ message: "An error occured." });
+        }
         return res.json({
           message: "Success",
           token: "Bearer" + token,
@@ -74,6 +72,25 @@ router.post("/login", async (req, res) => {
   } else {
     return res.json({ message: "Incorrect Password." });
   }
+});
+
+router.post("/password", async (req, res) => {
+  const changes = req.body;
+  User.findById(changes.userId)
+    .then((result) => {
+      bcrypt.compare(changes.oldPassword, result.password).then((isCorrect) => {
+        if (!isCorrect)
+          res.json({
+            success: false,
+            message: "Your old password is incorrect.",
+          });
+        else
+          res.json({
+            success: true,
+          });
+      });
+    })
+    .catch((err) => res.status(400).send(err));
 });
 
 module.exports = router;

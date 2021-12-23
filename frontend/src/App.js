@@ -26,17 +26,12 @@ function App() {
   const onSignIn = () => {
     window.sessionStorage.setItem('existing', true);
     window.sessionStorage.setItem('admin', false);
-    console.log(JSON.parse(window.sessionStorage.getItem('admin')));
-    console.log(JSON.parse(window.sessionStorage.getItem('existing')));
   };
   const onSignOut = () => {
-    console.log('we are signing out');
     window.sessionStorage.setItem('existing', false);
     window.sessionStorage.setItem('admin', false);
     setAdmin(false);
     setExisting(false);
-    console.log(JSON.parse(window.sessionStorage.getItem('admin')));
-    console.log(JSON.parse(window.sessionStorage.getItem('existing')));
   };
   const onAdmin = () => {
     window.sessionStorage.setItem('existing', false);
