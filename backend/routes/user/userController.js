@@ -403,7 +403,7 @@ router.get('/reservations/:id', async (req, res) => {
  * }
  */
 router.get('/profile/:id', async (req, res) => {
-  User.findById(req.params.id)
+   (req.params.id)
     .then((result) => {
       res.send(result);
       console.log(result);
@@ -414,6 +414,7 @@ router.get('/profile/:id', async (req, res) => {
 });
 router.post('/profile', async (req, res) => {
   const insertion = req.body;
+  // insertion.password = await bcrypt.hash(req.body.password, 10);
   const user = new User(insertion);
   user
     .save()
@@ -424,7 +425,10 @@ router.post('/profile', async (req, res) => {
     .catch((err) => res.status(400).send(err));
 });
 router.patch('/profile/update/:id', async (req, res) => {
-  User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  var updates = req.body;
+  if (updates.password)
+    updates.password = await bcrypt.hash(req.body.password, 10);
+  User.findByIdAndUpdate(req.params.id, updates, { new: true })
     .then((result) => {
       //new:true returns modified document not original
       res.send(result);

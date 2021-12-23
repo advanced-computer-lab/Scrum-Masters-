@@ -55,7 +55,10 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    //password SPRINT 3
+    password: {
+      type: String,
+      required: true,
+    },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
