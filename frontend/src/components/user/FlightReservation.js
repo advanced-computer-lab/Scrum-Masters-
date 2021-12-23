@@ -63,7 +63,6 @@ const FlightReservation = ({
       ? row.firstClass.adultPrice
       : row.business.adultPrice;
   };
-  //useEffect(() => {}, []);
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: '#5e60ce',

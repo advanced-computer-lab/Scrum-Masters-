@@ -72,24 +72,7 @@ function App() {
 
         {!admin && !existing && (
           <Container>
-            <footer style={{ float: 'right' }}>
-              <Button
-                variant='contained'
-                style={{ marginLeft: '30px' }}
-                sx={{
-                  color: '#7400b8',
-                  backgroundColor: '#ffffff',
-                  '&:hover': {
-                    backgroundColor: '#e9e9e9',
-                    color: '#7400b8',
-                  },
-                }}
-                onClick={admin ? onSignIn : onAdmin}
-                href={!admin ? '/schedule' : './'}
-              >
-                {!admin ? 'Admin Sign in' : 'User Sign in'}
-              </Button>
-            </footer>
+            <footer style={{ float: 'right' }}></footer>
           </Container>
         )}
       </div>

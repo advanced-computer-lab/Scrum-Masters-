@@ -23,13 +23,240 @@ import {
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
+const data = {
+  departingFlights: [
+    {
+      economy: {
+        baggageAllowance: 2,
+        noOfSeats: 78,
+        childPrice: 0,
+        adultPrice: 0,
+        availableSeats: 74,
+      },
+      business: {
+        baggageAllowance: 2,
+        noOfSeats: 5,
+        childPrice: 0,
+        adultPrice: 0,
+        availableSeats: 5,
+      },
+      firstClass: {
+        baggageAllowance: 3,
+        noOfSeats: 5,
+        childPrice: 0,
+        adultPrice: 0,
+        availableSeats: 5,
+      },
+      _id: '61a3e0ec766320f267156a54',
+      flightNumber: 128,
+      departureTime: '16:04',
+      arrivalTime: '10:04',
+      departureDate: '2021-11-01T00:00:00.000Z',
+      arrivalDate: '2021-11-02T00:00:00.000Z',
+      departureAirport: 'JPN',
+      arrivalAirport: 'JFK',
+      __v: 0,
+      noOfSeats: 88,
+      availableSeats: 84,
+      duration: '18h 0m',
+      id: '61a3e0ec766320f267156a54',
+    },
+    {
+      economy: {
+        noOfSeats: 100,
+        childPrice: 750,
+        adultPrice: 1000,
+        baggageAllowance: 2,
+        availableSeats: 78,
+      },
+      business: {
+        noOfSeats: 20,
+        childPrice: 1100,
+        adultPrice: 1800,
+        baggageAllowance: 2,
+        availableSeats: 7,
+      },
+      firstClass: {
+        noOfSeats: 10,
+        childPrice: 1500,
+        adultPrice: 3000,
+        baggageAllowance: 3,
+        availableSeats: 8,
+      },
+      _id: '61aa788fd08900b12612c04b',
+      flightNumber: 1234,
+      departureTime: '22:04',
+      arrivalTime: '13:04',
+      departureDate: '2021-11-01T00:00:00.000Z',
+      arrivalDate: '2021-11-03T00:00:00.000Z',
+      departureAirport: 'JPN',
+      arrivalAirport: 'JFK',
+      __v: 0,
+      noOfSeats: 130,
+      availableSeats: 93,
+      duration: '15h 0m',
+      id: '61aa788fd08900b12612c04b',
+    },
+  ],
+  returningFlights: [
+    {
+      economy: {
+        noOfSeats: 30,
+        childPrice: 750,
+        adultPrice: 1000,
+        baggageAllowance: 2,
+        availableSeats: 4,
+      },
+      business: {
+        noOfSeats: 30,
+        childPrice: 1100,
+        adultPrice: 1800,
+        baggageAllowance: 2,
+        availableSeats: 17,
+      },
+      firstClass: {
+        noOfSeats: 30,
+        childPrice: 1500,
+        adultPrice: 3000,
+        baggageAllowance: 3,
+        availableSeats: 28,
+      },
+      _id: '61ad2748c1007c4cf2ed1fb2',
+      flightNumber: 1233123,
+      departureTime: '22:55',
+      arrivalTime: '22:56',
+      departureDate: '2021-11-03T00:00:00.000Z',
+      arrivalDate: '2021-11-03T00:00:00.000Z',
+      departureAirport: 'JFK',
+      arrivalAirport: 'JPN',
+      __v: 0,
+      noOfSeats: 90,
+      availableSeats: 49,
+      duration: '0h 1m',
+      id: '61ad2748c1007c4cf2ed1fb2',
+    },
+  ],
+  details: {
+    noOfChildren: 0,
+    noOfAdults: 2,
+    departureAirport: 'JPN',
+    arrivalAirport: 'JFK',
+    departureDate: '2021-11-01T00:00:00.000Z',
+    arrivalDate: '2021-11-03T00:00:00.000Z',
+    cabin: 'economy',
+  },
+  oldReservation: {
+    _id: '61b0a36e2173f72667abb54a',
+    userId: '61aa2eb9d3eee0b9e4921105',
+    cabinClass: 'economy',
+    departingFlightId: {
+      economy: {
+        noOfSeats: 100,
+        childPrice: 750,
+        adultPrice: 1000,
+        baggageAllowance: 2,
+        availableSeats: 78,
+      },
+      business: {
+        noOfSeats: 20,
+        childPrice: 1100,
+        adultPrice: 1800,
+        baggageAllowance: 2,
+        availableSeats: 7,
+      },
+      firstClass: {
+        noOfSeats: 10,
+        childPrice: 1500,
+        adultPrice: 3000,
+        baggageAllowance: 3,
+        availableSeats: 8,
+      },
+      _id: '61aa788fd08900b12612c04b',
+      flightNumber: 1234,
+      departureTime: '22:04',
+      arrivalTime: '13:04',
+      departureDate: '2021-11-01T00:00:00.000Z',
+      arrivalDate: '2021-11-03T00:00:00.000Z',
+      departureAirport: 'JPN',
+      arrivalAirport: 'JFK',
+      __v: 0,
+      noOfSeats: 130,
+      availableSeats: 93,
+      duration: '15h 0m',
+      id: '61aa788fd08900b12612c04b',
+    },
+    returnFlightId: {
+      economy: {
+        noOfSeats: 30,
+        childPrice: 750,
+        adultPrice: 1000,
+        baggageAllowance: 2,
+        availableSeats: 4,
+      },
+      business: {
+        noOfSeats: 30,
+        childPrice: 1100,
+        adultPrice: 1800,
+        baggageAllowance: 2,
+        availableSeats: 17,
+      },
+      firstClass: {
+        noOfSeats: 30,
+        childPrice: 1500,
+        adultPrice: 3000,
+        baggageAllowance: 3,
+        availableSeats: 28,
+      },
+      _id: '61ad2748c1007c4cf2ed1fb2',
+      flightNumber: 1233123,
+      departureTime: '22:55',
+      arrivalTime: '22:56',
+      departureDate: '2021-11-03T00:00:00.000Z',
+      arrivalDate: '2021-11-03T00:00:00.000Z',
+      departureAirport: 'JFK',
+      arrivalAirport: 'JPN',
+      __v: 0,
+      noOfSeats: 90,
+      availableSeats: 49,
+      duration: '0h 1m',
+      id: '61ad2748c1007c4cf2ed1fb2',
+    },
+    totalPrice: 4000,
+    __v: 0,
+    id: '61b0a36e2173f72667abb54a',
+  },
+};
+
 const FlightsTable = () => {
   const [page, setPage] = React.useState(0);
   const [count, setCount] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const newCabinClass = data.details.cabin ? data.details.cabin : null;
-  const cabinClass = data.details.cabin ? data.details.cabin : null;
   const [open, setOpen] = React.useState(false);
+  const cabinClass = data.details.cabin ? data.details.cabin : null;
+  function getPrice(cabinClass, row) {
+    if (cabinClass === 'economy')
+      return (
+        row.economy.adultPrice * data.details.noOfAdults +
+        row.economy.childPrice * data.details.noOfChildren
+      );
+    else if (cabinClass === 'first')
+      return (
+        row.firstClass.adultPrice * data.details.noOfAdults +
+        row.firstClass.childPrice * data.details.noOfChildren
+      );
+    else
+      return (
+        row.business.adultPrice * data.details.noOfAdults +
+        row.business.childPrice * data.details.noOfChildren
+      );
+  }
+  const getDate = (input) => {
+    const date = new Date(input);
+    return (
+      date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()
+    );
+  };
+
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(4n-3)': {
       backgroundColor: theme.palette.action.hover,
@@ -37,25 +264,12 @@ const FlightsTable = () => {
     '&:nth-of-type(4n-2)': {
       backgroundColor: theme.palette.action.hover,
     },
+    // hide last border
     '&:last-child td, &:last-child th': {
       border: 0,
     },
   }));
 
-  const getDate = (input) => {
-    const date = new Date(input);
-    return (
-      date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()
-    );
-  };
-  const getPrice = (cabinClass, row) => {
-    console.log(data.details);
-    return cabinClass === 'economy'
-      ? row.economy.adultPrice
-      : cabinClass === 'first'
-      ? row.firstClass.adultPrice
-      : row.business.adultPrice;
-  };
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: '#5e60ce',
@@ -71,7 +285,6 @@ const FlightsTable = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
   return (
     <TableContainer component={Paper} style={{ marginBottom: '20px' }}>
       <Table aria-label='collapsible table'>
@@ -98,7 +311,7 @@ const FlightsTable = () => {
               Arrival Date
             </StyledTableCell>
             <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
-              Price
+              Price Difference
             </StyledTableCell>
             <StyledTableCell
               align='center'
@@ -106,9 +319,9 @@ const FlightsTable = () => {
             ></StyledTableCell>
           </TableRow>
         </TableHead>
-        {data.flights ? (
+        {data.departingFlights ? (
           <TableBody>
-            {data.flights
+            {data.departingFlights
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <React.Fragment>
@@ -146,23 +359,11 @@ const FlightsTable = () => {
                     </TableCell>
                     <TableCell align='center'>
                       {getPrice(cabinClass, row) -
-                        getPrice(newCabinClass, row) +
+                        data.oldReservation.totalPrice +
                         '£'}
                     </TableCell>
                     <TableCell align='center' style={{ fontStyle: 'italic' }}>
-                      <Button
-                        id={row._id}
-                        onClick={() => {
-                          isDeparture
-                            ? handleDepartureFlight(row._id)
-                            : handleArrivalFlight(row._id);
-                          const newValue = count + 1;
-                          setCount(newValue);
-                          nextPage(newValue);
-                        }}
-                      >
-                        Choose Flight
-                      </Button>
+                      <Button id={row._id}>Choose Flight</Button>
                     </TableCell>
                   </StyledTableRow>
                   <StyledTableRow>
