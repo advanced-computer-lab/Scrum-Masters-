@@ -20,8 +20,9 @@ export default function SignUpForm() {
     const[visibility,setVisibility]= React.useState(true)
   return (
     <>
+      <Stack direction="row" spacing={2} sx={{ width: 520 }}>
       <div>
-        <img src={image4} style={{ height: 750, width: 900, float: "left" }} />
+        <img src={image4} style={{ height: 750, width: 920, float: "left" }} />
       </div>
       
       <Box
@@ -102,7 +103,7 @@ export default function SignUpForm() {
             <TextField
               required
               id="outlined-basic"
-              label="Adress"
+              label="Address"
               variant="outlined"
             />
             <TextField
@@ -128,6 +129,7 @@ export default function SignUpForm() {
     <Stack spacing={2} sx={{ width: 300 }}></Stack>
     <TextField
       required
+      fullWidth
       id="outlined-basic"
       label="Username"
       variant="outlined"
@@ -142,12 +144,12 @@ export default function SignUpForm() {
           </Stack>
         </div>
         <div>
-          <Button variant="contained" onClick={() => setVisibility(false)} sx={{ width: 500 , float: "left" , marginLeft: "10px" , marginTop: "10px"}}>
+          <Button variant="contained" onClick={() => setVisibility(false)} sx={{ width: "100%" , float: "left" , marginLeft: "10px" , marginTop: "10px"}}>
             {visibility?"Next":"Sign Up"} 
           </Button>
         </div>
       </Box>
-      
+      </Stack>
     </>
   );
 }
