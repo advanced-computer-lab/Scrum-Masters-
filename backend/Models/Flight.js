@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 //const Schema = mongoose.Schema;
 
+function getChildPrice(adult) {
+  console.log("pppppppppppppp",this.flightNumber);
+  return adult*0.6;
+}
+
 const flightSchema = mongoose.Schema(
   // check for unique flight numbers within the day
   {
@@ -45,14 +50,14 @@ const flightSchema = mongoose.Schema(
         default: 0,
         required: true,
       },
-      childPrice: {
-        type: Number,
-        default: 750,
-        required: true,
-      },
       adultPrice: {
         type: Number,
         default: 1000,
+        required: true,
+      },
+      childPrice: {
+        type: Number,
+        default: 1500,
         required: true,
       },
       availableSeats: {
@@ -173,6 +178,6 @@ flightSchema
   .set(function (duration) {
     this.duration = duration;
   });
-
+  console.log("pppppppppppppp",this.flightNumber);
 const Flight = mongoose.model('Flight', flightSchema);
 module.exports = Flight;

@@ -12,7 +12,7 @@ import CallIcon from "@mui/icons-material/Call";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import PublicIcon from "@mui/icons-material/Public";
 import Button from "@mui/material/Button";
-import image4 from '/Users/youssefsameh/Documents/GitHub/Scrum-Masters-/Scrum-Masters-/frontend/src/components/user/Signup4.jpg'
+import image4 from '../../../images/Signup4.jpg';
 import { useState } from "react";
 import axios from "axios";
 
@@ -74,7 +74,7 @@ export default function SignUpForm() {
       <div>
         <img src={image4} style={{ height: 750, width: 920, float: "left" }} />
       </div>
-      
+
       <Box
         component="form"
         sx={{

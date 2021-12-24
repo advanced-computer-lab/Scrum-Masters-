@@ -8,6 +8,7 @@ const User = require("../Models/User");
 var airports = require("airport-codes");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const jwt_decode = require("jwt-decode");
 
 router.post("/register", async (req, res) => {
   const user = req.body; // email and password
@@ -58,7 +59,10 @@ router.post("/login", async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: 86400 },
       (err, token) => {
-        if (err) return res.json({ message: "An error occured." });
+        if (err) {
+          console.log(err);
+          return res.json({ message: "An error occured." });
+        }
         return res.json({
           message: "Success",
           token: "Bearer" + token,
@@ -68,6 +72,26 @@ router.post("/login", async (req, res) => {
   } else {
     return res.json({ message: "Incorrect Password." });
   }
+});
+
+router.post("/password", async (req, res) => {
+  const changes = req.body;
+  console.log("changes", changes);
+  User.findById(changes.userId)
+    .then((result) => {
+      bcrypt.compare(changes.oldPassword, result.password).then((isCorrect) => {
+        if (!isCorrect)
+          res.json({
+            success: false,
+            message: "Your original password is incorrect.",
+          });
+        else
+          res.json({
+            success: true,
+          });
+      });
+    })
+    .catch((err) => res.status(400).send(err));
 });
 
 module.exports = router;

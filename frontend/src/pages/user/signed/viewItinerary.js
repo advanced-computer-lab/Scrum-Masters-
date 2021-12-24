@@ -7,7 +7,7 @@ import { Grid } from "@mui/material";
 import { ListItem } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-
+import StripeCheckout from "react-stripe-checkout";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -17,15 +17,51 @@ import TableRow from "@mui/material/TableRow";
 import { Divider } from "@mui/material";
 import { Box,Stack } from "@mui/material";
 import Ticket from "../../../components/user/existing/Ticket";
+import { Button } from "@mui/material";
+
+const nodemailer =require('nodemailer');
 // import { Stack } from "react-bootstrap";
 
 
-const Itenerary = (props) => {
+const Itinerary = (props) => {
+  console.log(props);
+  console.log(props);
+  console.log("YOUR OBJECT IS HERE"+props);
+  const [product,setProduct] =useState({
+    name:"Pay for reservation",
+    price: "10",
+    Productby:"cloud9"
+    })
+  const transporter = nodemailer.createTransport({
+    service:"hotmail",
+    auth: {
+      user:"maramACL@outlook.com",
+      pass:"Benamer1!"
+    },
+    tls:{
+        rejectUnauthorized:false
+    }
+ 
+ 
+  })
+  const options ={
+    from:"maramACL@outlook.com",
+    to:"marambenamer@yahoo.com",
+    subject:"Email trial",
+    text:"Let's see"
+  };
+  transporter.sendMail(options,  function(err,info){
+    if(err){
+      console.log("error!",err);
+      return;
+    }
+    console.log("mail sent successfully")})
+    
  const [loading,setLoading]=useState(true);
  //console.log(input1.flight);
  console.log("hehehe");
  useEffect(() => {
-   console.log("itenerary",props);
+   console.log("Itinerary",props);
    setTimeout(() => {setLoading(false)}, 4000);
 }, [loading]);
 
@@ -38,8 +74,18 @@ const dynamicTickets=()=>{
 })
 return result;
 }
+const handler =()=>{
+  console.log("GIRL I BE TRYNNA REACH SOMEWHERE!!!!"+ props.departureFlight.arrivalAirport);
+  const lol = props.departureFlight.arrivalAirport;
+  axios.post("http://localhost:8081/user/sendmail",props)
+   .then(console.log("done!!"));
+}
+const printer =()=>{
+  console.log(props.ticket.seatNum);
+}
 
   return (
+   
     <div>
     {loading && (
       <Loader
@@ -75,11 +121,41 @@ return result;
       </Typography>
 
      
+     <div>
+       
+    <StripeCheckout 
+    stripeKey ="pk_test_51K6M8qJJwEGtsc7Jg1PpI8uJfikDdlKuDksccokEyc3JjTgyysXvjGb1lWZIbyOCjPfNnbs4cBflSwG5xUzmfKq500JtPtmY3p"
+    token=""
+    name=""
+    amount={props.totalPrice *100}
+    currency="EGP"
+    >
+      <Button  onClick={handler} style={{
+       backgroundcolor:"pink",
+       fontSize:"15px"
+       
+
+
+
+
+      }}>
+          Make Payment
+          </Button>
+          
+     </StripeCheckout>
      
+     <div> 
+       <Button onClick={handler}>
+         E-mail me a copy of my itenerary
+       </Button>
+       <Button></Button>
+       </div>
+       </div>
   
      {dynamicTickets()}
      </div>)}
    </div>
+ 
   );
 };
-export default Itenerary;
+export default Itinerary;

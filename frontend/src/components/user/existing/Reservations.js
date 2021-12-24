@@ -1,5 +1,4 @@
 import { React, useEffect, useState } from 'react';
-
 import { GridCellParams } from '@mui/x-data-grid';
 import emailjs from 'emailjs-com';
 import axios from 'axios';
@@ -51,6 +50,7 @@ import FlightLandRounded from '@mui/icons-material/FlightLandRounded';
 
 export default function BasicTable(onDelete) {
   const [open, setOpen] = useState(false);
+
   const [totalPrice, setTotalPrice] = useState();
   // const [deleteRes, setdeleteRes] = useState(true);
   const handleClickOpen = () => {
@@ -77,6 +77,14 @@ export default function BasicTable(onDelete) {
       date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()
     );
   };
+
+  // const handleClickOpenDialog = () => {
+  //   setOpenDialog(true);
+  // };
+
+  // const handleCloseDialog = () => {
+  //   setOpenDialog(false);
+  // };
   const deleteReservation = (reservationId, price) => {
     setTotalPrice(price);
     handleClose();

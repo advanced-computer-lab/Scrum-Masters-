@@ -10,6 +10,7 @@ import { DialogActions } from "@mui/material";
 import { DialogContent } from "@mui/material";
 import { DialogTitle } from "@mui/material";
 import { Dialog } from "@mui/material";
+import axios from "axios";
 import { DialogContentText } from "@mui/material";
 //import Ticket from "../../../../backend/Models/Ticket";
 //import Reservation from "../../../../backend/Models/Reservation";
@@ -43,7 +44,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import PersonIcon from '@mui/icons-material/Person';
 import Popup from 'reactjs-popup';
 //import 'reactjs-popup/dist/index.css';
-
+import { Link } from "react-router-dom";
 const style = {
   position: 'absolute',
   top: '50%',
@@ -61,13 +62,34 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
     console.log("FlightSummaryInput2",input2);
     var x=0;
     const [show, setShow] = useState(false);
-  
+
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+    const [values, setValues] = useState();
     const handleShow = () => setShow(true);
-    const [open, setOpen] = React.useState(false);
+    // const [open, setOpen] = React.useState(false);
     const[totalPrice, setTotalPrice]=useState();
     const [existing, setExisting] = useState(
         JSON.parse(window.sessionStorage.getItem('existing')) || false
       );
+      const onChange = async (e, name) => {
+        if (e) {
+          try {
+            console.log(e);
+            if (e.target) {
+              await setValues({ ...values, [e.target.name]: e.target.value });
+            } else {
+              await setValues({ ...values, [name]: e });
+            }
+            await console.log("update", values);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      };
       const onSignIn = () => {
         window.sessionStorage.setItem('existing', true);
         window.sessionStorage.setItem('admin', false);
@@ -75,6 +97,27 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
         console.log(JSON.parse(window.sessionStorage.getItem('existing')));
         setOpen(false);
         nextPage();
+      };
+      const guestClick = () => {
+
+        axios
+          .post("http://localhost:8081/auth/login", values)
+          .then((result) => {
+            console.log("result", result);
+            if (result.data.message === "Success") {
+              console.log("NAGA7NAAAAAA!!!!");
+              window.sessionStorage.setItem("token", result.data.token);
+              onSignIn();
+              // window.sessionStorage.setItem("existing", true);
+              // window.sessionStorage.setItem("admin", false);
+              setExisting(true);
+             // setAdmin(false);
+            }
+            //else error alert incorrect credentials
+          })
+          .catch((err) => console.log(err));
+    
+        // props.onSignIn();
       };
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -146,11 +189,6 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
             </Item>
           </Grid>
           <Grid item xs={6}>
-            <Item position='relative'>
-              Arrival Airport :{input1.flight.arrivalAirport}
-            </Item>
-          </Grid>
-          <Grid item xs={6}>
             <Item>
               <FlightIcon />
               Return Trip Flight Number{}:{input2.flight.flightNumber}
@@ -168,6 +206,12 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
               Return Flight Time{}:{input2.flight.departureTime}
             </Item>
           </Grid>
+          <Grid item xs={6}>
+            <Item position='relative'>
+              Return Airport :{input1.flight.arrivalAirport}
+            </Item>
+          </Grid>
+         
 
           <Grid item xs={6}>
             <Item>
@@ -197,47 +241,116 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
               Class Cabin:{input1.details.cabin}
             </Item>
           </Grid>
-          <Grid item xs={6}>
-            <Item>
+          <Grid item xs={6} marginleft={3}>
+            <Item marginleft={10}>
               <AttachMoneyIcon />
               Total Price of Reservation:{totalPrice}
             </Item>
           </Grid>
         </Grid>
         <div>
-          <Button onClick={!existing ? handleOpen : nextPage}>
+          <Button onClick={!(JSON.parse(window.sessionStorage.getItem('existing')))? handleOpen : nextPage}
+          >
             {' '}
             Confirm & proceed to choose seat
           </Button>
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby='modal-modal-title'
-            aria-describedby='modal-modal-description'
-          >
-            <Box sx={style}>
-              <Typography
-                id='modal-modal-title'
-                variant='h6'
-                component='h2'
-                fontFamily='cursive'
-                color='#5e60ce'
-              >
-                Nope!
-              </Typography>
-              <Typography
-                id='modal-modal-description'
-                sx={{ mt: 2 }}
-                fontFamily='cursive'
-              >
-                Please Log in before proceeding with your reservation!
-                <div>
-                  <Button onClick={onSignIn}>Sign-In</Button>
-                </div>
-              </Typography>
-            </Box>
-          </Modal>
+
+       
+            {/* { !JSON.parse(window.sessionStorage.getItem("token"))} */}
+          {/* // &&(<Modal */}
+          {/* //   open={open}
+          //   onClose={handleClose}
+          //   aria-labelledby='modal-modal-title'
+          //   aria-describedby='modal-modal-description'
+          // >
+          //   <Box sx={style}>
+          //     <Typography
+          //       id='modal-modal-title'
+          //       variant='h6'
+          //       component='h2'
+          //       fontFamily='cursive'
+          //       color='#5e60ce'
+          //     >
+          //       Nope!
+          //     </Typography>
+          //     <Typography
+          //       id='modal-modal-description'
+          //       sx={{ mt: 2 }}
+          //       fontFamily='cursive'
+          //     >
+          //       Please Log in before proceeding with your reservation!
+          //       <div>
+          //         <Button onClick={onSignIn}>Sign-In</Button>
+          //       </div>
+          //     </Typography>
+          //   </Box>
+          // </Modal>)  */}
+        
         </div>
+        <Button
+                  onClick={handleClickOpen}
+                  variant="contained"
+                  style={{ marginLeft: "30px" }}
+                  sx={{
+                    color: "#7400b8",
+                    backgroundColor: "#ffffff",
+                    "&:hover": {
+                      backgroundColor: "#e9e9e9",
+                      color: "#7400b8",
+                    },
+                  }}
+                >
+                  {" "}
+                  Sign In{" "}
+                </Button>
+                <Dialog open={open} onClose={handleClose}>
+                  <DialogTitle>SIGN IN</DialogTitle>
+                  <DialogContent>
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="name"
+                      label="Email Address"
+                      type="email"
+                      name="email"
+                      fullWidth
+                      variant="standard"
+                      onChange={onChange}
+                    />
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="name"
+                      label="Password"
+                      name="password"
+                      type="password"
+                      fullWidth
+                      variant="standard"
+                      onChange={onChange}
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose} variant="outlined">
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        handleClose();
+                        guestClick();
+                      }}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Sign in
+                    </Button>
+                  </DialogActions>
+                  <DialogContent>
+                    Don't have an account?{" "}
+                    <Link to="/signup" onClick={handleClose}>
+                      Sign up
+                    </Link>
+                  </DialogContent>
+                </Dialog>
       </Container>
     </>
   );

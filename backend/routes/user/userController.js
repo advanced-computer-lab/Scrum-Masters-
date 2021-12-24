@@ -1,35 +1,36 @@
-const express = require('express');
-const mongoose = require('mongoose');
+const express = require("express");
+const mongoose = require("mongoose");
 const router = express.Router();
-const Flight = require('../../Models/Flight');
-const Reservation = require('../../Models/Reservation');
-const Ticket = require('../../Models/Ticket');
-const User = require('../../Models/User');
-var airports = require('airport-codes');
+const Flight = require("../../Models/Flight");
+const Reservation = require("../../Models/Reservation");
+const Ticket = require("../../Models/Ticket");
+const User = require("../../Models/User");
+var airports = require("airport-codes");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const stripe= require("stripe")('sk_test_51K6M8qJJwEGtsc7J7C3w0qhtQfyAWcCC1I1NtcnOzoZ8dNC3JZJJXsumPXAMib64wYRAqPzvyRiVYGF5RPnGnSm600KZNScrI5');
+const nodemailer=require("nodemailer");
 
-
-router.get('/search/flights', async (req, res) => {
+router.get("/search/flights", async (req, res) => {
   try {
-    const from = await Flight.distinct('departureAirport');
+    const from = await Flight.distinct("departureAirport");
     //const from = airports.find().get('iata')
-    const to = await Flight.distinct('arrivalAirport');
-    console.log('from', from);
-    console.log('to', to);
+    const to = await Flight.distinct("arrivalAirport");
+    console.log("from", from);
+    console.log("to", to);
     const output = {
       from: from,
       to: to,
     };
     res.json(output);
   } catch (error) {
-    res.status(404).json({ message: 'invalid search' });
+    res.status(404).json({ message: "invalid search" });
   }
 });
 
-router.post('/search', async (req, res) => {
+router.post("/search", async (req, res) => {
   const criteria = req.body;
-  console.log('criteria', criteria); //theerasfadfad
+  console.log("criteria", criteria); //theerasfadfad
   /* {
     noOfChildren: val, 
     noOfAdults: val,
@@ -47,7 +48,7 @@ router.post('/search', async (req, res) => {
     !req.body.arrivalDate ||
     !req.body.cabin
   ) {
-    res.json({ message: 'please choose all the fields' });
+    res.json({ message: "please choose all the fields" });
     return;
   }
   // checking at least one passenger
@@ -59,7 +60,7 @@ router.post('/search', async (req, res) => {
   }
 
   if (criteria.noOfAdults + criteria.noOfChildren === 0) {
-    res.json({ message: 'please choose at least one passenger' });
+    res.json({ message: "please choose at least one passenger" });
     return;
   }
 
@@ -79,15 +80,21 @@ router.post('/search', async (req, res) => {
     // from and to are not the same
     if (criteria.departureAirport === criteria.arrivalAirport) {
       res.json({
-        message: 'You can not specify the from and to with the same values',
+        message: "You can not specify the from and to with the same values",
       });
       return;
     }
-
+     //pastDates
+    //  if (new Date(criteria.arrivalDate) <=  new Date() || new Date(criteria.departureDate)<=new Date() ) {
+    //   res.json({
+    //     message: 'Please choose to search for future flights!!',
+    //   });
+    //   return;
+    // }
     // overlapping dates
     if (new Date(criteria.arrivalDate) < new Date(criteria.departureDate)) {
       res.json({
-        message: 'cannot have an arrival date before the departure date',
+        message: "cannot have an arrival date before the departure date",
       });
       return;
     }
@@ -95,7 +102,7 @@ router.post('/search', async (req, res) => {
     // no round trips
 
     // console.log("query before filtering", query);
-    if (criteria.cabin === 'economy') {
+    if (criteria.cabin === "economy") {
       query1 = query1.filter(
         (flight) =>
           flight.economy.availableSeats >=
@@ -107,7 +114,7 @@ router.post('/search', async (req, res) => {
           criteria.noOfChildren + criteria.noOfAdults
       );
     }
-    if (criteria.cabin === 'business') {
+    if (criteria.cabin === "business") {
       //console.log("ehna true");
       query1 = query1.filter(
         (flight) =>
@@ -120,7 +127,7 @@ router.post('/search', async (req, res) => {
           criteria.noOfChildren + criteria.noOfAdults
       );
     }
-    if (criteria.cabin === 'first') {
+    if (criteria.cabin === "first") {
       //console.log("ehna true");
       query1 = query1.filter(
         (flight) =>
@@ -136,7 +143,7 @@ router.post('/search', async (req, res) => {
     if (query1.length === 0 || query2.length === 0) {
       res.json({
         message:
-          'We are sorry, there are no round trips available for your criteria',
+          "We are sorry, there are no round trips available for your criteria",
       });
       return;
     }
@@ -176,7 +183,7 @@ router.post('/search', async (req, res) => {
 }
 */
 //route for creating reservation
-router.post('/create/reservation/:userId', async (req, res) => {
+router.post("/create/reservation/:userId", async (req, res) => {
   const reservation = new Reservation({
     userId: req.params.userId,
     cabinClass: req.body.details.cabin,
@@ -191,28 +198,28 @@ router.post('/create/reservation/:userId', async (req, res) => {
     var totalSeats =
       req.body.details.noOfAdults + req.body.details.noOfChildren;
     // decreasing seats of the flight
-    if (req.body.details.cabin === 'economy') {
+    if (req.body.details.cabin === "economy") {
       await Flight.findByIdAndUpdate(req.body.departingFlightId, {
-        $inc: { 'economy.availableSeats': -totalSeats },
+        $inc: { "economy.availableSeats": -totalSeats },
       });
       await Flight.findByIdAndUpdate(req.body.returnFlightId, {
-        $inc: { 'economy.availableSeats': -totalSeats },
+        $inc: { "economy.availableSeats": -totalSeats },
       });
     }
-    if (req.body.details.cabin === 'business') {
+    if (req.body.details.cabin === "business") {
       await Flight.findByIdAndUpdate(req.body.departingFlightId, {
-        $inc: { 'business.availableSeats': -totalSeats },
+        $inc: { "business.availableSeats": -totalSeats },
       });
       await Flight.findByIdAndUpdate(req.body.returnFlightId, {
-        $inc: { 'business.availableSeats': -totalSeats },
+        $inc: { "business.availableSeats": -totalSeats },
       });
     }
-    if (req.body.details.cabin === 'first') {
+    if (req.body.details.cabin === "first") {
       await Flight.findByIdAndUpdate(req.body.departingFlightId, {
-        $inc: { 'firstClass.availableSeats': -totalSeats },
+        $inc: { "firstClass.availableSeats": -totalSeats },
       });
       await Flight.findByIdAndUpdate(req.body.returnFlightId, {
-        $inc: { 'firstClass.availableSeats': -totalSeats },
+        $inc: { "firstClass.availableSeats": -totalSeats },
       });
     }
 
@@ -238,7 +245,7 @@ router.post('/create/reservation/:userId', async (req, res) => {
  *
  * } */
 
-router.post('/create/ticket', async (req, res) => {
+router.post("/create/ticket", async (req, res) => {
   const ticket = new Ticket(req.body);
   try {
     const savedTicket = await ticket.save();
@@ -248,7 +255,7 @@ router.post('/create/ticket', async (req, res) => {
   }
 });
 
-router.get('/reserved/:flightId', (req, res) => {
+router.get("/reserved/:flightId", (req, res) => {
   Ticket.find(
     { flightId: req.params.flightId },
     { seatNum: 1, cabin: 1, _id: 0 }
@@ -260,28 +267,28 @@ router.get('/reserved/:flightId', (req, res) => {
     });
 });
 
-router.delete('/delete/reservation/:id', async (req, res) => {
+router.delete("/delete/reservation/:id", async (req, res) => {
   // removing reservation
 
   Reservation.findByIdAndRemove(req.params.id)
     .then((Reservation) => {
       console.log(Reservation);
       if (Reservation != null)
-        res.json({ mgs: 'Reservation deleted successfully' });
+        res.json({ mgs: "Reservation deleted successfully" });
       else {
-        res.json({ mgs: 'Reservation already deleted' });
+        res.json({ mgs: "Reservation already deleted" });
       }
     })
-    .catch((err) => res.status(404).json({ error: 'No such a Reservation' }));
+    .catch((err) => res.status(404).json({ error: "No such a Reservation" }));
 });
 //user
-router.get('/reservations/:id', async (req, res) => {
+router.get("/reservations/:id", async (req, res) => {
   //console.log("backend", req.params.id);
   try {
     const reservations = await Reservation.find({ userId: req.params.id })
-      .populate('departingFlightId')
-      .populate('returnFlightId'); //
-    console.log('the reservations', reservations);
+      .populate("departingFlightId")
+      .populate("returnFlightId"); //
+    console.log("the reservations", reservations);
 
     var output = [];
     reservations.forEach(async (reservation) => {
@@ -307,7 +314,7 @@ router.get('/reservations/:id', async (req, res) => {
         reservationId: reservation.id,
         totalPrice: reservation.totalPrice,
       };
-      console.log('the entry', entry);
+      console.log("the entry", entry);
       output.push(entry);
     });
 
@@ -341,16 +348,156 @@ router.get('/reservations/:id', async (req, res) => {
  *
  * }
  */
-router.get('/profile/:id', async (req, res) => {
-  User.findById(req.params.id)
+router.get("/profile/:id", async (req, res) => {
+  User.findById(req.params.id, "-password")
     .then((result) => {
       res.send(result);
+
       console.log(result);
     })
     .catch((err) => {
       res.status(404).send(err);
     });
 });
+// getting tickets of the reservation
+router.get("/tickets/:resId",async(req,res)=>{
+
+  const tickets = await Ticket.find({reservationId:req.params.resId}).populate("flightId")
+  res.json(tickets);
+});
+router.post('/payment', async (req, res) => {
+  const nodeMailer =require('nodemailer')
+const transporter = nodemailer.createTransport({
+  service:"hotmail",
+  auth: {
+    user:"maramACL@outlook.com",
+    pass:"Benamer1!"
+  }
+ 
+
+
+})
+const options ={
+  from:"maramACL@outlook.com",
+  to:JSON.stringify(req.body.body.token.email),
+  subject:"HI BABY SEIFOOOOOOO",
+  text:JSON.stringify(req.body)
+};
+    console.log ("Ana batba3 ya rooh omak"+JSON.stringify((req.body.body.token.email)));
+    const{product,token}=req.body;
+  
+    return stripe.customers.create({
+     
+      email: req.body.body.token.email,
+      source: "tok_visa"
+  
+    }).then(customer =>{
+      console.log("na7noooo honaaaa" + ""+JSON.stringify(req.body.body.token.email))
+      stripe.charges.create({
+        amount:req.body.body.product.price,
+        currency:'usd',
+        customer:customer.id,
+        description:'paying for flight reservation'
+      },
+      
+
+      )
+    }).then(result=> res.status(200).send(result)
+    
+   
+
+    
+    ).then(transporter.sendMail(options,  function(err,info){
+      if(err){
+        console.log("error!",err);
+        return;
+      }
+      console.log("mail sent successfully");
+      console.log(req.body);
+      }))
+        .catch(err =>console.log(err));
+       
+      })
+  
+    
+
+ 
+router.post('/sendmail', async(req,res) => {
+
+const transporter = nodemailer.createTransport({
+  service:"hotmail",
+  auth: {
+    user:"maramACL@outlook.com",
+    pass:"Benamer1!"
+  }
+ 
+
+
+})
+const options ={
+  from:"maramACL@outlook.com",
+  to:"marambenamer@yahoo.com",
+  subject:"Email trial",
+  text:JSON.stringify(req.body)
+};
+transporter.sendMail(options,  function(err,info){
+if(err){
+  console.log("error!",err);
+  return;
+}
+console.log("mail sent successfully");
+console.log(req.body);
+})
+});
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+// app.post('/confirm-payment', async (req, res) => {
+
+//   //extract payment type from the client request
+//   const paymentType = String(req.body.payment_type);
+
+//   //handle confirmed stripe transaction
+//   if (paymentType == "stripe") {
+
+//     //get payment id for stripe
+//     const clientid = String(req.body.payment_id);
+
+//     //get the transaction based on the provided id
+//     stripe.paymentIntents.retrieve(
+//       clientid,
+//       function(err, paymentIntent) {
+
+//         //handle errors
+//         if (err){
+//           console.log(err);
+//         }
+        
+//         //respond to the client that the server confirmed the transaction
+//         if (paymentIntent.status === 'succeeded') {
+
+//           /*YOUR CODE HERE*/  
+          
+//           console.log("confirmed stripe payment: " + clientid);
+//           res.json({success: true});
+//         } else {
+//           res.json({success: false});
+//         }
+//       }
+//     );
+//   } 
+  
+
 router.post('/profile', async (req, res) => {
   const insertion = req.body;
   insertion.password = await bcrypt.hash(user.password, 10);
@@ -364,8 +511,12 @@ router.post('/profile', async (req, res) => {
     })
     .catch((err) => res.status(400).send(err));
 });
-router.patch('/profile/update/:id', async (req, res) => {
-  User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+router.patch("/profile/update/:id", async (req, res) => {
+  var changes = req.body;
+  if (req.body.password)
+    changes.password = await bcrypt.hash(req.body.password, 10);
+  User.findByIdAndUpdate(req.params.id, changes, { new: true })
+    .select({ password: 0 })
     .then((result) => {
       //new:true returns modified document not original
       res.send(result);
@@ -375,5 +526,27 @@ router.patch('/profile/update/:id', async (req, res) => {
       res.status(404).send(err);
     });
 });
+router.post('/create-checkout-session', async (req, res) => {
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: 'T-shirt',
+          },
+          unit_amount: 2000,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: 'https://example.com/success',
+    cancel_url: 'https://example.com/cancel',
+  });
+
+  res.redirect(303, session.url);
+});
+
 
 module.exports = router;
