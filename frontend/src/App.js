@@ -1,20 +1,22 @@
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import TopBar from "./components/layout/navigation/TopBar";
-import { Button } from "@mui/material";
-import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Schedule from "./pages/admin/Schedule";
-import FlightCreation from "./pages/admin/FlightCreation";
-import SelectSeat from "./pages/user/signed/SelectSeat";
-import BookingPage from "./pages/user/signed/BookingPage";
-import SearchingPage from "./pages/user/signed/SearchingPage";
-import Account from "./pages/user/signed/Account";
-import ViewFlightSummary from "./components/user/existing/FlightSummary";
-import Itenerary from "./pages/user/signed/viewItenerary";
-import Reservations from "./components/user/existing/Reservations";
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import TopBar from './components/layout/navigation/TopBar';
+import { Button } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Schedule from './pages/admin/Schedule';
+import FlightCreation from './pages/admin/FlightCreation';
+import SelectSeat from './pages/user/signed/SelectSeat';
+import BookingPage from './pages/user/signed/BookingPage';
+import SearchingPage from './pages/user/signed/SearchingPage';
+import Account from './pages/user/signed/Account';
+import ViewFlightSummary from './components/user/existing/FlightSummary';
+import Itenerary from './pages/user/signed/viewItenerary';
+import Reservations from './components/user/existing/Reservations';
 import EditingPage from "./pages/user/signed/EditingPage";
-import { Container } from "react-bootstrap";
+
+import { Container } from 'react-bootstrap';
+import SignUpForm from './components/user/forms/Signup';
 
 function App() {
   const [admin, setAdmin] = useState(
@@ -83,7 +85,12 @@ function App() {
 
         {!admin && !existing && (
           <Container>
+<<<<<<< HEAD
             <footer style={{ float: "right" }}></footer>
+=======
+            <footer style={{ float: 'right' }}>
+            </footer>
+>>>>>>> me7a
           </Container>
         )}
       </div>

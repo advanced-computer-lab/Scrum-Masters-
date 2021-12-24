@@ -1,33 +1,33 @@
-import { React, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import Stepper from '@mui/material/Stepper';
-import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import CircularProgress from '@mui/material/CircularProgress';
+import { React, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import Stepper from "@mui/material/Stepper";
+import AirlineSeatReclineNormalIcon from "@mui/icons-material/AirlineSeatReclineNormal";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import CircularProgress from "@mui/material/CircularProgress";
 
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import StepConnector, {
   stepConnectorClasses,
-} from '@mui/material/StepConnector';
-import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
-import SearchFlight from '../../../components/user/forms/SearchFlight';
-import { Container } from 'react-bootstrap';
-import FlightReservation from '../../../components/user/FlightReservation';
-import SelectSeat from './SelectSeat';
-import ViewFlightSummary from '../../../components/user/existing/FlightSummary';
-import Passengers from '../../../components/user/existing/Passengers';
-import Itenerary from './viewItenerary';
+} from "@mui/material/StepConnector";
+import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
+import SearchFlight from "../../../components/user/forms/SearchFlight";
+import { Container } from "react-bootstrap";
+import FlightReservation from "../../../components/user/FlightReservation";
+import SelectSeat from "./SelectSeat";
+import ViewFlightSummary from "../../../components/user/existing/FlightSummary";
+import Passengers from "../../../components/user/existing/Passengers";
+import Itenerary from "./viewItenerary";
 
 const BookingPage = (props) => {
-  console.log('in BookingPage props', props);
-  var userId = '61aa2eb9d3eee0b9e4921105';
+  console.log("in BookingPage props", props);
+  var userId = "61aa2eb9d3eee0b9e4921105";
   const [arrivalInput, setArrivalInput] = useState({});
   const [loading, setLoading] = useState(false);
   const [departureData, setDepartureData] = useState(props.props[0]); //contains data of all departing flights that the user can choose from
@@ -45,10 +45,10 @@ const BookingPage = (props) => {
   const [returnTickets, setReturnTickets] = useState([]);
   const [total, setTotal] = useState(0);
   const [maramObject, setMaramObject] = useState({
-    firstName: '',
-    lastName: '',
-    Gender: '',
-    dateOfBirth: '',
+    firstName: "",
+    lastName: "",
+    Gender: "",
+    dateOfBirth: "",
   });
   const history = useHistory();
   const handlePrice = (price) => {
@@ -56,7 +56,7 @@ const BookingPage = (props) => {
   };
   const handleTravellers = (passengers) => {
     setTravellers(passengers);
-    console.log('booking page passengers', passengers);
+    console.log("booking page passengers", passengers);
   };
   const handleDepartureFlight = async (code) => {
     const newDeparture = code;
@@ -82,10 +82,10 @@ const BookingPage = (props) => {
     });
     setTimeout(() => {}, 4000);
     setLoading(false);
-    console.log('arrivalInput is set to ', arrivalInput);
+    console.log("arrivalInput is set to ", arrivalInput);
   };
   const handleReservation = (passengers) => {
-    console.log('handle reservation here');
+    console.log("handle reservation here");
     handleTravellers(passengers);
     axios
       .post(`http://localhost:8081/user/create/reservation/${userId}`, {
@@ -95,7 +95,7 @@ const BookingPage = (props) => {
         totalPrice: total,
       })
       .then((result) => {
-        console.log('Reservation Done', result);
+        console.log("Reservation Done", result);
         handleTickets(result.data._id);
         setTimeout(() => {}, 4000);
         nextPage();
@@ -103,24 +103,24 @@ const BookingPage = (props) => {
       .catch((err) => console.log(err));
   };
   const getIndividualPrice = (flight, type, cabin) => {
-    if (type === 'adult') {
+    if (type === "adult") {
       switch (cabin) {
-        case 'economy':
+        case "economy":
           return flight.economy.adultPrice;
-        case 'business':
+        case "business":
           return flight.business.adultPrice;
-        case 'first':
+        case "first":
           return flight.firstClass.adultPrice;
         default:
           return 0;
       }
     } else {
       switch (cabin) {
-        case 'economy':
+        case "economy":
           return flight.economy.childPrice;
-        case 'business':
+        case "business":
           return flight.business.childPrice;
-        case 'first':
+        case "first":
           return flight.firstClass.childPrice;
         default:
           return 0;
@@ -134,7 +134,7 @@ const BookingPage = (props) => {
       axios
         .post(`http://localhost:8081/user/create/ticket`, {
           seatNum: traveller.departureSeat,
-          ticketType: 'departing',
+          ticketType: "departing",
           passengerType: traveller.type,
           firstName: traveller.firstName,
           lastName: traveller.lastName,
@@ -150,16 +150,16 @@ const BookingPage = (props) => {
           dateOfBirth: traveller.dateOfBirth,
         })
         .then((result) => {
-          console.log('ticket Done', result);
+          console.log("ticket Done", result);
           departs.push(result.data);
           setDepartureTickets(departs);
-          console.log('dep', departs);
+          console.log("dep", departs);
         })
         .catch((err) => console.log(err));
       axios
         .post(`http://localhost:8081/user/create/ticket`, {
           seatNum: traveller.returnSeat,
-          ticketType: 'return',
+          ticketType: "return",
           passengerType: traveller.type,
           firstName: traveller.firstName,
           lastName: traveller.lastName,
@@ -175,17 +175,13 @@ const BookingPage = (props) => {
           dateOfBirth: traveller.dateOfBirth,
         })
         .then((result) => {
-          console.log('ticket Done return', result);
+          console.log("ticket Done return", result);
           returns.push(result.data);
           setReturnTickets(returns);
-          console.log('ree', returns);
+          console.log("ree", returns);
         })
         .catch((err) => console.log(err));
     });
-    // setDepartureTickets(departs);
-    // setReturnTickets(returns);
-    // console.log(departs);
-    // console.log("re", returns);
   };
 
   const handleNextForm = (e) => {
@@ -206,7 +202,7 @@ const BookingPage = (props) => {
     setActualStep((prevActiveStep) => prevActiveStep + 1);
     setActiveStep((count) => count + 1);
     setSkipped(newSkipped);
-    if (actualStep === 5) history.push('/reservations');
+    if (actualStep === 5) history.push("/reservations");
   };
   const handleBack = () => {
     setActualStep((prevActiveStep) => prevActiveStep - 1);
@@ -220,43 +216,43 @@ const BookingPage = (props) => {
     [`&.${stepConnectorClasses.active}`]: {
       [`& .${stepConnectorClasses.line}`]: {
         backgroundImage:
-          'linear-gradient( 95deg,rgb(33 208 242) 0%, rgb(98 64 233) 50%, rgb(138,35,135) 100%)',
+          "linear-gradient( 95deg,rgb(33 208 242) 0%, rgb(98 64 233) 50%, rgb(138,35,135) 100%)",
       },
     },
     [`&.${stepConnectorClasses.completed}`]: {
       [`& .${stepConnectorClasses.line}`]: {
         backgroundImage:
-          'linear-gradient( 95deg,rgb(94 218 242) 0%, rgb(154 131 248) 50%, rgb(206 98 203) 100%)',
+          "linear-gradient( 95deg,rgb(94 218 242) 0%, rgb(154 131 248) 50%, rgb(206 98 203) 100%)",
       },
     },
     [`& .${stepConnectorClasses.line}`]: {
       height: 3,
       border: 0,
       backgroundColor:
-        theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
+        theme.palette.mode === "dark" ? theme.palette.grey[800] : "#eaeaf0",
       borderRadius: 1,
     },
   }));
 
-  const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
+  const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
     backgroundColor:
-      theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
+      theme.palette.mode === "dark" ? theme.palette.grey[700] : "#ccc",
     zIndex: 1,
-    color: '#fff',
+    color: "#fff",
     width: 50,
     height: 50,
-    display: 'flex',
-    borderRadius: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    borderRadius: "50%",
+    justifyContent: "center",
+    alignItems: "center",
     ...(ownerState.active && {
       backgroundImage:
-        'linear-gradient( 136deg, rgb(33 208 242) 0%, rgb(98 64 233) 50%, rgb(138,35,135) 100%)',
-      boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
+        "linear-gradient( 136deg, rgb(33 208 242) 0%, rgb(98 64 233) 50%, rgb(138,35,135) 100%)",
+      boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
     }),
     ...(ownerState.completed && {
       backgroundImage:
-        'linear-gradient( 136deg, rgb(94 218 242) 0%, rgb(154 131 248) 50%, rgb(206 98 203) 100%)',
+        "linear-gradient( 136deg, rgb(94 218 242) 0%, rgb(154 131 248) 50%, rgb(206 98 203) 100%)",
     }),
   }));
 
@@ -281,10 +277,10 @@ const BookingPage = (props) => {
   }
 
   const steps = [
-    'Confirm Reservation',
-    'Enter Passengers Details',
-    'Select Seats',
-    'Itenirary',
+    "Confirm Reservation",
+    "Enter Passengers Details",
+    "Select Seats",
+    "Itenirary",
   ];
 
   const handleOnClick = () => {
@@ -293,11 +289,11 @@ const BookingPage = (props) => {
       //if(passenger.firstName===''||)
     });
   };
-  const handleEnable = () => (activeStep === '0' ? false : true);
+  const handleEnable = () => (activeStep === "0" ? false : true);
   return (
     <Container>
       {actualStep > 1 && (
-        <div style={{ marginTop: '2%' }}>
+        <div style={{ marginTop: "2%" }}>
           <Stepper
             alternativeLabel
             activeStep={activeStep}
@@ -313,15 +309,15 @@ const BookingPage = (props) => {
           </Stepper>
         </div>
       )}
-      <div style={{ marginTop: '2%' }}>
+      <div style={{ marginTop: "2%" }}>
         {loading && <CircularProgress />}
         {actualStep === 0 && (
           <div>
             <h2
               style={{
-                float: 'left',
-                fontFamily: 'family:initial',
-                marginLeft: '0.1%',
+                float: "left",
+                fontFamily: "family:initial",
+                marginLeft: "0.1%",
               }}
             >
               Select Departure Flight
@@ -339,9 +335,9 @@ const BookingPage = (props) => {
           <div>
             <h2
               style={{
-                float: 'left',
-                fontFamily: 'family:initial',
-                marginLeft: '0.1%',
+                float: "left",
+                fontFamily: "family:initial",
+                marginLeft: "0.1%",
               }}
             >
               Select Return Flight
@@ -375,6 +371,7 @@ const BookingPage = (props) => {
         )}
         {actualStep === 4 && (
           <SelectSeat
+            edit={true}
             passengers={travellers}
             departureFlight={departureInput}
             returnFlight={arrivalInput}
@@ -400,18 +397,18 @@ const BookingPage = (props) => {
       </div>
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'row',
+          display: "flex",
+          flexDirection: "row",
           pt: 2,
-          marginTop: '2%',
-          width: '100%',
-          justifyContent: 'end',
+          marginTop: "2%",
+          width: "100%",
+          justifyContent: "end",
         }}
-        style={{ float: 'right' }}
+        style={{ float: "right" }}
       >
         {actualStep >= 1 && actualStep !== 3 && actualStep !== 5 && (
           <Button
-            color='inherit'
+            color="inherit"
             disabled={actualStep === 0}
             onClick={handleBack}
             sx={{ mr: 1 }}
@@ -421,8 +418,8 @@ const BookingPage = (props) => {
         )}
 
         {activeStep >= 0 && actualStep !== 3 && actualStep !== 4 && (
-          <Button onClick={handleNext} type='submit'>
-            {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+          <Button onClick={handleNext} type="submit">
+            {activeStep === steps.length - 1 ? "Finish" : "Next"}
           </Button>
         )}
       </Box>

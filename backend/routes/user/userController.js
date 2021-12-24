@@ -1,11 +1,22 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
+<<<<<<< HEAD
 const Flight = require("../../Models/Flight");
 const Reservation = require("../../Models/Reservation");
 const Ticket = require("../../Models/Ticket");
 const User = require("../../Models/User");
 var airports = require("airport-codes");
+=======
+const Flight = require('../../Models/Flight');
+const Reservation = require('../../Models/Reservation');
+const Ticket = require('../../Models/Ticket');
+const User = require('../../Models/User');
+var airports = require('airport-codes');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+>>>>>>> me7a
 
 router.get("/search/flights", async (req, res) => {
   try {
