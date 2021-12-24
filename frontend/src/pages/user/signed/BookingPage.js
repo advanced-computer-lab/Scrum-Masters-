@@ -280,7 +280,7 @@ const BookingPage = (props) => {
     "Confirm Reservation",
     "Enter Passengers Details",
     "Select Seats",
-    "Itenirary",
+    "Itinerary",
   ];
 
   const handleOnClick = () => {
