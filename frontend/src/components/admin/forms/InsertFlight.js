@@ -27,14 +27,13 @@ const InsertFlight = () => {
   const [noOfEconomy, setNoOfEconomy] = useState("");
   const [noOfBusiness, setNoOfBusiness] = useState("");
   const [noOfFirstClass, setNoOfFirstClass] = useState("");
+  const [priceOfEconomy, setPriceOfEconomy] = useState("");
+  const [priceOfBusiness, setPriceOfBusiness] = useState("");
+  const [priceOfFirstClass, setPriceOfFirstClass] = useState("");
   const [flight, setFlight] = useState();
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [message, setMessage] = React.useState("");
-  const [economyPrice,setEconomyPrice]=useState(0);
-  const [businessPrice,setBusinessPrice]=useState(0);
-  const [firstPrice,setFirstPrice]=useState(0);
-
   var Data = {};
   const history = useHistory();
   const showAlert = () => {
@@ -60,14 +59,10 @@ const InsertFlight = () => {
       arrivalDate,
       departureAirport,
       arrivalAirport,
-      economy: { noOfSeats: noOfEconomy },
-      business: { noOfSeats: noOfBusiness },
-      firstClass: { noOfSeats: noOfFirstClass },
-      business:{adultPrice:businessPrice},
-      economy:{adultPrice:economyPrice},
-      firstClass:{adultPrice:firstPrice}
-
-
+      economy: { noOfSeats: noOfEconomy, adultPrice:priceOfEconomy },
+      business: { noOfSeats: noOfBusiness,adultPrice:priceOfBusiness },
+      firstClass: { noOfSeats: noOfFirstClass,adultPrice:priceOfFirstClass},
+  
     };
 
     axios
@@ -188,12 +183,16 @@ const InsertFlight = () => {
                 value={arrivalDate}
                 onChange={(event) => {
                   setArrivalDate(event.target.value);
+                  console.log(typeof event.target.value)
                 }}
                 InputLabelProps={{
                   shrink: true,
                 }}
+                
               />
+              
             </div>
+            
           </Stack>
 
           <Stack direction="column" spacing={3} style={{ marginTop: "10px" }}>
@@ -283,60 +282,63 @@ const InsertFlight = () => {
                 }}
               />
             </div>
-            <Stack direction="column">
+          </Stack>
+          
+          <Stack> 
+          <div>
+              <TextField
+                required
+                type="Number"
+                variant="standard"
+                label="Price of First Class seat"
+                // placeholder='Number of First Class'
+                name="priceOfFirst"
+                value={priceOfFirstClass}
+                onChange={(event) => {
+                  setPriceOfFirstClass(event.target.value);
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </div>
             <div>
-            <TextField
+              <TextField
                 required
                 type="Number"
-                label="Economy Price"
                 variant="standard"
-                // placeholder='Arrival Time'
-                name="economyPrice"
-                value={economyPrice}
+                label="Price of Business Seat"
+                // placeholder='Number of First Class'
+                name="priceOfBusiness"
+                value={priceOfBusiness}
                 onChange={(event) => {
-                  setEconomyPrice(event.target.value);
+                  setPriceOfBusiness(event.target.value);
                 }}
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
-               </div>
-               <div>
-            <TextField
+            </div>
+            
+            <div>
+              <TextField
                 required
                 type="Number"
-                label="First Class Price"
                 variant="standard"
-                // placeholder='Arrival Time'
-                name="firstPrice"
-                value={firstPrice}
+                label="Price of Economy Seat"
+                // placeholder='Number of First Class'
+                name="priceOfEconomy"
+                value={priceOfEconomy}
                 onChange={(event) => {
-                  setFirstPrice(event.target.value);
+                  setPriceOfEconomy(event.target.value);
                 }}
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
-               </div>
-               <div>
-            <TextField
-                required
-                type="Number"
-                label="Business Price"
-                variant="standard"
-                // placeholder='Arrival Time'
-                name="businessPrice"
-                value={businessPrice}
-                onChange={(event) => {
-                  setBusinessPrice(event.target.value);
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-               </div>
-              </Stack>
-           
+            </div>
+            
+            
           </Stack>
         </Stack>
         <React.Fragment>
@@ -397,14 +399,13 @@ const InsertFlight = () => {
                   <br />
                   First Class Seats:<b> {flight.firstClass.noOfSeats}</b>.{" "}
                   <br />
-                  Economy Ticket Price:<b>{flight.economy.adultPrice}</b>
+                  Price of First Class:<b> {flight.firstClass.adultPrice}</b>.{" "}
                   <br />
-                  First Class Ticket Price:<b>{flight.firstClass.adultPrice}</b>
+                  Price of Business Class:<b> {flight.business.adultPrice}</b>.{" "}
                   <br />
-                 Business Ticket Price:<b>{flight.business.adultPrice}</b>
-                 <br />
+                  Price of Economy Class:<b> {flight.economy.adultPrice}</b>.{" "}
+                  <br />
                   Total Seats: <b>{flight.noOfSeats}</b>.
-               
                 </DialogContentText>
               </DialogContent>
               <DialogActions style={{ justifyContent: "center" }}>

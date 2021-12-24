@@ -17,7 +17,7 @@ import PaymentComponent from './components/user/forms/PaymentComponent';
 import { Container } from 'react-bootstrap';
 import StripeCheckout from "react-stripe-checkout";
 import SendingMail from './components/user/forms/SendingMail';
-
+import PassengerDeets from './components/user/forms/PassengerDeets';
 
 
 
@@ -66,6 +66,12 @@ function App() {
           <Route exact path='/account' component={Account}></Route>
           <Route exact path='/' component={SearchingPage}></Route>
           <Route exact path='/reservations' component={Reservations}></Route>
+          <Route exact path='/pass' component={PassengerDeets}>
+            <Container>
+              <PassengerDeets/>
+            </Container>
+          </Route>
+          
           <Route
             exact
             path='/confirmation'

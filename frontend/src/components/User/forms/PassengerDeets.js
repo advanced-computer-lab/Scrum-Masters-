@@ -17,6 +17,10 @@ import { InputLabel
  import { MenuItem } from '@mui/material';
  import { FormControl } from '@mui/material';
 
+ import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from '@mui/lab/DatePicker';
+
 //Ask Ahmed Serry how to pass Data
 const PassengerDeets = (props) => {
   const [expanded, setExpanded] = React.useState(true); //props.index===0
@@ -190,7 +194,8 @@ const PassengerDeets = (props) => {
                 />
               </Stack>
               <Stack direction="column" spacing={3} width="25%">
-                <TextField
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
                   required
                   backgroundcolor="#f2f2f2"
                   type="Date"
@@ -200,13 +205,15 @@ const PassengerDeets = (props) => {
                   defaultValue={values.dateOfBirth}
                   name="dateOfBirth"
                   onChange={onChange}
+                  maxDate={new Date()}
                   //  } }
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  max="2000-13-13"
-                  InputProps={{inputProps: { min: "1898-12-24", max: "2021-12-21"} }}
-
+                  maxDate={new Date()}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+                 </LocalizationProvider>
                 />
               </Stack>
             </Stack>

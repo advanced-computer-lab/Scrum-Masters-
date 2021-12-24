@@ -197,8 +197,8 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
               Class Cabin:{input1.details.cabin}
             </Item>
           </Grid>
-          <Grid item xs={6}>
-            <Item>
+          <Grid item xs={6} marginleft={3}>
+            <Item marginleft={10}>
               <AttachMoneyIcon />
               Total Price of Reservation:{totalPrice}
             </Item>

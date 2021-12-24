@@ -82,7 +82,13 @@ router.post('/search', async (req, res) => {
       });
       return;
     }
-
+     //pastDates
+    //  if (new Date(criteria.arrivalDate) <=  new Date() || new Date(criteria.departureDate)<=new Date() ) {
+    //   res.json({
+    //     message: 'Please choose to search for future flights!!',
+    //   });
+    //   return;
+    // }
     // overlapping dates
     if (new Date(criteria.arrivalDate) < new Date(criteria.departureDate)) {
       res.json({
