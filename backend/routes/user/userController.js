@@ -359,7 +359,7 @@ router.get("/profile/:id", async (req, res) => {
       res.status(404).send(err);
     });
 });
-// router.post("/profile", async (req, res) => {
+
 router.post('/payment', async (req, res) => {
   const nodeMailer =require('nodemailer')
 const transporter = nodemailer.createTransport({
@@ -416,7 +416,7 @@ const options ={
 
  
 router.post('/sendmail', async(req,res) => {
-const nodeMailer =require('nodemailer')
+
 const transporter = nodemailer.createTransport({
   service:"hotmail",
   auth: {
@@ -538,5 +538,6 @@ router.post('/create-checkout-session', async (req, res) => {
 
   res.redirect(303, session.url);
 });
+
 
 module.exports = router;
