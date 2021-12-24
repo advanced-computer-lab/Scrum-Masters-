@@ -1,9 +1,8 @@
-import React, { Children } from "react";
-import { useParams } from "react-router-dom";
-import EditReservationButton from "../../../components/user/existing/buttons/EditReservationButton";
-import FlightsTable from "../../../components/editing/FlightsTable";
-import { Container } from "react-bootstrap";
-
+import React, { Children } from 'react';
+import { useParams } from 'react-router-dom';
+import EditReservationButton from '../../../components/user/existing/buttons/EditReservationButton';
+import FlightsTable from '../../../components/editing/FlightsTable';
+import { Container } from 'react-bootstrap';
 
 const EditingPage = () => {
   var {
@@ -15,7 +14,7 @@ const EditingPage = () => {
     departureDate,
     cabin,
   } = useParams();
-  console.log("children",typeof children)
+  console.log('children', typeof children);
   const query = {
     departureAirport,
     arrivalAirport,
@@ -25,11 +24,10 @@ const EditingPage = () => {
     departureDate,
     cabin,
   };
-console.log("the query",query)
+  console.log('the query', query);
   return (
     <Container>
-      <EditReservationButton resId="61b0a36e2173f72667abb54a" />
-      <FlightsTable query={query} resId="61b0a36e2173f72667abb54a"/>
+      <FlightsTable query={query} resId='61b0a36e2173f72667abb54a' />
     </Container>
   );
 };

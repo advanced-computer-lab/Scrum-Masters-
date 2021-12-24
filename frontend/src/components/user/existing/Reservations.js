@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react';
-
+import EditReservationButton from './buttons/EditReservationButton';
 import { GridCellParams } from '@mui/x-data-grid';
 import emailjs from 'emailjs-com';
 import axios from 'axios';
@@ -214,9 +214,12 @@ export default function BasicTable(onDelete) {
                       : row.departingFlight.cabin.charAt(0).toUpperCase() +
                         row.departingFlight.cabin.substring(1)}
                   </TableCell>
-                  <TableCell><IconButton aria-label="edite" color="primary">
-                                <EditIcon />
-                              </IconButton></TableCell>
+                  <TableCell>
+                    {/* <IconButton aria-label='edite' color='primary'>
+                      <EditIcon />
+                    </IconButton> */}
+                    <EditReservationButton resId={row.reservationId} />
+                  </TableCell>
                   <TableCell style={{ width: '7%' }}>
                     <div>
                       <Button

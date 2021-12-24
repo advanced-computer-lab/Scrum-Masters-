@@ -1,6 +1,6 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import { IoIosAirplane } from "react-icons/io";
+import React from 'react';
+import { useEffect, useState } from 'react';
+import { IoIosAirplane } from 'react-icons/io';
 import {
   Button,
   Box,
@@ -19,10 +19,10 @@ import {
   tableCellClasses,
   styled,
   Paper,
-} from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import axios from "axios";
+} from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import axios from 'axios';
 
 // const data = {
 //   departingFlights: [
@@ -230,33 +230,56 @@ import axios from "axios";
 
 const FlightsTable = (query, resId) => {
   const [page, setPage] = React.useState(0);
-  const [count, setCount] = React.useState(0);
+  const [isDeparture, setIsDeparture] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [open, setOpen] = React.useState(false);
   const [data, setData] = useState(null);
-  const [cabinClass,setCabinClass] =  useState(null);
+  const [cabinClass, setCabinClass] = useState(null);
+  const [departureFlightId, setDepartureFlight] = React.useState();
+  const [returnFlightId, setReturnFlight] = React.useState();
+  const [chosenFlights, setChosenFlights] = React.useState({
+    departureFlightId: '',
+    returnFlightId: '',
+  });
+
+  const handleChosenFlight = (flightId) => {
+    if (isDeparture) {
+      setDepartureFlight(flightId);
+      setIsDeparture(false);
+    } else {
+      setReturnFlight(flightId);
+    }
+    setChosenFlights({
+      departureFlightId: departureFlightId,
+      returnFlightId: returnFlightId,
+    });
+    console.log(chosenFlights);
+  };
   useEffect(() => {
-    console.log("this is props", query.query);
-    console.log("this is resId", query.resId);
+    console.log('this is props', query.query);
+    console.log('this is resId', query.resId);
 
     axios
-      .post(`http://localhost:8081/user/edit/search/${query.resId}`, query.query)
+      .post(
+        `http://localhost:8081/user/edit/search/${query.resId}`,
+        query.query
+      )
       .then((res) => {
-        console.log("This is the response", res.data);
+        console.log('This is the response', res.data);
         setData(res.data);
         setCabinClass(data.details.cabin);
       })
-      .catch((err) => console.log("sadddd"));
+      .catch((err) => console.log('sadddd'));
   }, []);
 
   //const cabinClass = data.details.cabin ? data.details.cabin : null;
   function getPrice(cabinClass, row) {
-    if (cabinClass === "economy")
+    if (cabinClass === 'economy')
       return (
         row.economy.adultPrice * data.details.noOfAdults +
         row.economy.childPrice * data.details.noOfChildren
       );
-    else if (cabinClass === "first")
+    else if (cabinClass === 'first')
       return (
         row.firstClass.adultPrice * data.details.noOfAdults +
         row.firstClass.childPrice * data.details.noOfChildren
@@ -270,26 +293,26 @@ const FlightsTable = (query, resId) => {
   const getDate = (input) => {
     const date = new Date(input);
     return (
-      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
+      date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()
     );
   };
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(4n-3)": {
+    '&:nth-of-type(4n-3)': {
       backgroundColor: theme.palette.action.hover,
     },
-    "&:nth-of-type(4n-2)": {
+    '&:nth-of-type(4n-2)': {
       backgroundColor: theme.palette.action.hover,
     },
     // hide last border
-    "&:last-child td, &:last-child th": {
+    '&:last-child td, &:last-child th': {
       border: 0,
     },
   }));
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: "#5e60ce",
+      backgroundColor: '#5e60ce',
       color: theme.palette.common.white,
     },
   }));
@@ -305,180 +328,322 @@ const FlightsTable = (query, resId) => {
   return (
     <div>
       {data && (
-        <TableContainer component={Paper} style={{ marginBottom: "20px" }}>
-          <Table aria-label="collapsible table">
+        <TableContainer component={Paper} style={{ marginBottom: '20px' }}>
+          <Table aria-label='collapsible table'>
             <TableHead>
               <TableRow>
                 <StyledTableCell />
                 <StyledTableCell
-                  align="center"
-                  style={{ fontWeight: "bolder" }}
+                  align='center'
+                  style={{ fontWeight: 'bolder' }}
                 >
                   Flight Number
                 </StyledTableCell>
                 <StyledTableCell
-                  align="center"
-                  style={{ fontWeight: "bolder" }}
+                  align='center'
+                  style={{ fontWeight: 'bolder' }}
                 >
                   From
                 </StyledTableCell>
                 <StyledTableCell
-                  align="center"
-                  style={{ fontWeight: "bolder" }}
+                  align='center'
+                  style={{ fontWeight: 'bolder' }}
                 ></StyledTableCell>
                 <StyledTableCell
-                  align="center"
-                  style={{ fontWeight: "bolder" }}
+                  align='center'
+                  style={{ fontWeight: 'bolder' }}
                 >
                   To
                 </StyledTableCell>
                 <StyledTableCell
-                  align="center"
-                  style={{ fontWeight: "bolder" }}
+                  align='center'
+                  style={{ fontWeight: 'bolder' }}
                 >
                   Departure Date
                 </StyledTableCell>
                 <StyledTableCell
-                  align="center"
-                  style={{ fontWeight: "bolder" }}
+                  align='center'
+                  style={{ fontWeight: 'bolder' }}
                 >
                   Arrival Date
                 </StyledTableCell>
                 <StyledTableCell
-                  align="center"
-                  style={{ fontWeight: "bolder" }}
+                  align='center'
+                  style={{ fontWeight: 'bolder' }}
                 >
                   Price Difference
                 </StyledTableCell>
                 <StyledTableCell
-                  align="center"
-                  style={{ fontWeight: "bolder" }}
+                  align='center'
+                  style={{ fontWeight: 'bolder' }}
                 ></StyledTableCell>
               </TableRow>
             </TableHead>
             {data.departingFlights ? (
               <TableBody>
-                {data.departingFlights
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <React.Fragment>
-                      <StyledTableRow
-                        sx={{ "& > *": { borderBottom: "unset" } }}
-                      >
-                        <TableCell>
-                          <Tooltip
-                            title="View More Details"
-                            arrow
-                            placement="right"
+                {isDeparture
+                  ? data.departingFlights
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row) => (
+                        <React.Fragment>
+                          <StyledTableRow
+                            sx={{ '& > *': { borderBottom: 'unset' } }}
                           >
-                            <IconButton
-                              aria-label="expand row"
-                              size="small"
-                              onClick={() => setOpen(!open)}
-                            >
-                              {open ? (
-                                <KeyboardArrowUpIcon />
-                              ) : (
-                                <KeyboardArrowDownIcon />
-                              )}
-                            </IconButton>
-                          </Tooltip>
-                        </TableCell>
-                        <TableCell align="center">{row.flightNumber}</TableCell>
-                        <TableCell align="center">
-                          {row.departureAirport}
-                        </TableCell>
-                        <TableCell align="center">
-                          <IoIosAirplane />
-                        </TableCell>
-                        <TableCell align="center">
-                          {row.arrivalAirport}
-                        </TableCell>
-                        <TableCell align="center">
-                          {getDate(row.departureDate)}
-                        </TableCell>
-                        <TableCell align="center">
-                          {getDate(row.arrivalDate)}
-                        </TableCell>
-                        <TableCell align="center">
-                          {getPrice(cabinClass, row) -
-                            data.oldReservation.totalPrice +
-                            "£"}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          style={{ fontStyle: "italic" }}
-                        >
-                          <Button id={row._id}>Choose Flight</Button>
-                        </TableCell>
-                      </StyledTableRow>
-                      <StyledTableRow>
-                        <TableCell
-                          style={{ paddingBottom: 0, paddingTop: 0 }}
-                          colSpan={12}
-                        >
-                          <Collapse in={open} timeout="auto" unmountOnExit>
-                            <Box sx={{ margin: 1 }}>
-                              <Typography
-                                variant="h6"
-                                gutterBottom
-                                component="div"
-                                fontStyle="italic"
+                            <TableCell>
+                              <Tooltip
+                                title='View More Details'
+                                arrow
+                                placement='right'
                               >
-                                Details
-                              </Typography>
-                              <Table>
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell
-                                      align="center"
-                                      style={{ fontStyle: "italic" }}
-                                    >
-                                      Departure Time
-                                    </TableCell>
-                                    <TableCell
-                                      align="center"
-                                      style={{ fontStyle: "italic" }}
-                                    >
-                                      Duration{" "}
-                                    </TableCell>
-                                    <TableCell
-                                      align="center"
-                                      style={{ fontStyle: "italic" }}
-                                    >
-                                      Arrival Time
-                                    </TableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  <TableRow key={row._id}>
-                                    <TableCell
-                                      align="center"
-                                      style={{ fontStyle: "italic" }}
-                                    >
-                                      {row.departureTime}
-                                    </TableCell>
-                                    <TableCell
-                                      align="center"
-                                      style={{ fontStyle: "italic" }}
-                                    >
-                                      {row.duration}
-                                    </TableCell>
-                                    <TableCell
-                                      align="center"
-                                      style={{ fontStyle: "italic" }}
-                                    >
-                                      {row.arrivalTime}
-                                    </TableCell>
-                                  </TableRow>
-                                </TableBody>
-                              </Table>
-                            </Box>
-                          </Collapse>
-                        </TableCell>
-                      </StyledTableRow>
-                    </React.Fragment>
-                  ))}
+                                <IconButton
+                                  aria-label='expand row'
+                                  size='small'
+                                  onClick={() => setOpen(!open)}
+                                >
+                                  {open ? (
+                                    <KeyboardArrowUpIcon />
+                                  ) : (
+                                    <KeyboardArrowDownIcon />
+                                  )}
+                                </IconButton>
+                              </Tooltip>
+                            </TableCell>
+                            <TableCell align='center'>
+                              {row.flightNumber}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {row.departureAirport}
+                            </TableCell>
+                            <TableCell align='center'>
+                              <IoIosAirplane />
+                            </TableCell>
+                            <TableCell align='center'>
+                              {row.arrivalAirport}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {getDate(row.departureDate)}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {getDate(row.arrivalDate)}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {getPrice(cabinClass, row) -
+                                data.oldReservation.totalPrice +
+                                '£'}
+                            </TableCell>
+                            <TableCell
+                              align='center'
+                              style={{ fontStyle: 'italic' }}
+                            >
+                              <Button
+                                id={row._id}
+                                onClick={() => handleChosenFlight(row._id)}
+                              >
+                                Choose Flight
+                              </Button>
+                            </TableCell>
+                          </StyledTableRow>
+                          <StyledTableRow>
+                            <TableCell
+                              style={{ paddingBottom: 0, paddingTop: 0 }}
+                              colSpan={12}
+                            >
+                              <Collapse in={open} timeout='auto' unmountOnExit>
+                                <Box sx={{ margin: 1 }}>
+                                  <Typography
+                                    variant='h6'
+                                    gutterBottom
+                                    component='div'
+                                    fontStyle='italic'
+                                  >
+                                    Details
+                                  </Typography>
+                                  <Table>
+                                    <TableHead>
+                                      <TableRow>
+                                        <TableCell
+                                          align='center'
+                                          style={{ fontStyle: 'italic' }}
+                                        >
+                                          Departure Time
+                                        </TableCell>
+                                        <TableCell
+                                          align='center'
+                                          style={{ fontStyle: 'italic' }}
+                                        >
+                                          Duration{' '}
+                                        </TableCell>
+                                        <TableCell
+                                          align='center'
+                                          style={{ fontStyle: 'italic' }}
+                                        >
+                                          Arrival Time
+                                        </TableCell>
+                                      </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                      <TableRow key={row._id}>
+                                        <TableCell
+                                          align='center'
+                                          style={{ fontStyle: 'italic' }}
+                                        >
+                                          {row.departureTime}
+                                        </TableCell>
+                                        <TableCell
+                                          align='center'
+                                          style={{ fontStyle: 'italic' }}
+                                        >
+                                          {row.duration}
+                                        </TableCell>
+                                        <TableCell
+                                          align='center'
+                                          style={{ fontStyle: 'italic' }}
+                                        >
+                                          {row.arrivalTime}
+                                        </TableCell>
+                                      </TableRow>
+                                    </TableBody>
+                                  </Table>
+                                </Box>
+                              </Collapse>
+                            </TableCell>
+                          </StyledTableRow>
+                        </React.Fragment>
+                      ))
+                  : data.returningFlights
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row) => (
+                        <React.Fragment>
+                          <StyledTableRow
+                            sx={{ '& > *': { borderBottom: 'unset' } }}
+                          >
+                            <TableCell>
+                              <Tooltip
+                                title='View More Details'
+                                arrow
+                                placement='right'
+                              >
+                                <IconButton
+                                  aria-label='expand row'
+                                  size='small'
+                                  onClick={() => setOpen(!open)}
+                                >
+                                  {open ? (
+                                    <KeyboardArrowUpIcon />
+                                  ) : (
+                                    <KeyboardArrowDownIcon />
+                                  )}
+                                </IconButton>
+                              </Tooltip>
+                            </TableCell>
+                            <TableCell align='center'>
+                              {row.flightNumber}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {row.departureAirport}
+                            </TableCell>
+                            <TableCell align='center'>
+                              <IoIosAirplane />
+                            </TableCell>
+                            <TableCell align='center'>
+                              {row.arrivalAirport}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {getDate(row.departureDate)}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {getDate(row.arrivalDate)}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {getPrice(cabinClass, row) -
+                                data.oldReservation.totalPrice +
+                                '£'}
+                            </TableCell>
+                            <TableCell
+                              align='center'
+                              style={{ fontStyle: 'italic' }}
+                            >
+                              <Button
+                                id={row._id}
+                                onClick={() => handleChosenFlight(row._id)}
+                              >
+                                Choose Flight
+                              </Button>
+                            </TableCell>
+                          </StyledTableRow>
+                          <StyledTableRow>
+                            <TableCell
+                              style={{ paddingBottom: 0, paddingTop: 0 }}
+                              colSpan={12}
+                            >
+                              <Collapse in={open} timeout='auto' unmountOnExit>
+                                <Box sx={{ margin: 1 }}>
+                                  <Typography
+                                    variant='h6'
+                                    gutterBottom
+                                    component='div'
+                                    fontStyle='italic'
+                                  >
+                                    Details
+                                  </Typography>
+                                  <Table>
+                                    <TableHead>
+                                      <TableRow>
+                                        <TableCell
+                                          align='center'
+                                          style={{ fontStyle: 'italic' }}
+                                        >
+                                          Departure Time
+                                        </TableCell>
+                                        <TableCell
+                                          align='center'
+                                          style={{ fontStyle: 'italic' }}
+                                        >
+                                          Duration{' '}
+                                        </TableCell>
+                                        <TableCell
+                                          align='center'
+                                          style={{ fontStyle: 'italic' }}
+                                        >
+                                          Arrival Time
+                                        </TableCell>
+                                      </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                      <TableRow key={row._id}>
+                                        <TableCell
+                                          align='center'
+                                          style={{ fontStyle: 'italic' }}
+                                        >
+                                          {row.departureTime}
+                                        </TableCell>
+                                        <TableCell
+                                          align='center'
+                                          style={{ fontStyle: 'italic' }}
+                                        >
+                                          {row.duration}
+                                        </TableCell>
+                                        <TableCell
+                                          align='center'
+                                          style={{ fontStyle: 'italic' }}
+                                        >
+                                          {row.arrivalTime}
+                                        </TableCell>
+                                      </TableRow>
+                                    </TableBody>
+                                  </Table>
+                                </Box>
+                              </Collapse>
+                            </TableCell>
+                          </StyledTableRow>
+                        </React.Fragment>
+                      ))}
               </TableBody>
             ) : null}
             <TableFooter>
@@ -495,6 +660,16 @@ const FlightsTable = (query, resId) => {
             </TableFooter>
           </Table>
         </TableContainer>
+      )}
+      {!isDeparture && (
+        <Button
+          color='inherit'
+          sx={{ mr: 1 }}
+          onClick={() => setIsDeparture(true)}
+          style={{ float: 'right' }}
+        >
+          back
+        </Button>
       )}
     </div>
   );
