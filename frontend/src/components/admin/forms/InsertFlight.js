@@ -97,7 +97,7 @@ const InsertFlight = () => {
         <Stack
           direction="row"
           spacing={5}
-          style={{ marginTop: "10px", marginLeft: "30%", marginRight: "35%" }}
+          style={{ marginTop: "10px", marginLeft: "20%", marginRight: "35%" }}
         >
           <Stack direction="column" spacing={3} style={{ marginTop: "10px" }}>
             <div>
