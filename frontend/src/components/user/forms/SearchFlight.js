@@ -26,7 +26,7 @@ import { DialogTitle } from '@mui/material';
 import { Dialog } from '@mui/material';
 import { DialogContentText } from '@mui/material';
 import BookingPage from '../../../pages/user/signed/BookingPage';
-import moment from 'moment';
+// import moment from 'moment';
 
 const SearchFlight = ({}) => {
   useEffect(() => {
@@ -79,7 +79,9 @@ const SearchFlight = ({}) => {
   };
 
   const current = new Date();
-  const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+  const date = `${current.getDate()}/${
+    current.getMonth() + 1
+  }/${current.getFullYear()}`;
 
   const [adultCount, setAdultCount] = useState(0);
   const [childrenCount, setChildrenCount] = useState(0);
@@ -101,8 +103,8 @@ const SearchFlight = ({}) => {
           setErrorMessage(res.data.message);
           showAlert();
         } else {
-          setOutput(res.data);   
-          console.log("search flight", res.data);
+          setOutput(res.data);
+          console.log('search flight', res.data);
           setSearchDone(true);
         }
 
