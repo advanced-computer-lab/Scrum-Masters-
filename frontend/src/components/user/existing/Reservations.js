@@ -10,6 +10,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import InfoIcon from '@mui/icons-material/Info';
+import { sizing } from '@mui/system';
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import FlightLandIcon from '@mui/icons-material/FlightLand';
+import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
+import image1 from '../../../images/reservations.jpg';
 import {
   Button,
   Box,
@@ -32,6 +39,7 @@ import {
   Divider,
   Paper,
 } from '@mui/material';
+import FlightLandRounded from '@mui/icons-material/FlightLandRounded';
 
 export default function BasicTable(onDelete) {
   const [open, setOpen] = useState(false);
@@ -117,8 +125,21 @@ export default function BasicTable(onDelete) {
   ViewReservations();
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: '#5e60ce',
+      backgroundColor: theme.palette.common.black,
       color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+  
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 0,
     },
   }));
   const StyledTableElement = styled(TableCell)(({ theme }) => ({
@@ -130,11 +151,11 @@ export default function BasicTable(onDelete) {
 
   return (
     <Container>
-      <div style={{ marginTop: '2%', marginBottom: '2%' }}>
+      <div style={{ marginTop: '2%', marginBottom: '2%'}}>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+          <Table sx={{ minWidth: 650 }} aria-label="customized table" light="false">
             <TableHead>
-              <TableRow>
+              <StyledTableRow>
                 <StyledTableCell />
                 <StyledTableCell align='center'>Flight Number</StyledTableCell>
                 <StyledTableCell align='center'>Depature date</StyledTableCell>
@@ -142,25 +163,26 @@ export default function BasicTable(onDelete) {
                 <StyledTableCell align='center'>Arrival date</StyledTableCell>
                 <StyledTableCell align='center'>Arrival time</StyledTableCell>
                 <StyledTableCell align='center'>Cabin</StyledTableCell>
-                <StyledTableCell align='center'></StyledTableCell>
-                <StyledTableCell align='center'></StyledTableCell>
-              </TableRow>
+                <StyledTableCell align='center' sx={{ width: '3%' }} ></StyledTableCell>
+                <StyledTableCell align='center' sx={{ width: '3%' }}></StyledTableCell>
+                <StyledTableCell align='center' sx={{ width: '7%' }}></StyledTableCell>
+              </StyledTableRow>
             </TableHead>
             <TableBody>
               {data.map((row) => (
-                <TableRow
+                <StyledTableRow
                   key={row.name}
                   sx={{ '&:last-child td, &:last-child th': { border: '0px' } }}
                 >
-                  <TableCell style={{ width: '12%' }}>
+                  <StyledTableCell style={{ width: '13%' }}>
                     <Stack
                       spacing={2}
                       divider={<Divider orientation='horizontal' flexItem />}
                     >
-                      <div>Departing Flight</div>
-                      <div>Arrival Flight</div>
+                      <div>Departing Flight <FlightTakeoffIcon color="primary"/></div>
+                      <div>Arrival Flight <FlightLandRounded color="error"/></div>
                     </Stack>
-                  </TableCell>
+                  </StyledTableCell>
                   <StyledTableElement align='center'>
                     <Stack
                       spacing={2}
@@ -170,7 +192,7 @@ export default function BasicTable(onDelete) {
                       <div>{row.arrivalFlight.flightNumber}</div>
                     </Stack>
                   </StyledTableElement>
-                  <TableCell align='center'>
+                  <StyledTableCell align='center'>
                     <Stack
                       spacing={2}
                       divider={<Divider orientation='horizontal' flexItem />}
@@ -178,8 +200,8 @@ export default function BasicTable(onDelete) {
                       <div>{getDate(row.departingFlight.departureDate)}</div>
                       <div>{getDate(row.arrivalFlight.departureDate)}</div>
                     </Stack>
-                  </TableCell>
-                  <TableCell align='center'>
+                  </StyledTableCell>
+                  <StyledTableCell align='center'>
                     <Stack
                       spacing={2}
                       divider={<Divider orientation='horizontal' flexItem />}
@@ -187,8 +209,8 @@ export default function BasicTable(onDelete) {
                       <div>{row.departingFlight.departureTime}</div>
                       <div>{row.arrivalFlight.departureTime}</div>
                     </Stack>
-                  </TableCell>
-                  <TableCell align='center'>
+                  </StyledTableCell>
+                  <StyledTableCell align='center'>
                     {
                       <Stack
                         spacing={2}
@@ -198,8 +220,8 @@ export default function BasicTable(onDelete) {
                         <div>{getDate(row.arrivalFlight.arrivalDate)}</div>
                       </Stack>
                     }
-                  </TableCell>
-                  <TableCell align='center'>
+                  </StyledTableCell>
+                  <StyledTableCell align='center'>
                     <Stack
                       spacing={2}
                       divider={<Divider orientation='horizontal' flexItem />}
@@ -207,27 +229,36 @@ export default function BasicTable(onDelete) {
                       <div>{row.departingFlight.arrivalTime}</div>
                       <div>{row.arrivalFlight.arrivalTime}</div>
                     </Stack>
-                  </TableCell>
-                  <TableCell align='center'>
+                  </StyledTableCell>
+                  <StyledTableCell align='center'>
                     {row.departingFlight.cabin === 'first'
                       ? 'First Class'
                       : row.departingFlight.cabin.charAt(0).toUpperCase() +
                         row.departingFlight.cabin.substring(1)}
-                  </TableCell>
-                  <TableCell><IconButton aria-label="edite" color="primary">
-                                <EditIcon />
-                              </IconButton></TableCell>
-                  <TableCell style={{ width: '7%' }}>
+                  </StyledTableCell>
+                    <TableCell>
+                      <Stack spacing={-0.5} orientation='horizontal'>
+                              <IconButton aria-label="edit" color="primary">
+                                <EditIcon /> 
+                              </IconButton>
+                              <small align='center'>edit</small>
+                      </Stack>
+                    </TableCell>
+                  <StyledTableCell>
                     <div>
-                      <Button
+                    <Stack spacing={-0.5} orientation='horizontal'>
+                      <IconButton
+                        
                         color='error'
                         variant='outlined'
                         onClick={() => {
                           handleClickOpen();
                         }}
                       >
-                        Cancel
-                      </Button>
+                        <DeleteIcon />
+                      </IconButton>
+                      <small align='center'>delete</small>
+                      </Stack>
                       {open && (
                         <Modal
                           open={open}
@@ -259,8 +290,14 @@ export default function BasicTable(onDelete) {
                         </Modal>
                       )}
                     </div>
-                  </TableCell>
-                </TableRow>
+                  </StyledTableCell>
+                  <TableCell>
+                  <Stack spacing={-0.5} orientation='horizontal'>
+                    <IconButton color="success"><AirplaneTicketIcon fontSize='large'/></IconButton>
+                    <small align='center'>tickets</small>
+                    </Stack>
+                    </TableCell>
+                </StyledTableRow>
               ))}
             </TableBody>
           </Table>
@@ -270,74 +307,4 @@ export default function BasicTable(onDelete) {
   );
 }
 
-// const columns = [
-//   { field: 'id', headerName: 'Date', width: 90 },
-//   {
-//     field: 'lastName',
-//     headerName: 'Time',
-//     width: 150,
-//     onclick:(()=>{console.log("el enta 3ayzo")})
-//   },
-//   {
-//     field: 'firstName',
-//     headerName: 'Depature',
-//     width: 150,
-//   },
-//   {
-//     field: 'age',
-//     headerName: 'Arrival',
-//     width: 150,
-//   },
-//   {
-//     field: 'FlightNo',
-//     headerName: 'FlightNo',
-//     width: 150,
-//   },
-//   {
-//     field: 'Cabin',
-//     headerName: 'Cabin',
-//     width: 150,
-//   },
 
-// ];
-
-// const rows = [
-//   { id: 1, lastName: 'ayhaga', firstName: 'Jon', age: 35 },
-//   { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-//   { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-//   { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-//   { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-//   { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-//   { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-//   { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-//   { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-//  ];
-//const data = axios.get("http://localhost:8081/user/reservations/618939b25ac9e1af44ded417") ;
-
-// export default function DataGridDemo() {
-//     const [data, getData] = useState([]);
-//     const ViewReservations = () => {
-//         useEffect(() => {
-//             axios
-//               .get("http://localhost:8081/user/reservations/61aa2eb9d3eee0b9e4921105")
-//               .then((res) => {
-//                 getData(res.data);
-//                 console.log(res.data);
-//               })
-//               .catch((err) => console.log(err));
-//           },[])
-//     }
-//     ViewReservations();
-//   return (
-//     <div style={{ height: 400, width: '100%' }}>
-//       <DataGrid
-//         rows={rows}
-//         columns={columns}
-//         pageSize={5}
-//         rowsPerPageOptions={[5]}
-//         checkboxSelection
-//         disableSelectionOnClick
-//       />
-//     </div>
-//   );
-// }

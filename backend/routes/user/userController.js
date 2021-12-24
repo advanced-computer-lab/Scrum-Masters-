@@ -353,6 +353,8 @@ router.get('/profile/:id', async (req, res) => {
 });
 router.post('/profile', async (req, res) => {
   const insertion = req.body;
+  insertion.password = await bcrypt.hash(user.password, 10);
+  insertion.email = user.email.toLowerCase();
   const user = new User(insertion);
   user
     .save()

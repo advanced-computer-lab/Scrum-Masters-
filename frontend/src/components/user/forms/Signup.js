@@ -13,14 +13,64 @@ import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import PublicIcon from "@mui/icons-material/Public";
 import Button from "@mui/material/Button";
 import image4 from '/Users/youssefsameh/Documents/GitHub/Scrum-Masters-/Scrum-Masters-/frontend/src/components/user/Signup4.jpg'
-
+import { useState } from "react";
+import axios from "axios";
 
 
 export default function SignUpForm() {
+
+  const [error, setError] = useState(false);
+  const [output, setOutput] = useState();
+  const [errorMessage, setErrorMessage] = useState('');
+
     const[visibility,setVisibility]= React.useState(true)
+    const [values,setValues]=useState();
+    const onChange = async (e, name) => {
+      if (e) {
+        try {
+          console.log(e);
+          if (e.target) {
+           await setValues({ ...values, [e.target.name]: e.target.value });
+          } else {
+            await setValues({ ...values, [name]: e });
+          }
+          await console.log("update", values);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    const onRegister = () => {
+      axios
+      .post('http://localhost:8081/user/profile', values)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err)=> console.log(err));
+    }
+    const onSubmit = () => {
+      //console.log(query);
+      axios
+        .post('http://localhost:8081/auth/register', values)
+        .then((res) => {
+          console.log('waiting for message', res.data);
+          if (res.data.message) {
+            console.log('This email is taken');
+            setError(true);
+            setErrorMessage(res.data.message);
+          } else {
+            setOutput(res.data);   
+            console.log("email and password", res.data);
+            setError(false);
+            setVisibility(false);
+            //setSearchDone(true);
+          }
+        })
+        .catch((err) => console.log(err));
+    };
   return (
     <>
-      <Stack direction="row" spacing={2} sx={{ width: 520 }}>
+      <Stack direction="row" spacing={2} sx={{ width: 100 }}>
       <div>
         <img src={image4} style={{ height: 750, width: 920, float: "left" }} />
       </div>
@@ -40,19 +90,23 @@ export default function SignUpForm() {
         >
           Register
         </div>
-            {!visibility &&
+            {!visibility&& !error &&
             (<div><TextField
               fullWidth="true"
               required
               id="outlined-basic"
               label="First Name"
               variant="outlined"
+              name="firstName"
+              onChange={onChange}
             />
             <TextField
               required
               id="outlined-basic"
               label="Last Name"
               variant="outlined"
+              name="lastName"
+              onChange={onChange}
             />
             <Autocomplete
               id="country-select-demo"
@@ -73,7 +127,7 @@ export default function SignUpForm() {
                     srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
                     alt=""
                   />
-                  {option.label} ({option.code}) +{option.phone}
+                  {option.label} ({option.code})
                 </Box>
               )}
               renderInput={(params) => (
@@ -84,20 +138,18 @@ export default function SignUpForm() {
                     autoComplete: "new-password", // disable autocomplete and autofill
                   }}
                   label="Country"
+                  name="countryCode"
+                  onChange={onChange}
                 />
               )}
             />
             <TextField
               required
               id="outlined-basic"
-              label="E mail"
-              variant="outlined"
-            />
-            <TextField
-              required
-              id="outlined-basic"
               label="Mobile Number"
               variant="outlined"
+              name="phoneNumber"
+              onChange={onChange}
             />
             <Stack direction="row" spacing={2} sx={{ width: 520 }}>
             <TextField
@@ -105,18 +157,24 @@ export default function SignUpForm() {
               id="outlined-basic"
               label="Address"
               variant="outlined"
+              name="homeAddress.address"
+              onChange={onChange}
             />
             <TextField
               required
               id="outlined-basic"
               label="City"
               variant="outlined"
+              name="homeAddress.city"
+              onChange={onChange}
             />
             <TextField
               required
               id="outlined-basic"
               label="ZIP Code"
               variant="outlined"
+              name="homeAddress.zipCode"
+              onChange={onChange}
             />
             </Stack>
             <TextField
@@ -124,30 +182,37 @@ export default function SignUpForm() {
               id="outlined-basic"
               label="Passport Number"
               variant="outlined"
+              name="passportNumber"
+              onChange={onChange}
             /></div>)}
-            {visibility &&(<div>
+            {(visibility || error) &&(<div>
     <Stack spacing={2} sx={{ width: 300 }}></Stack>
     <TextField
       required
       fullWidth
+      error={error}
+      helperText={error?"This email is taken":""}
       id="outlined-basic"
-      label="Username"
+      label="E-mail"
       variant="outlined"
+      name="email"
+      onChange={onChange}
     />
     <TextField
       required
       id="outlined-basic"
       label="Password"
       variant="outlined"
+      name="password"
+      onChange={onChange}
     />
-  </div>)}
+    </div>)}
           </Stack>
-        </div>
-        <div>
-          <Button variant="contained" onClick={() => setVisibility(false)} sx={{ width: "100%" , float: "left" , marginLeft: "10px" , marginTop: "10px"}}>
-            {visibility?"Next":"Sign Up"} 
-          </Button>
-        </div>
+      </div>
+        <div> 
+          {(visibility || error)&&<Button  variant="contained" onClick={() => { onSubmit() ; }} sx={{ width: "100%"  , marginLeft: "10px" }}>Next </Button>}
+          {(!visibility&&!error)&&<Button variant="contained" onClick={() => { onRegister() ; }} sx={{width: "100%",marginLeft: "10px"}}>submit</Button>}
+      </div>
       </Box>
       </Stack>
     </>
