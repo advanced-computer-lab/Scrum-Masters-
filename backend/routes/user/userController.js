@@ -414,6 +414,9 @@ router.post("/payment", async (req, res) => {
 });
 
 router.post("/sendmail", async (req, res) => {
+  console.log(
+    "El mail elmafrood ykoon hena" + "" + JSON.stringify(req.body.email)
+  );
   const transporter = nodemailer.createTransport({
     service: "hotmail",
     auth: {
@@ -423,9 +426,9 @@ router.post("/sendmail", async (req, res) => {
   });
   const options = {
     from: "maramACL@outlook.com",
-    to: "marambenamer@yahoo.com",
+    to: JSON.stringify(req.body.email),
     subject: "Email trial",
-    text: JSON.stringify(req.body),
+    text: JSON.stringify(req.body.email),
   };
   transporter.sendMail(options, function (err, info) {
     if (err) {

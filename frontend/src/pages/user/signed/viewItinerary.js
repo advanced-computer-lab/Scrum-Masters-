@@ -24,13 +24,8 @@ const nodemailer = require("nodemailer");
 
 const Itinerary = (props) => {
   console.log(props);
-  console.log(props);
-  console.log("YOUR OBJECT IS HERE" + props);
-  const [product, setProduct] = useState({
-    name: "Pay for reservation",
-    price: "10",
-    Productby: "cloud9",
-  });
+  console.log("YOUR OBJECT IS HERE"+props);
+  const product=props
   const transporter = nodemailer.createTransport({
     service: "hotmail",
     auth: {
@@ -93,70 +88,97 @@ const Itinerary = (props) => {
     console.log(props.ticket.seatNum);
   };
 
+
+
+   const pay =(token) =>{
+     const body={
+    token,
+    product
+  }
+   
+   const headers = {
+     "Content-Type":"application/json"
+   }
+   
+   axios
+   .post("http://localhost:8081/user/payment",{
+    method: "POST", headers, body:body
+   
+   }
+   ).then((response) =>{
+     console.log('MABROOOOOK girl ehna fl itenirary bndfa3 ahu')
+     const {status} = response;
+     console.log("STATUS"); 
+   }).catch(error => console.log("GIRL FE MASHAKEL"+error));
+  };
+
   return (
     <div>
-      {loading && (
-        <Loader
-          type="Plane"
-          color="#4ea8de"
-          height={100}
-          width={100}
-          timeout={5000}
-        />
-      )}
-      {!loading && (
-        <div>
-          <Typography
-            variant="h6"
-            gutterBottom
-            component="header"
-            align="left"
-            fontStyle="italic"
-            style={{ marginTop: "1%", marginLeft: "2%" }}
-          >
-            Reservation Number: {props.departureTickets[0].reservationId}
-          </Typography>
-          <Typography
-            variant="h6"
-            gutterBottom
-            component="header"
-            align="right"
-            fontStyle="italic"
-            style={{ marginTop: "1%", marginLeft: "2%" }}
-          >
-            Total Price: {props.totalPrice} EGP
-          </Typography>
+    {loading && (
+      <Loader
+        type="Plane"
+        color="#4ea8de"
+        height={100}
+        width={100}
+         timeout={5000}
+      />)}
+   {!loading && 
+   (
+     <div>
+ 
+ <Typography
+        variant="h6"
+        gutterBottom
+        component="header"
+        align="left"
+        fontStyle="italic"
+        style={{ marginTop: "1%", marginLeft: "2%" }}
+      >
+       Reservation Number:  {props.departureTickets[0].reservationId}
+      </Typography>
+      <Typography
+        variant="h6"
+        gutterBottom
+        component="header"
+        align="right"
+        fontStyle="italic"
+        style={{ marginTop: "1%", marginLeft: "2%" }}
+      >
+       Total Price:  {props.totalPrice} EGP
+      </Typography>
 
-          <div>
-            <StripeCheckout
-              stripeKey="pk_test_51K6M8qJJwEGtsc7Jg1PpI8uJfikDdlKuDksccokEyc3JjTgyysXvjGb1lWZIbyOCjPfNnbs4cBflSwG5xUzmfKq500JtPtmY3p"
-              token=""
-              name=""
-              amount={props.totalPrice * 100}
-              currency="EGP"
-            >
-              <Button
-                style={{
-                  backgroundcolor: "pink",
-                  fontSize: "15px",
-                }}
-              >
-                Make Payment
-              </Button>
-            </StripeCheckout>
-
-            <div>
-              <Button onClick={handler}>
-                E-mail me a copy of my itenerary
-              </Button>
-              <Button></Button>
-            </div>
-          </div>
-
-          {dynamicTickets()}
-        </div>
-      )}
-    </div>
+     
+     <div>
+       
+    <StripeCheckout 
+    stripeKey ="pk_test_51K6M8qJJwEGtsc7Jg1PpI8uJfikDdlKuDksccokEyc3JjTgyysXvjGb1lWZIbyOCjPfNnbs4cBflSwG5xUzmfKq500JtPtmY3p"
+    token={pay}
+    name=""
+    amount={props.totalPrice *100}
+    currency="EGP"
+    >
+      <Button   style={{
+       backgroundcolor:"pink",
+       fontSize:"15px"
+       
+      }}>
+          Make Payment
+          </Button>
+          
+     </StripeCheckout>
+     
+     <div> 
+       <Button onClick={handler}>
+         E-mail me a copy of my itenerary
+       </Button>
+       <Button></Button>
+       </div>
+       </div>
+  
+     {dynamicTickets()}
+     </div>)}
+   </div>
+ 
   );
 };
 export default Itinerary;
