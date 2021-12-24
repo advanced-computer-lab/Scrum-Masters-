@@ -27,7 +27,7 @@ const drawerWidth = 240;
 
 const SideBar = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [active, setActive] = useState(1);
+  const [active, setActive] = useState(0);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -35,14 +35,14 @@ const SideBar = (props) => {
   const onClick = (e) => {
     console.log(e.currentTarget.id, "ploop");
     switch (e.currentTarget.id) {
-      case "btn-info" && active !== 0:
-        setActive(0);
+      case "btn-info":
+        if (active !== 0) setActive(0);
         break;
-      case "btn-password" && active !== 1:
-        setActive(1);
+      case "btn-password":
+         if (active !== 1) setActive(1);
         break;
-      case "btn-billing" && active !== 2:
-        setActive(2);
+      case "btn-billing":
+        if (active !== 2) setActive(2);
         break;
 
       default:

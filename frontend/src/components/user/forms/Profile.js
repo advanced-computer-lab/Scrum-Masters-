@@ -27,7 +27,7 @@ const Profile = () => {
   const theme = createTheme({
     palette: {
       secondary: {
-        main: indigo[500],
+        main: indigo['A200'],
       },
     },
   });

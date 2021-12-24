@@ -23,7 +23,7 @@ import FlightReservation from "../../../components/user/FlightReservation";
 import SelectSeat from "./SelectSeat";
 import ViewFlightSummary from "../../../components/user/existing/FlightSummary";
 import Passengers from "../../../components/user/existing/Passengers";
-import Itenerary from "./viewItenerary";
+import Itinerary from "./viewItinerary";
 
 const BookingPage = (props) => {
   console.log("in BookingPage props", props);
@@ -386,7 +386,7 @@ const BookingPage = (props) => {
           />
         )}
         {actualStep === 5 && (
-          <Itenerary
+          <Itinerary
             departureTickets={departureTickets}
             returnTickets={returnTickets}
             departureFlight={departureInput.flight}

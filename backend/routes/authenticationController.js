@@ -76,13 +76,14 @@ router.post("/login", async (req, res) => {
 
 router.post("/password", async (req, res) => {
   const changes = req.body;
+  console.log("changes", changes);
   User.findById(changes.userId)
     .then((result) => {
       bcrypt.compare(changes.oldPassword, result.password).then((isCorrect) => {
         if (!isCorrect)
           res.json({
             success: false,
-            message: "Your old password is incorrect.",
+            message: "Your original password is incorrect.",
           });
         else
           res.json({

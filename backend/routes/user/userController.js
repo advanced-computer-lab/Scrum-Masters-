@@ -344,6 +344,7 @@ router.get("/profile/:id", async (req, res) => {
   User.findById(req.params.id, "-password")
     .then((result) => {
       res.send(result);
+
       console.log(result);
     })
     .catch((err) => {
@@ -362,7 +363,11 @@ router.post("/profile", async (req, res) => {
     .catch((err) => res.status(400).send(err));
 });
 router.patch("/profile/update/:id", async (req, res) => {
-  User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  var changes = req.body;
+  if (req.body.password)
+    changes.password = await bcrypt.hash(req.body.password, 10);
+  User.findByIdAndUpdate(req.params.id, changes, { new: true })
+    .select({ password: 0 })
     .then((result) => {
       //new:true returns modified document not original
       res.send(result);

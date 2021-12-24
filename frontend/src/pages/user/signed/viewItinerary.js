@@ -20,12 +20,12 @@ import Ticket from "../../../components/user/existing/Ticket";
 // import { Stack } from "react-bootstrap";
 
 
-const Itenerary = (props) => {
+const Itinerary = (props) => {
  const [loading,setLoading]=useState(true);
  //console.log(input1.flight);
  console.log("hehehe");
  useEffect(() => {
-   console.log("itenerary",props);
+   console.log("Itinerary",props);
    setTimeout(() => {setLoading(false)}, 4000);
 }, [loading]);
 
@@ -82,4 +82,4 @@ return result;
    </div>
   );
 };
-export default Itenerary;
+export default Itinerary;
