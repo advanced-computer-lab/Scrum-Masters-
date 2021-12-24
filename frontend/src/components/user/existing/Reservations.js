@@ -1,5 +1,4 @@
 import { React, useEffect, useState } from 'react';
-
 import { GridCellParams } from '@mui/x-data-grid';
 import emailjs from 'emailjs-com';
 import axios from 'axios';
@@ -16,7 +15,8 @@ import { sizing } from '@mui/system';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
-import image1 from '../../../images/reservations.jpg';
+
+
 import {
   Button,
   Box,
@@ -43,6 +43,7 @@ import FlightLandRounded from '@mui/icons-material/FlightLandRounded';
 
 export default function BasicTable(onDelete) {
   const [open, setOpen] = useState(false);
+
   const [totalPrice, setTotalPrice] = useState();
   // const [deleteRes, setdeleteRes] = useState(true);
   const handleClickOpen = () => {
@@ -59,6 +60,14 @@ export default function BasicTable(onDelete) {
       date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()
     );
   };
+
+  // const handleClickOpenDialog = () => {
+  //   setOpenDialog(true);
+  // };
+
+  // const handleCloseDialog = () => {
+  //   setOpenDialog(false);
+  // };
   const deleteReservation = (reservationId, price) => {
     setTotalPrice(price);
     handleClose();
@@ -293,7 +302,7 @@ export default function BasicTable(onDelete) {
                   </StyledTableCell>
                   <TableCell>
                   <Stack spacing={-0.5} orientation='horizontal'>
-                    <IconButton color="success"><AirplaneTicketIcon fontSize='large'/></IconButton>
+                    <IconButton color="success" ><AirplaneTicketIcon fontSize='large' /></IconButton>
                     <small align='center'>tickets</small>
                     </Stack>
                     </TableCell>

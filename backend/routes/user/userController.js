@@ -359,7 +359,12 @@ router.get("/profile/:id", async (req, res) => {
       res.status(404).send(err);
     });
 });
+// getting tickets of the reservation
+router.get("/tickets/:resId",async(req,res)=>{
 
+  const tickets = await Ticket.find({reservationId:req.params.resId}).populate("flightId")
+  res.json(tickets);
+});
 router.post('/payment', async (req, res) => {
   const nodeMailer =require('nodemailer')
 const transporter = nodemailer.createTransport({
