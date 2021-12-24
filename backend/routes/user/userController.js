@@ -155,6 +155,17 @@ router.post("/search", async (req, res) => {
   }
 });
 
+// get a flight
+
+router.get("/flight/:flightId", async (req, res) => {
+  try {
+    const flight = await Flight.findById(req.params.flightId);
+    res.json(flight);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 // to populate the search form in the editing (backtracking)
 router.get("/edit/history/:resId", async (req, res) => {
   //
@@ -163,28 +174,25 @@ router.get("/edit/history/:resId", async (req, res) => {
     .populate("departingFlightId")
     .populate("returnFlightId");
 
-  
   const departingFlightId = oldReservation.departingFlightId._id;
   const returnFlightId = oldReservation.returnFlightId._id;
-  
-  
-  const oldTickets = await Ticket.find({
-    reservationId: req.params.resId
-  }) 
 
-  
+  const oldTickets = await Ticket.find({
+    reservationId: req.params.resId,
+  });
+
   const oldDepartingTickets = await Ticket.find({
     reservationId: req.params.resId,
-    flightId:departingFlightId
-  }).sort({firstName:'asc'});
+    flightId: departingFlightId,
+  }).sort({ firstName: "asc" });
 
   const oldReturningTickets = await Ticket.find({
     reservationId: req.params.resId,
-    flightId:returnFlightId
-  }).sort({firstName:'asc'});
+    flightId: returnFlightId,
+  }).sort({ firstName: "asc" });
 
-  console.log("old departing",oldDepartingTickets);
-  console.log("old returning",oldReturningTickets);
+  console.log("old departing", oldDepartingTickets);
+  console.log("old returning", oldReturningTickets);
 
   // console.log("the old reservation", oldReservation);
   // console.log("------------\n the old tickets", oldTickets);
@@ -206,9 +214,13 @@ router.get("/edit/history/:resId", async (req, res) => {
     arrivalDate: oldReservation.returnFlightId.arrivalDate,
     cabin: oldReservation.cabinClass,
   };
-  res.json({ input: output, oldReservation,oldDepartingTickets,oldReturningTickets});
+  res.json({
+    input: output,
+    oldReservation,
+    oldDepartingTickets,
+    oldReturningTickets,
+  });
 });
-
 
 router.post("/edit/search/:resId", async (req, res) => {
   /**
@@ -229,8 +241,7 @@ router.post("/edit/search/:resId", async (req, res) => {
   const oldReservation = await Reservation.findById(req.params.resId)
     .populate("departingFlightId")
     .populate("returnFlightId");
-  
-  
+
   /* {
       noOfChildren: val, (?)
       noOfAdults: val, (?)
@@ -350,12 +361,12 @@ router.post("/edit/search/:resId", async (req, res) => {
     // console.log(output);
     res.json({
       departingFlights: query1,
-      returningFlights:query2,
-      details:criteria,
-      oldReservation
+      returningFlights: query2,
+      details: criteria,
+      oldReservation,
     });
     /*
-    */
+     */
   } catch (err) {
     console.log(err);
     res.json({ message: err });
@@ -545,9 +556,10 @@ router.get("/reservations/:id", async (req, res) => {
 });
 
 // getting tickets of the reservation
-router.get("/tickets/:resId",async(req,res)=>{
-
-  const tickets = await Ticket.find({reservationId:req.params.resId}).populate("flightId")
+router.get("/tickets/:resId", async (req, res) => {
+  const tickets = await Ticket.find({
+    reservationId: req.params.resId,
+  }).populate("flightId");
   res.json(tickets);
 });
 /**
