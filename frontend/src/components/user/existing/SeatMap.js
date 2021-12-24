@@ -296,14 +296,15 @@ const SeatMap = (props) => {
         var char = "A";
         for (let j = 1; j < 4 && economySeats > 0; j++, economySeats--) {
           var flag = isAvailable("" + i + char, "economy", type);
+          var editable = isEditable("" + i + char, "economy", type);
           var seat = {
             type: "seat",
             name: "",
             disclosures: [],
             designator: "" + i + char,
             // eslint-disable-next-line no-loop-func
-            ...(flag && { available_services: [] }),
-            ...(!flag && {
+            ...(flag && !editable && { available_services: [] }),
+            ...((!flag || editable) && {
               // eslint-disable-next-line no-loop-func
               available_services: passengers.map((passenger, p) => ({
                 id: "ase_" + i + char + index,
@@ -320,14 +321,15 @@ const SeatMap = (props) => {
         elements = [];
         for (let j = 1; j < 4 && economySeats > 0; j++, economySeats--) {
           flag = isAvailable("" + i + char, "economy", type);
+          editable = isEditable("" + i + char, "economy", type);
           seat = {
             type: "seat",
             name: "",
             disclosures: [],
             designator: "" + i + char,
             // eslint-disable-next-line no-loop-func
-            ...(flag && { available_services: [] }),
-            ...(!flag && {
+            ...(flag && !editable && { available_services: [] }),
+            ...((!flag || editable) && {
               // eslint-disable-next-line no-loop-func
               available_services: passengers.map((passenger, p) => ({
                 id: "ase_" + i + char + index,
@@ -448,13 +450,14 @@ const SeatMap = (props) => {
         var char = "A";
         for (let j = 1; j < 3 && businessSeats > 0; j++, businessSeats--) {
           var flag = isAvailable("" + i + char, "business", type);
+          var editable = isEditable("" + i + char, "business", type);
           var seat = {
             type: "seat",
             name: "",
             disclosures: [],
             designator: "" + i + char,
-            ...(flag && { available_services: [] }),
-            ...(!flag && {
+            ...(flag && !editable && { available_services: [] }),
+            ...((!flag || editable) && {
               // eslint-disable-next-line no-loop-func
               available_services: passengers.map((passenger, p) => ({
                 id: "ase_" + i + char + index,
@@ -471,13 +474,14 @@ const SeatMap = (props) => {
         elements = [];
         for (let j = 1; j < 3 && businessSeats > 0; j++, businessSeats--) {
           flag = isAvailable("" + i + char, "business", type);
+          editable = isEditable("" + i + char, "business", type);
           seat = {
             type: "seat",
             name: "",
             disclosures: [],
             designator: "" + i + char,
-            ...(flag && { available_services: [] }),
-            ...(!flag && {
+            ...(flag && !editable && { available_services: [] }),
+            ...((!flag || editable) && {
               // eslint-disable-next-line no-loop-func
               available_services: passengers.map((passenger, p) => ({
                 id: "ase_" + i + char + index,
@@ -689,6 +693,7 @@ const SeatMap = (props) => {
     });
   };
   useEffect(() => {
+    console.log("here", props);
     createOffer(
       props.flights[0].departureAirport,
       props.flights[0].arrivalAirport,

@@ -8,12 +8,15 @@ import SeatMap from "../../../components/user/existing/SeatMap";
 
 const SelectSeat = (props) => {
   const [departureFlight, setDepartureFlight] = useState();
-  const [returnFlight, setReturnFlight] = useState();
+  const [returnFlight, setReturnFlight] = useState({});
   const [departureSeats, setDepartureSeats] = useState();
-  const [returnSeats, setReturnSeats] = useState();
-  const [returnTickets, setReturnTickets] = useState([]);
+  const [returnSeats, setReturnSeats] = useState([]);
   const [passengers, setPassengers] = useState();
   const [loading, setLoading] = useState(true);
+
+  const [departureTickets, setDepartureTickets] = useState();
+  const [returnTickets, setReturnTickets] = useState([]);
+
   var list = [
     {
       id: "pas_1",
@@ -70,7 +73,6 @@ const SelectSeat = (props) => {
       __v: 0,
     },
   ];
-  const [departureTickets, setDepartureTickets] = useState(oldTicket);
   const createPassengers = (list) => {
     setPassengers(
       list.map((passenger, index) => ({
