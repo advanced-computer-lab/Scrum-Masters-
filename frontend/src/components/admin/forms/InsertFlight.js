@@ -27,6 +27,9 @@ const InsertFlight = () => {
   const [noOfEconomy, setNoOfEconomy] = useState("");
   const [noOfBusiness, setNoOfBusiness] = useState("");
   const [noOfFirstClass, setNoOfFirstClass] = useState("");
+  const [priceOfEconomy, setPriceOfEconomy] = useState("");
+  const [priceOfBusiness, setPriceOfBusiness] = useState("");
+  const [priceOfFirstClass, setPriceOfFirstClass] = useState("");
   const [flight, setFlight] = useState();
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState(false);
@@ -56,9 +59,10 @@ const InsertFlight = () => {
       arrivalDate,
       departureAirport,
       arrivalAirport,
-      economy: { noOfSeats: noOfEconomy },
-      business: { noOfSeats: noOfBusiness },
-      firstClass: { noOfSeats: noOfFirstClass },
+      economy: { noOfSeats: noOfEconomy, adultPrice:priceOfEconomy },
+      business: { noOfSeats: noOfBusiness,adultPrice:priceOfBusiness },
+      firstClass: { noOfSeats: noOfFirstClass,adultPrice:priceOfFirstClass},
+  
     };
 
     axios
@@ -179,12 +183,16 @@ const InsertFlight = () => {
                 value={arrivalDate}
                 onChange={(event) => {
                   setArrivalDate(event.target.value);
+                  console.log(typeof event.target.value)
                 }}
                 InputLabelProps={{
                   shrink: true,
                 }}
+                
               />
+              
             </div>
+            
           </Stack>
 
           <Stack direction="column" spacing={3} style={{ marginTop: "10px" }}>
@@ -275,6 +283,63 @@ const InsertFlight = () => {
               />
             </div>
           </Stack>
+          
+          <Stack> 
+          <div>
+              <TextField
+                required
+                type="Number"
+                variant="standard"
+                label="Price of First Class seat"
+                // placeholder='Number of First Class'
+                name="priceOfFirst"
+                value={priceOfFirstClass}
+                onChange={(event) => {
+                  setPriceOfFirstClass(event.target.value);
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </div>
+            <div>
+              <TextField
+                required
+                type="Number"
+                variant="standard"
+                label="Price of Business Seat"
+                // placeholder='Number of First Class'
+                name="priceOfBusiness"
+                value={priceOfBusiness}
+                onChange={(event) => {
+                  setPriceOfBusiness(event.target.value);
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </div>
+            
+            <div>
+              <TextField
+                required
+                type="Number"
+                variant="standard"
+                label="Price of Economy Seat"
+                // placeholder='Number of First Class'
+                name="priceOfEconomy"
+                value={priceOfEconomy}
+                onChange={(event) => {
+                  setPriceOfEconomy(event.target.value);
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </div>
+            
+            
+          </Stack>
         </Stack>
         <React.Fragment>
           <Button
@@ -333,6 +398,12 @@ const InsertFlight = () => {
                   Business Class Seats: <b>{flight.business.noOfSeats}</b>.{" "}
                   <br />
                   First Class Seats:<b> {flight.firstClass.noOfSeats}</b>.{" "}
+                  <br />
+                  Price of First Class:<b> {flight.firstClass.adultPrice}</b>.{" "}
+                  <br />
+                  Price of Business Class:<b> {flight.business.adultPrice}</b>.{" "}
+                  <br />
+                  Price of Economy Class:<b> {flight.economy.adultPrice}</b>.{" "}
                   <br />
                   Total Seats: <b>{flight.noOfSeats}</b>.
                 </DialogContentText>

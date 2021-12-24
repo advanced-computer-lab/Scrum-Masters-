@@ -146,11 +146,6 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
             </Item>
           </Grid>
           <Grid item xs={6}>
-            <Item position='relative'>
-              Arrival Airport :{input1.flight.arrivalAirport}
-            </Item>
-          </Grid>
-          <Grid item xs={6}>
             <Item>
               <FlightIcon />
               Return Trip Flight Number{}:{input2.flight.flightNumber}
@@ -168,6 +163,12 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
               Return Flight Time{}:{input2.flight.departureTime}
             </Item>
           </Grid>
+          <Grid item xs={6}>
+            <Item position='relative'>
+              Return Airport :{input1.flight.arrivalAirport}
+            </Item>
+          </Grid>
+         
 
           <Grid item xs={6}>
             <Item>
@@ -197,8 +198,8 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
               Class Cabin:{input1.details.cabin}
             </Item>
           </Grid>
-          <Grid item xs={6}>
-            <Item>
+          <Grid item xs={6} marginleft={3}>
+            <Item marginleft={10}>
               <AttachMoneyIcon />
               Total Price of Reservation:{totalPrice}
             </Item>
@@ -209,7 +210,10 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
             {' '}
             Confirm & proceed to choose seat
           </Button>
-          <Modal
+
+       
+            { !window.sessionStorage.getItem("token")
+          &&(<Modal
             open={open}
             onClose={handleClose}
             aria-labelledby='modal-modal-title'
@@ -236,7 +240,7 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
                 </div>
               </Typography>
             </Box>
-          </Modal>
+          </Modal>)}
         </div>
       </Container>
     </>

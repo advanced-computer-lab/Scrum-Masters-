@@ -11,12 +11,33 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import { InputLabel
+ } from '@mui/material';
+ import { Select } from '@mui/material';
+ import { MenuItem } from '@mui/material';
+ import { FormControl } from '@mui/material';
+ import DatePicker from '@mui/lab/DatePicker';
+ import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+
+//Ask Ahmed Serry how to pass Data
 const PassengerDeets = (props) => {
   const [expanded, setExpanded] = React.useState(true); //props.index===0
   const [values, setValues] = useState({
     type: props.type,
     cabin: props.cabin,
   });
+  const [gender, setGender] = React.useState('');
+  const [value, setValue] = React.useState(new Date());
+
+  const handleDateChange = (newValue) => {
+    setValue(newValue);
+  };
+  const handleGenderChange = (event) => {
+    setGender(event.target.value);
+  };
+
   const onChange = async (e, name) => {
     if (e) {
       try {
@@ -51,6 +72,7 @@ const PassengerDeets = (props) => {
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(!expanded);
   };
+ 
 
   return (
     <Box>
@@ -84,7 +106,7 @@ const PassengerDeets = (props) => {
                 display: "inline",
               }}
             >
-              {props.cabin.charAt(0).toUpperCase() + props.cabin.substring(1)} Class
+              {props.cabin.charAt(0).toUpperCase() + props.cabin.substring(1)}
             </Typography>
             <Typography sx={{ color: "text.secondary" }}></Typography>
           </AccordionSummary>
@@ -109,10 +131,10 @@ const PassengerDeets = (props) => {
                   }}
                 />
 
-                <TextField
+                {/* <TextField
                   required
                   backgroundcolor="#f2f2f2"
-                  type="Text"
+                  type="Radio Button"
                   placeholder="Gender"
                   label="Gender"
                   variant="filled"
@@ -122,7 +144,26 @@ const PassengerDeets = (props) => {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                />
+                /> */}
+                 <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
+        <InputLabel required  id="demo-simple-select-filled-label">Gender</InputLabel>
+        <Select
+          labelId="demo-simple-select-filled-label"
+          id="demo-simple-select-filled"
+          value={gender}
+          onChange={handleGenderChange}
+          placeholder='Gender'
+          label="Gender"
+          required
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={"Female"}>Female</MenuItem>
+          <MenuItem value={"Male"}>Male</MenuItem>
+          <MenuItem value={"Other"}>Other</MenuItem>
+        </Select>
+      </FormControl>
               </Stack>
 
               <Stack direction="column" spacing={3} width="25%">
@@ -157,21 +198,18 @@ const PassengerDeets = (props) => {
                 />
               </Stack>
               <Stack direction="column" spacing={3} width="25%">
-                <TextField
-                  required
-                  backgroundcolor="#f2f2f2"
-                  type="Date"
-                  // placeholder=''
-                  label="Date Of Birth"
-                  variant="filled"
-                  defaultValue={values.dateOfBirth}
-                  name="dateOfBirth"
-                  onChange={onChange}
-                  //  } }
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+           
+        <DesktopDatePicker
+          label="Date of Birth"
+          inputFormat="MM/dd/yyyy"
+          value={value}
+          onChange={handleDateChange}
+          renderInput={(params) => <TextField {...params} />}
+          maxDate={new Date()}
+          variant='outlined'
+        />
+                </LocalizationProvider>
               </Stack>
             </Stack>
         </AccordionDetails>
