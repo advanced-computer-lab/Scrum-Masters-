@@ -65,6 +65,8 @@ function App() {
             component={ViewFlightSummary}
           ></Route>
           <Route exact path="/itinerary" component={Itinerary}></Route>
+          <Route exact path="/schedule" component={Schedule}></Route>
+          <Route exact path="/addFlight" component={FlightCreation}></Route>
         </Switch>
 
         {!admin && !existing && (

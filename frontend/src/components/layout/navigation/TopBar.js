@@ -27,7 +27,7 @@ const TopBar = (props) => {
         if (result.data.message === "Success") {
           window.sessionStorage.setItem("token", result.data.token);
           props.onSignIn();
-          setExisting(true);
+          //setExisting(true);
           setAdmin(false);
         }
         //else error alert incorrect credentials
@@ -183,7 +183,7 @@ const TopBar = (props) => {
               </Nav>
             </Navbar.Collapse>
           )}
-          {existing && (
+          {JSON.parse(window.sessionStorage.getItem("existing")) && (
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto"></Nav>
               <Nav>

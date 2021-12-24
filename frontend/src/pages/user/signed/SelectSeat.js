@@ -11,7 +11,7 @@ const SelectSeat = (props) => {
   const [returnFlight, setReturnFlight] = useState();
   const [departureSeats, setDepartureSeats] = useState();
   const [returnSeats, setReturnSeats] = useState();
-   const [returnTickets, setReturnTickets] = useState([]);
+  const [returnTickets, setReturnTickets] = useState([]);
   const [passengers, setPassengers] = useState();
   const [loading, setLoading] = useState(true);
   var list = [
@@ -71,34 +71,18 @@ const SelectSeat = (props) => {
     },
   ];
   const [departureTickets, setDepartureTickets] = useState(oldTicket);
-  const createPassengers = (list) => { 
-    //passengers are the users with their details
-    console.log("boolean", departureTickets);
-    if (props.edit === true) {
-      //pass departure & arrival tickets, use either one to generate info, use both and sort them from BE
-      setPassengers(
-        list.map((passenger, index) => ({
-          id: "pas_" + (index + 1),
-          name: passenger.firstName + " " + passenger.lastName,
-          cabin: passenger.cabin,
-          type: passenger.passengerType,
-          ...(departureTickets.length > 0 && { departureSeat: departureTickets[index].seatNum }),
-          ...(returnTickets.length > 0 && { returnSeat: returnTickets[index].seatNum }),
-        }))
-      );
-    }
-    //passengers are the users with their details
-    else
-      setPassengers(
-        list.map((passenger, index) => ({
-          id: "pas_" + (index + 1), //user
-          name: passenger.firstName + " " + passenger.lastName, //user
-          cabin: passenger.cabin, //cabin
-          type: passenger.type, //passed from search/reservation
-        }))
-      );
+  const createPassengers = (list) => {
+    setPassengers(
+      list.map((passenger, index) => ({
+        id: "pas_" + (index + 1), //user
+        name: passenger.firstName + " " + passenger.lastName, //user
+        cabin: passenger.cabin, //cabin
+        type: passenger.type, //passed from search/reservation
+      }))
+    );
   };
   const handleSeats = (seats) => {
+    //props.edit???
     seats.forEach((y) => {
       console.log(y.innerText); //seat number
     });
@@ -131,14 +115,15 @@ const SelectSeat = (props) => {
         setReturnSeats(result.data);
       })
       .catch((err) => console.log(err));
-    if (props.edit === true) {
-      if(oldTicket.length>0)
-        createPassengers(oldTicket);
-      else if (returnTickets.length > 0)
-        createPassengers(returnTickets);
-    }
-    //edit: pass either tickets
-    else createPassengers(props.passengers);
+    // if (props.edit === true) {
+    //   if(oldTicket.length>0)
+    //     createPassengers(oldTicket);
+    //   else if (returnTickets.length > 0)
+    //     createPassengers(returnTickets);
+    // }
+    // //edit: pass either tickets
+    // else
+    createPassengers(props.passengers);
     // setTimeout(() => {}, 4000);
   }, []);
   const onFetch = () => {
@@ -174,8 +159,8 @@ const SelectSeat = (props) => {
             passengers={passengers}
             loading={loading}
             onFetch={onFetch}
-          handleSeats={handleSeats}
-          edit={props.edit}
+            handleSeats={handleSeats}
+            edit={false}
           />
         )}
     </div>

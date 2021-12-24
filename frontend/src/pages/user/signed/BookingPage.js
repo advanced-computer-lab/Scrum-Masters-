@@ -371,7 +371,7 @@ const BookingPage = (props) => {
         )}
         {actualStep === 4 && (
           <SelectSeat
-            edit={true}
+            //edit={true}
             passengers={travellers}
             departureFlight={departureInput}
             returnFlight={arrivalInput}
