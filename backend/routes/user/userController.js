@@ -163,12 +163,31 @@ router.get("/edit/history/:resId", async (req, res) => {
     .populate("departingFlightId")
     .populate("returnFlightId");
 
+  
+  const departingFlightId = oldReservation.departingFlightId._id;
+  const returnFlightId = oldReservation.returnFlightId._id;
+  
+  
   const oldTickets = await Ticket.find({
-    reservationId: req.params.resId,
-  });
+    reservationId: req.params.resId
+  }) 
 
-  console.log("the old reservation", oldReservation);
-  console.log("------------\n the old tickets", oldTickets);
+  
+  const oldDepartingTickets = await Ticket.find({
+    reservationId: req.params.resId,
+    flightId:departingFlightId
+  }).sort({firstName:'asc'});
+
+  const oldReturningTickets = await Ticket.find({
+    reservationId: req.params.resId,
+    flightId:returnFlightId
+  }).sort({firstName:'asc'});
+
+  console.log("old departing",oldDepartingTickets);
+  console.log("old returning",oldReturningTickets);
+
+  // console.log("the old reservation", oldReservation);
+  // console.log("------------\n the old tickets", oldTickets);
 
   // calculate the number of adults and number of children
   var noOfAdults = 0;
@@ -187,7 +206,7 @@ router.get("/edit/history/:resId", async (req, res) => {
     arrivalDate: oldReservation.returnFlightId.arrivalDate,
     cabin: oldReservation.cabinClass,
   };
-  res.json({ input: output, oldReservation });
+  res.json({ input: output, oldReservation,oldDepartingTickets,oldReturningTickets});
 });
 
 
@@ -523,6 +542,13 @@ router.get("/reservations/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+// getting tickets of the reservation
+router.get("/tickets/:resId",async(req,res)=>{
+
+  const tickets = await Ticket.find({reservationId:req.params.resId}).populate("flightId")
+  res.json(tickets);
 });
 /**
  * {
