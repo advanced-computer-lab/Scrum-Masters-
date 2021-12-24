@@ -12,14 +12,67 @@ import CallIcon from "@mui/icons-material/Call";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import PublicIcon from "@mui/icons-material/Public";
 import Button from "@mui/material/Button";
-import image4 from "../../../images/Signup4.jpg";
+import image4 from '/Users/youssefsameh/Documents/GitHub/Scrum-Masters-/Scrum-Masters-/frontend/src/components/user/Signup4.jpg'
+import { useState } from "react";
+import axios from "axios";
+
 
 export default function SignUpForm() {
-  const [visibility, setVisibility] = React.useState(true);
+
+  const [error, setError] = useState(false);
+  const [output, setOutput] = useState();
+  const [errorMessage, setErrorMessage] = useState('');
+
+    const[visibility,setVisibility]= React.useState(true)
+    const [values,setValues]=useState();
+    const onChange = async (e, name) => {
+      if (e) {
+        try {
+          console.log(e);
+          if (e.target) {
+           await setValues({ ...values, [e.target.name]: e.target.value });
+          } else {
+            await setValues({ ...values, [name]: e });
+          }
+          await console.log("update", values);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    const onRegister = () => {
+      axios
+      .post('http://localhost:8081/user/profile', values)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err)=> console.log(err));
+    }
+    const onSubmit = () => {
+      //console.log(query);
+      axios
+        .post('http://localhost:8081/auth/register', values)
+        .then((res) => {
+          console.log('waiting for message', res.data);
+          if (res.data.message) {
+            console.log('This email is taken');
+            setError(true);
+            setErrorMessage(res.data.message);
+          } else {
+            setOutput(res.data);   
+            console.log("email and password", res.data);
+            setError(false);
+            setVisibility(false);
+            //setSearchDone(true);
+          }
+        })
+        .catch((err) => console.log(err));
+    };
   return (
     <>
+      <Stack direction="row" spacing={2} sx={{ width: 100 }}>
       <div>
-        <img src={image4} style={{ height: 750, width: 900, float: "left" }} />
+        <img src={image4} style={{ height: 750, width: 920, float: "left" }} />
       </div>
 
       <Box
@@ -30,139 +83,138 @@ export default function SignUpForm() {
         noValidate
         autoComplete="on"
       >
-        <div>
-          <Stack spacing={2} sx={{ width: 300 }}>
-            <div
-              style={{
-                fontWeight: "bold",
-                fontSize: "30px",
-                textAlignLast: "end",
-              }}
-            >
-              Register
-            </div>
-            {!visibility && (
-              <div>
-                <TextField
-                  fullWidth="true"
-                  required
-                  id="outlined-basic"
-                  label="First Name"
-                  variant="outlined"
-                />
-                <TextField
-                  required
-                  id="outlined-basic"
-                  label="Last Name"
-                  variant="outlined"
-                />
-                <Autocomplete
-                  id="country-select-demo"
-                  sx={{ width: 200 }}
-                  options={countries}
-                  autoHighlight
-                  getOptionLabel={(option) => option.label}
-                  renderOption={(props, option) => (
-                    <Box
-                      component="li"
-                      sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                      {...props}
-                    >
-                      <img
-                        loading="lazy"
-                        width="20"
-                        src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                        srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                        alt=""
-                      />
-                      {option.label} ({option.code}) +{option.phone}
-                    </Box>
-                  )}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      inputProps={{
-                        ...params.inputProps,
-                        autoComplete: "new-password", // disable autocomplete and autofill
-                      }}
-                      label="Country"
-                    />
-                  )}
-                />
-                <TextField
-                  required
-                  id="outlined-basic"
-                  label="E mail"
-                  variant="outlined"
-                />
-                <TextField
-                  required
-                  id="outlined-basic"
-                  label="Mobile Number"
-                  variant="outlined"
-                />
-                <Stack direction="row" spacing={2} sx={{ width: 520 }}>
-                  <TextField
-                    required
-                    id="outlined-basic"
-                    label="Adress"
-                    variant="outlined"
+        <div >
+          <Stack spacing={2} sx={{ width: 300 }} >
+          <div
+          style={{ fontWeight: "bold", fontSize: "30px", textAlignLast: "end" }}
+        >
+          Register
+        </div>
+            {!visibility&& !error &&
+            (<div><TextField
+              fullWidth="true"
+              required
+              id="outlined-basic"
+              label="First Name"
+              variant="outlined"
+              name="firstName"
+              onChange={onChange}
+            />
+            <TextField
+              required
+              id="outlined-basic"
+              label="Last Name"
+              variant="outlined"
+              name="lastName"
+              onChange={onChange}
+            />
+            <Autocomplete
+              id="country-select-demo"
+              sx={{ width: 200  }}
+              options={countries}
+              autoHighlight
+              getOptionLabel={(option) => option.label}
+              renderOption={(props, option) => (
+                <Box
+                  component="li"
+                  sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                  {...props}
+                >
+                  <img
+                    loading="lazy"
+                    width="20"
+                    src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                    srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                    alt=""
                   />
-                  <TextField
-                    required
-                    id="outlined-basic"
-                    label="City"
-                    variant="outlined"
-                  />
-                  <TextField
-                    required
-                    id="outlined-basic"
-                    label="ZIP Code"
-                    variant="outlined"
-                  />
-                </Stack>
+                  {option.label} ({option.code})
+                </Box>
+              )}
+              renderInput={(params) => (
                 <TextField
-                  required
-                  id="outlined-basic"
-                  label="Passport Number"
-                  variant="outlined"
+                  {...params}
+                  inputProps={{
+                    ...params.inputProps,
+                    autoComplete: "new-password", // disable autocomplete and autofill
+                  }}
+                  label="Country"
+                  name="countryCode"
+                  onChange={onChange}
                 />
-              </div>
-            )}
-            {visibility && (
-              <div>
-                <Stack spacing={2} sx={{ width: 300 }}></Stack>
-                <TextField
-                  required
-                  id="outlined-basic"
-                  label="Username"
-                  variant="outlined"
-                />
-                <TextField
-                  required
-                  id="outlined-basic"
-                  label="Password"
-                  variant="outlined"
-                />
-              </div>
-            )}
+              )}
+            />
+            <TextField
+              required
+              id="outlined-basic"
+              label="Mobile Number"
+              variant="outlined"
+              name="phoneNumber"
+              onChange={onChange}
+            />
+            <Stack direction="row" spacing={2} sx={{ width: 520 }}>
+            <TextField
+              required
+              id="outlined-basic"
+              label="Address"
+              variant="outlined"
+              name="homeAddress.address"
+              onChange={onChange}
+            />
+            <TextField
+              required
+              id="outlined-basic"
+              label="City"
+              variant="outlined"
+              name="homeAddress.city"
+              onChange={onChange}
+            />
+            <TextField
+              required
+              id="outlined-basic"
+              label="ZIP Code"
+              variant="outlined"
+              name="homeAddress.zipCode"
+              onChange={onChange}
+            />
+            </Stack>
+            <TextField
+              required
+              id="outlined-basic"
+              label="Passport Number"
+              variant="outlined"
+              name="passportNumber"
+              onChange={onChange}
+            /></div>)}
+            {(visibility || error) &&(<div>
+    <Stack spacing={2} sx={{ width: 300 }}></Stack>
+    <TextField
+      required
+      fullWidth
+      error={error}
+      helperText={error?"This email is taken":""}
+      id="outlined-basic"
+      label="E-mail"
+      variant="outlined"
+      name="email"
+      onChange={onChange}
+    />
+    <TextField
+      required
+      id="outlined-basic"
+      label="Password"
+      variant="outlined"
+      name="password"
+      onChange={onChange}
+    />
+    </div>)}
           </Stack>
-        </div>
-        <div>
-          <Button
-            variant="contained"
-            onClick={() => setVisibility(false)}
-            sx={{
-              width: 500,
-              float: "left",
-              marginLeft: "10px",
-              marginTop: "10px",
-            }}
-          >
-            {visibility ? "Next" : "Sign Up"}
-          </Button>
-        </div>
+      </div>
+        <div> 
+          {(visibility || error)&&<Button  variant="contained" onClick={() => { onSubmit() ; }} sx={{ width: "100%"  , marginLeft: "10px" }}>Next </Button>}
+          {(!visibility&&!error)&&<Button variant="contained" onClick={() => { onRegister() ; }} sx={{width: "100%",marginLeft: "10px"}}>submit</Button>}
+      </div>
       </Box>
+      </Stack>
     </>
   );
 }
