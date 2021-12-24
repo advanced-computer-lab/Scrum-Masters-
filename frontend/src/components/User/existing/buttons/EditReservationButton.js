@@ -16,6 +16,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { IoIosAirplane, IoIosArrowRoundForward } from "react-icons/io";
+//import { Link } from "react-router-dom";
 import axios from "axios";
 
 // import { useState, useEffect } from 'react';
@@ -33,9 +34,16 @@ const style = {
 };
 
 const EditReservationButton = (resId) => {
-  console.log("This is the res", resId.toString());
+  //console.log("This is the res", resId.toString());
   const [data, setData] = useState(null);
-  const [input, setInput] = useState(null);
+  const [input, setInput] = useState({noOfChildren: '', 
+    noOfAdults: '',
+    departureAirport:'', 
+    arrivalAirport:'',  
+    departureDate: '',
+    arrivalDate: '', 
+    cabin: ''
+  });
   const [cabin, setCabin] = useState();
   const [open, setOpen] = useState(false);
   const [visibility, setVisiblity] = useState({
@@ -45,11 +53,11 @@ const EditReservationButton = (resId) => {
   });
 
   useEffect(() => {
-    //console.log("ana eesh henna");
+    //\console.log("ana eesh henna");
     axios
       .get(`http://localhost:8081/user/edit/history/61b0a36e2173f72667abb54a`)
       .then((res) => {
-        console.log("This is the response", res.data);
+        //console.log("This is the response", res.data);
         setData(res.data);
         setInput(res.data.input);
         setCabin(res.data.input.cabin);
@@ -107,7 +115,7 @@ const EditReservationButton = (resId) => {
     console.log(input);
   };
 
-  const onCabinChange = (e,cabin) => {
+  const onCabinChange = (e, cabin) => {
     setInput({ ...input, [e.target.name]: e.target.value });
     setCabin(cabin);
   };
@@ -115,18 +123,18 @@ const EditReservationButton = (resId) => {
   const onSubmit = () => {
     //console.log(query);
     axios
-      .post('http://localhost:8081/user/edit/search/', input)
+      .post("http://localhost:8081/user/edit/search/", input)
       .then((res) => {
-        console.log('waiting for message', res.data);
+        console.log("waiting for message", res.data);
         if (res.data.message) {
           //console.log('it is true');
-          setError(true);
-          setErrorMessage(res.data.message);
-          showAlert();
+          // setError(true);
+          // setErrorMessage(res.data.message);
+          // showAlert();
         } else {
-          setOutput(res.data);
+          // setOutput(res.data);
           console.log("search flight", res.data);
-          setSearchDone(true);
+          // setSearchDone(true);
         }
       })
       .catch((err) => console.log(err));
@@ -253,19 +261,19 @@ const EditReservationButton = (resId) => {
                           checked={cabin === "first"}
                           value="first"
                           control={<Radio />}
-                          onChange={(e) => onCabinChange(e,"first")}
+                          onChange={(e) => onCabinChange(e, "first")}
                           label="First Class"
                         />
                         <FormControlLabel
                           checked={cabin === "business"}
-                          onChange={(e) => onCabinChange(e,"business")}
+                          onChange={(e) => onCabinChange(e, "business")}
                           value="business"
                           control={<Radio />}
                           label="Business"
                         />
                         <FormControlLabel
                           checked={cabin === "economy"}
-                          onChange={(e) => onCabinChange(e,"economy")}
+                          onChange={(e) => onCabinChange(e, "economy")}
                           value="economy"
                           control={<Radio />}
                           label="Economy"
@@ -275,6 +283,9 @@ const EditReservationButton = (resId) => {
                   </TreeItem>
                 )}
               </TreeView>
+              <Button href={`/edit/${input.departureAirport}/${input.arrivalAirport}/${input.noOfChildren}/${input.noOfAdults}/${input.arrivalDate}/${input.departureDate}/${input.cabin}`} variant="contained">
+                Next
+              </Button>
             </Box>
           </Modal>
         </div>

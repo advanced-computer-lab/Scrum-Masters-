@@ -86,7 +86,7 @@ const SearchFlight = ({}) => {
 
   const onChange = (e) => {
     setQuery({ ...query, [e.target.name]: e.target.value });
-    console.log(typeof e.target.value);
+    console.log(query);
   };
 
   const onSubmit = () => {

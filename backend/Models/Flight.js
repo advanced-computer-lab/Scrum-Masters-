@@ -52,10 +52,11 @@ const flightSchema = mongoose.Schema(
       },
       childPrice: {
         type: Number,
-        default: function () {
-          return this.economy.adultPrice * 0.6;
-        }, // 60% of the specified adult price
-        //required: true,
+        default:750,
+        // default: function () {
+        //   return this.economy.adultPrice * 0.6;
+        // }, // 60% of the specified adult price
+        required: true,
       },
       availableSeats: {
         type: Number,
@@ -83,10 +84,11 @@ const flightSchema = mongoose.Schema(
       },
       childPrice: {
         type: Number,
-        default: function () {
-          return this.business.adultPrice * 0.6;
-        }, // 60% of the specified adult price
-        //required: true,
+        default:1000,
+        // default: function () {
+        //   return this.business.adultPrice * 0.6;
+        // }, // 60% of the specified adult price
+        required: true,
       },
       availableSeats: {
         type: Number,
@@ -114,10 +116,11 @@ const flightSchema = mongoose.Schema(
       },
       childPrice: {
         type: Number,
-        default: function () {
-          return this.firstClass.adultPrice * 0.6;
-        }, // 60% of the specified adult price
-        //        required: true,
+        default:2500,
+        // default: function () {
+        //   return this.firstClass.adultPrice * 0.6;
+        // }, // 60% of the specified adult price
+        required: true,
       },
       availableSeats: {
         type: Number,

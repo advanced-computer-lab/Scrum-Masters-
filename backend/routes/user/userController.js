@@ -31,7 +31,7 @@ router.post("/search", async (req, res) => {
   /* {
     noOfChildren: val, 
     noOfAdults: val,
-    departureAirpot:val, 
+    departureAirport:val, 
     arrivalAirport:val,  cai  dxb
     departureDate: val,
     arrivalDate: val, of return flight
