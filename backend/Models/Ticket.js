@@ -5,7 +5,7 @@ const ticketSchema = mongoose.Schema(
   {
     seatNum: {
       type: String,
-      required: true,
+      required: true,  
     },
     ticketType: {
       type: String,
@@ -17,17 +17,17 @@ const ticketSchema = mongoose.Schema(
       enum: ["adult", "child"],
       required: true,
     },
-    cabin: {
-      type: String,
-      enum: ["first", "business", "economy"],
-      required: true,
-    },
     firstName: {
       type: String,
       required: true,
     },
     lastName: {
+      type: String, 
+      required: true,
+    },
+    cabin: {
       type: String,
+      enum: ["first", "business", "economy"],
       required: true,
     },
 
@@ -43,9 +43,16 @@ const ticketSchema = mongoose.Schema(
       ref: "Reservation",
       required: true,
     },
+
     price: {
       type: Number,
     },
+    passportNumber: {
+      type:String
+    },
+    dateOfBirth: {
+      type:Date
+    }
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

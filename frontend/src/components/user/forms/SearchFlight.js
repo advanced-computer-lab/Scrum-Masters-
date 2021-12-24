@@ -27,7 +27,7 @@ import { Dialog } from '@mui/material';
 import { DialogContentText } from '@mui/material';
 import BookingPage from '../../../pages/user/signed/BookingPage';
 
-const SearchFlight = () => {
+const SearchFlight = ({}) => {
   useEffect(() => {
     axios
       .get('http://localhost:8081/user/search/flights')
@@ -39,10 +39,10 @@ const SearchFlight = () => {
       })
       .catch((err) => console.log(err));
   }, []);
+  //
+  const cabins = ['Economy', 'Business', 'First Class'];
 
-  const cabins = ['economy', 'business', 'first class'];
-
-  const [query, setQuery] = useState();
+  const [query, setQuery] = useState({});
   const [from, setFrom] = useState();
   const [to, setTo] = useState();
   const [error, setError] = useState(false);
@@ -55,7 +55,7 @@ const SearchFlight = () => {
 
   const cabinProps = {
     options: cabins,
-    getOptionLabel: (option) => option,
+    // getOptionLabel: (option) => option,
   };
 
   const fromProps = {
@@ -86,38 +86,36 @@ const SearchFlight = () => {
   };
 
   const onSubmit = () => {
-    if (!query.noOfChildren) {
-      query.noOfChildren = 0;
-    }
-    if (!query.noOfAdults) {
-      query.noOfAdults = 0;
-    }
-
-    if (query.noOfAdults + query.noOfChildren === 0) {
-      console.log('the total is 0');
-      setError(true);
-      setErrorMessage('Please choose at least 1 passenger');
-      showAlert();
-    } else {
-      //console.log(query);
-      axios
-        .post('http://localhost:8081/user/search/', query)
-        .then((res) => {
-          setOutput(res.data);
-          // history.push({
-          //   pathname: '/user',
-          //   state: res.data,
-          // });
+    //console.log(query);
+    axios
+      .post('http://localhost:8081/user/search/', query)
+      .then((res) => {
+        console.log('waiting for message', res.data);
+        if (res.data.message) {
+          console.log('it is true');
+          setError(true);
+          setErrorMessage(res.data.message);
+          showAlert();
+        } else {
+          setOutput(res.data);   
+          console.log("search flight", res.data);
           setSearchDone(true);
-          //console.log(output);
-          // console.log("from",from);
-          // console.log("to",to);
-        })
-        .catch((err) => console.log(err));
-    }
+        }
+
+        // history.push({
+        //   pathname: '/user',
+        //   state: res.data,
+        // });
+
+        //console.log(output);
+        // console.log("from",from);
+        // console.log("to",to);
+      })
+      .catch((err) => console.log(err));
   };
 
   function decrementAdultCount() {
+    console.log(adultCount);
     setAdultCount((prevCount) => (prevCount === 0 ? 0 : prevCount - 1));
   }
   function incrementAdultCount() {
@@ -150,7 +148,7 @@ const SearchFlight = () => {
           columnSpacing={{ xs: 1, sm: 2, md: 2 }}
           style={{ marginTop: '20px' }}
         >
-          <Grid item xs={6} md={2}>
+          <Grid item xs={1} md={2}>
             <div>
               <Autocomplete
                 {...fromProps}
@@ -166,7 +164,9 @@ const SearchFlight = () => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    placeholder='from'
+                    required
+                    placeholder='From'
+                    label='From'
                     InputProps={{
                       ...params.InputProps,
                       startAdornment: (
@@ -196,8 +196,10 @@ const SearchFlight = () => {
                 size='30px'
                 renderInput={(params) => (
                   <TextField
+                    label='To'
                     {...params}
-                    placeholder='to'
+                    placeholder='To'
+                    required
                     InputProps={{
                       ...params.InputProps,
                       startAdornment: (
@@ -212,23 +214,23 @@ const SearchFlight = () => {
               />
             </div>
           </Grid>
-          <Grid item xs={6} md={2}>
+          <Grid item xs={2} md={2}>
             <ButtonGroup disableElevation>
               <IconButton
                 onClick={() => {
                   decrementAdultCount();
-                  setQuery({ ...query, ['noOfAdults']: adultCount + 1 });
+                  setQuery({ ...query, ['noOfAdults']: adultCount - 1 });
                 }}
               >
                 <RemoveCircleRoundedIcon />
               </IconButton>
               <TextField
+                required
                 name='noOfAdults'
                 label='Adults'
                 type='number'
                 value={adultCount}
                 onChange={onChange}
-                style={{ marginTop: '5%', float: 'center' }}
                 disabled={true}
               >
                 {/* {adultCount}{" "} */}
@@ -243,23 +245,23 @@ const SearchFlight = () => {
               </IconButton>
             </ButtonGroup>
           </Grid>
-          <Grid item xs={6} md={2}>
+          <Grid item xs={1} md={2}>
             <ButtonGroup disableElevation>
               <IconButton
                 onClick={() => {
                   decrementChildrenCount();
-                  setQuery({ ...query, ['noOfChildren']: childrenCount + 1 });
+                  setQuery({ ...query, ['noOfChildren']: childrenCount - 1 });
                 }}
               >
                 <RemoveCircleRoundedIcon />
               </IconButton>
               <TextField
+                required
                 name='noOfChildren'
                 type='number'
                 label='Children'
                 value={childrenCount}
                 disabled={true}
-                style={{ marginTop: '5%', float: 'center' }}
               >
                 {/* {adultCount}{" "} */}
               </TextField>
@@ -274,11 +276,12 @@ const SearchFlight = () => {
             </ButtonGroup>
           </Grid>
 
-          <Grid item xs={6} md={2}>
+          <Grid item xs={1} md={2}>
             <TextField
               id='outlined-search'
               label='Departure Date'
               type='date'
+              required
               InputLabelProps={{
                 shrink: true,
                 style: {
@@ -291,10 +294,10 @@ const SearchFlight = () => {
               onChange={onChange}
             />
           </Grid>
-          <Grid item xs={6} md={2}>
+          <Grid item xs={1} md={2}>
             <TextField
               id='outlined-search'
-              label='Arrival Date'
+              label='Return date'
               type='date'
               InputLabelProps={{
                 shrink: true,
@@ -306,22 +309,39 @@ const SearchFlight = () => {
               }}
               name='arrivalDate'
               onChange={onChange}
+              required
             />
           </Grid>
-          <Grid item xs={6} md={2}>
+          <Grid item xs={1} md={2}>
+            {console.log(cabinProps)}
             <div>
               <Autocomplete
                 {...cabinProps}
                 id='blur-on-select'
-                // name="cabin"
+                label='Cabin'
+                required
                 blurOnSelect
                 clearOnEscape
                 size='30px'
+                InputLabelProps={{
+                  shrink: true,
+                  style: {
+                    backgroundColor: 'white',
+                    width: 'auto',
+                    padding: '1px',
+                  },
+                }}
                 onChange={(e, newValue) =>
-                  setQuery({ ...query, ['cabin']: newValue })
+                  setQuery({
+                    ...query,
+                    ['cabin']:
+                      newValue === 'First Class'
+                        ? 'first'
+                        : newValue.toLowerCase(),
+                  })
                 }
                 renderInput={(params) => (
-                  <TextField {...params} placeholder='Cabin' />
+                  <TextField {...params} placeholder='Cabin' label='Cabin' />
                 )}
               />
             </div>
@@ -329,7 +349,13 @@ const SearchFlight = () => {
 
           <Grid item xs={6} md={2}>
             <Tooltip title='Search' arrow placement='right'>
-              <IconButton aria-label='delete' onClick={onSubmit} size='large'>
+              <IconButton
+                aria-label='delete'
+                onClick={onSubmit}
+                size='large'
+                type='SUBMIT'
+                style={{ float: 'left' }}
+              >
                 <SearchIcon size='large' style={{ color: '#48bfe3' }} />
               </IconButton>
             </Tooltip>
@@ -341,7 +367,7 @@ const SearchFlight = () => {
                 color='purple'
                 style={{ textAlign: 'center' }}
               >
-                {'Cannot Search for flight'}
+                {'Cannot search for flight.'}
               </DialogTitle>
               <DialogContent>
                 <DialogContentText id='alert-dialog-description'>

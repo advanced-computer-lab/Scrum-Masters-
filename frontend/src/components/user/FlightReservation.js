@@ -21,7 +21,6 @@ import {
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import UserFlightCard from './UserFlightCard';
 
 const FlightReservation = ({
   data,
@@ -56,6 +55,7 @@ const FlightReservation = ({
     );
   };
   const getPrice = (cabinClass, row) => {
+    console.log(data.details);
     return cabinClass === 'economy'
       ? row.economy.adultPrice
       : cabinClass === 'first'

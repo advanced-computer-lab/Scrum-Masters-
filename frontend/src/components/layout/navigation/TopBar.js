@@ -8,18 +8,62 @@ import ProfileButton from '../../admin/buttons/ProfileButton';
 import '@fontsource/henny-penny';
 import '../../../styles/custom.css';
 import UserProfile from '../../user/existing/buttons/UserProfile';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import axios from 'axios';
 const TopBar = (props) => {
   const [admin, setAdmin] = useState(props.admin);
   const [existing, setExisting] = useState(props.existing);
+  const [values, setValues] = useState();
   const guestClick = () => {
-    setExisting(true);
-    setAdmin(false);
-    props.onSignIn();
+    axios
+      .post('http://localhost:8081/auth/login', values)
+      .then((result) => {
+        console.log('result', result);
+        if (result.data.message === 'Success') {
+          window.sessionStorage.setItem('token', result.data.token);
+          props.onSignIn();
+          setExisting(true);
+          setAdmin(false);
+        }
+        //else error alert incorrect credentials
+      })
+      .catch((err) => console.log(err));
+
+    // props.onSignIn();
   };
   const logOutClick = () => {
     setExisting(false);
     setAdmin(false);
     props.onSignOut();
+  };
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const onChange = async (e, name) => {
+    if (e) {
+      try {
+        console.log(e);
+        if (e.target) {
+          await setValues({ ...values, [e.target.name]: e.target.value });
+        } else {
+          await setValues({ ...values, [name]: e });
+        }
+        await console.log('update', values);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
   return (
     <Navbar
@@ -73,6 +117,7 @@ const TopBar = (props) => {
                 </Nav.Link>
                 {/* <Nav.Link href="/user"> */}
                 <Button
+                  onClick={handleClickOpen}
                   variant='contained'
                   style={{ marginLeft: '30px' }}
                   sx={{
@@ -83,13 +128,58 @@ const TopBar = (props) => {
                       color: '#7400b8',
                     },
                   }}
-                  onClick={guestClick}
-                  href='/search'
                 >
                   {' '}
                   Sign In{' '}
                 </Button>
-                {/* </Nav.Link> */}
+                <Dialog open={open} onClose={handleClose}>
+                  <DialogTitle>SIGN IN</DialogTitle>
+                  <DialogContent>
+                    <TextField
+                      autoFocus
+                      margin='dense'
+                      id='name'
+                      label='Email Address'
+                      type='email'
+                      name='email'
+                      fullWidth
+                      variant='standard'
+                      onChange={onChange}
+                    />
+                    <TextField
+                      autoFocus
+                      margin='dense'
+                      id='name'
+                      label='Password'
+                      name='password'
+                      type='password'
+                      fullWidth
+                      variant='standard'
+                      onChange={onChange}
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose} variant='outlined'>
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        handleClose();
+                        guestClick();
+                      }}
+                      variant='contained'
+                      color='primary'
+                    >
+                      Sign in
+                    </Button>
+                  </DialogActions>
+                  <DialogContent>
+                    Don't have an account?{' '}
+                    <Link to='/signup' onClick={handleClose}>
+                      Sign up
+                    </Link>
+                  </DialogContent>
+                </Dialog>
               </Nav>
             </Navbar.Collapse>
           )}
@@ -97,10 +187,10 @@ const TopBar = (props) => {
             <Navbar.Collapse id='responsive-navbar-nav'>
               <Nav className='me-auto'></Nav>
               <Nav>
-                <Nav.Link href='/search' style={{ color: 'white' }} exact>
+                <Nav.Link href='/' style={{ color: 'white' }} exact>
                   Book a Flight
                 </Nav.Link>
-                <Nav.Link href='/reservation' style={{ color: 'white' }} exact>
+                <Nav.Link href='/reservations' style={{ color: 'white' }} exact>
                   My Bookings
                 </Nav.Link>
                 <UserProfile logOutClick={logOutClick} />
