@@ -108,7 +108,7 @@ const TopBar = (props) => {
               </Nav>
             </Navbar.Collapse>
           )}
-          {! (JSON.parse(window.sessionStorage.getItem('existing'))) && !admin && (
+          {!(JSON.parse(window.sessionStorage.getItem('existing'))) && !admin && (
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto"></Nav>
               <Nav>
