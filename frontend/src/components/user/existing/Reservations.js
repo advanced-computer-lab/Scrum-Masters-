@@ -17,6 +17,14 @@ import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import image1 from '../../../images/reservations.jpg';
+import ListItemText from '@mui/material/ListItemText';
+import ListItem from '@mui/material/ListItem';
+import List from '@mui/material/List';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import CloseIcon from '@mui/icons-material/Close';
+import Slide from '@mui/material/Slide';
+import { forwardRef } from 'react';
 import {
   Button,
   Box,
@@ -52,6 +60,16 @@ export default function BasicTable(onDelete) {
   const handleClose = () => {
     setOpen(false);
   };
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   const [data, getData] = useState([]);
   const getDate = (input) => {
     const date = new Date(input);
@@ -74,7 +92,9 @@ export default function BasicTable(onDelete) {
       });
     //onDelete();
   };
-
+  const Transition = forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
   const sendEmail = (price) => {
     var templateParams = {
       totalPrice: price,
@@ -293,9 +313,31 @@ export default function BasicTable(onDelete) {
                   </StyledTableCell>
                   <TableCell>
                   <Stack spacing={-0.5} orientation='horizontal'>
-                    <IconButton color="success"><AirplaneTicketIcon fontSize='large'/></IconButton>
+                    <IconButton color="success" onClick={handleClickOpenDialog}><AirplaneTicketIcon fontSize='large'/></IconButton>
                     <small align='center'>tickets</small>
                     </Stack>
+                    <Dialog
+        fullScreen
+        open={openDialog}
+        onClose={handleCloseDialog}
+        TransitionComponent={Transition}
+      >
+        <AppBar sx={{ position: 'relative' }}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleCloseDialog}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Button autoFocus color="inherit" onClick={handleCloseDialog}>
+              save
+            </Button>
+          </Toolbar>
+        </AppBar>
+      </Dialog>
                     </TableCell>
                 </StyledTableRow>
               ))}
