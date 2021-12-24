@@ -374,18 +374,20 @@ const transporter = nodemailer.createTransport({
 })
 const options ={
   from:"maramACL@outlook.com",
-  to:"marambenamer@yahoo.com",
-  subject:"Email trial",
+  to:JSON.stringify(req.body.body.token.email),
+  subject:"HI BABY SEIFOOOOOOO",
   text:JSON.stringify(req.body)
 };
-    console.log(req.body);
+    console.log ("Ana batba3 ya rooh omak"+JSON.stringify((req.body.body.token.email)));
     const{product,token}=req.body;
   
     return stripe.customers.create({
+     
       email: req.body.body.token.email,
       source: "tok_visa"
   
     }).then(customer =>{
+      console.log("na7noooo honaaaa" + ""+JSON.stringify(req.body.body.token.email))
       stripe.charges.create({
         amount:req.body.body.product.price,
         currency:'usd',

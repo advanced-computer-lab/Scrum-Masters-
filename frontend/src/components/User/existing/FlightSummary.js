@@ -105,9 +105,11 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
           .then((result) => {
             console.log("result", result);
             if (result.data.message === "Success") {
+              console.log("NAGA7NAAAAAA!!!!");
               window.sessionStorage.setItem("token", result.data.token);
-              window.sessionStorage.setItem("existing", true);
-              window.sessionStorage.setItem("admin", false);
+              onSignIn();
+              // window.sessionStorage.setItem("existing", true);
+              // window.sessionStorage.setItem("admin", false);
               setExisting(true);
              // setAdmin(false);
             }
