@@ -532,6 +532,7 @@ router.get('/reservations/:id', async (req, res) => {
           departureTime: reservation.departingFlightId.departureTime,
           arrivalDate: reservation.departingFlightId.arrivalDate,
           arrivalTime: reservation.departingFlightId.arrivalTime,
+          from: reservation.departingFlightId.departureAirport,
           cabin: reservation.cabinClass,
         },
         arrivalFlight: {
@@ -540,6 +541,7 @@ router.get('/reservations/:id', async (req, res) => {
           departureTime: reservation.returnFlightId.departureTime,
           arrivalDate: reservation.returnFlightId.arrivalDate,
           arrivalTime: reservation.returnFlightId.arrivalTime,
+          from: reservation.returnFlightId.departureAirport,
           cabin: reservation.cabinClass,
         },
         reservationId: reservation.id,

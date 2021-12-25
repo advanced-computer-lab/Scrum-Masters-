@@ -16,7 +16,7 @@ import { sizing } from '@mui/system';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
-
+import jwt_decode from "jwt-decode";
 
 import {
   Button,
@@ -47,6 +47,9 @@ export default function BasicTable(onDelete) {
 
   const [totalPrice, setTotalPrice] = useState();
   // const [deleteRes, setdeleteRes] = useState(true);
+  const token = window.sessionStorage.getItem("token");
+  var decodedToken;
+  if (token) decodedToken = jwt_decode(token);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -124,7 +127,7 @@ export default function BasicTable(onDelete) {
   const ViewReservations = () => {
     useEffect(() => {
       axios
-        .get('http://localhost:8081/user/reservations/61aa2eb9d3eee0b9e4921105')
+        .get(`http://localhost:8081/user/reservations/${decodedToken.id}`)
         .then((res) => {
           getData(res.data);
           // console.log(res.data);
@@ -184,13 +187,13 @@ export default function BasicTable(onDelete) {
                   key={row.name}
                   sx={{ '&:last-child td, &:last-child th': { border: '0px' } }}
                 >
-                  <StyledTableCell style={{ width: '13%' }}>
+                  <StyledTableCell style={{ width: '15%' }}>
                     <Stack
                       spacing={2}
                       divider={<Divider orientation='horizontal' flexItem />}
                     >
-                      <div>Departing Flight <FlightTakeoffIcon color="primary"/></div>
-                      <div>Arrival Flight <FlightLandRounded color="error"/></div>
+                      <div>Departing Flight <FlightTakeoffIcon color="primary"/> {row.departingFlight.from}</div>
+                      <div>Retrun Flight <FlightLandRounded color="error"/> {row.arrivalFlight.from}</div>
                     </Stack>
                   </StyledTableCell>
                   <StyledTableElement align='center'>
