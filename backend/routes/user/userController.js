@@ -533,6 +533,7 @@ router.get("/reservations/:id", async (req, res) => {
           departureTime: reservation.departingFlightId.departureTime,
           arrivalDate: reservation.departingFlightId.arrivalDate,
           arrivalTime: reservation.departingFlightId.arrivalTime,
+          from: reservation.departingFlightId.departureAirport,
           cabin: reservation.cabinClass,
         },
         arrivalFlight: {
@@ -541,6 +542,7 @@ router.get("/reservations/:id", async (req, res) => {
           departureTime: reservation.returnFlightId.departureTime,
           arrivalDate: reservation.returnFlightId.arrivalDate,
           arrivalTime: reservation.returnFlightId.arrivalTime,
+          from: reservation.returnFlightId.departureAirport,
           cabin: reservation.cabinClass,
         },
         reservationId: reservation.id,
@@ -615,9 +617,14 @@ router.get("/profile/:id", async (req, res) => {
       res.status(404).send(err);
     });
 });
+// getting tickets of the reservation
+router.get("/tickets/:resId",async(req,res)=>{
 
-router.post("/payment", async (req, res) => {
-  const nodeMailer = require("nodemailer");
+  const tickets = await Ticket.find({reservationId:req.params.resId}).populate("flightId")
+  res.json(tickets);
+});
+router.post('/payment', async (req, res) => {
+  const nodeMailer = require('nodemailer');
   const transporter = nodemailer.createTransport({
     service: "hotmail",
     auth: {
@@ -731,6 +738,8 @@ router.post("/sendmail", async (req, res) => {
 
 router.post("/profile", async (req, res) => {
   const insertion = req.body;
+  insertion.password = await bcrypt.hash(insertion.password, 10);
+  insertion.email = insertion.email.toLowerCase();
   const user = new User(insertion);
   user
     .save()
