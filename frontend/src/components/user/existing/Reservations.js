@@ -22,7 +22,7 @@ import Toolbar from "@mui/material/Toolbar";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { forwardRef } from "react";
-import { styled } from "@mui/material/styles";
+import FlightLandRounded from "@mui/icons-material/FlightLandRounded";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
@@ -70,7 +70,20 @@ export default function BasicTable(onDelete) {
   const [totalPrice, setTotalPrice] = useState();
   const [email, setEmail] = useState("");
   const[deleteFlight,setDelete]=useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  
+  const Transition = forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
   // const [deleteRes, setdeleteRes] = useState(true);
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -115,6 +128,7 @@ export default function BasicTable(onDelete) {
         }
         );
     };
+
     handleClose();
     // console.log('an hena', reservationId);
     axios
@@ -132,7 +146,19 @@ export default function BasicTable(onDelete) {
       });
     //onDelete();
   };
-
+const getTickets = (reservationId) => {
+    console.log("an hena", reservationId);
+    axios
+      .get(`http://localhost:8081/user/tickets/${reservationId}`)
+      .then((res) => {
+        console.log(res);
+        setTickets(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    //onDelete();
+  };
   const sendEmail = (price) => {
     var templateParams = {
       totalPrice: price,
