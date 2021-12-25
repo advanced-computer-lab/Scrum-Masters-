@@ -42,6 +42,10 @@ const EditingSeatsPage = () => {
         .catch((err) => console.log(err));
     }
   }, []);
+
+  const submitReservation=()=>{
+
+  }
   return (
     //case changing seats of same flights
     <div>
@@ -55,6 +59,8 @@ const EditingSeatsPage = () => {
           cabin={cabin}
           edit={true}
           state={state}
+          resId={resId}
+          onTicketsDone={submitReservation}
         />
       )}
       {!loading && edit === '0' && secondFlightId === '0' && data && (
@@ -65,7 +71,9 @@ const EditingSeatsPage = () => {
           firstTickets={data.oldDepartingTickets}
           cabin={cabin}
           edit={false}
+          onTicketsDone={submitReservation}
           state={state}
+          resId={resId}
         />
       )}
       {!loading && edit === '0' && secondFlightId !== '0' && data && (
@@ -76,7 +84,9 @@ const EditingSeatsPage = () => {
           secondFlight={secondFlight}
           cabin={cabin} //new cabin
           edit={false}
+          onTicketsDone={submitReservation}
           state={state}
+          resId={resId}
         />
       )}
     </div>
