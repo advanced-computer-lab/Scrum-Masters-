@@ -106,7 +106,7 @@ const UpdateFlight = ({ flight, onUpdate }) => {
             style={{ marginTop: "1%" }}
           >
             <TextField
-              required
+              disabled
               id="outlined-search"
               label="Flight Number"
               type="number"

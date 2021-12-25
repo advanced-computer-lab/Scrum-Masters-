@@ -57,16 +57,15 @@ const flightSchema = mongoose.Schema(
       },
       childPrice: {
         type: Number,
-        default:function (){
-          console.log("el type bta3y",typeof this.economy.adultPrice )
-          return this.economy.adultPrice*0.6;
-        } ,
+        default: function () {
+          console.log('el type bta3y', typeof this.economy.adultPrice);
+          return this.economy.adultPrice * 0.6;
+        },
         required: true,
       },
       availableSeats: {
         type: Number,
         default: function () {
-  
           return this.economy.noOfSeats;
         },
         required: true,
@@ -83,14 +82,17 @@ const flightSchema = mongoose.Schema(
         default: 0,
         required: true,
       },
-      childPrice: {
-        type: Number,
-        default: 1100,
-        required: true,
-      },
       adultPrice: {
         type: Number,
-        // default: 1800,
+        default: 1800,
+        required: true,
+      },
+      childPrice: {
+        type: Number,
+        default: 1000,
+        // default: function () {
+        //   return this.business.adultPrice * 0.6;
+        // }, // 60% of the specified adult price
         required: true,
       },
       availableSeats: {
@@ -112,14 +114,17 @@ const flightSchema = mongoose.Schema(
         default: 0,
         required: true,
       },
-      childPrice: {
-        type: Number,
-        default: 1500,
-        required: true,
-      },
       adultPrice: {
         type: Number,
-        // default: 3000,
+        default: 3000,
+        required: true,
+      },
+      childPrice: {
+        type: Number,
+        default: 2500,
+        // default: function () {
+        //   return this.firstClass.adultPrice * 0.6;
+        // }, // 60% of the specified adult price
         required: true,
       },
       availableSeats: {
@@ -182,6 +187,5 @@ flightSchema
   .set(function (duration) {
     this.duration = duration;
   });
-  
 const Flight = mongoose.model('Flight', flightSchema);
 module.exports = Flight;

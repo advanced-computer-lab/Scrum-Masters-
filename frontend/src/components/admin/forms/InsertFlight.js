@@ -13,7 +13,6 @@ import { Dialog } from "@mui/material";
 import { DialogContentText } from "@mui/material";
 //import  Error  from "../../snackbars/Error";
 
-
 const axios = require("axios").default;
 
 const InsertFlight = () => {
@@ -59,10 +58,21 @@ const InsertFlight = () => {
       arrivalDate,
       departureAirport,
       arrivalAirport,
-      economy: { noOfSeats: noOfEconomy, adultPrice:priceOfEconomy },
-      business: { noOfSeats: noOfBusiness,adultPrice:priceOfBusiness },
-      firstClass: { noOfSeats: noOfFirstClass,adultPrice:priceOfFirstClass},
-  
+      economy: {
+        noOfSeats: noOfEconomy,
+        adultPrice: priceOfEconomy,
+        childPrice: priceOfEconomy * 0.6,
+      },
+      business: {
+        noOfSeats: noOfBusiness,
+        adultPrice: priceOfBusiness,
+        childPrice: priceOfBusiness * 0.6,
+      },
+      firstClass: {
+        noOfSeats: noOfFirstClass,
+        adultPrice: priceOfFirstClass,
+        childPrice: priceOfFirstClass * 0.6,
+      },
     };
 
     axios
@@ -183,16 +193,13 @@ const InsertFlight = () => {
                 value={arrivalDate}
                 onChange={(event) => {
                   setArrivalDate(event.target.value);
-                  console.log(typeof event.target.value)
+                  console.log(typeof event.target.value);
                 }}
                 InputLabelProps={{
                   shrink: true,
                 }}
-                
               />
-              
             </div>
-            
           </Stack>
 
           <Stack direction="column" spacing={3} style={{ marginTop: "10px" }}>
@@ -283,9 +290,9 @@ const InsertFlight = () => {
               />
             </div>
           </Stack>
-          
-          <Stack  direction='column'  spacing={3} style={{ marginTop: "10px" }} > 
-          <div>
+
+          <Stack direction="column" spacing={3} style={{ marginTop: "10px" }}>
+            <div>
               <TextField
                 required
                 type="Number"
@@ -319,7 +326,7 @@ const InsertFlight = () => {
                 }}
               />
             </div>
-            
+
             <div>
               <TextField
                 required
@@ -337,8 +344,6 @@ const InsertFlight = () => {
                 }}
               />
             </div>
-            
-            
           </Stack>
         </Stack>
         <React.Fragment>
@@ -399,12 +404,18 @@ const InsertFlight = () => {
                   <br />
                   First Class Seats:<b> {flight.firstClass.noOfSeats}</b>.{" "}
                   <br />
-                  Price of First Class:<b> {flight.firstClass.adultPrice}</b>.{" "}
-                  <br />
-                  Price of Business Class:<b> {flight.business.adultPrice}</b>.{" "}
-                  <br />
-                  Price of Economy Class:<b> {flight.economy.adultPrice}</b>.{" "}
-                  <br />
+                  Price of First Class:<b>
+                    {" "}
+                    {flight.firstClass.adultPrice}
+                  </b>. <br />
+                  Price of Business Class:<b>
+                    {" "}
+                    {flight.business.adultPrice}
+                  </b>. <br />
+                  Price of Economy Class:<b>
+                    {" "}
+                    {flight.economy.adultPrice}
+                  </b>. <br />
                   Total Seats: <b>{flight.noOfSeats}</b>.
                 </DialogContentText>
               </DialogContent>

@@ -33,9 +33,39 @@ router.post("/create", async (req, res) => {
   // define each field in req.body is better (for apis :) )
   console.log(req.body);
   const insertion = req.body;
-  //insertion.noOfSeats = parseInt(insertion.firstClass.noOfSeats) + parseInt(insertion.business.noOfSeats) + parseInt(insertion.economy.noOfSeats)
-  console.log("the body",insertion)
+
+  if (insertion.departureAirport === insertion.arrivalAirport) {
+    res.json({
+      message: "the departure and arrival airports cannot be the same.",
+    });
+    return;
+  }
+
+  if (new Date(insertion.arrivalDate) < new Date(insertion.departureDate)) {
+    //throw new Error("End date of lab must be valid and after start date");
+    res.json({
+      message: "cannot have an arrival date before the departure date",
+    });
+    return;
+  }
+
+  //unique flightnumber within the day
+  var query = await Flight.find({
+    flightNumber: req.body.flightNumber,
+    departurDate: req.body.departurDate,
+  });
+  if ((await query).length > 0) {
+    res.json({ message: "cannot insert the same flight in the same day." });
+    return;
+  }
+  console.log("the body", insertion);
   const flight = new Flight(insertion);
+  if (flight.duration < 0) {
+    res.json({
+      message: "cannot insert, the arrival time is before the departure time.",
+    });
+    return;
+  }
   try {
     const savedFlight = await flight.save();
     res.json(savedFlight);
@@ -55,60 +85,31 @@ router.patch("/update/:id", async (req, res) => {
       res.status(404).send(err);
     });
 });
-router.delete("/delete/:id", (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   Flight.findByIdAndRemove(req.params.id, req.body)
     .then((flight) => res.json({ mgs: "flight deleted successfully" }))
     .catch((err) => res.status(404).json({ error: "No such a flight" }));
-});
-
-//tests
-async function getTickets(tickets,flightNumber){
-  var createdTickets = [];
-  tickets.forEach(async (ticket) => {
-    ticket.ticketType = "departing";
-    ticket.flightNumber = flightNumber
-    console.log("new ticket", ticket);
-    const t =  new Ticket(ticket);
-    createdTickets.push(t._id);
-    console.log("the ticket t ",t)
-    
-      t.save().then().catch()  
-    
-      });
-  console.log("saved tickets ",createdTickets)
-  return createdTickets;
-
-}
-
-
-
-router.post("/reservation/:id", async (req, res) => {
-  
-  const insertion = req.body;
-  insertion.userId = req.params.id;
-  console.log("insertion", insertion);
-
-
-  // //ticket creation
-  const depTickets = insertion.departingFlight.tickets;
-  console.log("departure tickets", depTickets);
-  insertion.departingFlight.tickets = await getTickets(depTickets,insertion.departingFlight.id);
-
-// return
-
-  const returnTickets = insertion.returnFlight.tickets;
-  console.log("return tickets", returnTickets);
-  insertion.returnFlight.tickets = await getTickets(returnTickets,insertion.returnFlight.id);
-
-  const reservation = await new Reservation(insertion);
+  // delete the reservations
   try {
-    const savedReservation = await reservation.save();
-    console.log("The reservation",savedReservation);
-    res.json(savedReservation);
+    await Reservation.deleteMany({
+      $or: [
+        { departingFlightId: req.params.id },
+        { returnFlightId: req.params.id },
+      ],
+    });
   } catch (error) {
     console.log(error);
   }
+//delete the tickets
+  try {
+    await Ticket.deleteMany({ flightId: req.params.id });
+  } catch (error) {
+    console.log(error);
+  }
+ //email to a user that the reservation is cancelled ? 
 });
+
+//tests
 
 
 module.exports = router;
