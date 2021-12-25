@@ -5,8 +5,12 @@ const cors = require('cors');
 const app = express();
 app.use(express.json());
 const dotenv = require("dotenv").config();
+const stripe = require('stripe')(process.env.SECRETSTRIPE);
+const striperoutes =require("./routes/user/userController");
+
 app.use(cors());
 //DB CONNECTION
+
 
 mongoose
   .connect(process.env.DB_CONNECTION_URI, {
@@ -19,6 +23,7 @@ mongoose
   });
 
 //admin/ ROUTES
+app.use('/api/stripe', striperoutes);
 app.use(cors({ origin: true, credentials: true }));
 app.use('/admin', require('./routes/admin/adminController'));
 app.use('/user', require('./routes/user/userController'));

@@ -15,9 +15,14 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
 import { IoIosAirplane, IoIosArrowRoundForward } from 'react-icons/io';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import Divider from '@mui/material/Divider';
+
 import { FaTimes } from 'react-icons/fa';
 
 //import { Link } from "react-router-dom";
@@ -31,7 +36,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 600,
+  width: 700,
   bgcolor: 'background.paper',
   //border: '2px solid #000',
   boxShadow: 24,
@@ -59,13 +64,22 @@ const EditReservationButton = (props) => {
     cabin: false,
   });
   const [state, setState] = useState();
+  const [expanded, setExpanded] = useState(false);
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+    if (panel === 'panel3') {
+      setVisiblity({ departureDate: false, returnDate: false, cabin: true });
+      setState(2);
+    }
+  };
 
   useEffect(() => {
     function fetchData() {
+      console.log(props.resId);
       axios
         .get(`http://localhost:8081/user/edit/history/${props.resId}`)
         .then((res) => {
-          //console.log("This is the response", res.data);
+          console.log('This is the response of the button', res.data);
           setData(res.data);
           setInput(res.data.input);
           setCabin(res.data.input.cabin);
@@ -105,15 +119,18 @@ const EditReservationButton = (props) => {
   };
 
   const handleVisiblity = (count) => {
-    if (count == 0) {
+    if (count === 0) {
       setVisiblity({ departureDate: true, returnDate: false, cabin: true });
       setState(0);
-    } else if (count == 1) {
+      console.log('the state is updated to be 0', state);
+    } else if (count === 1) {
       setVisiblity({ departureDate: false, returnDate: true, cabin: true });
       setState(1);
+      console.log('the state is updated to be 1', state);
     } else {
       setVisiblity({ departureDate: false, returnDate: false, cabin: false });
-      setState(null);
+      setState(2);
+      console.log('the state is updated to be 2', state);
     }
   };
 
@@ -184,7 +201,21 @@ const EditReservationButton = (props) => {
                   <IoIosArrowRoundForward />{' '}
                   {displayDate(data.input.arrivalDate)}
                 </Typography>
-                <TreeView
+                <Divider />
+                <Button
+                  //component='button'
+                  href={`/editSeats/${props.resId}/0/0/${data.input.cabin}/1`}
+                  sx={{ marginTop: '2%' }}
+                  variant='body2'
+                  underline='hover'
+                  // id='modal-modal-title'
+                  // variant='h6'
+                  // component='h3'
+                >
+                  Change Current Seat{' '}
+                </Button>
+                <Divider>OR</Divider>
+                {/* <TreeView
                   defaultCollapseIcon={<ExpandMoreIcon />}
                   defaultExpandIcon={<ChevronRightIcon />}
                   expanded={['1', '2']}
@@ -202,7 +233,25 @@ const EditReservationButton = (props) => {
                       marginTop: '5%',
                       marginBottom: '5%',
                     }}
+                  > */}
+                <Accordion
+                  expanded={expanded === 'panel1'}
+                  onChange={handleChange('panel1')}
+                  sx={{ marginTop: '2%' }}
+                >
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls='panel1bh-content'
+                    id='panel1bh-header'
                   >
+                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                      Dates
+                    </Typography>
+                    <Typography sx={{ color: 'text.secondary' }}>
+                      Arrival & Departure
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
                     <Link
                       component='button'
                       variant='body2'
@@ -224,79 +273,121 @@ const EditReservationButton = (props) => {
                       Change Return Flight
                     </Link>
                     <br />
-
-                    <Grid
-                      container
-                      rowSpacing={1}
-                      columnSpacing={{ xs: 1, sm: 2, md: 2 }}
-                    >
-                      {visibility.departureDate && (
-                        <TextField
-                          id='outlined-search'
-                          label='Departure Date'
-                          type='date'
-                          required
-                          sx={{
-                            marginRight: '2%',
-                          }}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          defaultValue={getDate(data.input.departureDate)}
-                          name='departureDate'
-                          onChange={onChange}
+                    {visibility.departureDate && (
+                      <TextField
+                        id='outlined-search'
+                        label='Departure Date'
+                        type='date'
+                        required
+                        sx={{
+                          marginRight: '2%',
+                        }}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        defaultValue={getDate(data.input.departureDate)}
+                        name='departureDate'
+                        onChange={onChange}
+                      />
+                    )}
+                    {visibility.returnDate && (
+                      <TextField
+                        id='outlined-search'
+                        label='Return Date'
+                        type='date'
+                        required
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        name='arrivalDate'
+                        defaultValue={getDate(data.input.arrivalDate)}
+                        onChange={onChange}
+                      />
+                    )}
+                  </AccordionDetails>
+                </Accordion>
+                <Accordion
+                  expanded={expanded === 'panel3'}
+                  onChange={handleChange('panel3')}
+                >
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls='panel1bh-content'
+                    id='panel1bh-header'
+                  >
+                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                      Dates & Cabin
+                    </Typography>
+                    <Typography sx={{ color: 'text.secondary' }}>
+                      Choose both
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <FormControl component='fieldset'>
+                      <RadioGroup defaultValue={data.input.cabin} name='cabin'>
+                        <FormControlLabel
+                          checked={cabin === 'first'}
+                          value='first'
+                          control={<Radio />}
+                          onChange={(e) => onCabinChange(e, 'first')}
+                          label='First Class'
                         />
-                      )}
-                      {visibility.returnDate && (
-                        <TextField
-                          id='outlined-search'
-                          label='Return Date'
-                          type='date'
-                          required
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          name='arrivalDate'
-                          defaultValue={getDate(data.input.arrivalDate)}
-                          onChange={onChange}
+                        <FormControlLabel
+                          checked={cabin === 'business'}
+                          onChange={(e) => onCabinChange(e, 'business')}
+                          value='business'
+                          control={<Radio />}
+                          label='Business'
                         />
-                      )}
-                    </Grid>
-                  </TreeItem>
-
-                  {false && (
-                    <TreeItem nodeId='2' label='Choose Cabin'>
-                      <FormControl component='fieldset'>
-                        <RadioGroup
-                          defaultValue={data.input.cabin}
-                          name='cabin'
-                        >
-                          <FormControlLabel
-                            checked={cabin === 'first'}
-                            value='first'
-                            control={<Radio />}
-                            onChange={(e) => onCabinChange(e, 'first')}
-                            label='First Class'
-                          />
-                          <FormControlLabel
-                            checked={cabin === 'business'}
-                            onChange={(e) => onCabinChange(e, 'business')}
-                            value='business'
-                            control={<Radio />}
-                            label='Business'
-                          />
-                          <FormControlLabel
-                            checked={cabin === 'economy'}
-                            onChange={(e) => onCabinChange(e, 'economy')}
-                            value='economy'
-                            control={<Radio />}
-                            label='Economy'
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                    </TreeItem>
-                  )}
-                </TreeView>
+                        <FormControlLabel
+                          checked={cabin === 'economy'}
+                          onChange={(e) => onCabinChange(e, 'economy')}
+                          value='economy'
+                          control={<Radio />}
+                          label='Economy'
+                        />
+                      </RadioGroup>
+                    </FormControl>{' '}
+                    <TextField
+                      id='outlined-search'
+                      label='Departure Date'
+                      type='date'
+                      required
+                      sx={{
+                        marginRight: '2%',
+                        marginTop: '6%',
+                        marginLeft: '5%',
+                      }}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      defaultValue={getDate(data.input.departureDate)}
+                      name='departureDate'
+                      onChange={onChange}
+                    />
+                    <TextField
+                      id='outlined-search'
+                      label='Return Date'
+                      type='date'
+                      required
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      sx={{ marginTop: '6%' }}
+                      name='arrivalDate'
+                      defaultValue={getDate(data.input.arrivalDate)}
+                      onChange={onChange}
+                    />
+                  </AccordionDetails>
+                </Accordion>
+                {/* </TreeItem> */}
+                {/* {false && (
+                  // <TreeItem nodeId='2' label='Choose Cabin'>
+                 
+                  // </TreeItem>
+                )} */}
+                {/* </TreeView> */}
+                <br />
                 {visibility.cabin && (
                   <div style={{ float: 'right' }}>
                     <Button
@@ -307,7 +398,7 @@ const EditReservationButton = (props) => {
                       reset
                     </Button>
                     <Button
-                      href={`/edit/${input.departureAirport}/${input.arrivalAirport}/${input.noOfChildren}/${input.noOfAdults}/${input.arrivalDate}/${input.departureDate}/${input.cabin}/${state}/${props.resId}`}
+                      href={`/edit/${input.departureAirport}/${input.arrivalAirport}/${input.noOfChildren}/${input.noOfAdults}/${input.arrivalDate}/${input.departureDate}/${input.cabin}/${state}/${props.resId}/0/0`}
                       color='inherit'
                       sx={{ mr: 1, color: 'primary.main' }}
                     >

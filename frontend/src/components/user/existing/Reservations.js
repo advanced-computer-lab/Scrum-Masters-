@@ -54,12 +54,12 @@ export default function BasicTable(onDelete) {
   const deleteReservation = (reservationId, price) => {
     setTotalPrice(price);
     handleClose();
-    console.log('an hena', reservationId);
+    // console.log('an hena', reservationId);
     axios
       .delete(`http://localhost:8081/user/delete/reservation/${reservationId}`)
       .then((res) => {
         sendEmail(price);
-        console.log(res);
+        // console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -109,7 +109,7 @@ export default function BasicTable(onDelete) {
         .get('http://localhost:8081/user/reservations/61aa2eb9d3eee0b9e4921105')
         .then((res) => {
           getData(res.data);
-          console.log(res.data);
+          // console.log(res.data);
         })
         .catch((err) => console.log(err));
     }, []);

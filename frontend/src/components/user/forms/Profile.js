@@ -14,7 +14,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { indigo } from "@mui/material/colors";
-
+import jwt_decode from "jwt-decode";
 const Profile = () => {
   const [edit, setEdit] = useState(false);
   const [info, setInfo] = useState();
@@ -22,11 +22,12 @@ const Profile = () => {
   const [values, setValues] = useState();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
-
+  const token = window.sessionStorage.getItem("token");
+  const decodedToken = jwt_decode(token);
   const theme = createTheme({
     palette: {
       secondary: {
-        main: indigo[500],
+        main: indigo['A200'],
       },
     },
   });
@@ -55,7 +56,7 @@ const Profile = () => {
   const submit = () => {
     axios
       .patch(
-        `http://localhost:8081/user/profile/update/61aa2eb9d3eee0b9e4921105`,
+        `http://localhost:8081/user/profile/update/${decodedToken.id}`,
         values
       )
       .then((res) => {
@@ -71,7 +72,7 @@ const Profile = () => {
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:8081/user/profile/61aa2eb9d3eee0b9e4921105`)
+      .get(`http://localhost:8081/user/profile/${decodedToken.id}`)
       .then((result) => {
         console.log(result);
         setInfo(result.data);
@@ -130,7 +131,7 @@ const Profile = () => {
             <Stack
               direction="row"
               justifyContent="center"
-              spacing={25}
+              spacing={26}
               style={{ marginTop: "1%" }}
             >
               <Stack
@@ -259,8 +260,17 @@ const Profile = () => {
                 spacing={2}
                 style={{ marginTop: "1%" }}
               >
-                <Button variant="contained" color="secondary" onClick={submit}>
+                {/* <Button onClick={toggleEdit}>Cancel</Button> */}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={submit}
+                  // style={{ marginLeft: "auto" }}
+                >
                   Update
+                </Button>
+                <Button color="secondary" onClick={toggleEdit}>
+                  Cancel
                 </Button>
               </Stack>
             )}

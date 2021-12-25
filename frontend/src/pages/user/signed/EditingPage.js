@@ -20,14 +20,11 @@ const EditingPage = () => {
     arrivalDate: '',
     cabin: '',
   });
-  //const [cabin, setCabin] = useState();
   const [open, setOpen] = useState(false);
   const [visibility, setVisiblity] = useState({
     flightsTable: true,
     seatMap: false,
   });
-  //    const [state, setState] = useState();
-
   var {
     departureAirport,
     arrivalAirport,
@@ -38,6 +35,8 @@ const EditingPage = () => {
     cabin,
     state,
     resId,
+    departureId,
+    returnId,
   } = useParams();
   const query = {
     departureAirport,
@@ -48,6 +47,8 @@ const EditingPage = () => {
     departureDate,
     cabin,
   };
+  console.log('state in the editing page', state);
+
   const handleFlightId = (id) => {
     setFlightId(id);
   };
@@ -74,7 +75,8 @@ const EditingPage = () => {
       {visibility.flightsTable && (
         <FlightsTable
           query={query}
-          resId='61b0a36e2173f72667abb54a'
+          resId={resId}
+          flightsId={{ departureId, returnId }}
           state={state}
           handleFlightId={handleFlightId}
           handleVisibility={handleVisibility}

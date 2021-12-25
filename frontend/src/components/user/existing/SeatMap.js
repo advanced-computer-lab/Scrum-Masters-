@@ -26,7 +26,7 @@ const SeatMap = (props) => {
   console.log(props.passengers, "seat map");
   const createInitial = () => {
     console.log(passengers);
-    var pre = { seg_1: {}, seg_2: {} }
+    var pre = { seg_1: {}, seg_2: {} };
     passengers.forEach((passenger) => {
       if (passenger.departureSeat) {
         pre.seg_1[passenger.id] = {
@@ -37,9 +37,9 @@ const SeatMap = (props) => {
             passenger_id: passenger.id,
             id: "ase_" + passenger.departureSeat + "0",
           },
-        }
+        };
       }
-         if (passenger.returnSeat) {
+      if (passenger.returnSeat) {
         pre.seg_2[passenger.id] = {
           designator: passenger.returnSeat,
           service: {
@@ -48,31 +48,37 @@ const SeatMap = (props) => {
             passenger_id: passenger.id,
             id: "ase_" + passenger.returnSeat + "1",
           },
-        }
+        };
       }
-    })
+    });
     console.log(pre);
     setInitial(pre);
-    };
+  };
   const isEditable = (seatNumber, cabinClass, flight) => {
-    if (!props.edit)
-      return false;
+    if (!props.edit) return false;
     var flag = false;
     if (flight === "departing") {
       for (let passenger of passengers) {
-        if(passenger.departureSeat)//departureTickets
-        if (passenger.cabin === cabinClass && passenger.departureSeat === seatNumber) {
-          flag = true;
-          break;
-        }
+        if (passenger.departureSeat)
+          if (
+            passenger.cabin === cabinClass &&
+            passenger.departureSeat === seatNumber
+          ) {
+            //departureTickets
+            flag = true;
+            break;
+          }
       }
     } else {
       for (let passenger of passengers) {
-        if(passenger.returnSeat)
-        if (passenger.cabin === cabinClass && passenger.returnSeat === seatNumber) {
-          flag = true;
-          break;
-        }
+        if (passenger.returnSeat)
+          if (
+            passenger.cabin === cabinClass &&
+            passenger.returnSeat === seatNumber
+          ) {
+            flag = true;
+            break;
+          }
       }
     }
     return flag;
@@ -88,7 +94,7 @@ const SeatMap = (props) => {
         (object.seatNum !== seatNumber) | (object.cabin !== cabinClass)
     );
   };
-  const createOffer = (from, to, passengers, durationOne, durationTwo) => {
+  const createOffer = (from, to, passengers) => {
     var obj = passengers
       ? {
           slices: [
@@ -104,7 +110,9 @@ const SeatMap = (props) => {
                     iata_code: from, //FROM
                   },
                   id: "seg_1",
-                  duration: "PT" + durationOne.replace(/\s/g, "").toUpperCase(), //pt+duration
+                  duration:
+                    "PT" +
+                    props.flights[0].duration.replace(/\s/g, "").toUpperCase(), //pt+duration
                   destination: {
                     iata_code: to, //TO
                   },
@@ -112,26 +120,28 @@ const SeatMap = (props) => {
               ],
               id: "sli_1",
             },
-            {
-              segments: [
-                {
-                  id: "seg_2",
-                  passengers: passengers.map((passenger) => ({
-                    passenger_id: passenger.id,
-                    cabin_class_marketing_name: "economy",
-                    cabin_class: passenger.cabin_class,
-                  })),
-                  origin: {
-                    iata_code: to,
-                  },
-                  destination: {
-                    iata_code: from,
-                  },
-                  duration: "PT" + durationTwo.replace(/\s/g, "").toUpperCase(), //pt+duration
-                },
-              ],
-              id: "sli_2",
-            },
+            // ...(props.flights.length > 1 && {
+            //   segments: [
+            //     {
+            //       id: "seg_2",
+            //       passengers: passengers.map((passenger) => ({
+            //         passenger_id: passenger.id,
+            //         cabin_class_marketing_name: "economy",
+            //         cabin_class: passenger.cabin_class,
+            //       })),
+            //       origin: {
+            //         iata_code: to,
+            //       },
+            //       destination: {
+            //         iata_code: from,
+            //       },
+            //       duration:
+            //         "PT" +
+            //         props.flights[1].duration.replace(/\s/g, "").toUpperCase(), //pt+duration
+            //     },
+            //   ],
+            //   id: "sli_2",
+            // }),
           ],
           passengers: passengers.map((passenger) => ({
             type: passenger.type, //adult/child
@@ -149,6 +159,30 @@ const SeatMap = (props) => {
           conditions: {},
         }
       : {};
+
+    if (props.flights.length > 1)
+      obj.slices.push({
+        segments: [
+          {
+            id: "seg_2",
+            passengers: passengers.map((passenger) => ({
+              passenger_id: passenger.id,
+              cabin_class_marketing_name: "economy",
+              cabin_class: passenger.cabin_class,
+            })),
+            origin: {
+              iata_code: to,
+            },
+            destination: {
+              iata_code: from,
+            },
+            duration:
+              "PT" + props.flights[1].duration.replace(/\s/g, "").toUpperCase(), //pt+duration
+          },
+        ],
+        id: "sli_2",
+      });
+    console.log(obj, "offerrrrr");
     setOffer(obj);
   };
   const createSeatMaps = () => {
@@ -176,6 +210,7 @@ const SeatMap = (props) => {
         slice_id: "sli_" + (index + 1),
         segment_id: "seg_" + (index + 1),
       };
+      console.log("map", map);
       maps.push(map);
     });
     setSeatMaps(maps);
@@ -261,14 +296,15 @@ const SeatMap = (props) => {
         var char = "A";
         for (let j = 1; j < 4 && economySeats > 0; j++, economySeats--) {
           var flag = isAvailable("" + i + char, "economy", type);
+          var editable = isEditable("" + i + char, "economy", type);
           var seat = {
             type: "seat",
             name: "",
             disclosures: [],
             designator: "" + i + char,
             // eslint-disable-next-line no-loop-func
-            ...(flag && { available_services: [] }),
-            ...(!flag && {
+            ...(flag && !editable && { available_services: [] }),
+            ...((!flag || editable) && {
               // eslint-disable-next-line no-loop-func
               available_services: passengers.map((passenger, p) => ({
                 id: "ase_" + i + char + index,
@@ -285,14 +321,15 @@ const SeatMap = (props) => {
         elements = [];
         for (let j = 1; j < 4 && economySeats > 0; j++, economySeats--) {
           flag = isAvailable("" + i + char, "economy", type);
+          editable = isEditable("" + i + char, "economy", type);
           seat = {
             type: "seat",
             name: "",
             disclosures: [],
             designator: "" + i + char,
             // eslint-disable-next-line no-loop-func
-            ...(flag && { available_services: [] }),
-            ...(!flag && {
+            ...(flag && !editable && { available_services: [] }),
+            ...((!flag || editable) && {
               // eslint-disable-next-line no-loop-func
               available_services: passengers.map((passenger, p) => ({
                 id: "ase_" + i + char + index,
@@ -413,13 +450,14 @@ const SeatMap = (props) => {
         var char = "A";
         for (let j = 1; j < 3 && businessSeats > 0; j++, businessSeats--) {
           var flag = isAvailable("" + i + char, "business", type);
+          var editable = isEditable("" + i + char, "business", type);
           var seat = {
             type: "seat",
             name: "",
             disclosures: [],
             designator: "" + i + char,
-            ...(flag && { available_services: [] }),
-            ...(!flag && {
+            ...(flag && !editable && { available_services: [] }),
+            ...((!flag || editable) && {
               // eslint-disable-next-line no-loop-func
               available_services: passengers.map((passenger, p) => ({
                 id: "ase_" + i + char + index,
@@ -436,13 +474,14 @@ const SeatMap = (props) => {
         elements = [];
         for (let j = 1; j < 3 && businessSeats > 0; j++, businessSeats--) {
           flag = isAvailable("" + i + char, "business", type);
+          editable = isEditable("" + i + char, "business", type);
           seat = {
             type: "seat",
             name: "",
             disclosures: [],
             designator: "" + i + char,
-            ...(flag && { available_services: [] }),
-            ...(!flag && {
+            ...(flag && !editable && { available_services: [] }),
+            ...((!flag || editable) && {
               // eslint-disable-next-line no-loop-func
               available_services: passengers.map((passenger, p) => ({
                 id: "ase_" + i + char + index,
@@ -654,14 +693,13 @@ const SeatMap = (props) => {
     });
   };
   useEffect(() => {
+    console.log("here", props);
     createOffer(
       props.flights[0].departureAirport,
       props.flights[0].arrivalAirport,
-      props.passengers,
-      props.flights[0].duration,
-      props.flights[1].duration
+      props.passengers
     );
-    setTimeout(() => { }, 4000);
+    setTimeout(() => {}, 4000);
     if (props.edit) createInitial();
     createFirstCabin();
     createBusinessCabin();

@@ -29,7 +29,19 @@ const FlightTableContent = ({
   handleFlightIdChange,
   handleNewVisibility,
   cabin,
+  state,
+  flightsId,
 }) => {
+  console.log('inputData of the tableContent', {
+    flights,
+    inputData,
+    handleFlightIdChange,
+    handleNewVisibility,
+    cabin,
+    state,
+    flightsId,
+  });
+
   const [page, setPage] = React.useState(0);
   const [isDeparture, setIsDeparture] = React.useState(true);
   const [open, setOpen] = React.useState(false);
@@ -37,12 +49,12 @@ const FlightTableContent = ({
   const [data, setData] = useState(inputData);
   const [cabinClass, setCabinClass] = useState(cabin);
   const [departureFlightId, setDepartureFlight] = React.useState();
-  const [returnFlightId, setReturnFlight] = React.useState();
+  const [returnFlightId, setReturnFlight] = React.useState('0');
   const [chosenFlights, setChosenFlights] = React.useState({
     departureFlightId: '',
     returnFlightId: '',
   });
-
+  console.log('the state is', state);
   function getPrice(cabinClass, row) {
     if (cabinClass === 'economy')
       return (
@@ -94,6 +106,26 @@ const FlightTableContent = ({
     },
   }));
 
+  const handleClick = (id) => {
+    if (state === '0') {
+      setDepartureFlight(id);
+      console.log('departure flight id updated', departureFlightId);
+      return;
+    } else if (state === '1') {
+      setReturnFlight(id);
+      console.log('return flight id updated', returnFlightId);
+      return;
+    }
+    if (state === '2' && flightsId.departureId !== '0') {
+      setDepartureFlight(id);
+      console.log('departure flight id updated', departureFlightId);
+    } else {
+      setReturnFlight(id);
+      console.log('return flight id updated', returnFlightId);
+      return;
+    }
+  };
+
   return flights
     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
     .map((row) => (
@@ -125,9 +157,27 @@ const FlightTableContent = ({
             <Button
               id={row._id}
               onClick={() => {
-                handleFlightIdChange(row._id);
-                handleNewVisibility({ flightsTable: false, seatMap: true });
+                // state === '0'
+                //   ? setDepartureFlight(id)
+                //   : state === '1'
+                //   ? setReturnFlight(id)
+                //   : state === '2' && flightsId.departureId === '0'
+                //   ? `/edit/${inputData.details.departureAirport}/${inputData.details.arrivalAirport}/${inputData.details.noOfChildren}/${inputData.details.noOfAdults}/${inputData.details.arrivalDate}/${inputData.details.departureDate}/${inputData.details.cabin}/1/${inputData.oldReservation.id}/${departureFlightId}/0`
+                //   : `/edit/${inputData.oldReservation.id}/${departureFlightId}/${returnFlightId}/${inputData.details.cabin}/0`
+                // state !== '1'
+                //   ? setDepartureFlight(row._id)
+                //   : setReturnFlight(row._id);
+                handleClick(row._id);
               }}
+              href={
+                state === '0'
+                  ? `/editSeats/${inputData.oldReservation.id}/${row._id}/0/${inputData.details.cabin}/0`
+                  : state === '1' && flightsId.departureId === '0'
+                  ? `/editSeats/${inputData.oldReservation.id}/${row._id}/0/${inputData.details.cabin}/0`
+                  : state === '2' && flightsId.departureId === '0'
+                  ? `/edit/${inputData.details.departureAirport}/${inputData.details.arrivalAirport}/${inputData.details.noOfChildren}/${inputData.details.noOfAdults}/${inputData.details.arrivalDate}/${inputData.details.departureDate}/${inputData.details.cabin}/2/${inputData.oldReservation.id}/${row._id}/0`
+                  : `/editSeats/${inputData.oldReservation._id}/${flightsId.departureId}/${row._id}/${inputData.details.cabin}/0`
+              }
             >
               Choose Flight
             </Button>

@@ -31,8 +31,10 @@ const FlightsTable = ({
   state,
   handleFlightId,
   handleVisibility,
+  flightsId,
   cabin,
 }) => {
+  console.log('state in the flightsTable', state);
   const [page, setPage] = React.useState(0);
   const [isDeparture, setIsDeparture] = React.useState(state);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -45,6 +47,7 @@ const FlightsTable = ({
     departureFlightId: '',
     returnFlightId: '',
   });
+  const [inputState, setInputState] = React.useState(state);
   const handleNewVisibility = (newVisibility) => {
     handleVisibility(newVisibility);
   };
@@ -134,13 +137,15 @@ const FlightsTable = ({
             </TableHead>
             {data.departingFlights ? (
               <TableBody>
-                {state === '0' ? (
+                {state !== '1' ? (
                   <FlightTableContent
                     flights={data.departingFlights}
+                    state={state}
                     inputData={data}
                     handleFlightIdChange={handleFlightIdChange}
                     handleNewVisibility={handleNewVisibility}
                     cabin={cabin}
+                    flightsId={flightsId}
                   />
                 ) : (
                   <FlightTableContent
@@ -149,6 +154,8 @@ const FlightsTable = ({
                     handleFlightIdChange={handleFlightIdChange}
                     handleNewVisibility={handleNewVisibility}
                     cabin={cabin}
+                    state={state}
+                    flightsId={flightsId}
                   />
                 )}
               </TableBody>
