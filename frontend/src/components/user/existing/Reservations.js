@@ -1,15 +1,15 @@
-import { React, useEffect, useState } from 'react';
-import EditReservationButton from './buttons/EditReservationButton';
-import { GridCellParams } from '@mui/x-data-grid';
-import emailjs from 'emailjs-com';
-import axios from 'axios';
-import { Container } from 'react-bootstrap';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import EditIcon from '@mui/icons-material/Edit';
+import { React, useEffect, useState } from "react";
+import EditReservationButton from "./buttons/EditReservationButton";
+import { GridCellParams } from "@mui/x-data-grid";
+import emailjs from "emailjs-com";
+import axios from "axios";
+import { Container } from "react-bootstrap";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import EditIcon from "@mui/icons-material/Edit";
 import {
   Button,
   Box,
@@ -31,7 +31,7 @@ import {
   styled,
   Divider,
   Paper,
-} from '@mui/material';
+} from "@mui/material";
 
 export default function BasicTable(onDelete) {
   const [open, setOpen] = useState(false);
@@ -48,7 +48,7 @@ export default function BasicTable(onDelete) {
   const getDate = (input) => {
     const date = new Date(input);
     return (
-      date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
     );
   };
   const deleteReservation = (reservationId, price) => {
@@ -59,7 +59,7 @@ export default function BasicTable(onDelete) {
       .delete(`http://localhost:8081/user/delete/reservation/${reservationId}`)
       .then((res) => {
         sendEmail(price);
-        // console.log(res);
+        console.log("deleted");
       })
       .catch((err) => {
         console.log(err);
@@ -70,46 +70,47 @@ export default function BasicTable(onDelete) {
   const sendEmail = (price) => {
     var templateParams = {
       totalPrice: price,
-      reply_to: 'Check this out!',
-      from_name: 'Cloud 9',
+      reply_to: "Check this out!",
+      from_name: "Cloud 9",
     };
     emailjs
       .send(
-        'service_ACL',
-        'template_ryeq8rf',
+        "service_ACL",
+        "template_ryeq8rf",
         templateParams,
-        'user_i6KjynhTdTItE6MZB2wkB'
+        "user_i6KjynhTdTItE6MZB2wkB"
       )
       .then(
         function (response) {
-          console.log('SUCCESS!', response.status, response.text);
+          console.log("SUCCESS!", response.status, response.text);
 
+          setTimeout(() => {}, 3000);
           window.location.reload(false);
         },
         function (error) {
-          console.log('FAILED...', error);
+          console.log("FAILED...", error);
           // window.location.reload(false);
         }
       );
   };
   const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
+    bgcolor: "background.paper",
+    border: "2px solid #000",
     boxShadow: 24,
     p: 4,
   };
   const ViewReservations = () => {
     useEffect(() => {
       axios
-        .get('http://localhost:8081/user/reservations/61aa2eb9d3eee0b9e4921105')
+        .get("http://localhost:8081/user/reservations/61aa2eb9d3eee0b9e4921105")
         .then((res) => {
           getData(res.data);
-          // console.log(res.data);
+          console.log(res.data);
         })
         .catch((err) => console.log(err));
     }, []);
@@ -117,100 +118,100 @@ export default function BasicTable(onDelete) {
   ViewReservations();
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: '#5e60ce',
+      backgroundColor: "#5e60ce",
       color: theme.palette.common.white,
     },
   }));
   const StyledTableElement = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      border: '2px',
+      border: "2px",
       color: theme.palette.common.white,
     },
   }));
 
   return (
     <Container>
-      <div style={{ marginTop: '2%', marginBottom: '2%' }}>
+      <div style={{ marginTop: "2%", marginBottom: "2%" }}>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
                 <StyledTableCell />
-                <StyledTableCell align='center'>Flight Number</StyledTableCell>
-                <StyledTableCell align='center'>Depature date</StyledTableCell>
-                <StyledTableCell align='center'>Depature time</StyledTableCell>
-                <StyledTableCell align='center'>Arrival date</StyledTableCell>
-                <StyledTableCell align='center'>Arrival time</StyledTableCell>
-                <StyledTableCell align='center'>Cabin</StyledTableCell>
-                <StyledTableCell align='center'></StyledTableCell>
-                <StyledTableCell align='center'></StyledTableCell>
+                <StyledTableCell align="center">Flight Number</StyledTableCell>
+                <StyledTableCell align="center">Depature date</StyledTableCell>
+                <StyledTableCell align="center">Depature time</StyledTableCell>
+                <StyledTableCell align="center">Arrival date</StyledTableCell>
+                <StyledTableCell align="center">Arrival time</StyledTableCell>
+                <StyledTableCell align="center">Cabin</StyledTableCell>
+                <StyledTableCell align="center"></StyledTableCell>
+                <StyledTableCell align="center"></StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data.map((row) => (
                 <TableRow
                   key={row.name}
-                  sx={{ '&:last-child td, &:last-child th': { border: '0px' } }}
+                  sx={{ "&:last-child td, &:last-child th": { border: "0px" } }}
                 >
-                  <TableCell style={{ width: '12%' }}>
+                  <TableCell style={{ width: "12%" }}>
                     <Stack
                       spacing={2}
-                      divider={<Divider orientation='horizontal' flexItem />}
+                      divider={<Divider orientation="horizontal" flexItem />}
                     >
                       <div>Departing Flight</div>
                       <div>Arrival Flight</div>
                     </Stack>
                   </TableCell>
-                  <StyledTableElement align='center'>
+                  <StyledTableElement align="center">
                     <Stack
                       spacing={2}
-                      divider={<Divider orientation='horizontal' flexItem />}
+                      divider={<Divider orientation="horizontal" flexItem />}
                     >
                       <div>{row.departingFlight.flightNumber}</div>
                       <div>{row.arrivalFlight.flightNumber}</div>
                     </Stack>
                   </StyledTableElement>
-                  <TableCell align='center'>
+                  <TableCell align="center">
                     <Stack
                       spacing={2}
-                      divider={<Divider orientation='horizontal' flexItem />}
+                      divider={<Divider orientation="horizontal" flexItem />}
                     >
                       <div>{getDate(row.departingFlight.departureDate)}</div>
                       <div>{getDate(row.arrivalFlight.departureDate)}</div>
                     </Stack>
                   </TableCell>
-                  <TableCell align='center'>
+                  <TableCell align="center">
                     <Stack
                       spacing={2}
-                      divider={<Divider orientation='horizontal' flexItem />}
+                      divider={<Divider orientation="horizontal" flexItem />}
                     >
                       <div>{row.departingFlight.departureTime}</div>
                       <div>{row.arrivalFlight.departureTime}</div>
                     </Stack>
                   </TableCell>
-                  <TableCell align='center'>
+                  <TableCell align="center">
                     {
                       <Stack
                         spacing={2}
-                        divider={<Divider orientation='horizontal' flexItem />}
+                        divider={<Divider orientation="horizontal" flexItem />}
                       >
                         <div>{getDate(row.departingFlight.arrivalDate)}</div>
                         <div>{getDate(row.arrivalFlight.arrivalDate)}</div>
                       </Stack>
                     }
                   </TableCell>
-                  <TableCell align='center'>
+                  <TableCell align="center">
                     <Stack
                       spacing={2}
-                      divider={<Divider orientation='horizontal' flexItem />}
+                      divider={<Divider orientation="horizontal" flexItem />}
                     >
                       <div>{row.departingFlight.arrivalTime}</div>
                       <div>{row.arrivalFlight.arrivalTime}</div>
                     </Stack>
                   </TableCell>
-                  <TableCell align='center'>
-                    {row.departingFlight.cabin === 'first'
-                      ? 'First Class'
+                  <TableCell align="center">
+                    {row.departingFlight.cabin === "first"
+                      ? "First Class"
                       : row.departingFlight.cabin.charAt(0).toUpperCase() +
                         row.departingFlight.cabin.substring(1)}
                   </TableCell>
@@ -220,11 +221,11 @@ export default function BasicTable(onDelete) {
                     </IconButton> */}
                     <EditReservationButton resId={row.reservationId} />
                   </TableCell>
-                  <TableCell style={{ width: '7%' }}>
+                  <TableCell style={{ width: "7%" }}>
                     <div>
                       <Button
-                        color='error'
-                        variant='outlined'
+                        color="error"
+                        variant="outlined"
                         onClick={() => {
                           handleClickOpen();
                         }}
@@ -235,14 +236,14 @@ export default function BasicTable(onDelete) {
                         <Modal
                           open={open}
                           onClose={handleClose}
-                          aria-labelledby='modal-modal-title'
-                          aria-describedby='modal-modal-description'
+                          aria-labelledby="modal-modal-title"
+                          aria-describedby="modal-modal-description"
                         >
                           <Box sx={style}>
                             <Typography
-                              id='modal-modal-title'
-                              variant='h6'
-                              component='h2'
+                              id="modal-modal-title"
+                              variant="h6"
+                              component="h2"
                             >
                               Are you sure you want to cancel your reservation?
                             </Typography>

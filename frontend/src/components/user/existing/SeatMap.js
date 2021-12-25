@@ -713,7 +713,16 @@ const SeatMap = (props) => {
     var x = document.getElementsByClassName(
       "passenger-selection-passenger__seat-designator"
     );
-    if (Array.from(x).length !== passengers.length * 2) {
+    if (!props.one && Array.from(x).length !== passengers.length * 2) {
+      console.log(props.one);
+      console.log("2 flights", passengers.length, Array.from(x).length);
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 5000);
+    } else if (props.one && Array.from(x).length !== passengers.length) {
+      console.log(passengers.length);
+      console.log(Array.from(x).length);
       setError(true);
       setTimeout(() => {
         setError(false);
