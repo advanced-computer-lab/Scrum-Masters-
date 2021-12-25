@@ -187,6 +187,8 @@ const EditSeat = (props) => {
         marginTop: "1.5%",
       }}
     >
+
+      
       {loading && (
         <Loader
           type="Plane"
