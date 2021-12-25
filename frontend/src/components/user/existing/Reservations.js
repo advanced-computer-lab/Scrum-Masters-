@@ -37,7 +37,6 @@ import AccessTimeTwoToneIcon from "@mui/icons-material/AccessTimeTwoTone";
 import LinearScaleOutlinedIcon from "@mui/icons-material/LinearScaleOutlined";
 import AirlineSeatReclineExtraIcon from "@mui/icons-material/AirlineSeatReclineExtra";
 import AirplanemodeActive from "@mui/icons-material/AirplanemodeActiveRounded";
-import FlightClassTwoToneIcon from "@mui/icons-material/FlightClassTwoTone";
 import CardMedia from "@mui/material/CardMedia";
 import { positions } from "@mui/system";
 import jwt_decode from "jwt-decode";
@@ -422,7 +421,7 @@ export default function BasicTable(onDelete) {
   ViewReservations();
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
+      backgroundColor: "#5e60ce",
       color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {
