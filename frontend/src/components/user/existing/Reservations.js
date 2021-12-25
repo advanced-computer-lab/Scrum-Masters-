@@ -39,6 +39,7 @@ import AirplanemodeActive from "@mui/icons-material/AirplanemodeActiveRounded";
 import FlightClassTwoToneIcon from "@mui/icons-material/FlightClassTwoTone";
 import CardMedia from "@mui/material/CardMedia";
 import { positions } from "@mui/system";
+import jwt_decode from "jwt-decode";
 import {
   Button,
   Box,
@@ -269,6 +270,9 @@ export default function BasicTable(onDelete) {
 
   const [totalPrice, setTotalPrice] = useState();
   // const [deleteRes, setdeleteRes] = useState(true);
+  const token = window.sessionStorage.getItem("token");
+  var decodedToken;
+  if (token) decodedToken = jwt_decode(token);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -338,12 +342,12 @@ export default function BasicTable(onDelete) {
   const deleteReservation = (reservationId, price) => {
     setTotalPrice(price);
     handleClose();
-    console.log("an hena", reservationId);
+    // console.log('an hena', reservationId);
     axios
       .delete(`http://localhost:8081/user/delete/reservation/${reservationId}`)
       .then((res) => {
         sendEmail(price);
-        console.log(res);
+        // console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -405,10 +409,10 @@ export default function BasicTable(onDelete) {
   const ViewReservations = () => {
     useEffect(() => {
       axios
-        .get("http://localhost:8081/user/reservations/61aa2eb9d3eee0b9e4921105")
+        .get(`http://localhost:8081/user/reservations/${decodedToken.id}`)
         .then((res) => {
           getData(res.data);
-          console.log(res.data);
+          // console.log(res.data);
         })
         .catch((err) => console.log(err));
     }, []);
@@ -478,17 +482,13 @@ export default function BasicTable(onDelete) {
                   key={row.name}
                   sx={{ "&:last-child td, &:last-child th": { border: "0px" } }}
                 >
-                  <StyledTableCell style={{ width: "13%" }}>
+                  <StyledTableCell style={{ width: '15%' }}>
                     <Stack
                       spacing={2}
                       divider={<Divider orientation="horizontal" flexItem />}
                     >
-                      <div>
-                        Departing Flight <FlightTakeoffIcon color="primary" />
-                      </div>
-                      <div>
-                        Arrival Flight <FlightLandRounded color="error" />
-                      </div>
+                      <div>Departing Flight <FlightTakeoffIcon color="primary"/> {row.departingFlight.from}</div>
+                      <div>Retrun Flight <FlightLandRounded color="error"/> {row.arrivalFlight.from}</div>
                     </Stack>
                   </StyledTableCell>
                   <StyledTableElement align="center">
@@ -544,14 +544,9 @@ export default function BasicTable(onDelete) {
                       : row.departingFlight.cabin.charAt(0).toUpperCase() +
                         row.departingFlight.cabin.substring(1)}
                   </StyledTableCell>
-                  <TableCell>
-                    <Stack spacing={-0.5} orientation="horizontal">
-                      <IconButton aria-label="edit" color="primary">
-                        <EditIcon />
-                      </IconButton>
-                      <small align="center">edit</small>
-                    </Stack>
-                  </TableCell>
+                    <TableCell>
+                    <EditReservationButton resId={row.reservationId} />
+                    </TableCell>
                   <StyledTableCell>
                     <div>
                       <Stack spacing={-0.5} orientation="horizontal">

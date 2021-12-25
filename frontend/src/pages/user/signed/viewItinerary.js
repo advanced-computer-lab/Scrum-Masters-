@@ -15,77 +15,104 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Divider } from "@mui/material";
-import { Box,Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Ticket from "../../../components/user/existing/Ticket";
 import { Button } from "@mui/material";
 
-const nodemailer =require('nodemailer');
+const nodemailer = require("nodemailer");
 // import { Stack } from "react-bootstrap";
-
 
 const Itinerary = (props) => {
   console.log(props);
-  console.log(props);
   console.log("YOUR OBJECT IS HERE"+props);
-  const [product,setProduct] =useState({
-    name:"Pay for reservation",
-    price: "10",
-    Productby:"cloud9"
-    })
+  const product=props
   const transporter = nodemailer.createTransport({
-    service:"hotmail",
+    service: "hotmail",
     auth: {
-      user:"maramACL@outlook.com",
-      pass:"Benamer1!"
+      user: "maramACL@outlook.com",
+      pass: "Benamer1!",
     },
-    tls:{
-        rejectUnauthorized:false
-    }
- 
- 
-  })
-  const options ={
-    from:"maramACL@outlook.com",
-    to:"marambenamer@yahoo.com",
-    subject:"Email trial",
-    text:"Let's see"
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+  const options = {
+    from: "maramACL@outlook.com",
+    to: "marambenamer@yahoo.com",
+    subject: "Email trial",
+    text: "Let's see",
   };
-  transporter.sendMail(options,  function(err,info){
-    if(err){
-      console.log("error!",err);
+  transporter.sendMail(options, function (err, info) {
+    if (err) {
+      console.log("error!", err);
       return;
     }
-    console.log("mail sent successfully")})
-    
- const [loading,setLoading]=useState(true);
- //console.log(input1.flight);
- console.log("hehehe");
- useEffect(() => {
-   console.log("Itinerary",props);
-   setTimeout(() => {setLoading(false)}, 4000);
-}, [loading]);
+    console.log("mail sent successfully");
+  });
 
-const dynamicTickets=()=>{
-  var result=[]
-  props.departureTickets.forEach((ticket,index)=>{
-    result.push(<Ticket ticket={ticket} flight={props.departureFlight}/>)
-    result.push(<div style={{marginTop:"5px"}}></div>)
-    result.push(<Ticket ticket={props.returnTickets[index]} flight={props.returnFlight}/>)
-})
-return result;
-}
-const handler =()=>{
-  console.log("GIRL I BE TRYNNA REACH SOMEWHERE!!!!"+ props.departureFlight.arrivalAirport);
-  const lol = props.departureFlight.arrivalAirport;
-  axios.post("http://localhost:8081/user/sendmail",props)
-   .then(console.log("done!!"));
-}
-const printer =()=>{
-  console.log(props.ticket.seatNum);
-}
+  const [loading, setLoading] = useState(true);
+  //console.log(input1.flight);
+  console.log("hehehe");
+  useEffect(() => {
+    console.log("Itinerary", props);
+    setTimeout(() => {
+      setLoading(false);
+    }, 4000);
+  }, [loading]);
+
+  const dynamicTickets = () => {
+    var result = [];
+    props.departureTickets.forEach((ticket, index) => {
+      result.push(<Ticket ticket={ticket} flight={props.departureFlight} />);
+      result.push(<div style={{ marginTop: "5px" }}></div>);
+      result.push(
+        <Ticket
+          ticket={props.returnTickets[index]}
+          flight={props.returnFlight}
+        />
+      );
+    });
+    return result;
+  };
+  const handler = () => {
+    console.log(
+      "GIRL I BE TRYNNA REACH SOMEWHERE!!!!" +
+        props.departureFlight.arrivalAirport
+    );
+    const lol = props.departureFlight.arrivalAirport;
+    axios
+      .post("http://localhost:8081/user/sendmail", props)
+      .then(console.log("done!!"));
+  };
+  const printer = () => {
+    console.log(props.ticket.seatNum);
+  };
+
+
+
+   const pay =(token) =>{
+     const body={
+    token,
+    product
+  }
+   
+   const headers = {
+     "Content-Type":"application/json"
+   }
+   
+   axios
+   .post("http://localhost:8081/user/payment",{
+    method: "POST", headers, body:body
+   
+   }
+   ).then((response) =>{
+     console.log('MABROOOOOK girl ehna fl itenirary bndfa3 ahu')
+     const {status} = response;
+     console.log("STATUS"); 
+   }).catch(error => console.log("GIRL FE MASHAKEL"+error));
+  };
 
   return (
-   
     <div>
     {loading && (
       <Loader
@@ -125,19 +152,15 @@ const printer =()=>{
        
     <StripeCheckout 
     stripeKey ="pk_test_51K6M8qJJwEGtsc7Jg1PpI8uJfikDdlKuDksccokEyc3JjTgyysXvjGb1lWZIbyOCjPfNnbs4cBflSwG5xUzmfKq500JtPtmY3p"
-    token=""
+    token={pay}
     name=""
     amount={props.totalPrice *100}
     currency="EGP"
     >
-      <Button  onClick={handler} style={{
+      <Button   style={{
        backgroundcolor:"pink",
        fontSize:"15px"
        
-
-
-
-
       }}>
           Make Payment
           </Button>
