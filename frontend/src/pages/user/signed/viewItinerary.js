@@ -28,7 +28,9 @@ const Itinerary = (props) => {
   console.log(props);
   console.log("YOUR OBJECT IS HERE" + props);
   const product = props;
-  
+   const[email,setEmail]=useState("");
+  const getRightMail = () => {};
+
   const transporter = nodemailer.createTransport({
     service: "hotmail",
     auth: {
@@ -52,11 +54,25 @@ const Itinerary = (props) => {
     }
     console.log("mail sent successfully");
   });
-
+  var token;
+  var decodedToken;
+  if (JSON.parse(window.sessionStorage.getItem("existing"))) {
+    token = window.sessionStorage.getItem("token");
+    decodedToken = jwt_decode(window.sessionStorage.getItem("token"));
+  }
   const [loading, setLoading] = useState(true);
   //console.log(input1.flight);
   console.log("hehehe");
   useEffect(() => {
+    axios
+      .get(`http://localhost:8081/user/profile/${decodedToken.id}`)
+      .then((result) => {
+        console.log("axios get", result);
+        console.log("el email ahuuu!!!!!", result.data.email);
+        setEmail(result.data.email);
+       
+      })
+      .catch((err) => console.log(err));
     console.log("Itinerary", props);
     setTimeout(() => {
       setLoading(false);
@@ -78,16 +94,21 @@ const Itinerary = (props) => {
     return result;
   };
   const handler = () => {
-    decodedToken.props=props;
-    console.log( 
+    decodedToken.props = props;
+    decodedToken.email = email;
+    console.log(
       "GIRL HERE ARE THE TOKEN PROPS TICKETS!!!!" +
-       JSON.stringify(decodedToken.props.departureTickets)
+        JSON.stringify(decodedToken.props.departureTickets)
     );
-    console.log("ANA EL emaillllllll!!!!" +JSON.stringify(decodedToken.email))
+    console.log("ANA EL emaillllllll!!!!" + JSON.stringify(decodedToken.email));
     const lol = props.departureFlight.arrivalAirport;
     axios
       .post("http://localhost:8081/user/sendmail", decodedToken)
-      .then(console.log("done!!"+"ELI RAYEH LEL BACKEND HOWA"+ JSON.stringify(decodedToken)));
+      .then(
+        console.log(
+          "done!!" + "ELI RAYEH LEL BACKEND HOWA" + JSON.stringify(decodedToken)
+        )
+      );
   };
   const printer = () => {
     console.log(props.ticket.seatNum);
@@ -96,7 +117,7 @@ const Itinerary = (props) => {
   const pay = (token) => {
     const body = {
       token,
-      product
+      product,
     };
 
     const headers = {
@@ -116,17 +137,9 @@ const Itinerary = (props) => {
       })
       .catch((error) => console.log("GIRL FE MASHAKEL" + error));
   };
-  var token;
-  var decodedToken ;
-if (JSON.parse(window.sessionStorage.getItem("existing"))){
- token = window.sessionStorage.getItem("token");
-   decodedToken = jwt_decode(window.sessionStorage.getItem("token"));
-}
-  return (
-    
-    <Container>
-  
 
+  return (
+    <Container>
       {loading && (
         <Loader
           type="Plane"
@@ -154,27 +167,32 @@ if (JSON.parse(window.sessionStorage.getItem("existing"))){
             component="header"
             align="right"
             fontStyle="italic"
-            style={{ marginTop: "1%", marginLeft: "2%" }}
+            style={{
+              marginTop: "0.5px",
+              marginLeft: "2px",
+              marginBottom: "0px",
+            }}
           >
             Total Price: {props.totalPrice} EGP
           </Typography>
-          <div >
+          <div>
             <StripeCheckout
               stripeKey="pk_test_51K6M8qJJwEGtsc7Jg1PpI8uJfikDdlKuDksccokEyc3JjTgyysXvjGb1lWZIbyOCjPfNnbs4cBflSwG5xUzmfKq500JtPtmY3p"
               token={pay}
               name=""
               amount={props.totalPrice * 100}
-              currency="EGP" 
-            
-            > 
-         
+              currency="EGP"
+            >
               <Button
-              sx={{marginLeft:"1100px",
-            marginTop:"0px"}}
+                sx={{
+                  marginLeft: "0px",
+                  marginRight: "500px",
+                  marginTop: "0px",
+                  marginBottom: "0px",
+                }}
               >
                 Make Payment
               </Button>
-            
             </StripeCheckout>
           </div>
           <Button
@@ -183,15 +201,13 @@ if (JSON.parse(window.sessionStorage.getItem("existing"))){
               marginLeft: "0px",
               marginRight: "650px",
               marginTop: "0px",
+              marginBottom: "0px",
             }}
           >
             E-mail me a copy of my itenerary
           </Button>
-      
 
           {dynamicTickets()}
-      
-  
         </div>
       )}
 

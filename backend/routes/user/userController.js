@@ -579,6 +579,34 @@ router.get('/reservations/:id', async (req, res) => {
  *
  * }
  */
+router.post('/cancelMail', async (req,res)=> {
+  console.log(
+    'Mail Cancellation' + '' + JSON.stringify(req.body.email)
+  );
+  const transporter = nodemailer.createTransport({
+    service: 'hotmail',
+    auth: {
+      user: 'maramACL@outlook.com',
+      pass: 'Benamer1!',
+    },
+  });
+  console.log("EL PRICE BTA3 EL RESERVATION EL METCANCELA AHUH!!!!"+JSON.stringify(req.body));
+  const options = {
+    from: 'maramACL@outlook.com',
+    to: JSON.stringify(req.body.email),
+    subject: 'You cancelled your reservation on Cloud9 airline reservation system',
+    text: "You should be refunded the following: "+JSON.stringify(req.body.price),
+  };
+  transporter.sendMail(options, function (err, info) {
+    if (err) {
+      console.log('error!', err);
+      return;
+    }
+    console.log('cancelation email sent successfully');
+    console.log(req.body);
+  });
+
+})
 router.get('/profile/:id', async (req, res) => {
   User.findById(req.params.id, '-password')
     .then((result) => {
