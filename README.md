@@ -1,4 +1,21 @@
-# Scrum-Masters-
+## Scrum-Masters
+
+This is an airline reservation system website that provides an equitable yet useful user experience, configured with interactive features and a simple, consistent, and intuitive user interface.
+
+## Build Status
+Working.
+
+## This project is built using the following frameworks/runtime environemnts
+1- Node.js
+2- Express.js
+3- React.js
+4- Mongoose
+
+## Code style 
+This project was built using the standard coding conventions in JavaScript to facilitate documentation & enable smooth future contributions.
+
+## Installation
+In each directory (root,frontend,backend) containing the **`package.json`** you should write `npm i` to install all the dependencies in each file  
 
 ## Getting Started
 
@@ -14,29 +31,12 @@ The project has 3 **`package.json`** files in the following Tree (note: it's jus
 +-- package.json
 
 ```
+## The project has two main parts 
+>**Admin Components**:
+>The Admin is able to add round trip flights and specify their full features: dates & times of departure and return flights, departure and arrival airports, number of seats per each flight cabin(economy, business, and first class), alongside with specific prices for each seat in mentioned cabins. 
+Admin is also able to perform the rest of CRUD operations on these created flights (RUD in this case :smiley: ). 
 
-In each directory (root,frontend,backend) containing the **`package.json`** you should write `npm i` to install all the dependencies in each file  
-
-**`Scrum-masters-`** 
-
-The **`package.json`** in the root directory allows running both serevrs (backend and frontend) in one terminal using the script `npm run dev` 
-
-### Alternative 
-
-if the previous command didn't run both servers you can do the following:
-**`Scrum-masters-/backend`** 
-
-`npm run dev`
-
-or
-
-`nodemon app`
-
-Added to the previous command, open another terminal in the following directory and write: 
-
-**`Scrum-masters-/frontend`**
-
-`npm start`
-
-
+>**User Components**:
+>The user has the closest thing to the common user experience while using any of the famous airline reservation systems:
+>
 
