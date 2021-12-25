@@ -584,6 +584,165 @@ router.patch("/ticket/:ticketId", async (req, res) => {
   res.status(404).send(error);
 });
 
+// udating a reservation
+/**
+ * params:resId
+{
+
+firstFlightId, //new or not ? el gedeed 
+secondFlightId,  //new or not ? el gedeed 
+cabin, // el gedeed
+totalPrice, // old departingFlightId and old returningFlightId from resId
+}
+ * 
+ */
+
+router.patch("/reservation/:resId", async (req, res) => {
+  const newCriteria = req.body;
+
+  // get total Num of seats
+  var totalSeats = 0;
+
+  try {
+    const tickets = await Ticket.find({ reservationId: req.params.resId });
+    totalSeats = tickets.length;
+  } catch (error) {
+    console.log(error);
+  }
+
+  try {
+    //get old reservation
+    const oldReservation = await Reservation.findById(req.params.resId);
+    //get new reservation
+    const newReservation = await Reservation.findByIdAndUpdate(
+      req.params.resId,
+      newCriteria,
+      { new: true }
+    );
+
+    // diff flights  second flight not zero ya3ny two diff flights
+    // second flight equals zero , I need to check
+    //
+    /// two diff flights
+    if (newCriteria.seconFlightId !== 0) {
+      if (
+        newCriteria.firstFlightId !== oldReservation.departingFlightId &&
+        newCriteria.seconFlightId !== oldReservation.returnFlightId
+      ) {
+        if (newCriteria.cabin === "economy") {
+          // I decremented the seats in the new flights
+          await Flight.findByIdAndUpdate(newCriteria.firstFlightId, {
+            $inc: { "economy.availableSeats": -totalSeats },
+          });
+          await Flight.findByIdAndUpdate(newCriteria.secondFlightId, {
+            $inc: { "economy.availableSeats": -totalSeats },
+          });
+        }
+        if (newCriteria.cabin === "business") {
+          await Flight.findByIdAndUpdate(newCriteria.firstFlightId, {
+            $inc: { "business.availableSeats": -totalSeats },
+          });
+          await Flight.findByIdAndUpdate(newCriteria.secondFlightId, {
+            $inc: { "business.availableSeats": -totalSeats },
+          });
+        }
+        if (newCriteria.cabin === "first") {
+          await Flight.findByIdAndUpdate(newCriteria.firstFlightId, {
+            $inc: { "firstClass.availableSeats": -totalSeats },
+          });
+          await Flight.findByIdAndUpdate(newCriteria.seconFlightId, {
+            $inc: { "firstClass.availableSeats": -totalSeats },
+          });
+        }
+
+        // increment the seats in the old flights
+
+        if (oldReservation.cabinClass === "economy") {
+          await Flight.findByIdAndUpdate(oldReservation.departingFlightId, {
+            $inc: { "economy.availableSeats": totalSeats },
+          });
+          await Flight.findByIdAndUpdate(oldReservation.returnFlightId, {
+            $inc: { "economy.availableSeats": totalSeats },
+          });
+        }
+        if (oldReservation.cabinClass === "business") {
+          await Flight.findByIdAndUpdate(oldReservation.departingFlightId, {
+            $inc: { "business.availableSeats": totalSeats },
+          });
+          await Flight.findByIdAndUpdate(oldReservation.returnFlightId, {
+            $inc: { "business.availableSeats": totalSeats },
+          });
+        }
+        if (oldReservation.cabinClass === "first") {
+          await Flight.findByIdAndUpdate(oldReservation.departingFlightId, {
+            $inc: { "firstClass.availableSeats": totalSeats },
+          });
+          await Flight.findByIdAndUpdate(oldReservation.returnFlightId, {
+            $inc: { "firstClass.availableSeats": totalSeats },
+          });
+        }
+      }
+    }
+    // departure flight only changed, same cabin
+    else if (newCriteria.state === 0) {
+      if (newCriteria.cabin === "economy") {
+        // I decremented the seats in the new flight
+        await Flight.findByIdAndUpdate(newCriteria.firstFlightId, {
+          $inc: { "economy.availableSeats": -totalSeats },
+        });
+        await Flight.findByIdAndUpdate(oldReservation.departingFlightId, {
+          $inc: { "economy.availableSeats": totalSeats },
+        });
+      }
+      if (newCriteria.cabin === "business") {
+        await Flight.findByIdAndUpdate(newCriteria.firstFlightId, {
+          $inc: { "business.availableSeats": -totalSeats },
+        });
+        await Flight.findByIdAndUpdate(oldReservation.departingFlightId, {
+          $inc: { "business.availableSeats": totalSeats },
+        });
+      }
+      if (newCriteria.cabin === "first") {
+        await Flight.findByIdAndUpdate(newCriteria.firstFlightId, {
+          $inc: { "firstClass.availableSeats": -totalSeats },
+        });
+        await Flight.findByIdAndUpdate(oldReservation.departingFlightId, {
+          $inc: { "firstClass.availableSeats": totalSeats },
+        });
+      }
+    } else if (newCriteria.state === 1) {
+      if (newCriteria.cabin === "economy") {
+        // I decremented the seats in the new flight
+        await Flight.findByIdAndUpdate(newCriteria.secondFlightId, {
+          $inc: { "economy.availableSeats": -totalSeats },
+        });
+        await Flight.findByIdAndUpdate(oldReservation.returnFlightId, {
+          $inc: { "economy.availableSeats": totalSeats },
+        });
+      }
+      if (newCriteria.cabin === "business") {
+        await Flight.findByIdAndUpdate(newCriteria.secondFlightId, {
+          $inc: { "business.availableSeats": -totalSeats },
+        });
+        await Flight.findByIdAndUpdate(oldReservation.returnFlightId, {
+          $inc: { "business.availableSeats": totalSeats },
+        });
+      }
+      if (newCriteria.cabin === "first") {
+        await Flight.findByIdAndUpdate(newCriteria.secondFlightId, {
+          $inc: { "firstClass.availableSeats": -totalSeats },
+        });
+        await Flight.findByIdAndUpdate(oldReservation.returnFlightId, {
+          $inc: { "firstClass.availableSeats": totalSeats },
+        });
+      }
+    }
+    res.json(newReservation);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
 router.get("/profile/:id", async (req, res) => {
   User.findById(req.params.id)
     .then((result) => {
