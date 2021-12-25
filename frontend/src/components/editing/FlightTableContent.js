@@ -171,12 +171,12 @@ const FlightTableContent = ({
               }}
               href={
                 state === '0'
-                  ? `/editSeats/${inputData.oldReservation.id}/${row._id}/0/${inputData.details.cabin}/0`
+                  ? `/editSeats/${inputData.oldReservation.id}/${row._id}/0/${inputData.details.cabin}/0/0`
                   : state === '1' && flightsId.departureId === '0'
-                  ? `/editSeats/${inputData.oldReservation.id}/${row._id}/0/${inputData.details.cabin}/0`
+                  ? `/editSeats/${inputData.oldReservation.id}/${row._id}/0/${inputData.details.cabin}/0/1`
                   : state === '2' && flightsId.departureId === '0'
                   ? `/edit/${inputData.details.departureAirport}/${inputData.details.arrivalAirport}/${inputData.details.noOfChildren}/${inputData.details.noOfAdults}/${inputData.details.arrivalDate}/${inputData.details.departureDate}/${inputData.details.cabin}/2/${inputData.oldReservation.id}/${row._id}/0`
-                  : `/editSeats/${inputData.oldReservation._id}/${flightsId.departureId}/${row._id}/${inputData.details.cabin}/0`
+                  : `/editSeats/${inputData.oldReservation._id}/${flightsId.departureId}/${row._id}/${inputData.details.cabin}/0/2`
               }
             >
               Choose Flight

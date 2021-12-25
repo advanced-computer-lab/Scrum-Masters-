@@ -243,7 +243,7 @@ const EditReservationButton = (props) => {
                 >
                   <Button
                     variant='outlined'
-                    href={`/editSeats/${props.resId}/0/0/${data.input.cabin}/1`}
+                    href={`/editSeats/${props.resId}/0/0/${data.input.cabin}/1/2`}
                     sx={{
                       marginTop: '2%',
                       marginBottom: '1%',
