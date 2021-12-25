@@ -16,7 +16,6 @@ import Reservations from "./components/user/existing/Reservations";
 import { Container } from "react-bootstrap";
 import SignUpForm from "./components/user/forms/Signup";
 import PaymentComponent from './components/user/forms/PaymentComponent';
-
 import SendingMail from './components/user/forms/SendingMail';
 import PassengerDeets from './components/user/forms/PassengerDeets';
 
@@ -62,6 +61,7 @@ function App() {
           <Route exact path="/" component={SearchingPage}></Route>
           <Route exact path="/reservations" component={Reservations}></Route>
           <Route exact path="/signup" component={SignUpForm}></Route>
+
 
         
           <Route exact path='/pass' component={PassengerDeets}>
