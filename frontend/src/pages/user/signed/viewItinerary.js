@@ -151,7 +151,7 @@ const Itinerary = (props) => {
       )}
       {!loading && (
         <div>
-          <Typography
+          {/* <Typography
             variant="h6"
             gutterBottom
             component="header"
@@ -160,7 +160,7 @@ const Itinerary = (props) => {
             style={{ marginTop: "1%", marginLeft: "2%" }}
           >
             Reservation Number: {props.departureTickets[0].reservationId}
-          </Typography>
+          </Typography> */}
           <Typography
             variant="h6"
             gutterBottom
