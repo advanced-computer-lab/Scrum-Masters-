@@ -38,6 +38,7 @@ import AirlineSeatReclineExtraIcon from "@mui/icons-material/AirlineSeatReclineE
 import AirplanemodeActive from "@mui/icons-material/AirplanemodeActiveRounded";
 import FlightClassTwoToneIcon from "@mui/icons-material/FlightClassTwoTone";
 import CardMedia from "@mui/material/CardMedia";
+import EditReservationButton from "./buttons/EditReservationButton";
 import { positions } from "@mui/system";
 import jwt_decode from "jwt-decode";
 import {
