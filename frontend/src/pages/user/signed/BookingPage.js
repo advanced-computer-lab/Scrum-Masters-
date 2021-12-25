@@ -132,16 +132,16 @@ const BookingPage = (props) => {
     var returns = returnTickets;
     travellers.forEach((traveller) => {
       axios
-        .post(`http://localhost:8081/user/create/ticket`, {
-          seatNum: traveller.departureSeat,
+        .post(`http://localhost:8081/user/create/ticket`, { // ticket id
+          seatNum: traveller.departureSeat, //check
           ticketType: 'departing',
           passengerType: traveller.type,
-          firstName: traveller.firstName,
+          firstName: traveller.firstName, 
           lastName: traveller.lastName,
-          cabin: traveller.cabin,
-          flightId: departureFlight,
-          reservationId: reservationId,
-          price: getIndividualPrice(
+          cabin: traveller.cabin, //check
+          flightId: departureFlight, 
+          reservationId: reservationId, 
+          price: getIndividualPrice( //check
             departureInput.flight,
             traveller.type,
             traveller.cabin

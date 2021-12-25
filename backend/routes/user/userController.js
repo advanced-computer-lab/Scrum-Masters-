@@ -562,31 +562,28 @@ router.get("/tickets/:resId", async (req, res) => {
   }).populate("flightId");
   res.json(tickets);
 });
+
+//updating a ticket
 /**
  * {
- *  departingFlight:{
- *
- *  flightNumber: val,
- *  departureDate:val,
- *  departureTime:val,
- *  arrivalDate:val,
- *  arrivalTime: val,
- *  cabin: val
- *
- *  },
- *  arrivalFlight:{
- *   flightnumber: val,
- *  departureDate:val,
- *  departureTime:val,
- *  arrivalDate:val,
- *  arrivalTime: val,
- *  cabin: val
- *
- *  }
- *
- *
+ *  seatNum
+ *  cabin
+ *  price
  * }
  */
+
+router.patch("/ticket/:ticketId", async (req, res) => {
+  try {
+    const newTicket = await Ticket.findByIdAndUpdate(
+      req.params.ticketId,
+      req.body,
+      { new: true }
+    );
+    res.json(newTicket);
+  } catch (error) {}
+  res.status(404).send(error);
+});
+
 router.get("/profile/:id", async (req, res) => {
   User.findById(req.params.id)
     .then((result) => {
