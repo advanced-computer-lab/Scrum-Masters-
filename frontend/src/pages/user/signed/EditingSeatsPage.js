@@ -5,12 +5,13 @@ import EditSeat from './EditSeat';
 import axios from 'axios';
 
 const EditingSeatsPage = () => {
-  var { resId, firstFlightId, secondFlightId, cabin, edit } = useParams();
+  var { resId, firstFlightId, secondFlightId, cabin, edit, state } =
+    useParams();
   const [data, setData] = React.useState();
   const [firstFlight, setFirstFlight] = React.useState();
   const [secondFlight, setSecondFlight] = React.useState();
   const [loading, setLoading] = React.useState(true);
-
+  console.log('state', state);
   useEffect(() => {
     console.log(resId);
     axios
