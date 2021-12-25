@@ -17,8 +17,12 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 const TopBar = (props) => {
-  const [admin, setAdmin] = useState(false);
-  const [existing, setExisting] = useState(false);
+  const [admin, setAdmin] = useState(
+    JSON.parse(window.sessionStorage.getItem("admin")) || false
+  );
+  const [existing, setExisting] = useState(
+    JSON.parse(window.sessionStorage.getItem("existing")) || false
+  );
   const [values, setValues] = useState();
   const history = useHistory();
   const guestClick = () => {

@@ -29,6 +29,9 @@ function App() {
   const [existing, setExisting] = useState(
     JSON.parse(window.sessionStorage.getItem("existing")) || false
   );
+  const [hideTopbar, setHideTopBar] = useState(
+    JSON.parse(window.sessionStorage.getItem("hideTopbar")) || false
+  );
   const onSignIn = () => {
     console.log("sign in");
     window.sessionStorage.setItem("existing", true);
@@ -42,10 +45,17 @@ function App() {
     setAdmin(false);
     setExisting(false);
   };
-  const onAdmin = () => {
-    window.sessionStorage.setItem("existing", false);
-    window.sessionStorage.setItem("admin", true);
-  };
+  function checkUserData() {
+    console.log("in app");
+    const flag = JSON.parse(window.sessionStorage.getItem("hideTopbar"));
+    setHideTopBar(flag);
+  }
+  useEffect(() => {
+    window.addEventListener("storage", checkUserData);
+    return () => {
+      window.removeEventListener("storage", checkUserData);
+    };
+  }, []);
   return (
     <Router>
       <div className="App">
@@ -55,7 +65,6 @@ function App() {
           existing={existing}
           onSignIn={onSignIn}
           onSignOut={onSignOut}
-          onAdmin={onAdmin}
         />
         <Switch>
           <Route exact path={"/schedule"} component={Schedule}></Route>
@@ -81,44 +90,38 @@ function App() {
           <Route exact path="/signup" component={SignUpForm}></Route>
           <Route exact path="/test" component={test}></Route>
 
-            <PrivateRoute exact path="/pass" component={PassengerDeets}>
-              <Container>
-                <PassengerDeets />
-              </Container>
-            </PrivateRoute>
-
-            <Route
-              exact
-              path="/confirmation"
-              component={ViewFlightSummary}
-            ></Route>
-            <Route
-              exact
-              path="/adminPage"
-              component={HomeAdmin}
-            ></Route>
-
-            <PrivateRoute
-              exact
-              path="/itinerary"
-              component={Itinerary}
-            ></PrivateRoute>
-
-            <Route exact path="/sendmail" component={SendingMail}>
-              {" "}
-            </Route>
-            <Route exact path="/payment" component={PaymentComponent}></Route>
-          </Switch>
-
-          {!admin && !existing && (
+          <PrivateRoute exact path="/pass" component={PassengerDeets}>
             <Container>
-              <footer style={{ float: "right" }}></footer>
+              <PassengerDeets />
             </Container>
-          )}
-        </div>
-      </Router>
-      
-    
+          </PrivateRoute>
+
+          <Route
+            exact
+            path="/confirmation"
+            component={ViewFlightSummary}
+          ></Route>
+          <Route exact path="/adminPage" component={HomeAdmin}></Route>
+
+          <PrivateRoute
+            exact
+            path="/itinerary"
+            component={Itinerary}
+          ></PrivateRoute>
+
+          <Route exact path="/sendmail" component={SendingMail}>
+            {" "}
+          </Route>
+          <Route exact path="/payment" component={PaymentComponent}></Route>
+        </Switch>
+
+        {!admin && !existing && (
+          <Container>
+            <footer style={{ float: "right" }}></footer>
+          </Container>
+        )}
+      </div>
+    </Router>
   );
 }
 

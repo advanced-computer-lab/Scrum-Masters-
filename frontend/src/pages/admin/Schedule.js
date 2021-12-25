@@ -52,6 +52,7 @@ const Schedule = () => {
   useEffect(() => {
     window.sessionStorage.setItem("existing", false);
     window.sessionStorage.setItem("admin", true);
+     window.sessionStorage.setItem("hideTopbar", false);
     var e = new Event("storage");
     e.originalEvent = {
       key: "admin",

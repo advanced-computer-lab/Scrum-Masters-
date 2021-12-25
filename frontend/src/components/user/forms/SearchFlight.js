@@ -41,6 +41,23 @@ const SearchFlight = (props) => {
   );
   useEffect(() => {
     window.sessionStorage.setItem("admin", false);
+    window.sessionStorage.setItem("hideTopbar", false);
+    var e = new Event("storage");
+    e.originalEvent = {
+      key: "hideTopbar",
+      oldValue: true,
+      newValue: false,
+    };
+    console.log(e);
+    window.dispatchEvent(e);
+    e = new Event("storage");
+    e.originalEvent = {
+      key: "admin",
+      oldValue: true,
+      newValue: false,
+    };
+    console.log(e);
+    window.dispatchEvent(e);
     axios
       .get("http://localhost:8081/user/search/flights")
       .then((res) => {
