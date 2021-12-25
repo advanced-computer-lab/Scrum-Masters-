@@ -156,9 +156,7 @@ const PassengerDeets = (props) => {
           label="Gender"
           required
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
+          
           <MenuItem value={"Female"}>Female</MenuItem>
           <MenuItem value={"Male"}>Male</MenuItem>
           <MenuItem value={"Other"}>Other</MenuItem>
@@ -207,7 +205,10 @@ const PassengerDeets = (props) => {
           onChange={handleDateChange}
           renderInput={(params) => <TextField {...params} />}
           maxDate={new Date()}
-          variant='outlined'
+          variant='filled'
+          inputVariant={"filled"}
+
+
         />
                 </LocalizationProvider>
               </Stack>

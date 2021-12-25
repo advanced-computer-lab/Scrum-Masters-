@@ -582,32 +582,36 @@ router.get("/reservations/:id", async (req, res) => {
  *
  * }
  */
+router.post('/cancelMail', async (req,res)=> {
+  console.log(
+    'Mail Cancellation' + '' + JSON.stringify(req.body.email)
+  );
+  const transporter = nodemailer.createTransport({
+    service: 'hotmail',
+    auth: {
+      user: 'maramACL@outlook.com',
+      pass: 'Benamer1!',
+    },
+  });
+  console.log("EL PRICE BTA3 EL RESERVATION EL METCANCELA AHUH!!!!"+JSON.stringify(req.body));
+  const options = {
+    from: 'maramACL@outlook.com',
+    to: JSON.stringify(req.body.email),
+    subject: 'You cancelled your reservation on Cloud9 airline reservation system',
+    text: "You should be refunded the following: "+JSON.stringify(req.body.price),
+  };
+  transporter.sendMail(options, function (err, info) {
+    if (err) {
+      console.log('error!', err);
+      return;
+    }
+    console.log('cancelation email sent successfully');
+    console.log(req.body);
+  });
 
-//updating a ticket
-/**
- * {
- *  seatNum
- *  cabin
- *  price
- * flightId
- * }
- */
-
-router.patch("/ticket/:ticketId", async (req, res) => {
-  try {
-    const newTicket = await Ticket.findByIdAndUpdate(
-      req.params.ticketId,
-      req.body,
-      { new: true }
-    );
-    console.log("updateeee", newTicket);
-    res.json(newTicket);
-  } catch (error) {  res.status(404).send(error);
-}
-});
-
-router.get("/profile/:id", async (req, res) => {
-  User.findById(req.params.id, "-password")
+})
+router.get('/profile/:id', async (req, res) => {
+  User.findById(req.params.id, '-password')
     .then((result) => {
       res.send(result);
 
@@ -617,6 +621,10 @@ router.get("/profile/:id", async (req, res) => {
       res.status(404).send(err);
     });
 });
+const seperate =(tickets)=>{
+var seatNum=`Seat Number:${tickets.seatNum}`
+return seatNum
+}
 // getting tickets of the reservation
 router.get("/tickets/:resId",async(req,res)=>{
 
@@ -624,28 +632,31 @@ router.get("/tickets/:resId",async(req,res)=>{
   res.json(tickets);
 });
 router.post('/payment', async (req, res) => {
-  const nodeMailer = require('nodemailer');
-  const transporter = nodemailer.createTransport({
-    service: "hotmail",
-    auth: {
-      user: "maramACL@outlook.com",
-      pass: "Benamer1!",
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-  });
-  const options = {
-    from: "maramACL@outlook.com",
-    to: JSON.stringify(req.body.body.token.email),
-    subject: "HI BABY SEIFOOOOOOO",
-    text: JSON.stringify(req.body),
-  };
-  console.log("email" + JSON.stringify(req.body.body.token.email));
-  const { product, token } = req.body;
+  const nodeMailer =require('nodemailer')
+  console.log("BOSSSSSI HENAAAAAAAA"+JSON.stringify(req.body.body.product.departureTickets))
+  console.log("SEPERATE AHY HENAAAAAAA"+seperate(req.body.body.product.departureTickets))
+const transporter = nodemailer.createTransport({
+  service:"hotmail",
+  auth: {
+    user:"maramACL@outlook.com",
+    pass:"Benamer1!"
+  }
+ 
 
-  return stripe.customers
-    .create({
+
+})
+const options ={
+  from:"maramACL@outlook.com",
+  to:JSON.stringify(req.body.body.token.email),
+  subject:"Reservation Payment Confirmation",
+  text:"You have payed for the following reservation at cloud9 reservation system!!!!"+JSON.stringify(req.body.body.product.departureTickets) +JSON.stringify(req.body.body.product.returnTickets)
+  
+};
+    console.log ("Ana batba3"+JSON.stringify((req.body.body.token.email)));
+    const{product,token}=req.body;
+  
+    return stripe.customers.create({
+     
       email: req.body.body.token.email,
       source: "tok_visa",
     })
@@ -654,24 +665,61 @@ router.post('/payment', async (req, res) => {
         "na7noooo honaaaa" + "" + JSON.stringify(req.body.body.token.email)
       );
       stripe.charges.create({
-        amount: req.body.body.product.price,
-        currency: "usd",
-        customer: customer.id,
-        description: "paying for flight reservation",
-      });
-    })
-    .then((result) => res.status(200).send(result))
-    .then(
-      transporter.sendMail(options, function (err, info) {
-        if (err) {
-          console.log("error!", err);
-          return;
-        }
-        console.log("mail sent successfully");
-        console.log(req.body);
+        amount:req.body.totalPrice,
+        currency:'usd',
+        customer:customer.id,
+        description:'paying for flight reservation'
+      },
+      
+
+      )
+    }).then(result=> res.status(200).send(result)
+    
+   
+
+    
+    ).then(transporter.sendMail(options,  function(err,info){
+      if(err){
+        console.log("error!",err);
+        return;
+      }
+      console.log("mail sent successfully");
+      console.log(req.body);
+      }))
+        .catch(err =>console.log(err));
+       
       })
-    )
-    .catch((err) => console.log(err));
+  
+    
+
+ 
+router.post('/sendmail', async(req,res) => {
+console.log("El hagat eli elmafrood ttb3t"+""+JSON.stringify(req.body.props.departureTickets)+JSON.stringify(req.body.props.returnTickets));
+console.log("BOSSI EL MAIL ETBA3AT LEL SHAKHS DA:::::"+JSON.stringify(req.body.email))
+const transporter = nodemailer.createTransport({
+  service:"hotmail",
+  auth: {
+    user:"maramACL@outlook.com",
+    pass:"Benamer1!"
+  }
+ 
+
+//JSON.stringify(req.body.email)
+})
+const options ={
+  from:"maramACL@outlook.com",
+  to:JSON.stringify(req.body.email),
+  subject:"Your reservation itinerary",
+  text:"Your departure tickets:"+JSON.stringify(req.body.props.departureTickets)+"Your Return Tickets"+JSON.stringify(req.body.props.returnTickets)
+};
+transporter.sendMail(options,  function(err,info){
+if(err){
+  console.log("error!",err);
+  return;
+}
+console.log("mail sent successfully");
+console.log(req.body);
+})
 });
 
 router.post("/sendmail", async (req, res) => {
