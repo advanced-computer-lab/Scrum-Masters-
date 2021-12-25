@@ -60,7 +60,8 @@ router.post("/create", async (req, res) => {
   }
   console.log("the body", insertion);
   const flight = new Flight(insertion);
-  if (flight.duration < 0) {
+  console.log("this is the flight",flight);
+  if (flight.duration === '0h 0m' || flight.duration.charAt(0) === '-') {
     res.json({
       message: "cannot insert, the arrival time is before the departure time.",
     });
