@@ -33,10 +33,61 @@ The project has 3 **`package.json`** files in the following Tree (note: it's jus
 ```
 ## The project has two main parts 
 >**Admin Components**:
->The Admin is able to add round trip flights and specify their full features: dates & times of departure and return flights, departure and arrival airports, number of seats per each flight cabin(economy, business, and first class), alongside with specific prices for each seat in mentioned cabins. 
+>>The Admin is able to add round trip flights and specify their full features: dates & times of departure and return flights, departure and arrival airports, number of seats per each flight cabin(economy, business, and first class), alongside with specific prices for each seat in mentioned cabins. 
 Admin is also able to perform the rest of CRUD operations on these created flights (RUD in this case :smiley: ). 
 
 >**User Components**:
->The user has the closest thing to the common user experience while using any of the famous airline reservation systems:
+>>The guest user has the closest thing to the common user experience while using any of the famous airline reservation systems; the user starts by searching for the desirable round trip by inserting the desired dates, cabin class, number of adults, number of children,and departure and arrival airports. Then the user is presented with compatible flights with different prices to choose from, once a flight is chosen; the user is presented with the return flight of chosen departure flight. 
+>>>After choosing both flights, the user is then presented with a summary of their choices: departure and arrival airports and flight numbers, number of tickets, trips dates and times, and the total price of reservation. The user later has to log in (or sign up then login) to be able to confirm & move forward with the reservation process. 
+>The logged in user is later asked to fill passenger details for each traveler, then is moved to the itenirary page that displays all tickets in this reservation (both departure and return tickets) with the names of passengers displayed on them. The logged in user is then asked to pay for this reservation and automatically receives mentioned itenirary in the billing email provided while paying as a confirmation for said payment.
 >
+
+## Technical Details
+**The backend includes the mongoose models & routes for both the admin related & user related components in the following hierarchy**
+>backend
+
+>> Models 
+>>>Flight.js  
+>>>Reservation.js  
+>>>Ticket.js  
+>>>User.js
+
+>>Routes
+>>>admin   
+>>>>adminController.js
+
+>>> user  
+>>>> userController.js
+
+>>>authenticationController.js  
+>>>**Note**: *authenticationController contains all APIs related to session creation & maintenance*  
+>
+**The frontend includes all the react files that are responsible for the  admin related & user related components in the following hierarchy**
+>frontend  
+>>src  
+>>>components  
+>>>>admin  
+>>>>layout  
+>>>>user  
+
+*Each subfolder in the component folder includes the necessary .js react files for said folder's name related component* 
+
+>>>images  
+>>>pages  
+>>>styles
+
+ 
+
+*The images folder includes images that were used in different positions throughout the website*
+
+
+
+
+
+
+  
+
+
+
+
 
