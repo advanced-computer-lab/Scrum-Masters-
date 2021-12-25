@@ -11,6 +11,7 @@ import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Radio from '@mui/material/Radio';
+import { IconButton, Stack } from '@mui/material';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
@@ -22,7 +23,7 @@ import { IoIosAirplane, IoIosArrowRoundForward } from 'react-icons/io';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Divider from '@mui/material/Divider';
-import { Stack } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 
 import { FaTimes } from 'react-icons/fa';
 
@@ -120,6 +121,20 @@ const EditReservationButton = (props) => {
   };
 
   const handleVisiblity = (count) => {
+    if (count === 4) {
+      setExpanded(false);
+      setInput({
+        noOfChildren: '',
+        noOfAdults: '',
+        departureAirport: '',
+        arrivalAirport: '',
+        departureDate: '',
+        arrivalDate: '',
+        cabin: '',
+      });
+      setVisiblity({ departureDate: false, returnDate: false, cabin: false });
+      return;
+    }
     if (count === 0) {
       setVisiblity({ departureDate: true, returnDate: false, cabin: true });
       setState(0);
@@ -158,7 +173,16 @@ const EditReservationButton = (props) => {
   return (
     <div>
       <div>
-        <Button onClick={handleOpen}>Edit Reservation</Button>
+        <Stack
+          spacing={-0.5}
+          orientation='horizontal'
+          sx={{ alignItems: 'center' }}
+        >
+          <IconButton aria-label='edit' color='primary' onClick={handleOpen}>
+            <EditIcon />
+          </IconButton>
+          <small align='center'>edit</small>
+        </Stack>
 
         <Modal
           open={open}
@@ -181,7 +205,11 @@ const EditReservationButton = (props) => {
 
             {loading && (
               <div>
-                <Stack direction="column" spacing={5} sx={{alignItems:"center"}}>
+                <Stack
+                  direction='column'
+                  spacing={5}
+                  sx={{ alignItems: 'center' }}
+                >
                   <Loader
                     type='Plane'
                     color='#00BFFF'
@@ -190,7 +218,6 @@ const EditReservationButton = (props) => {
                     //timeout={10000}
                   />
                 </Stack>
-                
               </div>
             )}
             {data && (
@@ -206,18 +233,26 @@ const EditReservationButton = (props) => {
                   {displayDate(data.input.arrivalDate)}
                 </Typography>
                 <Divider />
-                <Button
-                  //component='button'
-                  href={`/editSeats/${props.resId}/0/0/${data.input.cabin}/1`}
-                  sx={{ marginTop: '2%' }}
-                  variant='body2'
-                  underline='hover'
-                  // id='modal-modal-title'
-                  // variant='h6'
-                  // component='h3'
+                <Typography id='modal-modal-title' variant='h6' component='h3'>
+                  What do you want to do ?
+                </Typography>
+                <Stack
+                  direction='column'
+                  spacing={5}
+                  sx={{ alignItems: 'center' }}
                 >
-                  Change Current Seat{' '}
-                </Button>
+                  <Button
+                    variant='outlined'
+                    href={`/editSeats/${props.resId}/0/0/${data.input.cabin}/1/2`}
+                    sx={{
+                      marginTop: '2%',
+                      marginBottom: '1%',
+                    }}
+                    // variant='body2'
+                  >
+                    Change Seats in The Current Flight{' '}
+                  </Button>
+                </Stack>
                 <Divider>OR</Divider>
                 {/* <TreeView
                   defaultCollapseIcon={<ExpandMoreIcon />}
@@ -249,10 +284,10 @@ const EditReservationButton = (props) => {
                     id='panel1bh-header'
                   >
                     <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                      Dates
+                      Change Dates
                     </Typography>
                     <Typography sx={{ color: 'text.secondary' }}>
-                      Arrival & Departure
+                      Select a new departure or return date
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
@@ -320,10 +355,10 @@ const EditReservationButton = (props) => {
                     id='panel1bh-header'
                   >
                     <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                      Dates & Cabin
+                      Change Cabin
                     </Typography>
                     <Typography sx={{ color: 'text.secondary' }}>
-                      Choose both
+                      Choosing a new cabin? Select the desired flights
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
@@ -392,7 +427,7 @@ const EditReservationButton = (props) => {
                 )} */}
                 {/* </TreeView> */}
                 <br />
-                {visibility.cabin && (
+                {expanded !== false && (
                   <div style={{ float: 'right' }}>
                     <Button
                       color='inherit'
@@ -405,6 +440,13 @@ const EditReservationButton = (props) => {
                       href={`/edit/${input.departureAirport}/${input.arrivalAirport}/${input.noOfChildren}/${input.noOfAdults}/${input.arrivalDate}/${input.departureDate}/${input.cabin}/${state}/${props.resId}/0/0`}
                       color='inherit'
                       sx={{ mr: 1, color: 'primary.main' }}
+                      disabled={
+                        !(
+                          visibility.departureDate ||
+                          visibility.returnDate ||
+                          visibility.cabin
+                        )
+                      }
                     >
                       Proceed
                     </Button>

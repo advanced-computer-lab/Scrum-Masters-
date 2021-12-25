@@ -13,156 +13,292 @@ import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import PublicIcon from "@mui/icons-material/Public";
 import Button from "@mui/material/Button";
 import image4 from "../../../images/Signup4.jpg";
+import { useState } from "react";
+import axios from "axios";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 export default function SignUpForm() {
-  const [visibility, setVisibility] = React.useState(true);
-  return (
-    <>
-      <div>
-        <img src={image4} style={{ height: 750, width: 900, float: "left" }} />
-      </div>
+  const [error, setError] = useState(false);
+  const [output, setOutput] = useState();
+  const [errorMessage, setErrorMessage] = useState("");
 
-      <Box
-        component="form"
-        sx={{
-          "& .MuiTextField-root": { m: 1, width: "50ch" },
-        }}
-        noValidate
-        autoComplete="on"
-      >
-        <div>
-          <Stack spacing={2} sx={{ width: 300 }}>
-            <div
-              style={{
-                fontWeight: "bold",
-                fontSize: "30px",
-                textAlignLast: "end",
-              }}
-            >
-              Register
-            </div>
-            {!visibility && (
-              <div>
-                <TextField
-                  fullWidth="true"
-                  required
-                  id="outlined-basic"
-                  label="First Name"
-                  variant="outlined"
-                />
-                <TextField
-                  required
-                  id="outlined-basic"
-                  label="Last Name"
-                  variant="outlined"
-                />
-                <Autocomplete
-                  id="country-select-demo"
-                  sx={{ width: 200 }}
-                  options={countries}
-                  autoHighlight
-                  getOptionLabel={(option) => option.label}
-                  renderOption={(props, option) => (
-                    <Box
-                      component="li"
-                      sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                      {...props}
-                    >
-                      <img
-                        loading="lazy"
-                        width="20"
-                        src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                        srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                        alt=""
+  const [visibility, setVisibility] = React.useState(true);
+  const [values, setValues] = useState({ type: "user" });
+  const onChange = async (e, name) => {
+    if (e) {
+      try {
+        console.log(e);
+        if (e.target) {
+          await setValues({ ...values, [e.target.name]: e.target.value });
+        } else {
+          await setValues({ ...values, [name]: e });
+        }
+        await console.log("update", values);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+  const genders = [{ label: "Male" }, { label: "Female" }];
+  const onRegister = () => {
+    axios
+      .post("http://localhost:8081/user/profile", values)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+  const onSubmit = () => {
+    //console.log(query);
+    axios
+      .post("http://localhost:8081/auth/register", values)
+      .then((res) => {
+        console.log("waiting for message", res.data);
+        if (res.data.message) {
+          console.log("This email is taken");
+          setError(true);
+          setErrorMessage(res.data.message);
+        } else {
+          setOutput(res.data);
+          console.log("email and password", res.data);
+          setError(false);
+          setVisibility(false);
+          //setSearchDone(true);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+ 
+  return (
+    
+    <>
+     <Stack direction="row" spacing={2} sx={{ width: 100 }}>
+         <div>
+          <img
+            src={image4}
+            style={{ height: 750, width: 920, float: "left" }}
+          />
+        </div>  
+
+        <Box
+          component="form"
+          sx={{
+            "& .MuiTextField-root": { m: 1, width: "50ch" },
+          }}
+          noValidate
+          autoComplete="on"
+        >
+          <div>
+            <Stack spacing={2} sx={{ width: 300 }}>
+              <div
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "30px",
+                  textAlignLast: "end",
+                  fontFamily:'revert'
+                }}
+              >
+                Fly with us
+              </div>
+              {!visibility && !error && (
+                <div>
+                  <TextField
+                    fullWidth="true"
+                    required
+                    id="outlined-basic"
+                    label="First Name"
+                    variant="outlined"
+                    name="firstName"
+                    onChange={onChange}
+                  />
+                  <TextField
+                    required
+                    id="outlined-basic"
+                    label="Last Name"
+                    variant="outlined"
+                    name="lastName"
+                    onChange={onChange}
+                  />
+                  <Autocomplete
+                    id="country-select-demo"
+                    fullWidth
+                    options={countries}
+                    autoHighlight
+                    getOptionLabel={(option) => option.label}
+                    renderOption={(props, option) => (
+                      <Box
+                        component="li"
+                        sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                        {...props}
+                      >
+                        <img
+                          loading="lazy"
+                          width="20"
+                          src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                          srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                          alt=""
+                        />
+                        {option.label} ({option.code})
+                      </Box>
+                    )}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: "new-password", // disable autocomplete and autofill
+                        }}
+                        label="Country"
+                        name="countryCode"
+                        onChange={onChange}
                       />
-                      {option.label} ({option.code}) +{option.phone}
-                    </Box>
-                  )}
-                  renderInput={(params) => (
+                    )}
+                  />
+                  {/* <Autocomplete
+                    required
+                    disablePortal
+                    id="combo-box-demo"
+                    options={genders}
+                    fullWidth
+                    name="gender"
+                    renderInput={(params) => (
+                      <TextField {...params} label="Gender" />
+                    )}
+                    onChange={(newValue)=>{setValues({ ...values, ["gender"]: newValue });}}
+                  /> */}
+                  <TextField
+                    required
+                    id="outlined-basic"
+                    label="Mobile Number"
+                    variant="outlined"
+                    name="phoneNumber"
+                    type="Number"
+                    onChange={onChange}
+                  />
+                  <Stack direction="row" spacing={2} sx={{ width: 505 }}>
                     <TextField
-                      {...params}
-                      inputProps={{
-                        ...params.inputProps,
-                        autoComplete: "new-password", // disable autocomplete and autofill
-                      }}
-                      label="Country"
+                      required
+                      id="outlined-basic"
+                      label="Address"
+                      variant="outlined"
+                      name="homeAddress.address"
+                      onChange={onChange}
                     />
-                  )}
-                />
-                <TextField
-                  required
-                  id="outlined-basic"
-                  label="E mail"
-                  variant="outlined"
-                />
-                <TextField
-                  required
-                  id="outlined-basic"
-                  label="Mobile Number"
-                  variant="outlined"
-                />
-                <Stack direction="row" spacing={2} sx={{ width: 520 }}>
+                    <TextField
+                      required
+                      id="outlined-basic"
+                      label="City"
+                      variant="outlined"
+                      name="homeAddress.city"
+                      onChange={onChange}
+                    />
+                    <TextField
+                      required
+                      id="outlined-basic"
+                      label="ZIP Code"
+                      variant="outlined"
+                      name="homeAddress.zipCode"
+                      type="Number"
+                      onChange={onChange}
+                    />
+                  </Stack>
                   <TextField
                     required
                     id="outlined-basic"
-                    label="Adress"
+                    label="Passport Number"
                     variant="outlined"
+                    name="passportNumber"
+                    onChange={onChange}
+                  />
+                  <FormControl component="fieldset">
+                    <FormLabel component="legend" align="left" >Gender</FormLabel>
+                    <RadioGroup
+                      row
+                      aria-label="gender"
+                      name="row-radio-buttons-group"
+                    >
+                      <FormControlLabel
+                        value="female"
+                        control={<Radio/>}
+                        label="Female"
+                        onClick={
+                          ()=>{setValues({ ...values, ["gender"]: "female" })}
+                        }
+                      />
+                      <FormControlLabel
+                        value="male"
+                        control={<Radio />}
+                        label="Male"
+                        onClick={
+                          ()=>{setValues({ ...values, ["gender"]: "male" })}
+                        }
+                      />
+                      <FormControlLabel
+                        value="other"
+                        control={<Radio />}
+                        label="Other"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </div>
+              )}
+              {(visibility || error) && (
+                <div>
+                  <Stack spacing={2} sx={{ width: 300 }}></Stack>
+                  <TextField
+                    required
+                    fullWidth
+                    error={error}
+                    helperText={error ? "This email is taken" : ""}
+                    id="outlined-basic"
+                    label="E-mail"
+                    variant="outlined"
+                    name="email"
+                    onChange={onChange}
                   />
                   <TextField
                     required
                     id="outlined-basic"
-                    label="City"
+                    label="Password"
                     variant="outlined"
+                    name="password"
+                    onChange={onChange}
                   />
-                  <TextField
-                    required
-                    id="outlined-basic"
-                    label="ZIP Code"
-                    variant="outlined"
-                  />
-                </Stack>
-                <TextField
-                  required
-                  id="outlined-basic"
-                  label="Passport Number"
-                  variant="outlined"
-                />
-              </div>
+                </div>
+              )}
+            </Stack>
+          </div>
+          <div>
+            {(visibility || error) && (
+              <Button
+                variant="contained"
+                onClick={() => {
+                  onSubmit();
+                }}
+                sx={{ width: "100%", marginLeft: "10px" }}
+              >
+                Next{" "}
+              </Button>
             )}
-            {visibility && (
-              <div>
-                <Stack spacing={2} sx={{ width: 300 }}></Stack>
-                <TextField
-                  required
-                  id="outlined-basic"
-                  label="Username"
-                  variant="outlined"
-                />
-                <TextField
-                  required
-                  id="outlined-basic"
-                  label="Password"
-                  variant="outlined"
-                />
-              </div>
+            {!visibility && !error && (
+              <Button
+                variant="contained"
+                onClick={() => {
+                  onRegister();
+                }}
+                sx={{ width: "100%", marginLeft: "10px" }}
+              >
+                submit
+              </Button>
             )}
-          </Stack>
-        </div>
-        <div>
-          <Button
-            variant="contained"
-            onClick={() => setVisibility(false)}
-            sx={{
-              width: 500,
-              float: "left",
-              marginLeft: "10px",
-              marginTop: "10px",
-            }}
-          >
-            {visibility ? "Next" : "Sign Up"}
-          </Button>
-        </div>
-      </Box>
+          </div>
+        </Box>
+        
+       </Stack>
     </>
   );
 }

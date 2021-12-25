@@ -91,7 +91,6 @@ export default function BasicTable(onDelete) {
       .then((res) => {
         //sendEmail(price);
         sendCancelMail();
-        window.location.reload(false);
        //setDelete(!deleteFlight);
         // console.log(res);
       })
