@@ -41,6 +41,7 @@ import CardMedia from "@mui/material/CardMedia";
 import EditReservationButton from "./buttons/EditReservationButton";
 import { positions } from "@mui/system";
 import jwt_decode from "jwt-decode";
+import QRCODE from '../../../images/QRcode.png';
 import {
   Button,
   Box,
@@ -66,7 +67,6 @@ import FlightLandRounded from "@mui/icons-material/FlightLandRounded";
 import LinearScaleOutlined from "@mui/icons-material/LinearScaleOutlined";
 
 export default function BasicTable(onDelete) {
-  
   const [tickets, setTickets] = useState([]);
   const [open, setOpen] = useState(false);
 
@@ -284,13 +284,19 @@ export default function BasicTable(onDelete) {
                   key={row.name}
                   sx={{ "&:last-child td, &:last-child th": { border: "0px" } }}
                 >
-                  <StyledTableCell style={{ width: '15%' }}>
+                  <StyledTableCell style={{ width: "15%" }}>
                     <Stack
                       spacing={2}
                       divider={<Divider orientation="horizontal" flexItem />}
                     >
-                      <div>Departing Flight <FlightTakeoffIcon color="primary"/> {row.departingFlight.from}</div>
-                      <div>Retrun Flight <FlightLandRounded color="error"/> {row.arrivalFlight.from}</div>
+                      <div>
+                        Departing Flight <FlightTakeoffIcon color="primary" />{" "}
+                        {row.departingFlight.from}
+                      </div>
+                      <div>
+                        Retrun Flight <FlightLandRounded color="error" />{" "}
+                        {row.arrivalFlight.from}
+                      </div>
                     </Stack>
                   </StyledTableCell>
                   <StyledTableElement align="center">
@@ -346,9 +352,9 @@ export default function BasicTable(onDelete) {
                       : row.departingFlight.cabin.charAt(0).toUpperCase() +
                         row.departingFlight.cabin.substring(1)}
                   </StyledTableCell>
-                    <TableCell>
+                  <TableCell>
                     <EditReservationButton resId={row.reservationId} />
-                    </TableCell>
+                  </TableCell>
                   <StyledTableCell>
                     <div>
                       <Stack spacing={-0.5} orientation="horizontal">
@@ -433,10 +439,18 @@ export default function BasicTable(onDelete) {
                             sx={{
                               minWidth: 275,
                               marginTop: "2%",
-                              background: image1,
                             }}
                           >
-                            <CardContent>
+                            <CardContent
+                              sx={{
+                                paddingTop: 0,
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                                pr:'10px'
+                                
+                              }}
+                            >
+                             
                               <AppBar
                                 position="static"
                                 border
@@ -446,61 +460,86 @@ export default function BasicTable(onDelete) {
                                   <Typography>Ticket preview</Typography>
                                 </Toolbar>
                               </AppBar>
-                              <Stack spacing={2} sx={{ alignItems: "center" }}>
+                              
+                              <Stack spacing={5} direction="row" >
                                 <Stack
-                                  direction="row"
-                                  spacing={8}
-                                  // sx={{ pl: "35%" }}
+                                  spacing={2}
+                                  sx={{  }}
                                 >
-                                  <Typography sx={{ fontSize: 60 }}>
-                                    {ticket.flightId.departureAirport}
-                                  </Typography>
-                                  <IoAirplaneOutline size={100} />
-                                  <Typography sx={{ fontSize: 60 }}>
-                                    {ticket.flightId.arrivalAirport}
-                                  </Typography>
-                                </Stack>
-                                <Stack direction="row" spacing={28}>
-                                  <Stack spacing={2}>
-                                    <Typography sx={{ fontSize: 20 }}>
-                                      {getDate(ticket.flightId.departureDate)}
-                                      <CalendarTodayTwoToneIcon />
+                                  <Stack
+                                    direction="row"
+                                    spacing={8}
+                                    // sx={{ pl: "35%" }}
+                                  >
+                                    <Typography sx={{ fontSize: 60 }}>
+                                      {ticket.flightId.departureAirport}
                                     </Typography>
-                                    <Typography>
-                                      {ticket.flightId.departureTime}
-                                      <AccessTimeTwoToneIcon />
+                                    <IoAirplaneOutline size={100} />
+                                    <Typography sx={{ fontSize: 60 }}>
+                                      {ticket.flightId.arrivalAirport}
                                     </Typography>
                                   </Stack>
-                                  <Stack spacing={2}>
+                                  <Stack direction="row" spacing={28}>
+                                    <Stack spacing={2}>
+                                      <Typography sx={{ fontSize: 20 }}>
+                                        {getDate(ticket.flightId.departureDate)}
+                                        <CalendarTodayTwoToneIcon />
+                                      </Typography>
+                                      <Typography>
+                                        {ticket.flightId.departureTime}
+                                        <AccessTimeTwoToneIcon />
+                                      </Typography>
+                                    </Stack>
+                                    <Stack spacing={2}>
+                                      <Typography sx={{ fontSize: 20 }}>
+                                        {getDate(ticket.flightId.arrivalDate)}
+                                        <CalendarTodayTwoToneIcon />
+                                      </Typography>
+                                      <Typography>
+                                        {ticket.flightId.arrivalTime}
+                                        <AccessTimeTwoToneIcon />
+                                      </Typography>
+                                    </Stack>
+                                  </Stack>
+                                  <Stack
+                                    direction={"row"}
+                                    spacing={16}
+                                    // sx={{ pl: "35%" }}
+                                  >
                                     <Typography sx={{ fontSize: 20 }}>
-                                      {getDate(ticket.flightId.arrivalDate)}
-                                      <CalendarTodayTwoToneIcon />
+                                      {ticket.flightId.flightNumber}
+                                      <AirplanemodeActive />
                                     </Typography>
-                                    <Typography>
-                                      {ticket.flightId.arrivalTime}
-                                      <AccessTimeTwoToneIcon />
+                                    <Typography sx={{ fontSize: 20 }}>
+                                      {ticket.seatNum}
+                                      <AirlineSeatReclineExtraIcon />
+                                    </Typography>
+                                    <Typography sx={{ fontSize: 20 }}>
+                                      {ticket.cabin}
                                     </Typography>
                                   </Stack>
                                 </Stack>
-                                <Stack
-                                  direction={"row"}
-                                  spacing={16}
-                                  // sx={{ pl: "35%" }}
-                                >
-                                  <Typography sx={{ fontSize: 20 }}>
-                                    {ticket.flightId.flightNumber}
-                                    <AirplanemodeActive />
+                                <Stack spacing={2}>
+                                  <Typography>Passenger Name</Typography>
+                                  <Typography>
+                                    {ticket.firstName} {ticket.lastName}
                                   </Typography>
-                                  <Typography sx={{ fontSize: 20 }}>
-                                    {ticket.seatNum}
-                                    <AirlineSeatReclineExtraIcon />
-                                  </Typography>
-                                  <Typography sx={{ fontSize: 20 }}>
-                                    {ticket.cabin}
+                                  <Typography>Ticket price</Typography>
+                                  <Typography>{ticket.price}</Typography>
+                                  <Typography>Type</Typography>
+                                  <Typography>
+                                    {ticket.passengerType}
                                   </Typography>
                                 </Stack>
+                                <CardMedia
+                                  component="img"
+                                  sx={{ width: '15%' }}
+                                  image={QRCODE}
+                                  alt="Live from space album cover"
+                                />
                               </Stack>
-                            
+                              
+                              {/* <Divider orientation="vertical" flexItem/> */}
                             </CardContent>
                           </Card>
                         ))}
