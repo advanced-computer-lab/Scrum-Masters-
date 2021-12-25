@@ -79,6 +79,10 @@ Admin is also able to perform the rest of CRUD operations on these created fligh
  
 
 *The images folder includes images that were used in different positions throughout the website*
+*The pages folder includes files that are responsible for calling the APIs (if applicable), and retrieves "props" from the server side *  
+*The styles folder includes the css (styling) for some of the components
+>>>App.js  
+<font size='0.75'>*Includes the routes of react files (the URLs that should be visited to view certain components)*</font>
 
 
 
