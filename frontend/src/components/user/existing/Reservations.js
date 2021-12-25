@@ -107,8 +107,7 @@ export default function BasicTable(onDelete) {
     decodedToken.props = ticket;
     decodedToken.email = email;
     console.log(
-      "GIRL HERE ARE THE TOKEN PROPS TICKETS!!!!" +
-        JSON.stringify(decodedToken.ticket.departureTickets)
+      "GIRL HERE ARE THE TOKEN PROPS TICKETS!!!!"
     );
     console.log("ANA EL emaillllllll!!!!" + JSON.stringify(decodedToken.email));
     axios
