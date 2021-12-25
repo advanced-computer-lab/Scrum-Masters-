@@ -22,6 +22,7 @@ import { IoIosAirplane, IoIosArrowRoundForward } from 'react-icons/io';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Divider from '@mui/material/Divider';
+import { Stack } from '@mui/material';
 
 import { FaTimes } from 'react-icons/fa';
 
@@ -180,13 +181,16 @@ const EditReservationButton = (props) => {
 
             {loading && (
               <div>
-                <Loader
-                  type='Plane'
-                  color='#00BFFF'
-                  height={100}
-                  width={100}
-                  //timeout={10000}
-                />
+                <Stack direction="column" spacing={5} sx={{alignItems:"center"}}>
+                  <Loader
+                    type='Plane'
+                    color='#00BFFF'
+                    height={100}
+                    width={100}
+                    //timeout={10000}
+                  />
+                </Stack>
+                
               </div>
             )}
             {data && (
