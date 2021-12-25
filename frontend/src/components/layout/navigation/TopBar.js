@@ -1,24 +1,30 @@
-import { React, useState, useEffect } from 'react';
-import { Nav, Container, Navbar } from 'react-bootstrap';
-import { Button } from '@mui/material';
-import { purple } from '@mui/material/colors';
-import { Link } from 'react-router-dom';
-import logo from '../../../images/logo-white.png';
-import ProfileButton from '../../admin/buttons/ProfileButton';
-import '@fontsource/henny-penny';
-import '../../../styles/custom.css';
-import UserProfile from '../../user/existing/buttons/UserProfile';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import axios from 'axios';
+import { React, useState, useEffect } from "react";
+import { Nav, Container, Navbar } from "react-bootstrap";
+import { Redirect, useHistory } from "react-router-dom";
+import { Button } from "@mui/material";
+import { purple } from "@mui/material/colors";
+import { Link } from "react-router-dom";
+import logo from "../../../images/logo-white.png";
+import ProfileButton from "../../admin/buttons/ProfileButton";
+import "@fontsource/henny-penny";
+import "../../../styles/custom.css";
+import UserProfile from "../../user/existing/buttons/UserProfile";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import axios from "axios";
 const TopBar = (props) => {
-  const [admin, setAdmin] = useState(props.admin);
-  const [existing, setExisting] = useState(false);
+  const [admin, setAdmin] = useState(
+    JSON.parse(window.sessionStorage.getItem("admin")) || false
+  );
+  const [existing, setExisting] = useState(
+    JSON.parse(window.sessionStorage.getItem("existing")) || false
+  );
   const [values, setValues] = useState();
+  const history = useHistory();
   const guestClick = () => {
     axios
       .post('http://localhost:8081/auth/login', values)
@@ -38,9 +44,11 @@ const TopBar = (props) => {
   };
 
   function checkUserData() {
-    const flag = JSON.parse(localStorage.getItem('existing'));
-    console.log('calleddd listener');
+    const flag = JSON.parse(window.sessionStorage.getItem("existing"));
+    const flag2 = JSON.parse(window.sessionStorage.getItem("admin"));
+    console.log("calleddd listener");
     setExisting(flag);
+    setAdmin(flag2);
   }
   useEffect(() => {
     window.addEventListener('storage', checkUserData);
@@ -53,6 +61,7 @@ const TopBar = (props) => {
     setExisting(false);
     setAdmin(false);
     props.onSignOut();
+    history.push("/");
   };
   const [open, setOpen] = useState(false);
 
@@ -62,11 +71,6 @@ const TopBar = (props) => {
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const getExisting = () => {
-    console.log('get existing');
-    return JSON.parse(window.sessionStorage.getItem('existing'));
   };
   const onChange = async (e, name) => {
     if (e) {
@@ -94,7 +98,7 @@ const TopBar = (props) => {
     >
       <Container>
         <Navbar.Brand
-          href='/'
+          to="/"
           style={{
             fontSize: '21pt',
             fontFamily: 'Henny Penny',
@@ -116,12 +120,26 @@ const TopBar = (props) => {
             <Navbar.Collapse id='responsive-navbar-nav'>
               <Nav className='me-auto'></Nav>
               <Nav>
-                <Nav.Link href='/schedule' style={{ color: 'white' }} exact>
+                <Link
+                  to="/schedule"
+                  style={{
+                    color: "white",
+                    alignSelf: "center",
+                    marginRight: "15px",
+                  }}
+                  className="link-decoration"
+                  exact
+                >
                   View Schedule
-                </Nav.Link>
-                <Nav.Link href='/addFlight' style={{ color: 'white' }} exact>
+                </Link>
+                <Link
+                  to="/addFlight"
+                  style={{ color: "white", alignSelf: "center" }}
+                  className="link-decoration"
+                  exact
+                >
                   Add a New Flight
-                </Nav.Link>
+                </Link>
                 <ProfileButton />
               </Nav>
             </Navbar.Collapse>
@@ -130,9 +148,17 @@ const TopBar = (props) => {
             <Navbar.Collapse id='responsive-navbar-nav'>
               <Nav className='me-auto'></Nav>
               <Nav>
-                <Nav.Link href='/search' style={{ color: 'white' }} exact>
+                <Link
+                  to="/"
+                  style={{
+                    color: "white",
+                    alignSelf: "center",
+                  }}
+                  className="link-decoration"
+                  exact
+                >
                   Book a Flight
-                </Nav.Link>
+                </Link>
                 {/* <Nav.Link href="/user"> */}
                 <Button
                   onClick={handleClickOpen}
@@ -205,12 +231,26 @@ const TopBar = (props) => {
             <Navbar.Collapse id='responsive-navbar-nav'>
               <Nav className='me-auto'></Nav>
               <Nav>
-                <Nav.Link href='/' style={{ color: 'white' }} exact>
+                <Link
+                  to="/"
+                  style={{
+                    color: "white",
+                    alignSelf: "center",
+                    marginRight: "15px",
+                  }}
+                  className="link-decoration"
+                  exact
+                >
                   Book a Flight
-                </Nav.Link>
-                <Nav.Link href='/reservations' style={{ color: 'white' }} exact>
+                </Link>
+                <Link
+                  to="/reservations"
+                  style={{ color: "white", alignSelf: "center" }}
+                  className="link-decoration"
+                  exact
+                >
                   My Bookings
-                </Nav.Link>
+                </Link>
                 <UserProfile logOutClick={logOutClick} />
               </Nav>
             </Navbar.Collapse>

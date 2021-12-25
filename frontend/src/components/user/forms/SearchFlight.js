@@ -22,7 +22,7 @@ import axios from "axios";
 import { Tooltip } from "@mui/material";
 import { DialogActions } from "@mui/material";
 import { DialogContent } from "@mui/material";
-import { DialogTitle } from "@mui/material";
+import { DialogTitle, Alert } from "@mui/material";
 import { Dialog } from "@mui/material";
 import { DialogContentText } from "@mui/material";
 import BookingPage from "../../../pages/user/signed/BookingPage";
@@ -30,32 +30,58 @@ import BookingPage from "../../../pages/user/signed/BookingPage";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 
-
-const SearchFlight = () => {
+const SearchFlight = (props) => {
+  const [error, setError] = useState(
+    JSON.parse(window.sessionStorage.getItem("loginError")) || false
+  );
+  const [errorMessage, setErrorMessage] = useState(
+    window.sessionStorage.getItem("errorMessage") || ""
+  );
   useEffect(() => {
+    window.sessionStorage.setItem("admin", false);
+    window.sessionStorage.setItem("hideTopbar", false);
+    var e = new Event("storage");
+    e.originalEvent = {
+      key: "hideTopbar",
+      oldValue: true,
+      newValue: false,
+    };
+    console.log(e);
+    window.dispatchEvent(e);
+    e = new Event("storage");
+    e.originalEvent = {
+      key: "admin",
+      oldValue: true,
+      newValue: false,
+    };
+    console.log(e);
+    window.dispatchEvent(e);
     axios
       .get("http://localhost:8081/user/search/flights")
       .then((res) => {
         setFrom(res.data.from);
         setTo(res.data.to);
+        window.sessionStorage.removeItem("errorMessage");
+        window.sessionStorage.removeItem("loginError");
         // console.log("from",from);
         // console.log("to",to);
       })
       .catch((err) => console.log(err));
-  }, []);
+    setTimeout(() => {
+      setError(false);
+    }, 5000);
+  }, [error]);
   //
   const cabins = ["Economy", "Business", "First Class"];
 
   const [query, setQuery] = useState({});
   const [from, setFrom] = useState();
   const [to, setTo] = useState();
-  const [error, setError] = useState(false);
   const [output, setOutput] = useState();
   const [searchDone, setSearchDone] = useState(false);
   const [open, setOpen] = React.useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [returnDate, setReturnDate] = React.useState(null);
   const [departureDate, setDepartureDate] = React.useState(null);
 
@@ -63,7 +89,7 @@ const SearchFlight = () => {
   const getDate = (input) => {
     const date = new Date(input);
     return (
-      (date.getMonth() + 1) + "-" +date.getDate() + "-" +date.getFullYear()
+      date.getMonth() + 1 + "-" + date.getDate() + "-" + date.getFullYear()
     );
   };
   const cabinProps = {
@@ -159,6 +185,7 @@ const SearchFlight = () => {
   return (
     <div>
       {searchDone && <BookingPage props={output} />}
+      {error && <Alert severity="error">{errorMessage}</Alert>}
       {!searchDone && (
         <Grid
           container
@@ -295,80 +322,79 @@ const SearchFlight = () => {
           </Grid>
 
           <Grid item xs={1} md={2}>
-         <LocalizationProvider dateAdapter={AdapterDateFns}> 
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
               {/* <DatePicker */}
               <TextField
-              id="outlined-search"
-              label="Departure Date"
-              type="date"
-              required
-              InputLabelProps={{
-                shrink: true,
-                style: {
-                  // backgroundColor: "white",
-                  // width: "auto",
-                  // padding: "1px",
-                },
-              }}
-              name="departureDate"
-              onChange={(e) =>
-                {setDepartureDate(e.target.value);
-                setQuery({
-                  ...query,
-                  ["departureDate"]: (e.target.value),
-                })
-                console.log("this is the value",e.target.value);
-              }
-            }
-           
-            value={departureDate}
-            // format='MM-DD-YYYY'
-             maxDate={new Date()}
-            // renderInput={(params) => <TextField {...params} />}
-              
-            />
-             </LocalizationProvider> 
+                id="outlined-search"
+                label="Departure Date"
+                type="date"
+                required
+                InputLabelProps={{
+                  shrink: true,
+                  style: {
+                    // backgroundColor: "white",
+                    // width: "auto",
+                    // padding: "1px",
+                  },
+                }}
+                name="departureDate"
+                onChange={(e) => {
+                  setDepartureDate(e.target.value);
+                  setQuery({
+                    ...query,
+                    ["departureDate"]: e.target.value,
+                  });
+                  console.log("this is the value", e.target.value);
+                }}
+                value={departureDate}
+                // format='MM-DD-YYYY'
+                maxDate={new Date()}
+                // renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
           </Grid>
           <Grid item xs={1} md={2}>
             {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker */}
-              <TextField
-                id="outlined-search"
-                label="Return date"
-                size="large"
-                type="date"
-                InputLabelProps={{
-                  shrink: true,
-                  style: {
-                    backgroundColor: "white",
-                    width: "auto",
-                    padding: "1px",
-                  },
-                }}
-                name="arrivalDate"
-                onChange={(e) =>
-                  {setReturnDate(e.target.value);
-                  setQuery({
-                    ...query,
-                    ["arrivalDate"]:(e.target.value),
-                  })
-                  console.log("this is the Date",query,
-                  "This is the date value format",typeof getDate(e.target.value));
-                }
-              }
-                // onChangeDate={(newValue) => {
-                //   setDate(newValue);
-                //   console.log("MY NEW DATE VALUE"+newValue)
-                // }}
-               
-                
-                value={returnDate}
-                format='MM-DD-YYYY'
-                required
-                variant="outlined"
-                // maxDate={new Date()}
-                // renderInput={(params) => <TextField {...params} />}
-              />
+            <TextField
+              id="outlined-search"
+              label="Return date"
+              size="large"
+              type="date"
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  backgroundColor: "white",
+                  width: "auto",
+                  padding: "1px",
+                },
+              }}
+              name="arrivalDate"
+              onChange={(e) => {
+                setReturnDate(e.target.value);
+                setQuery({
+                  ...query,
+                  ["arrivalDate"]: e.target.value,
+                });
+                console.log(
+                  "this is the Date",
+                  query,
+                  "This is the date value format",
+                  typeof getDate(e.target.value)
+                );
+              }}
+              // onChangeDate={(newValue) => {
+              //   setDate(newValue);
+              //   console.log("MY NEW DATE VALUE"+newValue)
+              // }}
+
+              value={returnDate}
+              format="MM-DD-YYYY"
+              required
+              variant="outlined"
+              // maxDate={new Date()}
+              // renderInput={(params) => <TextField {...params} />}
+            />
             {/* </LocalizationProvider> */}
           </Grid>
           <Grid item xs={1} md={2}>
@@ -419,7 +445,7 @@ const SearchFlight = () => {
               </IconButton>
             </Tooltip>
           </Grid>
-          {error && (
+          {/* {error && (
             <Dialog open={open} onClose={alertClose}>
               <DialogTitle
                 id="alert-dialog-title"
@@ -446,7 +472,7 @@ const SearchFlight = () => {
                 </Button>
               </DialogActions>
             </Dialog>
-          )}
+          )} */}
         </Grid>
       )}
     </div>

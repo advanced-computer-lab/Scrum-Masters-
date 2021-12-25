@@ -64,6 +64,15 @@ const Profile = () => {
         setValues(res.data);
         console.log(res.data);
         setSuccess(true);
+        window.sessionStorage.setItem("letter", true);
+        var e = new Event("storage");
+        e.originalEvent = {
+          key: "letter",
+          oldValue: false,
+          newValue: true,
+        };
+        console.log(e);
+        window.dispatchEvent(e);
       })
       .catch((err) => {
         console.log(err);
@@ -83,7 +92,7 @@ const Profile = () => {
     setTimeout(() => {
       setSuccess(false);
       setError(false);
-    }, 5000);
+    }, 6000);
   }, [edit]);
   const toggleEdit = () => {
     setEdit(!edit);
@@ -98,6 +107,16 @@ const Profile = () => {
           width={100}
           timeout={5000}
         />
+      )}
+      {success && (
+        <Alert severity="success" sx={{ background: "#f4eff8" }}>
+          You have successfully updated your information.
+        </Alert>
+      )}
+      {error && (
+        <Alert severity="error">
+          Something went wrong. Please try again later.
+        </Alert>
       )}
       {!loading && info && (
         <div>
@@ -274,16 +293,6 @@ const Profile = () => {
                   Cancel
                 </Button>
               </Stack>
-            )}
-            {success && (
-              <Alert severity="success" sx={{ background: "#f4eff8" }}>
-                You have successfully updated your information.
-              </Alert>
-            )}
-            {error && (
-              <Alert severity="error">
-                Something went wrong. Please try again later.
-              </Alert>
             )}
           </ThemeProvider>
         </div>
