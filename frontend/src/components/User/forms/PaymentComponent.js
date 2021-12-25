@@ -25,11 +25,11 @@ const transporter = nodemailer.createTransport({
     subject:"Email trial",
     text:"Let's see"
   };
-const PaymentComponent = () =>{ 
+const PaymentComponent = (props) =>{ 
   console.log("eltoken ahu!")
     const [product,setProduct] =useState({
         name:"Pay for reservation",
-        price: "5000",
+        price: props.price,
         Productby:"cloud9"
         })
   

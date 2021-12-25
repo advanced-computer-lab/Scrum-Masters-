@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import EditSeat from "./EditSeat";
 import axios from "axios";
+import PaymentComponent from "../../../components/user/forms/PaymentComponent";
 
 const EditingSeatsPage = () => {
   var { resId, firstFlightId, secondFlightId, cabin, edit, state } =
@@ -10,6 +11,7 @@ const EditingSeatsPage = () => {
   const [data, setData] = React.useState();
   const [firstPrice, setFirstPrice] = React.useState(0);
   const [secondPrice, setSecondPrice] = React.useState(0);
+  const[finished,setFinished] = React.useState(false);
 
   const [firstFlight, setFirstFlight] = React.useState();
   const [secondFlight, setSecondFlight] = React.useState();
@@ -80,6 +82,7 @@ const EditingSeatsPage = () => {
     } catch (error) {
       console.log(error)
     }
+    setFinished(true);
   };
   return (
     //case changing seats of same flights
@@ -125,6 +128,12 @@ const EditingSeatsPage = () => {
           state={state}
           resId={resId}
         />
+      )}
+      {finished && ((firstPrice+secondPrice) - data.oldReservation.totalPrice > 0)  &&(
+        <div> 
+          <PaymentComponent price={((firstPrice+secondPrice) - data.oldReservation.totalPrice)}/>
+        </div>
+
       )}
     </div>
   );
