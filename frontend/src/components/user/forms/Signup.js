@@ -19,7 +19,7 @@ import axios from "axios";
 
 
 export default function SignUpForm() {
-
+  
   const [error, setError] = useState(false);
   const [output, setOutput] = useState();
   const [errorMessage, setErrorMessage] = useState('');
