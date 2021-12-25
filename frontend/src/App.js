@@ -47,39 +47,39 @@ function App() {
     window.sessionStorage.setItem("admin", true);
   };
   return (
-    
-      <Router>
-        <div className="App">
-          {/* {window.sessionStorage.setItem("existing", false)} */}
-          <TopBar
-            admin={admin}
-            existing={existing}
-            onSignIn={onSignIn}
-            onSignOut={onSignOut}
-            onAdmin={onAdmin}
-          />
-          <Switch>
-            <Route exact path={"/schedule"} component={Schedule}></Route>
-            <Route exact path="/addFlight" component={FlightCreation}></Route>
-            <Route exact path="/user" component={BookingPage}></Route>
-            <PrivateRoute
-              exact
-              path="/selectSeat"
-              component={SelectSeat}
-            ></PrivateRoute>
-            <PrivateRoute
-              exact
-              path="/account"
-              component={Account}
-            ></PrivateRoute>
-            <Route exact path="/" component={SearchingPage}></Route>
-            <PrivateRoute
-              exact
-              path="/reservations"
-              component={Reservations}
-            ></PrivateRoute>
-            <Route exact path="/signup" component={SignUpForm}></Route>
-            <Route exact path="/test" component={test}></Route>
+    <Router>
+      <div className="App">
+        {/* {window.sessionStorage.setItem("existing", false)} */}
+        <TopBar
+          admin={admin}
+          existing={existing}
+          onSignIn={onSignIn}
+          onSignOut={onSignOut}
+          onAdmin={onAdmin}
+        />
+        <Switch>
+          <Route exact path={"/schedule"} component={Schedule}></Route>
+          <Route exact path="/addFlight" component={FlightCreation}></Route>
+          <Route exact path="/user" component={BookingPage}></Route>
+          <PrivateRoute
+            exact
+            path="/selectSeat"
+            component={SelectSeat}
+          ></PrivateRoute>
+          <PrivateRoute
+            exact
+            path="/account"
+            component={Account}
+          ></PrivateRoute>
+          <Route exact path="/" component={SearchingPage}></Route>
+          <Route exact path="/search" component={SearchingPage}></Route>
+          <PrivateRoute
+            exact
+            path="/reservations"
+            component={Reservations}
+          ></PrivateRoute>
+          <Route exact path="/signup" component={SignUpForm}></Route>
+          <Route exact path="/test" component={test}></Route>
 
             <PrivateRoute exact path="/pass" component={PassengerDeets}>
               <Container>

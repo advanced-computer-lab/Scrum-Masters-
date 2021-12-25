@@ -1,5 +1,5 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React from "react";
+import { useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -12,8 +12,8 @@ import {
   tableCellClasses,
   styled,
   Paper,
-} from '@mui/material';
-import FlightCard from './FlightCard';
+} from "@mui/material";
+import FlightCard from "./FlightCard";
 
 const ViewFlights = ({ flights, onDelete, onUpdate }) => {
   const [page, setPage] = React.useState(0);
@@ -22,7 +22,7 @@ const ViewFlights = ({ flights, onDelete, onUpdate }) => {
   useEffect(() => {}, []);
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: '#5e60ce',
+      backgroundColor: "#5e60ce",
       color: theme.palette.common.white,
     },
   }));
@@ -37,33 +37,33 @@ const ViewFlights = ({ flights, onDelete, onUpdate }) => {
   };
 
   return (
-    <TableContainer component={Paper} style={{ marginBottom: '20px' }}>
-      <Table aria-label='collapsible table'>
+    <TableContainer component={Paper} style={{ marginBottom: "20px" }}>
+      <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <StyledTableCell />
-            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
+            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
               Flight Number
             </StyledTableCell>
-            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
+            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
               From
             </StyledTableCell>
-            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
+            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
               To
             </StyledTableCell>
-            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
+            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
               Departure Date
             </StyledTableCell>
-            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
+            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
               Arrival Date
             </StyledTableCell>
-            <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
-              {' '}
+            <StyledTableCell align="center" style={{ fontWeight: "bolder" }}>
+              {" "}
               Duration
             </StyledTableCell>
             <StyledTableCell
-              align='center'
-              style={{ fontWeight: 'bolder' }}
+              align="center"
+              style={{ fontWeight: "bolder" }}
             ></StyledTableCell>
           </TableRow>
         </TableHead>
