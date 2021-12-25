@@ -41,7 +41,8 @@ import CardMedia from "@mui/material/CardMedia";
 import EditReservationButton from "./buttons/EditReservationButton";
 import { positions } from "@mui/system";
 import jwt_decode from "jwt-decode";
-import QRCODE from '../../../images/QRcode.png';
+import QRCODE from "../../../images/QRcode.png";
+import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox';
 import {
   Button,
   Box,
@@ -65,6 +66,11 @@ import {
 } from "@mui/material";
 import FlightLandRounded from "@mui/icons-material/FlightLandRounded";
 import LinearScaleOutlined from "@mui/icons-material/LinearScaleOutlined";
+
+
+
+
+
 
 export default function BasicTable(onDelete) {
   const [tickets, setTickets] = useState([]);
@@ -98,7 +104,22 @@ export default function BasicTable(onDelete) {
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
     );
   };
-
+  const handler = (ticket) => {
+    decodedToken.ticket = ticket;
+    decodedToken.email = email;
+    console.log(
+      "GIRL HERE ARE THE TOKEN PROPS TICKETS!!!!" +
+        JSON.stringify(decodedToken.ticket.departureTickets)
+    );
+    console.log("ANA EL emaillllllll!!!!" + JSON.stringify(decodedToken.email));
+    axios
+      .post("http://localhost:8081/user/sendmail", decodedToken)
+      .then(
+        console.log(
+          "done!!" + "ELI RAYEH LEL BACKEND HOWA" + JSON.stringify(decodedToken)
+        )
+      );
+  };
   // const handleClickOpenDialog = () => {
   //   setOpenDialog(true);
   // };
@@ -156,6 +177,7 @@ export default function BasicTable(onDelete) {
       });
     //onDelete();
   };
+  const[email,setEmail]=useState("");
   const getTickets = (reservationId) => {
     console.log("an hena", reservationId);
     axios
@@ -433,6 +455,9 @@ export default function BasicTable(onDelete) {
                           </IconButton>
                         </Toolbar>
                       </AppBar>
+                      <Typography variant="h5" gutterBottom component="div">
+                        Your reservation ID is : ({row.reservationId})
+                      </Typography>
                       <Container>
                         {tickets.map((ticket) => (
                           <Card
@@ -446,11 +471,9 @@ export default function BasicTable(onDelete) {
                                 paddingTop: 0,
                                 paddingLeft: 0,
                                 paddingRight: 0,
-                                pr:'10px'
-                                
+                                pr: "10px",
                               }}
                             >
-                             
                               <AppBar
                                 position="static"
                                 border
@@ -458,14 +481,20 @@ export default function BasicTable(onDelete) {
                               >
                                 <Toolbar variant="dense">
                                   <Typography>Ticket preview</Typography>
+                                  <IconButton
+                                  onClick={() => {
+                                    handler({ticket});
+                                  }}
+                                  ><ForwardToInboxIcon/></IconButton>
                                 </Toolbar>
                               </AppBar>
-                              
-                              <Stack spacing={5} direction="row" >
-                                <Stack
-                                  spacing={2}
-                                  sx={{  }}
-                                >
+
+                              <Stack
+                                spacing={5}
+                                direction="row"
+                                sx={{ pl: "18%" }}
+                              >
+                                <Stack spacing={2}>
                                   <Stack
                                     direction="row"
                                     spacing={8}
@@ -514,31 +543,39 @@ export default function BasicTable(onDelete) {
                                       {ticket.seatNum}
                                       <AirlineSeatReclineExtraIcon />
                                     </Typography>
-                                    <Typography sx={{ fontSize: 20 }}>
+                                    <Typography
+                                      sx={{ fontSize: 20, alignSelf: "left" }}
+                                    >
                                       {ticket.cabin}
                                     </Typography>
                                   </Stack>
                                 </Stack>
-                                <Stack spacing={2}>
-                                  <Typography>Passenger Name</Typography>
+                                <Stack spacing={2} sx={{ pt: "1%" }}>
+                                  <Typography fontWeight={"bold"}>
+                                    Passenger Name
+                                  </Typography>
                                   <Typography>
                                     {ticket.firstName} {ticket.lastName}
                                   </Typography>
-                                  <Typography>Ticket price</Typography>
+                                  <Typography fontWeight={"bold"}>
+                                    Ticket price
+                                  </Typography>
                                   <Typography>{ticket.price}</Typography>
-                                  <Typography>Type</Typography>
+                                  <Typography fontWeight={"bold"}>
+                                    Type
+                                  </Typography>
                                   <Typography>
                                     {ticket.passengerType}
                                   </Typography>
                                 </Stack>
                                 <CardMedia
                                   component="img"
-                                  sx={{ width: '15%' }}
+                                  sx={{ width: "20%" }}
                                   image={QRCODE}
                                   alt="Live from space album cover"
                                 />
                               </Stack>
-                              
+
                               {/* <Divider orientation="vertical" flexItem/> */}
                             </CardContent>
                           </Card>
