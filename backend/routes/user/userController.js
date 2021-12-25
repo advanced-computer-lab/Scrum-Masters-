@@ -167,6 +167,17 @@ router.post('/search', async (req, res) => {
   }
 });
 
+// get a flight
+
+router.get("/flight/:flightId", async (req, res) => {
+  try {
+    const flight = await Flight.findById(req.params.flightId);
+    res.json(flight);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 // to populate the search form in the editing (backtracking)
 router.get('/edit/history/:resId', async (req, res) => {
   //
@@ -178,6 +189,9 @@ router.get('/edit/history/:resId', async (req, res) => {
   const departingFlightId = oldReservation.departingFlightId._id;
   const returnFlightId = oldReservation.returnFlightId._id;
 
+  const departingFlightId = oldReservation.departingFlightId._id;
+  const returnFlightId = oldReservation.returnFlightId._id;
+
   const oldTickets = await Ticket.find({
     reservationId: req.params.resId,
   });
@@ -185,15 +199,15 @@ router.get('/edit/history/:resId', async (req, res) => {
   const oldDepartingTickets = await Ticket.find({
     reservationId: req.params.resId,
     flightId: departingFlightId,
-  }).sort({ firstName: 'asc' });
+  }).sort({ firstName: "asc" });
 
   const oldReturningTickets = await Ticket.find({
     reservationId: req.params.resId,
     flightId: returnFlightId,
-  }).sort({ firstName: 'asc' });
+  }).sort({ firstName: "asc" });
 
-  console.log('old departing', oldDepartingTickets);
-  console.log('old returning', oldReturningTickets);
+  console.log("old departing", oldDepartingTickets);
+  console.log("old returning", oldReturningTickets);
 
   // console.log("the old reservation", oldReservation);
   // console.log("------------\n the old tickets", oldTickets);
@@ -222,7 +236,8 @@ router.get('/edit/history/:resId', async (req, res) => {
     oldReturningTickets,
   });
 });
-router.post('/edit/search/:resId', async (req, res) => {
+
+router.post("/edit/search/:resId", async (req, res) => {
   /**
    * req is: 
    *  {
@@ -239,8 +254,8 @@ router.post('/edit/search/:resId', async (req, res) => {
   const criteria = req.body;
 
   const oldReservation = await Reservation.findById(req.params.resId)
-    .populate('departingFlightId')
-    .populate('returnFlightId');
+    .populate("departingFlightId")
+    .populate("returnFlightId");
 
   /* {
       noOfChildren: val, (?)
@@ -556,33 +571,197 @@ router.get('/reservations/:id', async (req, res) => {
     console.log(error);
   }
 });
+
+// getting tickets of the reservation
+router.get("/tickets/:resId", async (req, res) => {
+  const tickets = await Ticket.find({
+    reservationId: req.params.resId,
+  }).populate("flightId");
+  res.json(tickets);
+});
+
+//updating a ticket
 /**
  * {
- *  departingFlight:{
- *
- *  flightNumber: val,
- *  departureDate:val,
- *  departureTime:val,
- *  arrivalDate:val,
- *  arrivalTime: val,
- *  cabin: val
- *
- *  },
- *  arrivalFlight:{
- *   flightnumber: val,
- *  departureDate:val,
- *  departureTime:val,
- *  arrivalDate:val,
- *  arrivalTime: val,
- *  cabin: val
- *
- *  }
- *
- *
+ *  seatNum
+ *  cabin
+ *  price
  * }
  */
-router.get('/profile/:id', async (req, res) => {
-  User.findById(req.params.id, '-password')
+
+router.patch("/ticket/:ticketId", async (req, res) => {
+  try {
+    const newTicket = await Ticket.findByIdAndUpdate(
+      req.params.ticketId,
+      req.body,
+      { new: true }
+    );
+    res.json(newTicket);
+  } catch (error) {}
+  res.status(404).send(error);
+});
+
+// udating a reservation
+/**
+ * params:resId
+{
+
+firstFlightId, //new or not ? el gedeed 
+secondFlightId,  //new or not ? el gedeed 
+cabin, // el gedeed
+totalPrice, // old departingFlightId and old returningFlightId from resId
+}
+ * 
+ */
+
+router.patch("/reservation/:resId", async (req, res) => {
+  const newCriteria = req.body;
+
+  // get total Num of seats
+  var totalSeats = 0;
+
+  try {
+    const tickets = await Ticket.find({ reservationId: req.params.resId });
+    totalSeats = tickets.length;
+  } catch (error) {
+    console.log(error);
+  }
+
+  try {
+    //get old reservation
+    const oldReservation = await Reservation.findById(req.params.resId);
+    //get new reservation
+    const newReservation = await Reservation.findByIdAndUpdate(
+      req.params.resId,
+      newCriteria,
+      { new: true }
+    );
+
+    // diff flights  second flight not zero ya3ny two diff flights
+    // second flight equals zero , I need to check
+    //
+    /// two diff flights
+    if (newCriteria.seconFlightId !== 0) {
+      if (
+        newCriteria.firstFlightId !== oldReservation.departingFlightId &&
+        newCriteria.seconFlightId !== oldReservation.returnFlightId
+      ) {
+        if (newCriteria.cabin === "economy") {
+          // I decremented the seats in the new flights
+          await Flight.findByIdAndUpdate(newCriteria.firstFlightId, {
+            $inc: { "economy.availableSeats": -totalSeats },
+          });
+          await Flight.findByIdAndUpdate(newCriteria.secondFlightId, {
+            $inc: { "economy.availableSeats": -totalSeats },
+          });
+        }
+        if (newCriteria.cabin === "business") {
+          await Flight.findByIdAndUpdate(newCriteria.firstFlightId, {
+            $inc: { "business.availableSeats": -totalSeats },
+          });
+          await Flight.findByIdAndUpdate(newCriteria.secondFlightId, {
+            $inc: { "business.availableSeats": -totalSeats },
+          });
+        }
+        if (newCriteria.cabin === "first") {
+          await Flight.findByIdAndUpdate(newCriteria.firstFlightId, {
+            $inc: { "firstClass.availableSeats": -totalSeats },
+          });
+          await Flight.findByIdAndUpdate(newCriteria.seconFlightId, {
+            $inc: { "firstClass.availableSeats": -totalSeats },
+          });
+        }
+
+        // increment the seats in the old flights
+
+        if (oldReservation.cabinClass === "economy") {
+          await Flight.findByIdAndUpdate(oldReservation.departingFlightId, {
+            $inc: { "economy.availableSeats": totalSeats },
+          });
+          await Flight.findByIdAndUpdate(oldReservation.returnFlightId, {
+            $inc: { "economy.availableSeats": totalSeats },
+          });
+        }
+        if (oldReservation.cabinClass === "business") {
+          await Flight.findByIdAndUpdate(oldReservation.departingFlightId, {
+            $inc: { "business.availableSeats": totalSeats },
+          });
+          await Flight.findByIdAndUpdate(oldReservation.returnFlightId, {
+            $inc: { "business.availableSeats": totalSeats },
+          });
+        }
+        if (oldReservation.cabinClass === "first") {
+          await Flight.findByIdAndUpdate(oldReservation.departingFlightId, {
+            $inc: { "firstClass.availableSeats": totalSeats },
+          });
+          await Flight.findByIdAndUpdate(oldReservation.returnFlightId, {
+            $inc: { "firstClass.availableSeats": totalSeats },
+          });
+        }
+      }
+    }
+    // departure flight only changed, same cabin
+    else if (newCriteria.state === 0) {
+      if (newCriteria.cabin === "economy") {
+        // I decremented the seats in the new flight
+        await Flight.findByIdAndUpdate(newCriteria.firstFlightId, {
+          $inc: { "economy.availableSeats": -totalSeats },
+        });
+        await Flight.findByIdAndUpdate(oldReservation.departingFlightId, {
+          $inc: { "economy.availableSeats": totalSeats },
+        });
+      }
+      if (newCriteria.cabin === "business") {
+        await Flight.findByIdAndUpdate(newCriteria.firstFlightId, {
+          $inc: { "business.availableSeats": -totalSeats },
+        });
+        await Flight.findByIdAndUpdate(oldReservation.departingFlightId, {
+          $inc: { "business.availableSeats": totalSeats },
+        });
+      }
+      if (newCriteria.cabin === "first") {
+        await Flight.findByIdAndUpdate(newCriteria.firstFlightId, {
+          $inc: { "firstClass.availableSeats": -totalSeats },
+        });
+        await Flight.findByIdAndUpdate(oldReservation.departingFlightId, {
+          $inc: { "firstClass.availableSeats": totalSeats },
+        });
+      }
+    } else if (newCriteria.state === 1) {
+      if (newCriteria.cabin === "economy") {
+        // I decremented the seats in the new flight
+        await Flight.findByIdAndUpdate(newCriteria.secondFlightId, {
+          $inc: { "economy.availableSeats": -totalSeats },
+        });
+        await Flight.findByIdAndUpdate(oldReservation.returnFlightId, {
+          $inc: { "economy.availableSeats": totalSeats },
+        });
+      }
+      if (newCriteria.cabin === "business") {
+        await Flight.findByIdAndUpdate(newCriteria.secondFlightId, {
+          $inc: { "business.availableSeats": -totalSeats },
+        });
+        await Flight.findByIdAndUpdate(oldReservation.returnFlightId, {
+          $inc: { "business.availableSeats": totalSeats },
+        });
+      }
+      if (newCriteria.cabin === "first") {
+        await Flight.findByIdAndUpdate(newCriteria.secondFlightId, {
+          $inc: { "firstClass.availableSeats": -totalSeats },
+        });
+        await Flight.findByIdAndUpdate(oldReservation.returnFlightId, {
+          $inc: { "firstClass.availableSeats": totalSeats },
+        });
+      }
+    }
+    res.json(newReservation);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
+router.get("/profile/:id", async (req, res) => {
+  User.findById(req.params.id)
     .then((result) => {
       res.send(result);
 

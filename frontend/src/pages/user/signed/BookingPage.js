@@ -136,12 +136,12 @@ const BookingPage = (props) => {
           seatNum: traveller.departureSeat,
           ticketType: "departing",
           passengerType: traveller.type,
-          firstName: traveller.firstName,
+          firstName: traveller.firstName, 
           lastName: traveller.lastName,
-          cabin: traveller.cabin,
-          flightId: departureFlight,
-          reservationId: reservationId,
-          price: getIndividualPrice(
+          cabin: traveller.cabin, //check
+          flightId: departureFlight, 
+          reservationId: reservationId, 
+          price: getIndividualPrice( //check
             departureInput.flight,
             traveller.type,
             traveller.cabin
