@@ -6,10 +6,15 @@ This is an airline reservation system website that provides an equitable yet use
 Working.
 
 ## This project is built using the following frameworks/runtime environemnts
-1- Node.js
-2- Express.js
-3- React.js
+1- Node.js  
+2- Express.js  
+3- React.js  
 4- Mongoose
+
+
+
+
+
 
 ## Code style 
 This project was built using the standard coding conventions in JavaScript to facilitate documentation & enable smooth future contributions.
@@ -84,14 +89,28 @@ Admin is also able to perform the rest of CRUD operations on these created fligh
 >>>App.js  
 <font size='0.75'>*Includes the routes of react files (the URLs that should be visited to view certain components)*</font>
 
+##Examples from the website
+>Examples from User Trip  
+>>Searching for appropriate flight
+
+![2021-12-25](https://user-images.githubusercontent.com/78305151/147393724-b7c2131d-00ef-48ae-83db-0f9706441eb3.png)  
+
+>>Entering Passenger Info  
+>>
 
 
-
-
-
+![2021-12-25 (8)](https://user-images.githubusercontent.com/78305151/147393775-4501e174-b2aa-422c-a332-61f4ecf17905.png)
   
+>>Flight Summary 
+>>
+
+  ![2021-12-25 (4)](https://user-images.githubusercontent.com/78305151/147393788-ccd3431f-a71f-4c02-ad5a-4e2111142177.png)
+
+
+>>Making Payment!
 
 
 
-
-
+![2021-12-25 (27)](https://user-images.githubusercontent.com/78305151/147393832-05a45283-0331-443b-aecd-956dac272881.png)
+![2021-12-25 (28)](https://user-images.githubusercontent.com/78305151/147393836-0b8d2320-0f25-4fd9-b0c1-1042ad354023.png)
+>>Reflects in the users reservations!!
