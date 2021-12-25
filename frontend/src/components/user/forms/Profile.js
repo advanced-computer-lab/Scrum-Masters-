@@ -23,11 +23,12 @@ const Profile = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const token = window.sessionStorage.getItem("token");
-  const decodedToken = jwt_decode(token);
+  var decodedToken;
+  if (token) decodedToken = jwt_decode(token);
   const theme = createTheme({
     palette: {
       secondary: {
-        main: indigo['A200'],
+        main: indigo["A200"],
       },
     },
   });

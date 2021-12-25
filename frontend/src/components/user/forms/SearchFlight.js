@@ -33,7 +33,7 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 
 
-const SearchFlight = ({}) => {
+const SearchFlight = () => {
   useEffect(() => {
     axios
       .get("http://localhost:8081/user/search/flights")
@@ -60,7 +60,6 @@ const SearchFlight = ({}) => {
   const [departureDate, setDepartureDate] = React.useState(null);
 
   const history = useHistory();
- console.log("Date abl ma yodkhol ya kalbooz",returnDate);
   const getDate = (input) => {
     const date = new Date(input);
     return (

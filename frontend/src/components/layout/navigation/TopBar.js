@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { Nav, Container, Navbar } from "react-bootstrap";
 import { Button } from "@mui/material";
 import { purple } from "@mui/material/colors";
@@ -17,7 +17,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 const TopBar = (props) => {
   const [admin, setAdmin] = useState(props.admin);
-  const [existing, setExisting] = useState(props.existing);
+  const [existing, setExisting] = useState(false);
   const [values, setValues] = useState();
   const guestClick = () => {
     axios
@@ -27,7 +27,7 @@ const TopBar = (props) => {
         if (result.data.message === "Success") {
           window.sessionStorage.setItem("token", result.data.token);
           props.onSignIn();
-          //setExisting(true);
+          setExisting(true);
           setAdmin(false);
         }
         //else error alert incorrect credentials
@@ -36,6 +36,19 @@ const TopBar = (props) => {
 
     // props.onSignIn();
   };
+
+  function checkUserData() {
+    const flag = JSON.parse(localStorage.getItem("existing"));
+    console.log("calleddd listener");
+    setExisting(flag);
+  }
+  useEffect(() => {
+    window.addEventListener("storage", checkUserData);
+
+    return () => {
+      window.removeEventListener("storage", checkUserData);
+    };
+  }, []);
   const logOutClick = () => {
     setExisting(false);
     setAdmin(false);
@@ -49,6 +62,11 @@ const TopBar = (props) => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const getExisting = () => {
+    console.log("get existing");
+    return JSON.parse(window.sessionStorage.getItem("existing"));
   };
   const onChange = async (e, name) => {
     if (e) {
@@ -108,7 +126,7 @@ const TopBar = (props) => {
               </Nav>
             </Navbar.Collapse>
           )}
-          {!(JSON.parse(window.sessionStorage.getItem('existing'))) && !admin && (
+          {!existing && !admin && (
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto"></Nav>
               <Nav>
@@ -183,7 +201,7 @@ const TopBar = (props) => {
               </Nav>
             </Navbar.Collapse>
           )}
-          {JSON.parse(window.sessionStorage.getItem("existing")) && (
+          {existing && (
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto"></Nav>
               <Nav>
