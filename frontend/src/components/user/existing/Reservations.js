@@ -646,11 +646,11 @@ const [tickets,setTickets] = useState([]);
                               </Toolbar>
                             </AppBar>
 
-                            <Stack spacing={2}>
+                            <Stack spacing={2} sx={{alignItems:"center"}}>
                               <Stack
                                 direction="row"
                                 spacing={8}
-                                sx={{ pl: "35%" }}
+                                // sx={{ pl: "35%" }}
                               >
                                 <Typography sx={{ fontSize: 60 }}>
                                   {ticket.flightId.departureAirport}
@@ -660,8 +660,8 @@ const [tickets,setTickets] = useState([]);
                                 {ticket.flightId.arrivalAirport}
                                 </Typography>
                               </Stack>
-                              <Stack direction="row" sx={{ pl: "13%" }}>
-                                <Stack spacing={2} sx={{ pl: "25%" }}>
+                              <Stack direction="row" spacing={28}>
+                                <Stack spacing={2} >
                                   <Typography sx={{ fontSize: 20 }}>
                                     {getDate(ticket.flightId.departureDate)}
                                     <CalendarTodayTwoToneIcon />
@@ -671,7 +671,7 @@ const [tickets,setTickets] = useState([]);
                                     <AccessTimeTwoToneIcon />
                                   </Typography>
                                 </Stack>
-                                <Stack spacing={2} sx={{ pl: "19%" }}>
+                                <Stack spacing={2} >
                                   <Typography sx={{ fontSize: 20 }}>
                                   {getDate(ticket.flightId.arrivalDate)}
                                     <CalendarTodayTwoToneIcon />
@@ -684,14 +684,14 @@ const [tickets,setTickets] = useState([]);
                               </Stack>
                               <Stack
                                 direction={"row"}
-                                spacing={14}
-                                sx={{ pl: "35%" }}
+                                spacing={16}
+                                // sx={{ pl: "35%" }}
                               >
                                 <Typography sx={{ fontSize: 20 }}>
                                   {ticket.flightId.flightNumber}
                                   <AirplanemodeActive />
                                 </Typography>
-                                <Typography sx={{ fontSize: 20, pl: "3%" }}>
+                                <Typography sx={{ fontSize: 20 }}>
                                   {ticket.seatNum}
                                   <AirlineSeatReclineExtraIcon />
                                 </Typography>

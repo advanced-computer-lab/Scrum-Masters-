@@ -500,8 +500,8 @@ console.log(req.body);
 
 router.post('/profile', async (req, res) => {
   const insertion = req.body;
-  insertion.password = await bcrypt.hash(user.password, 10);
-  insertion.email = user.email.toLowerCase();
+  insertion.password = await bcrypt.hash(insertion.password, 10);
+  insertion.email = insertion.email.toLowerCase();
   const user = new User(insertion);
   user
     .save()
