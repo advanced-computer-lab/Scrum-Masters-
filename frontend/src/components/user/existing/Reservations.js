@@ -64,207 +64,207 @@ import FlightLandRounded from "@mui/icons-material/FlightLandRounded";
 import LinearScaleOutlined from "@mui/icons-material/LinearScaleOutlined";
 
 export default function BasicTable(onDelete) {
-//   const tickets = [
-//     {
-//         "_id": "61c61d76806c2bd5679f9406",
-//         "seatNum": "3D",
-//         "ticketType": "departing",
-//         "passengerType": "adult",
-//         "firstName": "Maram",
-//         "lastName": "Benamer",
-//         "cabin": "economy",
-//         "flightId": {
-//             "economy": {
-//                 "baggageAllowance": 2,
-//                 "noOfSeats": 78,
-//                 "childPrice": 0,
-//                 "adultPrice": 0,
-//                 "availableSeats": 71
-//             },
-//             "business": {
-//                 "baggageAllowance": 2,
-//                 "noOfSeats": 5,
-//                 "childPrice": 0,
-//                 "adultPrice": 0,
-//                 "availableSeats": -1
-//             },
-//             "firstClass": {
-//                 "baggageAllowance": 3,
-//                 "noOfSeats": 5,
-//                 "childPrice": 0,
-//                 "adultPrice": 0,
-//                 "availableSeats": 5
-//             },
-//             "_id": "61a3e0ec766320f267156a54",
-//             "flightNumber": 128,
-//             "departureTime": "16:04",
-//             "arrivalTime": "10:04",
-//             "departureDate": "2021-11-01T00:00:00.000Z",
-//             "arrivalDate": "2021-11-02T00:00:00.000Z",
-//             "departureAirport": "JPN",
-//             "arrivalAirport": "JFK",
-//             "__v": 0,
-//             "noOfSeats": 88,
-//             "availableSeats": 75,
-//             "duration": "18h 0m",
-//             "id": "61a3e0ec766320f267156a54"
-//         },
-//         "reservationId": "61c61d76806c2bd5679f9402",
-//         "price": 0,
-//         "passportNumber": "54",
-//         "__v": 0,
-//         "id": "61c61d76806c2bd5679f9406"
-//     },
-//     {
-//         "_id": "61c61d76806c2bd5679f9408",
-//         "seatNum": "6E",
-//         "ticketType": "return",
-//         "passengerType": "adult",
-//         "firstName": "Maram",
-//         "lastName": "Benamer",
-//         "cabin": "economy",
-//         "flightId": {
-//             "economy": {
-//                 "noOfSeats": 100,
-//                 "childPrice": 750,
-//                 "adultPrice": 1000,
-//                 "baggageAllowance": 2,
-//                 "availableSeats": 93
-//             },
-//             "business": {
-//                 "noOfSeats": 10,
-//                 "childPrice": 1100,
-//                 "adultPrice": 1800,
-//                 "baggageAllowance": 2,
-//                 "availableSeats": 99
-//             },
-//             "firstClass": {
-//                 "noOfSeats": 10,
-//                 "childPrice": 1500,
-//                 "adultPrice": 3000,
-//                 "baggageAllowance": 3,
-//                 "availableSeats": 100
-//             },
-//             "_id": "61aa7405de15788ef7e9e362",
-//             "flightNumber": 895233,
-//             "departureTime": "21:46",
-//             "arrivalTime": "21:47",
-//             "departureDate": "2021-11-03T00:00:00.000Z",
-//             "arrivalDate": "2021-11-03T00:00:00.000Z",
-//             "departureAirport": "JFK",
-//             "arrivalAirport": "JPN",
-//             "__v": 0,
-//             "noOfSeats": 120,
-//             "availableSeats": 292,
-//             "duration": "0h 1m",
-//             "id": "61aa7405de15788ef7e9e362"
-//         },
-//         "reservationId": "61c61d76806c2bd5679f9402",
-//         "price": 1000,
-//         "passportNumber": "54",
-//         "__v": 0,
-//         "id": "61c61d76806c2bd5679f9408"
-//     },
-//     {
-//         "_id": "61c61d76806c2bd5679f940a",
-//         "seatNum": "3C",
-//         "ticketType": "departing",
-//         "passengerType": "adult",
-//         "firstName": "SeifEldien",
-//         "lastName": "Maged",
-//         "cabin": "economy",
-//         "flightId": {
-//             "economy": {
-//                 "baggageAllowance": 2,
-//                 "noOfSeats": 78,
-//                 "childPrice": 0,
-//                 "adultPrice": 0,
-//                 "availableSeats": 71
-//             },
-//             "business": {
-//                 "baggageAllowance": 2,
-//                 "noOfSeats": 5,
-//                 "childPrice": 0,
-//                 "adultPrice": 0,
-//                 "availableSeats": -1
-//             },
-//             "firstClass": {
-//                 "baggageAllowance": 3,
-//                 "noOfSeats": 5,
-//                 "childPrice": 0,
-//                 "adultPrice": 0,
-//                 "availableSeats": 5
-//             },
-//             "_id": "61a3e0ec766320f267156a54",
-//             "flightNumber": 128,
-//             "departureTime": "16:04",
-//             "arrivalTime": "10:04",
-//             "departureDate": "2021-11-01T00:00:00.000Z",
-//             "arrivalDate": "2021-11-02T00:00:00.000Z",
-//             "departureAirport": "JPN",
-//             "arrivalAirport": "JFK",
-//             "__v": 0,
-//             "noOfSeats": 88,
-//             "availableSeats": 75,
-//             "duration": "18h 0m",
-//             "id": "61a3e0ec766320f267156a54"
-//         },
-//         "reservationId": "61c61d76806c2bd5679f9402",
-//         "price": 0,
-//         "__v": 0,
-//         "id": "61c61d76806c2bd5679f940a"
-//     },
-//     {
-//         "_id": "61c61d76806c2bd5679f940c",
-//         "seatNum": "21D",
-//         "ticketType": "return",
-//         "passengerType": "adult",
-//         "firstName": "SeifEldien",
-//         "lastName": "Maged",
-//         "cabin": "economy",
-//         "flightId": {
-//             "economy": {
-//                 "noOfSeats": 100,
-//                 "childPrice": 750,
-//                 "adultPrice": 1000,
-//                 "baggageAllowance": 2,
-//                 "availableSeats": 93
-//             },
-//             "business": {
-//                 "noOfSeats": 10,
-//                 "childPrice": 1100,
-//                 "adultPrice": 1800,
-//                 "baggageAllowance": 2,
-//                 "availableSeats": 99
-//             },
-//             "firstClass": {
-//                 "noOfSeats": 10,
-//                 "childPrice": 1500,
-//                 "adultPrice": 3000,
-//                 "baggageAllowance": 3,
-//                 "availableSeats": 100
-//             },
-//             "_id": "61aa7405de15788ef7e9e362",
-//             "flightNumber": 895233,
-//             "departureTime": "21:46",
-//             "arrivalTime": "21:47",
-//             "departureDate": "2021-11-03T00:00:00.000Z",
-//             "arrivalDate": "2021-11-03T00:00:00.000Z",
-//             "departureAirport": "JFK",
-//             "arrivalAirport": "JPN",
-//             "__v": 0,
-//             "noOfSeats": 120,
-//             "availableSeats": 292,
-//             "duration": "0h 1m",
-//             "id": "61aa7405de15788ef7e9e362"
-//         },
-//         "reservationId": "61c61d76806c2bd5679f9402",
-//         "price": 1000,
-//         "__v": 0,
-//         "id": "61c61d76806c2bd5679f940c"
-//     }
-// ]
-const [tickets,setTickets] = useState([]);
+  //   const tickets = [
+  //     {
+  //         "_id": "61c61d76806c2bd5679f9406",
+  //         "seatNum": "3D",
+  //         "ticketType": "departing",
+  //         "passengerType": "adult",
+  //         "firstName": "Maram",
+  //         "lastName": "Benamer",
+  //         "cabin": "economy",
+  //         "flightId": {
+  //             "economy": {
+  //                 "baggageAllowance": 2,
+  //                 "noOfSeats": 78,
+  //                 "childPrice": 0,
+  //                 "adultPrice": 0,
+  //                 "availableSeats": 71
+  //             },
+  //             "business": {
+  //                 "baggageAllowance": 2,
+  //                 "noOfSeats": 5,
+  //                 "childPrice": 0,
+  //                 "adultPrice": 0,
+  //                 "availableSeats": -1
+  //             },
+  //             "firstClass": {
+  //                 "baggageAllowance": 3,
+  //                 "noOfSeats": 5,
+  //                 "childPrice": 0,
+  //                 "adultPrice": 0,
+  //                 "availableSeats": 5
+  //             },
+  //             "_id": "61a3e0ec766320f267156a54",
+  //             "flightNumber": 128,
+  //             "departureTime": "16:04",
+  //             "arrivalTime": "10:04",
+  //             "departureDate": "2021-11-01T00:00:00.000Z",
+  //             "arrivalDate": "2021-11-02T00:00:00.000Z",
+  //             "departureAirport": "JPN",
+  //             "arrivalAirport": "JFK",
+  //             "__v": 0,
+  //             "noOfSeats": 88,
+  //             "availableSeats": 75,
+  //             "duration": "18h 0m",
+  //             "id": "61a3e0ec766320f267156a54"
+  //         },
+  //         "reservationId": "61c61d76806c2bd5679f9402",
+  //         "price": 0,
+  //         "passportNumber": "54",
+  //         "__v": 0,
+  //         "id": "61c61d76806c2bd5679f9406"
+  //     },
+  //     {
+  //         "_id": "61c61d76806c2bd5679f9408",
+  //         "seatNum": "6E",
+  //         "ticketType": "return",
+  //         "passengerType": "adult",
+  //         "firstName": "Maram",
+  //         "lastName": "Benamer",
+  //         "cabin": "economy",
+  //         "flightId": {
+  //             "economy": {
+  //                 "noOfSeats": 100,
+  //                 "childPrice": 750,
+  //                 "adultPrice": 1000,
+  //                 "baggageAllowance": 2,
+  //                 "availableSeats": 93
+  //             },
+  //             "business": {
+  //                 "noOfSeats": 10,
+  //                 "childPrice": 1100,
+  //                 "adultPrice": 1800,
+  //                 "baggageAllowance": 2,
+  //                 "availableSeats": 99
+  //             },
+  //             "firstClass": {
+  //                 "noOfSeats": 10,
+  //                 "childPrice": 1500,
+  //                 "adultPrice": 3000,
+  //                 "baggageAllowance": 3,
+  //                 "availableSeats": 100
+  //             },
+  //             "_id": "61aa7405de15788ef7e9e362",
+  //             "flightNumber": 895233,
+  //             "departureTime": "21:46",
+  //             "arrivalTime": "21:47",
+  //             "departureDate": "2021-11-03T00:00:00.000Z",
+  //             "arrivalDate": "2021-11-03T00:00:00.000Z",
+  //             "departureAirport": "JFK",
+  //             "arrivalAirport": "JPN",
+  //             "__v": 0,
+  //             "noOfSeats": 120,
+  //             "availableSeats": 292,
+  //             "duration": "0h 1m",
+  //             "id": "61aa7405de15788ef7e9e362"
+  //         },
+  //         "reservationId": "61c61d76806c2bd5679f9402",
+  //         "price": 1000,
+  //         "passportNumber": "54",
+  //         "__v": 0,
+  //         "id": "61c61d76806c2bd5679f9408"
+  //     },
+  //     {
+  //         "_id": "61c61d76806c2bd5679f940a",
+  //         "seatNum": "3C",
+  //         "ticketType": "departing",
+  //         "passengerType": "adult",
+  //         "firstName": "SeifEldien",
+  //         "lastName": "Maged",
+  //         "cabin": "economy",
+  //         "flightId": {
+  //             "economy": {
+  //                 "baggageAllowance": 2,
+  //                 "noOfSeats": 78,
+  //                 "childPrice": 0,
+  //                 "adultPrice": 0,
+  //                 "availableSeats": 71
+  //             },
+  //             "business": {
+  //                 "baggageAllowance": 2,
+  //                 "noOfSeats": 5,
+  //                 "childPrice": 0,
+  //                 "adultPrice": 0,
+  //                 "availableSeats": -1
+  //             },
+  //             "firstClass": {
+  //                 "baggageAllowance": 3,
+  //                 "noOfSeats": 5,
+  //                 "childPrice": 0,
+  //                 "adultPrice": 0,
+  //                 "availableSeats": 5
+  //             },
+  //             "_id": "61a3e0ec766320f267156a54",
+  //             "flightNumber": 128,
+  //             "departureTime": "16:04",
+  //             "arrivalTime": "10:04",
+  //             "departureDate": "2021-11-01T00:00:00.000Z",
+  //             "arrivalDate": "2021-11-02T00:00:00.000Z",
+  //             "departureAirport": "JPN",
+  //             "arrivalAirport": "JFK",
+  //             "__v": 0,
+  //             "noOfSeats": 88,
+  //             "availableSeats": 75,
+  //             "duration": "18h 0m",
+  //             "id": "61a3e0ec766320f267156a54"
+  //         },
+  //         "reservationId": "61c61d76806c2bd5679f9402",
+  //         "price": 0,
+  //         "__v": 0,
+  //         "id": "61c61d76806c2bd5679f940a"
+  //     },
+  //     {
+  //         "_id": "61c61d76806c2bd5679f940c",
+  //         "seatNum": "21D",
+  //         "ticketType": "return",
+  //         "passengerType": "adult",
+  //         "firstName": "SeifEldien",
+  //         "lastName": "Maged",
+  //         "cabin": "economy",
+  //         "flightId": {
+  //             "economy": {
+  //                 "noOfSeats": 100,
+  //                 "childPrice": 750,
+  //                 "adultPrice": 1000,
+  //                 "baggageAllowance": 2,
+  //                 "availableSeats": 93
+  //             },
+  //             "business": {
+  //                 "noOfSeats": 10,
+  //                 "childPrice": 1100,
+  //                 "adultPrice": 1800,
+  //                 "baggageAllowance": 2,
+  //                 "availableSeats": 99
+  //             },
+  //             "firstClass": {
+  //                 "noOfSeats": 10,
+  //                 "childPrice": 1500,
+  //                 "adultPrice": 3000,
+  //                 "baggageAllowance": 3,
+  //                 "availableSeats": 100
+  //             },
+  //             "_id": "61aa7405de15788ef7e9e362",
+  //             "flightNumber": 895233,
+  //             "departureTime": "21:46",
+  //             "arrivalTime": "21:47",
+  //             "departureDate": "2021-11-03T00:00:00.000Z",
+  //             "arrivalDate": "2021-11-03T00:00:00.000Z",
+  //             "departureAirport": "JFK",
+  //             "arrivalAirport": "JPN",
+  //             "__v": 0,
+  //             "noOfSeats": 120,
+  //             "availableSeats": 292,
+  //             "duration": "0h 1m",
+  //             "id": "61aa7405de15788ef7e9e362"
+  //         },
+  //         "reservationId": "61c61d76806c2bd5679f9402",
+  //         "price": 1000,
+  //         "__v": 0,
+  //         "id": "61c61d76806c2bd5679f940c"
+  //     }
+  // ]
+  const [tickets, setTickets] = useState([]);
   const [open, setOpen] = useState(false);
 
   const [totalPrice, setTotalPrice] = useState();
@@ -604,10 +604,8 @@ const [tickets,setTickets] = useState([]);
                         color="success"
                         onClick={() => {
                           // setTotalPrice(row.totalPrice);
-                          getTickets(
-                            row.reservationId,
-                          );
-                          handleClickOpenDialog()
+                          getTickets(row.reservationId);
+                          handleClickOpenDialog();
                         }}
                       >
                         <AirplaneTicketIcon fontSize="large" />
@@ -633,75 +631,81 @@ const [tickets,setTickets] = useState([]);
                         </Toolbar>
                       </AppBar>
                       <Container>
-                      {tickets.map((ticket) =>(
-                        <Card sx={{ minWidth: 275, marginTop: "2%" , background:image1}}>
-                          <CardContent>
-                            <AppBar
-                              position="static"
-                              border
-                              sx={{ borderRadius: 1, padding: 0 }}
-                            >
-                              <Toolbar variant="dense">
-                                <Typography>Ticket preview</Typography>
-                              </Toolbar>
-                            </AppBar>
-
-                            <Stack spacing={2} sx={{alignItems:"center"}}>
-                              <Stack
-                                direction="row"
-                                spacing={8}
-                                // sx={{ pl: "35%" }}
+                        {tickets.map((ticket) => (
+                          <Card
+                            sx={{
+                              minWidth: 275,
+                              marginTop: "2%",
+                              background: image1,
+                            }}
+                          >
+                            <CardContent>
+                              <AppBar
+                                position="static"
+                                border
+                                sx={{ borderRadius: 1, padding: 0 }}
                               >
-                                <Typography sx={{ fontSize: 60 }}>
-                                  {ticket.flightId.departureAirport}
-                                </Typography>
-                                <IoAirplaneOutline size={100} />
-                                <Typography sx={{ fontSize: 60 }}>
-                                {ticket.flightId.arrivalAirport}
-                                </Typography>
-                              </Stack>
-                              <Stack direction="row" spacing={28}>
-                                <Stack spacing={2} >
-                                  <Typography sx={{ fontSize: 20 }}>
-                                    {getDate(ticket.flightId.departureDate)}
-                                    <CalendarTodayTwoToneIcon />
+                                <Toolbar variant="dense">
+                                  <Typography>Ticket preview</Typography>
+                                </Toolbar>
+                              </AppBar>
+                              <Stack spacing={2} sx={{ alignItems: "center" }}>
+                                <Stack
+                                  direction="row"
+                                  spacing={8}
+                                  // sx={{ pl: "35%" }}
+                                >
+                                  <Typography sx={{ fontSize: 60 }}>
+                                    {ticket.flightId.departureAirport}
                                   </Typography>
-                                  <Typography>
-                                    {ticket.flightId.departureTime}
-                                    <AccessTimeTwoToneIcon />
+                                  <IoAirplaneOutline size={100} />
+                                  <Typography sx={{ fontSize: 60 }}>
+                                    {ticket.flightId.arrivalAirport}
                                   </Typography>
                                 </Stack>
-                                <Stack spacing={2} >
+                                <Stack direction="row" spacing={28}>
+                                  <Stack spacing={2}>
+                                    <Typography sx={{ fontSize: 20 }}>
+                                      {getDate(ticket.flightId.departureDate)}
+                                      <CalendarTodayTwoToneIcon />
+                                    </Typography>
+                                    <Typography>
+                                      {ticket.flightId.departureTime}
+                                      <AccessTimeTwoToneIcon />
+                                    </Typography>
+                                  </Stack>
+                                  <Stack spacing={2}>
+                                    <Typography sx={{ fontSize: 20 }}>
+                                      {getDate(ticket.flightId.arrivalDate)}
+                                      <CalendarTodayTwoToneIcon />
+                                    </Typography>
+                                    <Typography>
+                                      {ticket.flightId.arrivalTime}
+                                      <AccessTimeTwoToneIcon />
+                                    </Typography>
+                                  </Stack>
+                                </Stack>
+                                <Stack
+                                  direction={"row"}
+                                  spacing={16}
+                                  // sx={{ pl: "35%" }}
+                                >
                                   <Typography sx={{ fontSize: 20 }}>
-                                  {getDate(ticket.flightId.arrivalDate)}
-                                    <CalendarTodayTwoToneIcon />
+                                    {ticket.flightId.flightNumber}
+                                    <AirplanemodeActive />
                                   </Typography>
-                                  <Typography>
-                                  {ticket.flightId.arrivalTime}
-                                    <AccessTimeTwoToneIcon />
+                                  <Typography sx={{ fontSize: 20 }}>
+                                    {ticket.seatNum}
+                                    <AirlineSeatReclineExtraIcon />
+                                  </Typography>
+                                  <Typography sx={{ fontSize: 20 }}>
+                                    {ticket.cabin}
                                   </Typography>
                                 </Stack>
                               </Stack>
-                              <Stack
-                                direction={"row"}
-                                spacing={16}
-                                // sx={{ pl: "35%" }}
-                              >
-                                <Typography sx={{ fontSize: 20 }}>
-                                  {ticket.flightId.flightNumber}
-                                  <AirplanemodeActive />
-                                </Typography>
-                                <Typography sx={{ fontSize: 20 }}>
-                                  {ticket.seatNum}
-                                  <AirlineSeatReclineExtraIcon />
-                                </Typography>
-                                <Typography sx={{ fontSize: 20 }}>
-                                  {ticket.cabin}
-                                </Typography>
-                              </Stack>
-                            </Stack>
-                          </CardContent>
-                        </Card>
+                            
+                            </CardContent>
+                          </Card>
                         ))}
                       </Container>
                     </Dialog>
