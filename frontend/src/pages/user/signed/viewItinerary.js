@@ -125,27 +125,7 @@ if (JSON.parse(window.sessionStorage.getItem("existing"))){
   return (
     
     <Container>
-        <div >
-            <StripeCheckout
-              stripeKey="pk_test_51K6M8qJJwEGtsc7Jg1PpI8uJfikDdlKuDksccokEyc3JjTgyysXvjGb1lWZIbyOCjPfNnbs4cBflSwG5xUzmfKq500JtPtmY3p"
-              token={pay}
-              name=""
-              amount={props.totalPrice * 100}
-              currency="EGP"
-            >
-              <Button
-                style={{
-                  marginLeft: "1100px",
-                  marginRight:"0px",
-                  marginTop:"30px"
-                  
-                 
-                }}
-              >
-                Make Payment
-              </Button>
-            </StripeCheckout>
-          </div>
+  
 
       {loading && (
         <Loader
@@ -178,17 +158,19 @@ if (JSON.parse(window.sessionStorage.getItem("existing"))){
           >
             Total Price: {props.totalPrice} EGP
           </Typography>
-          <div style={{marginTop:"-10px"}}>
+          <div >
             <StripeCheckout
               stripeKey="pk_test_51K6M8qJJwEGtsc7Jg1PpI8uJfikDdlKuDksccokEyc3JjTgyysXvjGb1lWZIbyOCjPfNnbs4cBflSwG5xUzmfKq500JtPtmY3p"
               token={pay}
               name=""
               amount={props.totalPrice * 100}
-              currency="EGP"
+              currency="EGP" 
+            
             > 
          
               <Button
-              
+              sx={{marginLeft:"1100px",
+            marginTop:"0px"}}
               >
                 Make Payment
               </Button>
