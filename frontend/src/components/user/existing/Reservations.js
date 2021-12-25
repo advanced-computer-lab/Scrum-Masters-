@@ -62,8 +62,8 @@ import {
   tableCellClasses,
   Divider,
   Paper,
+  styled
 } from "@mui/material";
-import FlightLandRounded from "@mui/icons-material/FlightLandRounded";
 import LinearScaleOutlined from "@mui/icons-material/LinearScaleOutlined";
 
 
@@ -103,15 +103,8 @@ export default function BasicTable(onDelete) {
   const handleClose = () => {
     setOpen(false);
   };
-  const [openDialog, setOpenDialog] = useState(false);
 
-  const handleClickOpenDialog = () => {
-    setOpenDialog(true);
-  };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
   const [data, getData] = useState([]);
   const getDate = (input) => {
     const date = new Date(input);
@@ -120,7 +113,7 @@ export default function BasicTable(onDelete) {
     );
   };
   const handler = (ticket) => {
-    decodedToken.props = ticket;
+    decodedToken.props={departureTickets: tickets, returnTickets:{}}
     decodedToken.email = email;
     console.log(
       "GIRL HERE ARE THE TOKEN PROPS TICKETS!!!!"
@@ -213,7 +206,6 @@ export default function BasicTable(onDelete) {
       });
     //onDelete();
   };
-  const[email,setEmail]=useState("");
   const getTickets = (reservationId) => {
     console.log("an hena", reservationId);
     axios
@@ -227,9 +219,6 @@ export default function BasicTable(onDelete) {
       });
     //onDelete();
   };
-  const Transition = forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
   const sendEmail = (price) => {
     var templateParams = {
       totalPrice: price,
@@ -273,7 +262,16 @@ export default function BasicTable(onDelete) {
         .get(`http://localhost:8081/user/reservations/${decodedToken.id}`)
         .then((res) => {
           getData(res.data);
-          console.log(res.data);
+         
+          
+        })
+        .catch((err) => console.log(err));
+
+        axios
+        .get(`http://localhost:8081/user/profile/${decodedToken.id}`)
+        .then((result) => {
+          setEmail(result.data.email);
+         
         })
         .catch((err) => console.log(err));
     }, []);
@@ -353,7 +351,7 @@ export default function BasicTable(onDelete) {
                         {row.departingFlight.from}
                       </div>
                       <div>
-                        Retrun Flight <FlightLandRounded color="error" />{" "}
+                        Return Flight <FlightLandRounded color="error" />{" "}
                         {row.arrivalFlight.from}
                       </div>
                     </Stack>
