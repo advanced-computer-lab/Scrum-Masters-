@@ -10,6 +10,7 @@
     "@fontsource/ceviche-one": "^4.5.0",
     "@fontsource/henny-penny": "^4.5.0",
     "@fontsource/roboto": "^4.5.1",
+    "@material-ui/icons": "^4.11.2",
     "@material/layout-grid": "^13.0.0",
     "@mui/core": "^5.0.0-alpha.53",
     "@mui/icons-material": "^5.0.5",

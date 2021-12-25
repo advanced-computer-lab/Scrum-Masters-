@@ -45,6 +45,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import Popup from 'reactjs-popup';
 //import 'reactjs-popup/dist/index.css';
 import { Link } from "react-router-dom";
+import LocalAirportIcon from '@mui/icons-material/LocalAirport';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -164,7 +165,7 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
   return (
     <>
       <Container>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}> 
           <Grid item xs={6}>
             <Item>
               <FlightIcon />
@@ -185,6 +186,7 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
           </Grid>
           <Grid item xs={6}>
             <Item position='relative'>
+              <LocalAirportIcon/>
               Departure Airport :{input1.flight.departureAirport}
             </Item>
           </Grid>
@@ -208,6 +210,7 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
           </Grid>
           <Grid item xs={6}>
             <Item position='relative'>
+            <LocalAirportIcon/>
               Return Airport :{input1.flight.arrivalAirport}
             </Item>
           </Grid>
@@ -241,13 +244,16 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
               Class Cabin:{input1.details.cabin}
             </Item>
           </Grid>
-          <Grid item xs={6} marginleft={3}>
-            <Item marginleft={10}>
+        
+         
+        </Grid>
+        <Grid item xs={9} style={{marginTop: "13px", marginLeft:"38px" }} >
+            <Item style={{marginTop: "13px", marginLeft:"240px" }} >
               <AttachMoneyIcon />
               Total Price of Reservation:{totalPrice}
             </Item>
           </Grid>
-        </Grid>
+      
         <div>
           <Button onClick={!(JSON.parse(window.sessionStorage.getItem('existing')))? handleOpen : nextPage}
           >
@@ -287,7 +293,7 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
           // </Modal>)  */}
         
         </div>
-        <Button
+        {/* <Button
                   onClick={handleClickOpen}
                   variant="contained"
                   style={{ marginLeft: "30px" }}
@@ -302,7 +308,7 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
                 >
                   {" "}
                   Sign In{" "}
-                </Button>
+                </Button> */}
                 <Dialog open={open} onClose={handleClose}>
                   <DialogTitle>SIGN IN</DialogTitle>
                   <DialogContent>

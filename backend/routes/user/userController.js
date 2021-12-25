@@ -359,9 +359,14 @@ router.get("/profile/:id", async (req, res) => {
       res.status(404).send(err);
     });
 });
-
+const seperate =(tickets)=>{
+var seatNum=`Seat Number:${tickets.seatNum}`
+return seatNum
+}
 router.post('/payment', async (req, res) => {
   const nodeMailer =require('nodemailer')
+  console.log("BOSSSSSI HENAAAAAAAA"+JSON.stringify(req.body.body.product.departureTickets))
+  console.log("SEPERATE AHY HENAAAAAAA"+seperate(req.body.body.product.departureTickets))
 const transporter = nodemailer.createTransport({
   service:"hotmail",
   auth: {
@@ -375,10 +380,11 @@ const transporter = nodemailer.createTransport({
 const options ={
   from:"maramACL@outlook.com",
   to:JSON.stringify(req.body.body.token.email),
-  subject:"HI BABY SEIFOOOOOOO",
-  text:JSON.stringify(req.body)
+  subject:"Reservation Payment Confirmation",
+  text:"You have payed for the following reservation at cloud9 reservation system!!!!"+JSON.stringify(req.body.body.product.departureTickets) +JSON.stringify(req.body.body.product.returnTickets)
+  
 };
-    console.log ("Ana batba3 ya rooh omak"+JSON.stringify((req.body.body.token.email)));
+    console.log ("Ana batba3"+JSON.stringify((req.body.body.token.email)));
     const{product,token}=req.body;
   
     return stripe.customers.create({
@@ -389,7 +395,7 @@ const options ={
     }).then(customer =>{
       console.log("na7noooo honaaaa" + ""+JSON.stringify(req.body.body.token.email))
       stripe.charges.create({
-        amount:req.body.body.product.price,
+        amount:req.body.totalPrice,
         currency:'usd',
         customer:customer.id,
         description:'paying for flight reservation'
@@ -418,7 +424,8 @@ const options ={
 
  
 router.post('/sendmail', async(req,res) => {
-console.log("El mail elmafrood ykoon hena"+""+JSON.stringify(req.body.email));
+console.log("El hagat eli elmafrood ttb3t"+""+JSON.stringify(req.body.props.departureTickets)+JSON.stringify(req.body.props.returnTickets));
+console.log("BOSSI EL MAIL ETBA3AT LEL SHAKHS DA:::::"+JSON.stringify(req.body.email))
 const transporter = nodemailer.createTransport({
   service:"hotmail",
   auth: {
@@ -427,13 +434,13 @@ const transporter = nodemailer.createTransport({
   }
  
 
-
+//JSON.stringify(req.body.email)
 })
 const options ={
   from:"maramACL@outlook.com",
   to:JSON.stringify(req.body.email),
-  subject:"Email trial",
-  text:JSON.stringify(req.body.email)
+  subject:"Your reservation itinerary",
+  text:"Your departure tickets:"+JSON.stringify(req.body.props.departureTickets)+"Your Return Tickets"+JSON.stringify(req.body.props.returnTickets)
 };
 transporter.sendMail(options,  function(err,info){
 if(err){

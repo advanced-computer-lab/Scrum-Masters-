@@ -284,7 +284,7 @@ const InsertFlight = () => {
             </div>
           </Stack>
           
-          <Stack> 
+          <Stack  direction='column'  spacing={3} style={{ marginTop: "10px" }} > 
           <div>
               <TextField
                 required
