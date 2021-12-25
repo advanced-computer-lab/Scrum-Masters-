@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import Stack from "@mui/material/Stack";
 import { Container } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import { DialogActions } from "@mui/material";
+import { DialogActions, Alert } from "@mui/material";
 import { DialogContent } from "@mui/material";
 import { DialogTitle } from "@mui/material";
 import { Dialog } from "@mui/material";
@@ -69,6 +69,7 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
     setOpen(true);
   };
   const [values, setValues] = useState();
+  const [error, setError] = useState(false);
   const handleShow = () => setShow(true);
   // const [open, setOpen] = React.useState(false);
   const [totalPrice, setTotalPrice] = useState();
@@ -122,6 +123,12 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
           // setAdmin(false);
         }
         //else error alert incorrect credentials
+        else {
+          setError(true);
+          setTimeout(() => {
+            setError(false);
+          }, 5000);
+        }
       })
       .catch((err) => console.log(err));
 
@@ -332,6 +339,7 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>SIGN IN</DialogTitle>
           <DialogContent>
+            {error && <Alert severity="error">Invalid Credentials.</Alert>}
             <TextField
               autoFocus
               margin="dense"
@@ -361,7 +369,6 @@ const ViewFlightSummary = ({ input1, input2, handlePrice, nextPage }) => {
             </Button>
             <Button
               onClick={() => {
-                handleClose();
                 guestClick();
               }}
               variant="contained"
