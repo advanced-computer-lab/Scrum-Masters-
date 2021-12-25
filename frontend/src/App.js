@@ -71,6 +71,7 @@ function App() {
             component={Account}
           ></PrivateRoute>
           <Route exact path="/" component={SearchingPage}></Route>
+          <Route exact path="/search" component={SearchingPage}></Route>
           <PrivateRoute
             exact
             path="/reservations"

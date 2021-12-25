@@ -40,11 +40,14 @@ const SearchFlight = (props) => {
     window.sessionStorage.getItem("errorMessage") || ""
   );
   useEffect(() => {
+    window.sessionStorage.setItem("admin", false);
     axios
       .get("http://localhost:8081/user/search/flights")
       .then((res) => {
         setFrom(res.data.from);
         setTo(res.data.to);
+        window.sessionStorage.removeItem("errorMessage");
+        window.sessionStorage.removeItem("loginError");
         // console.log("from",from);
         // console.log("to",to);
       })
