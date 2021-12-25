@@ -161,7 +161,7 @@ const EditSeat = (props) => {
     //if the flight number is changed, that's not handled yet
 
 
-    props.onTicketsDone("hi");
+    props.onTicketsDone();
   };
 
   
