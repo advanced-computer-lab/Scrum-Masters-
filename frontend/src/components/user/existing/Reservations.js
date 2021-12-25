@@ -40,7 +40,8 @@ import AirplanemodeActive from "@mui/icons-material/AirplanemodeActiveRounded";
 import CardMedia from "@mui/material/CardMedia";
 import { positions } from "@mui/system";
 import jwt_decode from "jwt-decode";
-import QRCODE from '../../../images/QRcode.png';
+import QRCODE from "../../../images/QRcode.png";
+import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox';
 import {
   Button,
   Box,
@@ -59,14 +60,21 @@ import {
   Tooltip,
   Typography,
   tableCellClasses,
-  styled,
   Divider,
   Paper,
 } from "@mui/material";
+import FlightLandRounded from "@mui/icons-material/FlightLandRounded";
+import LinearScaleOutlined from "@mui/icons-material/LinearScaleOutlined";
+
+
+
+
+
 
 export default function BasicTable(onDelete) {
   const [tickets, setTickets] = useState([]);
   const [open, setOpen] = useState(false);
+
   const [totalPrice, setTotalPrice] = useState();
   const [email, setEmail] = useState("");
   const[deleteFlight,setDelete]=useState(false);
@@ -84,12 +92,25 @@ export default function BasicTable(onDelete) {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
+  // const [deleteRes, setdeleteRes] = useState(true);
+  const token = window.sessionStorage.getItem("token");
+  var decodedToken;
+  if (token) decodedToken = jwt_decode(token);
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
   const [data, getData] = useState([]);
   const getDate = (input) => {
@@ -98,13 +119,63 @@ export default function BasicTable(onDelete) {
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
     );
   };
-  var token;
-  var decodedToken;
-  if (JSON.parse(window.sessionStorage.getItem("existing"))) {
-    token = window.sessionStorage.getItem("token");
-    decodedToken = jwt_decode(window.sessionStorage.getItem("token"));
-  }
+  const handler = (ticket) => {
+    decodedToken.props = ticket;
+    decodedToken.email = email;
+    console.log(
+      "GIRL HERE ARE THE TOKEN PROPS TICKETS!!!!"
+    );
+    console.log("ANA EL emaillllllll!!!!" + JSON.stringify(decodedToken.email));
+    axios
+      .post("http://localhost:8081/user/sendmail", decodedToken)
+      .then(
+        console.log(
+          "done!!" + "ELI RAYEH LEL BACKEND HOWA" + JSON.stringify(decodedToken)
+        )
+      );
+  };
+  // const handleClickOpenDialog = () => {
+  //   setOpenDialog(true);
+  // };
 
+  // const handleCloseDialog = () => {
+  //   setOpenDialog(false);
+  // };
+  const Accordion = styled((props) => (
+    <MuiAccordion disableGutters elevation={0} square {...props} />
+  ))(({ theme }) => ({
+    border: `1px solid ${theme.palette.divider}`,
+    "&:not(:last-child)": {
+      borderBottom: 0,
+    },
+    "&:before": {
+      display: "none",
+    },
+  }));
+
+  const AccordionSummary = styled((props) => (
+    <MuiAccordionSummary
+      expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
+      {...props}
+    />
+  ))(({ theme }) => ({
+    backgroundColor:
+      theme.palette.mode === "dark"
+        ? "rgba(255, 255, 255, .05)"
+        : "rgba(0, 0, 0, .03)",
+    flexDirection: "row-reverse",
+    "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+      transform: "rotate(90deg)",
+    },
+    "& .MuiAccordionSummary-content": {
+      marginLeft: theme.spacing(1),
+    },
+  }));
+
+  const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+    padding: theme.spacing(2),
+    borderTop: "1px solid rgba(0, 0, 0, .125)",
+  }));
   const deleteReservation = (reservationId, price) => {
     setTotalPrice(price);
     var toto = price;
@@ -136,17 +207,14 @@ export default function BasicTable(onDelete) {
       .then((res) => {
         sendEmail(price);
         console.log("deleted");
-        //sendEmail(price);
-        sendCancelMail();
-       //setDelete(!deleteFlight);
-        // console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
     //onDelete();
   };
-const getTickets = (reservationId) => {
+  const[email,setEmail]=useState("");
+  const getTickets = (reservationId) => {
     console.log("an hena", reservationId);
     axios
       .get(`http://localhost:8081/user/tickets/${reservationId}`)
@@ -159,6 +227,9 @@ const getTickets = (reservationId) => {
       });
     //onDelete();
   };
+  const Transition = forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
   const sendEmail = (price) => {
     var templateParams = {
       totalPrice: price,
@@ -197,18 +268,9 @@ const getTickets = (reservationId) => {
     p: 4,
   };
   const ViewReservations = () => {
-    
     useEffect(() => {
       axios
-        .get(`http://localhost:8081/user/profile/${decodedToken.id}`)
-        .then((result) => {
-          console.log("axios get", result);
-          console.log("el email ahuuu!!!!!", result.data.email);
-          setEmail(result.data.email);
-        })
-        .catch((err) => console.log(err));
-      axios
-        .get("http://localhost:8081/user/reservations/61aa2eb9d3eee0b9e4921105")
+        .get(`http://localhost:8081/user/reservations/${decodedToken.id}`)
         .then((res) => {
           getData(res.data);
           console.log(res.data);
@@ -222,6 +284,19 @@ const getTickets = (reservationId) => {
       backgroundColor: "#5e60ce",
       color: theme.palette.common.white,
     },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    "&:last-child td, &:last-child th": {
+      border: 0,
+    },
   }));
   const StyledTableElement = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -234,9 +309,13 @@ const getTickets = (reservationId) => {
     <Container>
       <div style={{ marginTop: "2%", marginBottom: "2%" }}>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table
+            sx={{ minWidth: 650 }}
+            aria-label="customized table"
+            light="false"
+          >
             <TableHead>
-              <TableRow>
+              <StyledTableRow>
                 <StyledTableCell />
                 <StyledTableCell align="center">Flight Number</StyledTableCell>
                 <StyledTableCell align="center">Depature date</StyledTableCell>
@@ -244,17 +323,27 @@ const getTickets = (reservationId) => {
                 <StyledTableCell align="center">Arrival date</StyledTableCell>
                 <StyledTableCell align="center">Arrival time</StyledTableCell>
                 <StyledTableCell align="center">Cabin</StyledTableCell>
-                <StyledTableCell align="center"></StyledTableCell>
-                <StyledTableCell align="center"></StyledTableCell>
-              </TableRow>
+                <StyledTableCell
+                  align="center"
+                  sx={{ width: "3%" }}
+                ></StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  sx={{ width: "3%" }}
+                ></StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  sx={{ width: "7%" }}
+                ></StyledTableCell>
+              </StyledTableRow>
             </TableHead>
             <TableBody>
               {data.map((row) => (
-                <TableRow
+                <StyledTableRow
                   key={row.name}
                   sx={{ "&:last-child td, &:last-child th": { border: "0px" } }}
                 >
-                  <TableCell style={{ width: "12%" }}>
+                  <StyledTableCell style={{ width: "15%" }}>
                     <Stack
                       spacing={2}
                       divider={<Divider orientation="horizontal" flexItem />}
@@ -268,7 +357,7 @@ const getTickets = (reservationId) => {
                         {row.arrivalFlight.from}
                       </div>
                     </Stack>
-                  </TableCell>
+                  </StyledTableCell>
                   <StyledTableElement align="center">
                     <Stack
                       spacing={2}
@@ -278,7 +367,7 @@ const getTickets = (reservationId) => {
                       <div>{row.arrivalFlight.flightNumber}</div>
                     </Stack>
                   </StyledTableElement>
-                  <TableCell align="center">
+                  <StyledTableCell align="center">
                     <Stack
                       spacing={2}
                       divider={<Divider orientation="horizontal" flexItem />}
@@ -286,8 +375,8 @@ const getTickets = (reservationId) => {
                       <div>{getDate(row.departingFlight.departureDate)}</div>
                       <div>{getDate(row.arrivalFlight.departureDate)}</div>
                     </Stack>
-                  </TableCell>
-                  <TableCell align="center">
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
                     <Stack
                       spacing={2}
                       divider={<Divider orientation="horizontal" flexItem />}
@@ -295,8 +384,8 @@ const getTickets = (reservationId) => {
                       <div>{row.departingFlight.departureTime}</div>
                       <div>{row.arrivalFlight.departureTime}</div>
                     </Stack>
-                  </TableCell>
-                  <TableCell align="center">
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
                     {
                       <Stack
                         spacing={2}
@@ -306,8 +395,8 @@ const getTickets = (reservationId) => {
                         <div>{getDate(row.arrivalFlight.arrivalDate)}</div>
                       </Stack>
                     }
-                  </TableCell>
-                  <TableCell align="center">
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
                     <Stack
                       spacing={2}
                       divider={<Divider orientation="horizontal" flexItem />}
@@ -315,7 +404,7 @@ const getTickets = (reservationId) => {
                       <div>{row.departingFlight.arrivalTime}</div>
                       <div>{row.arrivalFlight.arrivalTime}</div>
                     </Stack>
-                  </TableCell>
+                  </StyledTableCell>
                   <StyledTableCell align="center">
                     {row.departingFlight.cabin === "first"
                       ? "First Class"
@@ -327,15 +416,18 @@ const getTickets = (reservationId) => {
                   </TableCell>
                   <StyledTableCell>
                     <div>
-                      <Button
-                        color="error"
-                        variant="outlined"
-                        onClick={() => {
-                          handleClickOpen();
-                        }}
-                      >
-                        Cancel
-                      </Button>
+                      <Stack spacing={-0.5} orientation="horizontal">
+                        <IconButton
+                          color="error"
+                          variant="outlined"
+                          onClick={() => {
+                            handleClickOpen();
+                          }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                        <small align="center">delete</small>
+                      </Stack>
                       {open && (
                         <Modal
                           open={open}
@@ -400,6 +492,9 @@ const getTickets = (reservationId) => {
                           </IconButton>
                         </Toolbar>
                       </AppBar>
+                      <Typography variant="h5" gutterBottom component="div">
+                        Your reservation ID is : ({row.reservationId})
+                      </Typography>
                       <Container>
                         {tickets.map((ticket) => (
                           <Card
@@ -413,11 +508,9 @@ const getTickets = (reservationId) => {
                                 paddingTop: 0,
                                 paddingLeft: 0,
                                 paddingRight: 0,
-                                pr:'10px'
-                                
+                                pr: "10px",
                               }}
                             >
-                             
                               <AppBar
                                 position="static"
                                 border
@@ -425,14 +518,20 @@ const getTickets = (reservationId) => {
                               >
                                 <Toolbar variant="dense">
                                   <Typography>Ticket preview</Typography>
+                                  <IconButton
+                                  onClick={() => {
+                                    handler({ticket});
+                                  }}
+                                  ><ForwardToInboxIcon/></IconButton>
                                 </Toolbar>
                               </AppBar>
-                              
-                              <Stack spacing={5} direction="row" >
-                                <Stack
-                                  spacing={2}
-                                  sx={{  }}
-                                >
+
+                              <Stack
+                                spacing={5}
+                                direction="row"
+                                sx={{ pl: "18%" }}
+                              >
+                                <Stack spacing={2}>
                                   <Stack
                                     direction="row"
                                     spacing={8}
@@ -481,31 +580,39 @@ const getTickets = (reservationId) => {
                                       {ticket.seatNum}
                                       <AirlineSeatReclineExtraIcon />
                                     </Typography>
-                                    <Typography sx={{ fontSize: 20 }}>
+                                    <Typography
+                                      sx={{ fontSize: 20, alignSelf: "left" }}
+                                    >
                                       {ticket.cabin}
                                     </Typography>
                                   </Stack>
                                 </Stack>
-                                <Stack spacing={2}>
-                                  <Typography>Passenger Name</Typography>
+                                <Stack spacing={2} sx={{ pt: "1%" }}>
+                                  <Typography fontWeight={"bold"}>
+                                    Passenger Name
+                                  </Typography>
                                   <Typography>
                                     {ticket.firstName} {ticket.lastName}
                                   </Typography>
-                                  <Typography>Ticket price</Typography>
+                                  <Typography fontWeight={"bold"}>
+                                    Ticket price
+                                  </Typography>
                                   <Typography>{ticket.price}</Typography>
-                                  <Typography>Type</Typography>
+                                  <Typography fontWeight={"bold"}>
+                                    Type
+                                  </Typography>
                                   <Typography>
                                     {ticket.passengerType}
                                   </Typography>
                                 </Stack>
                                 <CardMedia
                                   component="img"
-                                  sx={{ width: '15%' }}
+                                  sx={{ width: "20%" }}
                                   image={QRCODE}
                                   alt="Live from space album cover"
                                 />
                               </Stack>
-                              
+
                               {/* <Divider orientation="vertical" flexItem/> */}
                             </CardContent>
                           </Card>
@@ -513,7 +620,7 @@ const getTickets = (reservationId) => {
                       </Container>
                     </Dialog>
                   </TableCell>
-                </TableRow>
+                </StyledTableRow>
               ))}
             </TableBody>
           </Table>
@@ -522,75 +629,3 @@ const getTickets = (reservationId) => {
     </Container>
   );
 }
-
-// const columns = [
-//   { field: 'id', headerName: 'Date', width: 90 },
-//   {
-//     field: 'lastName',
-//     headerName: 'Time',
-//     width: 150,
-//     onclick:(()=>{console.log("el enta 3ayzo")})
-//   },
-//   {
-//     field: 'firstName',
-//     headerName: 'Depature',
-//     width: 150,
-//   },
-//   {
-//     field: 'age',
-//     headerName: 'Arrival',
-//     width: 150,
-//   },
-//   {
-//     field: 'FlightNo',
-//     headerName: 'FlightNo',
-//     width: 150,
-//   },
-//   {
-//     field: 'Cabin',
-//     headerName: 'Cabin',
-//     width: 150,
-//   },
-
-// ];
-
-// const rows = [
-//   { id: 1, lastName: 'ayhaga', firstName: 'Jon', age: 35 },
-//   { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-//   { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-//   { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-//   { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-//   { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-//   { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-//   { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-//   { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-//  ];
-//const data = axios.get("http://localhost:8081/user/reservations/618939b25ac9e1af44ded417") ;
-
-// export default function DataGridDemo() {
-//     const [data, getData] = useState([]);
-//     const ViewReservations = () => {
-//         useEffect(() => {
-//             axios
-//               .get("http://localhost:8081/user/reservations/61aa2eb9d3eee0b9e4921105")
-//               .then((res) => {
-//                 getData(res.data);
-//                 console.log(res.data);
-//               })
-//               .catch((err) => console.log(err));
-//           },[])
-//     }
-//     ViewReservations();
-//   return (
-//     <div style={{ height: 400, width: '100%' }}>
-//       <DataGrid
-//         rows={rows}
-//         columns={columns}
-//         pageSize={5}
-//         rowsPerPageOptions={[5]}
-//         checkboxSelection
-//         disableSelectionOnClick
-//       />
-//     </div>
-//   );
-// }
