@@ -444,13 +444,13 @@ const EditReservationButton = (props) => {
                       href={`/edit/${input.departureAirport}/${input.arrivalAirport}/${input.noOfChildren}/${input.noOfAdults}/${input.arrivalDate}/${input.departureDate}/${input.cabin}/${state}/${props.resId}/0/0`}
                       color='inherit'
                       sx={{ mr: 1, color: 'primary.main' }}
-                      disabled={
-                        !(
-                          visibility.departureDate ||
-                          visibility.returnDate ||
-                          visibility.cabin
-                        )
-                      }
+                      // disabled={
+                      //   !(
+                      //     visibility.departureDate ||
+                      //     visibility.returnDate 
+                      //     // visibility.cabin
+                      //   )
+                      // }
                     >
                       Proceed
                     </Button>
