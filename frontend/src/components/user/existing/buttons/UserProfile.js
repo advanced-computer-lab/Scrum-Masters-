@@ -16,6 +16,7 @@ const UserProfile = (props) => {
   if (token) decodedToken = jwt_decode(token);
   const [userFirst, setUserFirst] = useState();
   const [load, setLoad] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -23,14 +24,27 @@ const UserProfile = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  function checkUserData() {
+    const flag = JSON.parse(window.sessionStorage.getItem("letter"));
+    console.log("calleddd listener");
+    console.log(JSON.parse(window.sessionStorage.getItem("letter")));
+    // if (flag) 
+    setRefresh(flag);
+  }
   useEffect(() => {
+    window.addEventListener("storage", checkUserData);
     axios
       .get(`http://localhost:8081/user/profile/${decodedToken.id}`)
       .then((result) => {
         setUserFirst(result.data.firstName);
         setLoad(true);
+        setRefresh(false);
+        window.sessionStorage.setItem("letter", false);
       });
-  }, []);
+    return () => {
+      window.removeEventListener("storage", checkUserData);
+    };
+  }, [refresh]);
   return (
     <>
       {load && (

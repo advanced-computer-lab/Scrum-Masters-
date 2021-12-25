@@ -16,7 +16,7 @@ import Reservations from "./components/user/existing/Reservations";
 import { Container } from "react-bootstrap";
 import SignUpForm from "./components/user/forms/Signup";
 import PaymentComponent from "./components/user/forms/PaymentComponent";
-
+import PrivateRoute from "./PrivateRoute";
 import SendingMail from "./components/user/forms/SendingMail";
 import PassengerDeets from "./components/user/forms/PassengerDeets";
 import test from "./test";
@@ -60,27 +60,41 @@ function App() {
           <Route exact path={"/schedule"} component={Schedule}></Route>
           <Route exact path="/addFlight" component={FlightCreation}></Route>
           <Route exact path="/user" component={BookingPage}></Route>
-          <Route exact path="/selectSeat" component={SelectSeat}></Route>
-          <Route exact path="/account" component={Account}></Route>
+          <PrivateRoute
+            exact
+            path="/selectSeat"
+            component={SelectSeat}
+          ></PrivateRoute>
+          <PrivateRoute
+            exact
+            path="/account"
+            component={Account}
+          ></PrivateRoute>
           <Route exact path="/" component={SearchingPage}></Route>
-          <Route exact path="/reservations" component={Reservations}></Route>
+          <PrivateRoute
+            exact
+            path="/reservations"
+            component={Reservations}
+          ></PrivateRoute>
           <Route exact path="/signup" component={SignUpForm}></Route>
           <Route exact path="/test" component={test}></Route>
 
-          <Route exact path="/pass" component={PassengerDeets}>
+          <PrivateRoute exact path="/pass" component={PassengerDeets}>
             <Container>
               <PassengerDeets />
             </Container>
-          </Route>
+          </PrivateRoute>
 
           <Route
             exact
             path="/confirmation"
             component={ViewFlightSummary}
           ></Route>
-          <Route exact path="/schedule" component={Schedule}></Route>
-          <Route exact path="/addFlight" component={FlightCreation}></Route>
-          <Route exact path="/itinerary" component={Itinerary}></Route>
+          <PrivateRoute
+            exact
+            path="/itinerary"
+            component={Itinerary}
+          ></PrivateRoute>
 
           <Route exact path="/sendmail" component={SendingMail}>
             {" "}

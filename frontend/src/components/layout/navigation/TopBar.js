@@ -38,7 +38,7 @@ const TopBar = (props) => {
   };
 
   function checkUserData() {
-    const flag = JSON.parse(localStorage.getItem("existing"));
+    const flag = JSON.parse(sessionStorage.getItem("existing"));
     console.log("calleddd listener");
     setExisting(flag);
   }
