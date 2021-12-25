@@ -85,26 +85,83 @@ const EditSeat = (props) => {
     );
   };
 
-  const handleReservation= ()=>{
-        axios.patch(`http://localhost:8081/user/reservation/${props.resId}`,)
-  }
 
+  const getIndividualPrice = (flight, type, cabin) => {
+    if (type === "adult") {
+      switch (cabin) {
+        case "economy":
+          return flight.economy.adultPrice;
+        case "business":
+          return flight.business.adultPrice;
+        case "first":
+          return flight.firstClass.adultPrice;
+        default:
+          return 0;
+      }
+    } else {
+      switch (cabin) {
+        case "economy":
+          return flight.economy.childPrice;
+        case "business":
+          return flight.business.childPrice;
+        case "first":
+          return flight.firstClass.childPrice;
+        default:
+          return 0;
+      }
+    }
+  };
+
+   
+
+  const handleTickets = (reservationId) => {
+    console.log("post", firstTickets);
+    firstTickets.forEach((ticket) => {
+      axios.patch(`http://localhost:8081/user/ticket/${ticket.id}`, {
+        seatNum: ticket.seatNum,
+        cabin: props.cabin,
+        flightId: props.firstFlight.id,
+        price: getIndividualPrice(
+          props.firstFlight,
+          ticket.passengerType,
+          props.cabin
+        ),
+      });
+    });
+    if (!props.one) {
+      secondTickets.forEach((ticket) => {
+        axios.patch(`http://localhost:8081/user/ticket/${ticket.id}`, {
+          seatNum: ticket.seatNum,
+          cabin: props.cabin,
+          flightId: props.secondFlight.id,
+          price: getIndividualPrice(
+            props.secondFlight,
+            ticket.passengerType,
+            props.cabin
+          ),
+        });
+      });
+    }
+  };
   const handleSeats = (seats) => {
     seats.forEach((y) => {
       console.log(y.innerText); //seat number
     });
     firstTickets.forEach((traveller, index) => {
-      traveller.departureSeat = seats[index].innerText;
-
-      if (secondTickets.length > 0)
-        secondTickets.returnSeat =
-          seats[index + props.numberPassengers].innerText;
+      traveller.seatNum = seats[index].innerText;
+      if (!props.one)
+        secondTickets[index].seatNum =
+          seats[index + props.numberOfPassengers].innerText;
     });
+    console.log("new first tickets", firstTickets);
+    setFirstTickets(firstTickets);
+    if (!props.one) setSecondTickets(secondTickets);
+    handleTickets();
     //now first tickets and second tickets contains the old departure (and return) tickets with the new seats only,
     //if the flight number is changed, that's not handled yet
 
 
-    props.onTicketsDone();
+    props.onTicketsDone("hi");
   };
 
   
@@ -140,9 +197,10 @@ const EditSeat = (props) => {
     setLoading(false);
   };
   return (
-    <div
+    <Container
       style={{
         boxShadow: "0 3px 10px rgb(105 48 195 / 60%)",
+        marginTop: "1.5%",
       }}
     >
       {loading && (
@@ -166,9 +224,10 @@ const EditSeat = (props) => {
           onFetch={onFetch}
           handleSeats={handleSeats}
           edit={props.edit}
+          one={props.one}
         />
       )}
-    </div>
+    </Container>
   );
 };
 

@@ -71,9 +71,13 @@ const EditingSeatsPage = () => {
           firstTickets={data.oldDepartingTickets}
           cabin={cabin}
           edit={false}
+<<<<<<< HEAD
           onTicketsDone={submitReservation}
           state={state}
           resId={resId}
+=======
+          one={true}
+>>>>>>> 6dac4fe9cae917fcf88801804d1333f23674eeb4
         />
       )}
       {!loading && edit === '0' && secondFlightId !== '0' && data && (
