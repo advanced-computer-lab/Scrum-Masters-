@@ -73,6 +73,10 @@ const EditReservationButton = (props) => {
       setVisiblity({ departureDate: false, returnDate: false, cabin: true });
       setState(2);
     }
+    if(expanded===false){
+      setVisiblity({ departureDate: false, returnDate: false, cabin: false });
+
+    }
   };
 
   useEffect(() => {

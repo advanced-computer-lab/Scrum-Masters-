@@ -22,7 +22,7 @@ import Toolbar from "@mui/material/Toolbar";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { forwardRef } from "react";
-import { styled } from "@mui/material/styles";
+import FlightLandRounded from "@mui/icons-material/FlightLandRounded";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
@@ -40,6 +40,8 @@ import AirplanemodeActive from "@mui/icons-material/AirplanemodeActiveRounded";
 import CardMedia from "@mui/material/CardMedia";
 import { positions } from "@mui/system";
 import jwt_decode from "jwt-decode";
+import QRCODE from "../../../images/QRcode.png";
+import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox';
 import {
   Button,
   Box,
@@ -60,215 +62,36 @@ import {
   tableCellClasses,
   Divider,
   Paper,
+  styled
 } from "@mui/material";
-import FlightLandRounded from "@mui/icons-material/FlightLandRounded";
 import LinearScaleOutlined from "@mui/icons-material/LinearScaleOutlined";
 
+
+
+
+
+
 export default function BasicTable(onDelete) {
-  //   const tickets = [
-  //     {
-  //         "_id": "61c61d76806c2bd5679f9406",
-  //         "seatNum": "3D",
-  //         "ticketType": "departing",
-  //         "passengerType": "adult",
-  //         "firstName": "Maram",
-  //         "lastName": "Benamer",
-  //         "cabin": "economy",
-  //         "flightId": {
-  //             "economy": {
-  //                 "baggageAllowance": 2,
-  //                 "noOfSeats": 78,
-  //                 "childPrice": 0,
-  //                 "adultPrice": 0,
-  //                 "availableSeats": 71
-  //             },
-  //             "business": {
-  //                 "baggageAllowance": 2,
-  //                 "noOfSeats": 5,
-  //                 "childPrice": 0,
-  //                 "adultPrice": 0,
-  //                 "availableSeats": -1
-  //             },
-  //             "firstClass": {
-  //                 "baggageAllowance": 3,
-  //                 "noOfSeats": 5,
-  //                 "childPrice": 0,
-  //                 "adultPrice": 0,
-  //                 "availableSeats": 5
-  //             },
-  //             "_id": "61a3e0ec766320f267156a54",
-  //             "flightNumber": 128,
-  //             "departureTime": "16:04",
-  //             "arrivalTime": "10:04",
-  //             "departureDate": "2021-11-01T00:00:00.000Z",
-  //             "arrivalDate": "2021-11-02T00:00:00.000Z",
-  //             "departureAirport": "JPN",
-  //             "arrivalAirport": "JFK",
-  //             "__v": 0,
-  //             "noOfSeats": 88,
-  //             "availableSeats": 75,
-  //             "duration": "18h 0m",
-  //             "id": "61a3e0ec766320f267156a54"
-  //         },
-  //         "reservationId": "61c61d76806c2bd5679f9402",
-  //         "price": 0,
-  //         "passportNumber": "54",
-  //         "__v": 0,
-  //         "id": "61c61d76806c2bd5679f9406"
-  //     },
-  //     {
-  //         "_id": "61c61d76806c2bd5679f9408",
-  //         "seatNum": "6E",
-  //         "ticketType": "return",
-  //         "passengerType": "adult",
-  //         "firstName": "Maram",
-  //         "lastName": "Benamer",
-  //         "cabin": "economy",
-  //         "flightId": {
-  //             "economy": {
-  //                 "noOfSeats": 100,
-  //                 "childPrice": 750,
-  //                 "adultPrice": 1000,
-  //                 "baggageAllowance": 2,
-  //                 "availableSeats": 93
-  //             },
-  //             "business": {
-  //                 "noOfSeats": 10,
-  //                 "childPrice": 1100,
-  //                 "adultPrice": 1800,
-  //                 "baggageAllowance": 2,
-  //                 "availableSeats": 99
-  //             },
-  //             "firstClass": {
-  //                 "noOfSeats": 10,
-  //                 "childPrice": 1500,
-  //                 "adultPrice": 3000,
-  //                 "baggageAllowance": 3,
-  //                 "availableSeats": 100
-  //             },
-  //             "_id": "61aa7405de15788ef7e9e362",
-  //             "flightNumber": 895233,
-  //             "departureTime": "21:46",
-  //             "arrivalTime": "21:47",
-  //             "departureDate": "2021-11-03T00:00:00.000Z",
-  //             "arrivalDate": "2021-11-03T00:00:00.000Z",
-  //             "departureAirport": "JFK",
-  //             "arrivalAirport": "JPN",
-  //             "__v": 0,
-  //             "noOfSeats": 120,
-  //             "availableSeats": 292,
-  //             "duration": "0h 1m",
-  //             "id": "61aa7405de15788ef7e9e362"
-  //         },
-  //         "reservationId": "61c61d76806c2bd5679f9402",
-  //         "price": 1000,
-  //         "passportNumber": "54",
-  //         "__v": 0,
-  //         "id": "61c61d76806c2bd5679f9408"
-  //     },
-  //     {
-  //         "_id": "61c61d76806c2bd5679f940a",
-  //         "seatNum": "3C",
-  //         "ticketType": "departing",
-  //         "passengerType": "adult",
-  //         "firstName": "SeifEldien",
-  //         "lastName": "Maged",
-  //         "cabin": "economy",
-  //         "flightId": {
-  //             "economy": {
-  //                 "baggageAllowance": 2,
-  //                 "noOfSeats": 78,
-  //                 "childPrice": 0,
-  //                 "adultPrice": 0,
-  //                 "availableSeats": 71
-  //             },
-  //             "business": {
-  //                 "baggageAllowance": 2,
-  //                 "noOfSeats": 5,
-  //                 "childPrice": 0,
-  //                 "adultPrice": 0,
-  //                 "availableSeats": -1
-  //             },
-  //             "firstClass": {
-  //                 "baggageAllowance": 3,
-  //                 "noOfSeats": 5,
-  //                 "childPrice": 0,
-  //                 "adultPrice": 0,
-  //                 "availableSeats": 5
-  //             },
-  //             "_id": "61a3e0ec766320f267156a54",
-  //             "flightNumber": 128,
-  //             "departureTime": "16:04",
-  //             "arrivalTime": "10:04",
-  //             "departureDate": "2021-11-01T00:00:00.000Z",
-  //             "arrivalDate": "2021-11-02T00:00:00.000Z",
-  //             "departureAirport": "JPN",
-  //             "arrivalAirport": "JFK",
-  //             "__v": 0,
-  //             "noOfSeats": 88,
-  //             "availableSeats": 75,
-  //             "duration": "18h 0m",
-  //             "id": "61a3e0ec766320f267156a54"
-  //         },
-  //         "reservationId": "61c61d76806c2bd5679f9402",
-  //         "price": 0,
-  //         "__v": 0,
-  //         "id": "61c61d76806c2bd5679f940a"
-  //     },
-  //     {
-  //         "_id": "61c61d76806c2bd5679f940c",
-  //         "seatNum": "21D",
-  //         "ticketType": "return",
-  //         "passengerType": "adult",
-  //         "firstName": "SeifEldien",
-  //         "lastName": "Maged",
-  //         "cabin": "economy",
-  //         "flightId": {
-  //             "economy": {
-  //                 "noOfSeats": 100,
-  //                 "childPrice": 750,
-  //                 "adultPrice": 1000,
-  //                 "baggageAllowance": 2,
-  //                 "availableSeats": 93
-  //             },
-  //             "business": {
-  //                 "noOfSeats": 10,
-  //                 "childPrice": 1100,
-  //                 "adultPrice": 1800,
-  //                 "baggageAllowance": 2,
-  //                 "availableSeats": 99
-  //             },
-  //             "firstClass": {
-  //                 "noOfSeats": 10,
-  //                 "childPrice": 1500,
-  //                 "adultPrice": 3000,
-  //                 "baggageAllowance": 3,
-  //                 "availableSeats": 100
-  //             },
-  //             "_id": "61aa7405de15788ef7e9e362",
-  //             "flightNumber": 895233,
-  //             "departureTime": "21:46",
-  //             "arrivalTime": "21:47",
-  //             "departureDate": "2021-11-03T00:00:00.000Z",
-  //             "arrivalDate": "2021-11-03T00:00:00.000Z",
-  //             "departureAirport": "JFK",
-  //             "arrivalAirport": "JPN",
-  //             "__v": 0,
-  //             "noOfSeats": 120,
-  //             "availableSeats": 292,
-  //             "duration": "0h 1m",
-  //             "id": "61aa7405de15788ef7e9e362"
-  //         },
-  //         "reservationId": "61c61d76806c2bd5679f9402",
-  //         "price": 1000,
-  //         "__v": 0,
-  //         "id": "61c61d76806c2bd5679f940c"
-  //     }
-  // ]
   const [tickets, setTickets] = useState([]);
   const [open, setOpen] = useState(false);
 
   const [totalPrice, setTotalPrice] = useState();
+  const [email, setEmail] = useState("");
+  const[deleteFlight,setDelete]=useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  
+  const Transition = forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+  // const [deleteRes, setdeleteRes] = useState(true);
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
   // const [deleteRes, setdeleteRes] = useState(true);
   const token = window.sessionStorage.getItem("token");
   var decodedToken;
@@ -280,15 +103,8 @@ export default function BasicTable(onDelete) {
   const handleClose = () => {
     setOpen(false);
   };
-  const [openDialog, setOpenDialog] = useState(false);
 
-  const handleClickOpenDialog = () => {
-    setOpenDialog(true);
-  };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
   const [data, getData] = useState([]);
   const getDate = (input) => {
     const date = new Date(input);
@@ -296,7 +112,21 @@ export default function BasicTable(onDelete) {
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
     );
   };
-
+  const handler = (ticket) => {
+    decodedToken.props={departureTickets: tickets, returnTickets:{}}
+    decodedToken.email = email;
+    console.log(
+      "GIRL HERE ARE THE TOKEN PROPS TICKETS!!!!"
+    );
+    console.log("ANA EL emaillllllll!!!!" + JSON.stringify(decodedToken.email));
+    axios
+      .post("http://localhost:8081/user/sendmail", decodedToken)
+      .then(
+        console.log(
+          "done!!" + "ELI RAYEH LEL BACKEND HOWA" + JSON.stringify(decodedToken)
+        )
+      );
+  };
   // const handleClickOpenDialog = () => {
   //   setOpenDialog(true);
   // };
@@ -341,6 +171,28 @@ export default function BasicTable(onDelete) {
   }));
   const deleteReservation = (reservationId, price) => {
     setTotalPrice(price);
+    var toto = price;
+    const sendCancelMail = (toto) => {
+      // decodedToken.props = props;
+      decodedToken.email = email;
+      decodedToken.price = price;
+
+      console.log(
+        "ANA EL cancelation emaillllllll!!!!" +
+          JSON.stringify(decodedToken.email)
+      );
+      // const lol = props.departureFlight.arrivalAirport;
+      axios
+        .post("http://localhost:8081/user/cancelMail", decodedToken)
+        .then(result=>
+          {
+            //console.log("done!!" +"ELI RAYEH LEL BACKEND HOWA" +JSON.stringify(decodedToken));
+            //setDelete(!deleteFlight);
+            
+        }
+        );
+    };
+
     handleClose();
     // console.log('an hena', reservationId);
     axios
@@ -367,9 +219,6 @@ export default function BasicTable(onDelete) {
       });
     //onDelete();
   };
-  const Transition = forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
   const sendEmail = (price) => {
     var templateParams = {
       totalPrice: price,
@@ -413,7 +262,16 @@ export default function BasicTable(onDelete) {
         .get(`http://localhost:8081/user/reservations/${decodedToken.id}`)
         .then((res) => {
           getData(res.data);
-          console.log(res.data);
+         
+          
+        })
+        .catch((err) => console.log(err));
+
+        axios
+        .get(`http://localhost:8081/user/profile/${decodedToken.id}`)
+        .then((result) => {
+          setEmail(result.data.email);
+         
         })
         .catch((err) => console.log(err));
     }, []);
@@ -493,7 +351,7 @@ export default function BasicTable(onDelete) {
                         {row.departingFlight.from}
                       </div>
                       <div>
-                        Retrun Flight <FlightLandRounded color="error" />{" "}
+                        Return Flight <FlightLandRounded color="error" />{" "}
                         {row.arrivalFlight.from}
                       </div>
                     </Stack>
@@ -632,16 +490,25 @@ export default function BasicTable(onDelete) {
                           </IconButton>
                         </Toolbar>
                       </AppBar>
+                      <Typography variant="h5" gutterBottom component="div">
+                        Your reservation ID is : ({row.reservationId})
+                      </Typography>
                       <Container>
                         {tickets.map((ticket) => (
                           <Card
                             sx={{
                               minWidth: 275,
                               marginTop: "2%",
-                              background: image1,
                             }}
                           >
-                            <CardContent>
+                            <CardContent
+                              sx={{
+                                paddingTop: 0,
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                                pr: "10px",
+                              }}
+                            >
                               <AppBar
                                 position="static"
                                 border
@@ -649,62 +516,102 @@ export default function BasicTable(onDelete) {
                               >
                                 <Toolbar variant="dense">
                                   <Typography>Ticket preview</Typography>
+                                  <IconButton
+                                  onClick={() => {
+                                    handler({ticket});
+                                  }}
+                                  ><ForwardToInboxIcon/></IconButton>
                                 </Toolbar>
                               </AppBar>
-                              <Stack spacing={2} sx={{ alignItems: "center" }}>
-                                <Stack
-                                  direction="row"
-                                  spacing={8}
-                                  // sx={{ pl: "35%" }}
-                                >
-                                  <Typography sx={{ fontSize: 60 }}>
-                                    {ticket.flightId.departureAirport}
-                                  </Typography>
-                                  <IoAirplaneOutline size={100} />
-                                  <Typography sx={{ fontSize: 60 }}>
-                                    {ticket.flightId.arrivalAirport}
-                                  </Typography>
-                                </Stack>
-                                <Stack direction="row" spacing={28}>
-                                  <Stack spacing={2}>
-                                    <Typography sx={{ fontSize: 20 }}>
-                                      {getDate(ticket.flightId.departureDate)}
-                                      <CalendarTodayTwoToneIcon />
+
+                              <Stack
+                                spacing={5}
+                                direction="row"
+                                sx={{ pl: "18%" }}
+                              >
+                                <Stack spacing={2}>
+                                  <Stack
+                                    direction="row"
+                                    spacing={8}
+                                    // sx={{ pl: "35%" }}
+                                  >
+                                    <Typography sx={{ fontSize: 60 }}>
+                                      {ticket.flightId.departureAirport}
                                     </Typography>
-                                    <Typography>
-                                      {ticket.flightId.departureTime}
-                                      <AccessTimeTwoToneIcon />
+                                    <IoAirplaneOutline size={100} />
+                                    <Typography sx={{ fontSize: 60 }}>
+                                      {ticket.flightId.arrivalAirport}
                                     </Typography>
                                   </Stack>
-                                  <Stack spacing={2}>
+                                  <Stack direction="row" spacing={28}>
+                                    <Stack spacing={2}>
+                                      <Typography sx={{ fontSize: 20 }}>
+                                        {getDate(ticket.flightId.departureDate)}
+                                        <CalendarTodayTwoToneIcon />
+                                      </Typography>
+                                      <Typography>
+                                        {ticket.flightId.departureTime}
+                                        <AccessTimeTwoToneIcon />
+                                      </Typography>
+                                    </Stack>
+                                    <Stack spacing={2}>
+                                      <Typography sx={{ fontSize: 20 }}>
+                                        {getDate(ticket.flightId.arrivalDate)}
+                                        <CalendarTodayTwoToneIcon />
+                                      </Typography>
+                                      <Typography>
+                                        {ticket.flightId.arrivalTime}
+                                        <AccessTimeTwoToneIcon />
+                                      </Typography>
+                                    </Stack>
+                                  </Stack>
+                                  <Stack
+                                    direction={"row"}
+                                    spacing={16}
+                                    // sx={{ pl: "35%" }}
+                                  >
                                     <Typography sx={{ fontSize: 20 }}>
-                                      {getDate(ticket.flightId.arrivalDate)}
-                                      <CalendarTodayTwoToneIcon />
+                                      {ticket.flightId.flightNumber}
+                                      <AirplanemodeActive />
                                     </Typography>
-                                    <Typography>
-                                      {ticket.flightId.arrivalTime}
-                                      <AccessTimeTwoToneIcon />
+                                    <Typography sx={{ fontSize: 20 }}>
+                                      {ticket.seatNum}
+                                      <AirlineSeatReclineExtraIcon />
+                                    </Typography>
+                                    <Typography
+                                      sx={{ fontSize: 20, alignSelf: "left" }}
+                                    >
+                                      {ticket.cabin}
                                     </Typography>
                                   </Stack>
                                 </Stack>
-                                <Stack
-                                  direction={"row"}
-                                  spacing={16}
-                                  // sx={{ pl: "35%" }}
-                                >
-                                  <Typography sx={{ fontSize: 20 }}>
-                                    {ticket.flightId.flightNumber}
-                                    <AirplanemodeActive />
+                                <Stack spacing={2} sx={{ pt: "1%" }}>
+                                  <Typography fontWeight={"bold"}>
+                                    Passenger Name
                                   </Typography>
-                                  <Typography sx={{ fontSize: 20 }}>
-                                    {ticket.seatNum}
-                                    <AirlineSeatReclineExtraIcon />
+                                  <Typography>
+                                    {ticket.firstName} {ticket.lastName}
                                   </Typography>
-                                  <Typography sx={{ fontSize: 20 }}>
-                                    {ticket.cabin}
+                                  <Typography fontWeight={"bold"}>
+                                    Ticket price
+                                  </Typography>
+                                  <Typography>{ticket.price}</Typography>
+                                  <Typography fontWeight={"bold"}>
+                                    Type
+                                  </Typography>
+                                  <Typography>
+                                    {ticket.passengerType}
                                   </Typography>
                                 </Stack>
+                                <CardMedia
+                                  component="img"
+                                  sx={{ width: "20%" }}
+                                  image={QRCODE}
+                                  alt="Live from space album cover"
+                                />
                               </Stack>
+
+                              {/* <Divider orientation="vertical" flexItem/> */}
                             </CardContent>
                           </Card>
                         ))}
