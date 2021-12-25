@@ -20,6 +20,7 @@ import PrivateRoute from "./PrivateRoute";
 import SendingMail from "./components/user/forms/SendingMail";
 import PassengerDeets from "./components/user/forms/PassengerDeets";
 import test from "./test";
+import HomeAdmin from "./pages/admin/HomeAdmin";
 
 function App() {
   const [admin, setAdmin] = useState(
@@ -46,69 +47,78 @@ function App() {
     window.sessionStorage.setItem("admin", true);
   };
   return (
-    <Router>
-      <div className="App">
-        {/* {window.sessionStorage.setItem("existing", false)} */}
-        <TopBar
-          admin={admin}
-          existing={existing}
-          onSignIn={onSignIn}
-          onSignOut={onSignOut}
-          onAdmin={onAdmin}
-        />
-        <Switch>
-          <Route exact path={"/schedule"} component={Schedule}></Route>
-          <Route exact path="/addFlight" component={FlightCreation}></Route>
-          <Route exact path="/user" component={BookingPage}></Route>
-          <PrivateRoute
-            exact
-            path="/selectSeat"
-            component={SelectSeat}
-          ></PrivateRoute>
-          <PrivateRoute
-            exact
-            path="/account"
-            component={Account}
-          ></PrivateRoute>
-          <Route exact path="/" component={SearchingPage}></Route>
-          <PrivateRoute
-            exact
-            path="/reservations"
-            component={Reservations}
-          ></PrivateRoute>
-          <Route exact path="/signup" component={SignUpForm}></Route>
-          <Route exact path="/test" component={test}></Route>
+    
+      <Router>
+        <div className="App">
+          {/* {window.sessionStorage.setItem("existing", false)} */}
+          <TopBar
+            admin={admin}
+            existing={existing}
+            onSignIn={onSignIn}
+            onSignOut={onSignOut}
+            onAdmin={onAdmin}
+          />
+          <Switch>
+            <Route exact path={"/schedule"} component={Schedule}></Route>
+            <Route exact path="/addFlight" component={FlightCreation}></Route>
+            <Route exact path="/user" component={BookingPage}></Route>
+            <PrivateRoute
+              exact
+              path="/selectSeat"
+              component={SelectSeat}
+            ></PrivateRoute>
+            <PrivateRoute
+              exact
+              path="/account"
+              component={Account}
+            ></PrivateRoute>
+            <Route exact path="/" component={SearchingPage}></Route>
+            <PrivateRoute
+              exact
+              path="/reservations"
+              component={Reservations}
+            ></PrivateRoute>
+            <Route exact path="/signup" component={SignUpForm}></Route>
+            <Route exact path="/test" component={test}></Route>
 
-          <PrivateRoute exact path="/pass" component={PassengerDeets}>
+            <PrivateRoute exact path="/pass" component={PassengerDeets}>
+              <Container>
+                <PassengerDeets />
+              </Container>
+            </PrivateRoute>
+
+            <Route
+              exact
+              path="/confirmation"
+              component={ViewFlightSummary}
+            ></Route>
+            <Route
+              exact
+              path="/adminPage"
+              component={HomeAdmin}
+            ></Route>
+
+            <PrivateRoute
+              exact
+              path="/itinerary"
+              component={Itinerary}
+            ></PrivateRoute>
+
+            <Route exact path="/sendmail" component={SendingMail}>
+              {" "}
+            </Route>
+            <Route exact path="/payment" component={PaymentComponent}></Route>
+          </Switch>
+
+          {!admin && !existing && (
             <Container>
-              <PassengerDeets />
+              <footer style={{ float: "right" }}></footer>
             </Container>
-          </PrivateRoute>
-
-          <Route
-            exact
-            path="/confirmation"
-            component={ViewFlightSummary}
-          ></Route>
-          <PrivateRoute
-            exact
-            path="/itinerary"
-            component={Itinerary}
-          ></PrivateRoute>
-
-          <Route exact path="/sendmail" component={SendingMail}>
-            {" "}
-          </Route>
-          <Route exact path="/payment" component={PaymentComponent}></Route>
-        </Switch>
-
-        {!admin && !existing && (
-          <Container>
-            <footer style={{ float: "right" }}></footer>
-          </Container>
-        )}
-      </div>
-    </Router>
+          )}
+        </div>
+      </Router>
+      
+    
   );
 }
 
