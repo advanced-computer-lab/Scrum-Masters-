@@ -105,7 +105,7 @@ export default function BasicTable(onDelete) {
     );
   };
   const handler = (ticket) => {
-    decodedToken.ticket = ticket;
+    decodedToken.props = ticket;
     decodedToken.email = email;
     console.log(
       "GIRL HERE ARE THE TOKEN PROPS TICKETS!!!!" +
