@@ -54,6 +54,7 @@ const EditingSeatsPage = () => {
           secondTickets={data.oldReturningTickets}
           cabin={cabin}
           edit={true}
+          state={state}
         />
       )}
       {!loading && edit === '0' && secondFlightId === '0' && data && (
@@ -64,6 +65,7 @@ const EditingSeatsPage = () => {
           firstTickets={data.oldDepartingTickets}
           cabin={cabin}
           edit={false}
+          state={state}
         />
       )}
       {!loading && edit === '0' && secondFlightId !== '0' && data && (
@@ -74,6 +76,7 @@ const EditingSeatsPage = () => {
           secondFlight={secondFlight}
           cabin={cabin} //new cabin
           edit={false}
+          state={state}
         />
       )}
     </div>

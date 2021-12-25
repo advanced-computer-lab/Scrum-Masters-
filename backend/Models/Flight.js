@@ -10,7 +10,7 @@ const flightSchema = mongoose.Schema(
   // check for unique flight numbers within the day
   {
     flightNumber: {
-      type: Number,
+      type: Number, 
       required: true,
     },
 

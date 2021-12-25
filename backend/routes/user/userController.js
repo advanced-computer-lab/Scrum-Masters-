@@ -189,9 +189,6 @@ router.get('/edit/history/:resId', async (req, res) => {
   const departingFlightId = oldReservation.departingFlightId._id;
   const returnFlightId = oldReservation.returnFlightId._id;
 
-  const departingFlightId = oldReservation.departingFlightId._id;
-  const returnFlightId = oldReservation.returnFlightId._id;
-
   const oldTickets = await Ticket.find({
     reservationId: req.params.resId,
   });
