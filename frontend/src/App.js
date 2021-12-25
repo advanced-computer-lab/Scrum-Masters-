@@ -15,6 +15,11 @@ import Itinerary from "./pages/user/signed/viewItinerary";
 import Reservations from "./components/user/existing/Reservations";
 import { Container } from "react-bootstrap";
 import SignUpForm from "./components/user/forms/Signup";
+import PaymentComponent from "./components/user/forms/PaymentComponent";
+
+import SendingMail from "./components/user/forms/SendingMail";
+import PassengerDeets from "./components/user/forms/PassengerDeets";
+import test from "./test";
 
 function App() {
   const [admin, setAdmin] = useState(
@@ -58,13 +63,27 @@ function App() {
           <Route exact path="/" component={SearchingPage}></Route>
           <Route exact path="/reservations" component={Reservations}></Route>
           <Route exact path="/signup" component={SignUpForm}></Route>
+          <Route exact path="/test" component={test}></Route>
+
+          <Route exact path="/pass" component={PassengerDeets}>
+            <Container>
+              <PassengerDeets />
+            </Container>
+          </Route>
 
           <Route
             exact
             path="/confirmation"
             component={ViewFlightSummary}
           ></Route>
+          <Route exact path="/schedule" component={Schedule}></Route>
+          <Route exact path="/addFlight" component={FlightCreation}></Route>
           <Route exact path="/itinerary" component={Itinerary}></Route>
+
+          <Route exact path="/sendmail" component={SendingMail}>
+            {" "}
+          </Route>
+          <Route exact path="/payment" component={PaymentComponent}></Route>
         </Switch>
 
         {!admin && !existing && (
