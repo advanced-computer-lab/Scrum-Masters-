@@ -27,11 +27,11 @@ const TopBar = (props) => {
   const history = useHistory();
   const guestClick = () => {
     axios
-      .post("http://localhost:8081/auth/login", values)
+      .post('http://localhost:8081/auth/login', values)
       .then((result) => {
-        console.log("result", result);
-        if (result.data.message === "Success") {
-          window.sessionStorage.setItem("token", result.data.token);
+        console.log('result', result);
+        if (result.data.message === 'Success') {
+          window.sessionStorage.setItem('token', result.data.token);
           props.onSignIn();
           setExisting(true);
           setAdmin(false);
@@ -51,10 +51,10 @@ const TopBar = (props) => {
     setAdmin(flag2);
   }
   useEffect(() => {
-    window.addEventListener("storage", checkUserData);
+    window.addEventListener('storage', checkUserData);
 
     return () => {
-      window.removeEventListener("storage", checkUserData);
+      window.removeEventListener('storage', checkUserData);
     };
   }, []);
   const logOutClick = () => {
@@ -81,7 +81,7 @@ const TopBar = (props) => {
         } else {
           await setValues({ ...values, [name]: e });
         }
-        await console.log("update", values);
+        await console.log('update', values);
       } catch (error) {
         console.log(error);
       }
@@ -90,35 +90,35 @@ const TopBar = (props) => {
   return (
     <Navbar
       collapseOnSelect
-      expand="lg"
-      sticky="top"
-      variant="dark"
-      style={{ backgroundColor: "#5f2daf", color: "white" }}
-      className="container-fluid"
+      expand='lg'
+      sticky='top'
+      variant='dark'
+      style={{ backgroundColor: '#5f2daf', color: 'white' }}
+      className='container-fluid'
     >
       <Container>
         <Navbar.Brand
           to="/"
           style={{
-            fontSize: "21pt",
-            fontFamily: "Henny Penny",
+            fontSize: '21pt',
+            fontFamily: 'Henny Penny',
           }}
         >
           <img
             src={logo}
-            width="65"
-            height="40"
-            className="d-inline-block align-top"
-            alt="logo"
-            style={{ marginRight: "3%" }}
+            width='65'
+            height='40'
+            className='d-inline-block align-top'
+            alt='logo'
+            style={{ marginRight: '3%' }}
           />
           Cloud 9
         </Navbar.Brand>
         <Container style={{ paddingRight: 0 }}>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Toggle aria-controls='responsive-navbar-nav' />
           {admin && (
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="me-auto"></Nav>
+            <Navbar.Collapse id='responsive-navbar-nav'>
+              <Nav className='me-auto'></Nav>
               <Nav>
                 <Link
                   to="/schedule"
@@ -145,8 +145,8 @@ const TopBar = (props) => {
             </Navbar.Collapse>
           )}
           {!existing && !admin && (
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="me-auto"></Nav>
+            <Navbar.Collapse id='responsive-navbar-nav'>
+              <Nav className='me-auto'></Nav>
               <Nav>
                 <Link
                   to="/"
@@ -162,48 +162,48 @@ const TopBar = (props) => {
                 {/* <Nav.Link href="/user"> */}
                 <Button
                   onClick={handleClickOpen}
-                  variant="contained"
-                  style={{ marginLeft: "30px" }}
+                  variant='contained'
+                  style={{ marginLeft: '30px' }}
                   sx={{
-                    color: "#7400b8",
-                    backgroundColor: "#ffffff",
-                    "&:hover": {
-                      backgroundColor: "#e9e9e9",
-                      color: "#7400b8",
+                    color: '#7400b8',
+                    backgroundColor: '#ffffff',
+                    '&:hover': {
+                      backgroundColor: '#e9e9e9',
+                      color: '#7400b8',
                     },
                   }}
                 >
-                  {" "}
-                  Sign In{" "}
+                  {' '}
+                  Sign In{' '}
                 </Button>
                 <Dialog open={open} onClose={handleClose}>
                   <DialogTitle>SIGN IN</DialogTitle>
                   <DialogContent>
                     <TextField
                       autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Email Address"
-                      type="email"
-                      name="email"
+                      margin='dense'
+                      id='name'
+                      label='Email Address'
+                      type='email'
+                      name='email'
                       fullWidth
-                      variant="standard"
+                      variant='standard'
                       onChange={onChange}
                     />
                     <TextField
                       autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Password"
-                      name="password"
-                      type="password"
+                      margin='dense'
+                      id='name'
+                      label='Password'
+                      name='password'
+                      type='password'
                       fullWidth
-                      variant="standard"
+                      variant='standard'
                       onChange={onChange}
                     />
                   </DialogContent>
                   <DialogActions>
-                    <Button onClick={handleClose} variant="outlined">
+                    <Button onClick={handleClose} variant='outlined'>
                       Cancel
                     </Button>
                     <Button
@@ -211,15 +211,15 @@ const TopBar = (props) => {
                         handleClose();
                         guestClick();
                       }}
-                      variant="contained"
-                      color="primary"
+                      variant='contained'
+                      color='primary'
                     >
                       Sign in
                     </Button>
                   </DialogActions>
                   <DialogContent>
-                    Don't have an account?{" "}
-                    <Link to="/signup" onClick={handleClose}>
+                    Don't have an account?{' '}
+                    <Link to='/signup' onClick={handleClose}>
                       Sign up
                     </Link>
                   </DialogContent>
@@ -228,8 +228,8 @@ const TopBar = (props) => {
             </Navbar.Collapse>
           )}
           {existing && (
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="me-auto"></Nav>
+            <Navbar.Collapse id='responsive-navbar-nav'>
+              <Nav className='me-auto'></Nav>
               <Nav>
                 <Link
                   to="/"

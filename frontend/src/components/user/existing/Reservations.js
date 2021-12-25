@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react';
-
+import EditReservationButton from './buttons/EditReservationButton';
 import { GridCellParams } from '@mui/x-data-grid';
 import emailjs from 'emailjs-com';
 import axios from 'axios';
@@ -54,12 +54,12 @@ export default function BasicTable(onDelete) {
   const deleteReservation = (reservationId, price) => {
     setTotalPrice(price);
     handleClose();
-    console.log('an hena', reservationId);
+    // console.log('an hena', reservationId);
     axios
       .delete(`http://localhost:8081/user/delete/reservation/${reservationId}`)
       .then((res) => {
         sendEmail(price);
-        console.log(res);
+        // console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -109,7 +109,7 @@ export default function BasicTable(onDelete) {
         .get('http://localhost:8081/user/reservations/61aa2eb9d3eee0b9e4921105')
         .then((res) => {
           getData(res.data);
-          console.log(res.data);
+          // console.log(res.data);
         })
         .catch((err) => console.log(err));
     }, []);
@@ -214,9 +214,12 @@ export default function BasicTable(onDelete) {
                       : row.departingFlight.cabin.charAt(0).toUpperCase() +
                         row.departingFlight.cabin.substring(1)}
                   </TableCell>
-                  <TableCell><IconButton aria-label="edite" color="primary">
-                                <EditIcon />
-                              </IconButton></TableCell>
+                  <TableCell>
+                    {/* <IconButton aria-label='edite' color='primary'>
+                      <EditIcon />
+                    </IconButton> */}
+                    <EditReservationButton resId={row.reservationId} />
+                  </TableCell>
                   <TableCell style={{ width: '7%' }}>
                     <div>
                       <Button

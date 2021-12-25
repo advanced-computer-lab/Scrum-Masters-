@@ -116,12 +116,17 @@ const SearchFlight = (props) => {
     return false;
   };
 
+  const current = new Date();
+  const date = `${current.getDate()}/${
+    current.getMonth() + 1
+  }/${current.getFullYear()}`;
+
   const [adultCount, setAdultCount] = useState(0);
   const [childrenCount, setChildrenCount] = useState(0);
 
   const onChange = (e) => {
     setQuery({ ...query, [e.target.name]: e.target.value });
-    console.log("This is query", query);
+    console.log('this is the query', query);
   };
 
   const onSubmit = () => {
@@ -137,7 +142,7 @@ const SearchFlight = (props) => {
           showAlert();
         } else {
           setOutput(res.data);
-          console.log("search flight", res.data);
+          console.log('search flight', res.data);
           setSearchDone(true);
         }
 

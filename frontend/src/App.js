@@ -17,6 +17,8 @@ import { Container } from "react-bootstrap";
 import SignUpForm from "./components/user/forms/Signup";
 import PaymentComponent from "./components/user/forms/PaymentComponent";
 import PrivateRoute from "./PrivateRoute";
+import EditingPage from "./pages/user/signed/EditingPage";
+import EditingSeatsPage from "./pages/user/signed/EditingSeatsPage";
 import SendingMail from "./components/user/forms/SendingMail";
 import PassengerDeets from "./components/user/forms/PassengerDeets";
 import test from "./test";
@@ -108,6 +110,18 @@ function App() {
             path="/itinerary"
             component={Itinerary}
           ></PrivateRoute>
+          <PrivateRoute
+            path="/edit/:departureAirport/:arrivalAirport/:noOfChildren/:noOfAdults/:arrivalDate/:departureDate/:cabin/:state/:resId/:departureId/:returnId"
+            exact
+            component={EditingPage}
+          />
+          <PrivateRoute
+            path="/editSeats/:resId/:firstFlightId/:secondFlightId/:cabin/:edit"
+            exact
+            component={EditingSeatsPage}
+          />
+          <Route exact path="/schedule" component={Schedule}></Route>
+          <Route exact path="/addFlight" component={FlightCreation}></Route>
 
           <Route exact path="/sendmail" component={SendingMail}>
             {" "}
