@@ -113,4 +113,23 @@ Admin is also able to perform the rest of CRUD operations on these created fligh
 
 ![2021-12-25 (27)](https://user-images.githubusercontent.com/78305151/147393832-05a45283-0331-443b-aecd-956dac272881.png)
 ![2021-12-25 (28)](https://user-images.githubusercontent.com/78305151/147393836-0b8d2320-0f25-4fd9-b0c1-1042ad354023.png)
->>Reflects in the users reservations!!
+>>Reflects in the users reservations!!  
+>>Deleting Reservation  
+>>
+![2021-12-25 (30)](https://user-images.githubusercontent.com/78305151/147393918-b68043ac-74f7-460d-a02b-2340e05fea21.png)  
+
+![2021-12-25 (31)](https://user-images.githubusercontent.com/78305151/147393929-7bb515b8-0265-4eff-b3ad-4d8dd555026a.png)  
+>>Cancellation gets reflected!!
+
+
+![2021-12-25 (32)](https://user-images.githubusercontent.com/78305151/147393934-2a0e6899-66dc-4cf8-93a6-4c71793e1b23.png)
+
+>Examples from Admin Trip
+>
+!![2021-12-25 (17)](https://user-images.g![2021-12-25 (18)](https://user-images.githubusercontent.com/78305151/147393979-e401b538-8fc6-4a31-9ace-3dda107fa0a5.png)
+ithubusercontent.com/78305151/147393970-eac1d676-ee69-4ee8-8985-49e25deaaad0.png)
+
+![2021-12-25 (21)](https://user-images.githubusercontent.com/78305151/147393982-617c1dc1-5734-4e89-aec2-4a0f2b435de3.png)  
+>Editing flight details 
+>![2021-12-25 (33)](https://user-images.githubusercontent.com/78305151/147394026-270255d3-388b-406f-8e9a-256543e2822e.png)
+
