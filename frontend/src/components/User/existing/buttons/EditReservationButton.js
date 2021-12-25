@@ -11,6 +11,7 @@ import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Radio from '@mui/material/Radio';
+import { IconButton, Stack } from '@mui/material';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
@@ -22,6 +23,7 @@ import { IoIosAirplane, IoIosArrowRoundForward } from 'react-icons/io';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Divider from '@mui/material/Divider';
+import EditIcon from '@mui/icons-material/Edit';
 
 import { FaTimes } from 'react-icons/fa';
 
@@ -119,6 +121,20 @@ const EditReservationButton = (props) => {
   };
 
   const handleVisiblity = (count) => {
+    if (count === 4) {
+      setExpanded(false);
+      setInput({
+        noOfChildren: '',
+        noOfAdults: '',
+        departureAirport: '',
+        arrivalAirport: '',
+        departureDate: '',
+        arrivalDate: '',
+        cabin: '',
+      });
+      setVisiblity({ departureDate: false, returnDate: false, cabin: false });
+      return;
+    }
     if (count === 0) {
       setVisiblity({ departureDate: true, returnDate: false, cabin: true });
       setState(0);
@@ -157,7 +173,12 @@ const EditReservationButton = (props) => {
   return (
     <div>
       <div>
-        <Button onClick={handleOpen}>Edit Reservation</Button>
+        <Stack spacing={-0.5} orientation='horizontal'>
+          <IconButton aria-label='edit' color='primary' onClick={handleOpen}>
+            <EditIcon />
+          </IconButton>
+          <small align='center'>edit</small>
+        </Stack>
 
         <Modal
           open={open}
@@ -202,18 +223,20 @@ const EditReservationButton = (props) => {
                   {displayDate(data.input.arrivalDate)}
                 </Typography>
                 <Divider />
-                <Button
-                  //component='button'
-                  href={`/editSeats/${props.resId}/0/0/${data.input.cabin}/1`}
-                  sx={{ marginTop: '2%' }}
-                  variant='body2'
-                  underline='hover'
-                  // id='modal-modal-title'
-                  // variant='h6'
-                  // component='h3'
-                >
-                  Change Current Seat{' '}
-                </Button>
+                <Container style={{ marginLeft: 'auto' }}>
+                  <Button
+                    //component='button'
+                    href={`/editSeats/${props.resId}/0/0/${data.input.cabin}/1`}
+                    sx={{ marginTop: '2%' }}
+                    variant='body2'
+                    underline='hover'
+                    // id='modal-modal-title'
+                    // variant='h6'
+                    // component='h3'
+                  >
+                    Change Current Seat{' '}
+                  </Button>
+                </Container>
                 <Divider>OR</Divider>
                 {/* <TreeView
                   defaultCollapseIcon={<ExpandMoreIcon />}
@@ -388,7 +411,7 @@ const EditReservationButton = (props) => {
                 )} */}
                 {/* </TreeView> */}
                 <br />
-                {visibility.cabin && (
+                {expanded !== false && (
                   <div style={{ float: 'right' }}>
                     <Button
                       color='inherit'
