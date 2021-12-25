@@ -27,7 +27,8 @@ const Password = () => {
   const [error, setError] = useState(false);
   const [errMessage, setErrMessage] = useState();
   const token = window.sessionStorage.getItem("token");
-  const decodedToken = jwt_decode(token);
+   var decodedToken;
+   if (token) decodedToken = jwt_decode(token);
 
   const theme = createTheme({
     palette: {

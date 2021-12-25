@@ -12,7 +12,8 @@ import axios from "axios";
 const UserProfile = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const token = window.sessionStorage.getItem("token");
-  const decodedToken = jwt_decode(token);
+  var decodedToken;
+  if (token) decodedToken = jwt_decode(token);
   const [userFirst, setUserFirst] = useState();
   const [load, setLoad] = useState(false);
   const open = Boolean(anchorEl);

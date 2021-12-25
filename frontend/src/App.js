@@ -32,6 +32,7 @@ function App() {
     JSON.parse(window.sessionStorage.getItem('existing')) || false
   );
   const onSignIn = () => {
+    console.log('sign in');
     window.sessionStorage.setItem('existing', true);
     window.sessionStorage.setItem('admin', false);
   };
@@ -39,6 +40,7 @@ function App() {
     window.sessionStorage.setItem('existing', false);
     window.sessionStorage.setItem('admin', false);
     window.sessionStorage.removeItem('token');
+    console.log('sign out');
     setAdmin(false);
     setExisting(false);
   };
