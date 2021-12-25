@@ -1,5 +1,6 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { Nav, Container, Navbar } from "react-bootstrap";
+import { Redirect, useHistory } from "react-router-dom";
 import { Button } from "@mui/material";
 import { purple } from "@mui/material/colors";
 import { Link } from "react-router-dom";
@@ -16,16 +17,21 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 const TopBar = (props) => {
-  const [admin, setAdmin] = useState(props.admin);
-  const [existing, setExisting] = useState(props.existing);
+  const [admin, setAdmin] = useState(
+    JSON.parse(window.sessionStorage.getItem("admin")) || false
+  );
+  const [existing, setExisting] = useState(
+    JSON.parse(window.sessionStorage.getItem("existing")) || false
+  );
   const [values, setValues] = useState();
+  const history = useHistory();
   const guestClick = () => {
     axios
-      .post("http://localhost:8081/auth/login", values)
+      .post('http://localhost:8081/auth/login', values)
       .then((result) => {
-        console.log("result", result);
-        if (result.data.message === "Success") {
-          window.sessionStorage.setItem("token", result.data.token);
+        console.log('result', result);
+        if (result.data.message === 'Success') {
+          window.sessionStorage.setItem('token', result.data.token);
           props.onSignIn();
           setExisting(true);
           setAdmin(false);
@@ -36,10 +42,26 @@ const TopBar = (props) => {
 
     // props.onSignIn();
   };
+
+  function checkUserData() {
+    const flag = JSON.parse(window.sessionStorage.getItem("existing"));
+    const flag2 = JSON.parse(window.sessionStorage.getItem("admin"));
+    console.log("calleddd listener");
+    setExisting(flag);
+    setAdmin(flag2);
+  }
+  useEffect(() => {
+    window.addEventListener('storage', checkUserData);
+
+    return () => {
+      window.removeEventListener('storage', checkUserData);
+    };
+  }, []);
   const logOutClick = () => {
     setExisting(false);
     setAdmin(false);
     props.onSignOut();
+    history.push("/");
   };
   const [open, setOpen] = useState(false);
 
@@ -59,7 +81,7 @@ const TopBar = (props) => {
         } else {
           await setValues({ ...values, [name]: e });
         }
-        await console.log("update", values);
+        await console.log('update', values);
       } catch (error) {
         console.log(error);
       }
@@ -68,98 +90,120 @@ const TopBar = (props) => {
   return (
     <Navbar
       collapseOnSelect
-      expand="lg"
-      sticky="top"
-      variant="dark"
-      style={{ backgroundColor: "#5f2daf", color: "white" }}
-      className="container-fluid"
+      expand='lg'
+      sticky='top'
+      variant='dark'
+      style={{ backgroundColor: '#5f2daf', color: 'white' }}
+      className='container-fluid'
     >
       <Container>
         <Navbar.Brand
-          href="/"
+          to="/"
           style={{
-            fontSize: "21pt",
-            fontFamily: "Henny Penny",
+            fontSize: '21pt',
+            fontFamily: 'Henny Penny',
           }}
         >
           <img
             src={logo}
-            width="65"
-            height="40"
-            className="d-inline-block align-top"
-            alt="logo"
-            style={{ marginRight: "3%" }}
+            width='65'
+            height='40'
+            className='d-inline-block align-top'
+            alt='logo'
+            style={{ marginRight: '3%' }}
           />
           Cloud 9
         </Navbar.Brand>
         <Container style={{ paddingRight: 0 }}>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Toggle aria-controls='responsive-navbar-nav' />
           {admin && (
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="me-auto"></Nav>
+            <Navbar.Collapse id='responsive-navbar-nav'>
+              <Nav className='me-auto'></Nav>
               <Nav>
-                <Nav.Link href="/schedule" style={{ color: "white" }} exact>
+                <Link
+                  to="/schedule"
+                  style={{
+                    color: "white",
+                    alignSelf: "center",
+                    marginRight: "15px",
+                  }}
+                  className="link-decoration"
+                  exact
+                >
                   View Schedule
-                </Nav.Link>
-                <Nav.Link href="/addFlight" style={{ color: "white" }} exact>
+                </Link>
+                <Link
+                  to="/addFlight"
+                  style={{ color: "white", alignSelf: "center" }}
+                  className="link-decoration"
+                  exact
+                >
                   Add a New Flight
-                </Nav.Link>
+                </Link>
                 <ProfileButton />
               </Nav>
             </Navbar.Collapse>
           )}
-          {! (JSON.parse(window.sessionStorage.getItem('existing'))) && !admin && (
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="me-auto"></Nav>
+          {!existing && !admin && (
+            <Navbar.Collapse id='responsive-navbar-nav'>
+              <Nav className='me-auto'></Nav>
               <Nav>
-                <Nav.Link href="/search" style={{ color: "white" }} exact>
+                <Link
+                  to="/"
+                  style={{
+                    color: "white",
+                    alignSelf: "center",
+                  }}
+                  className="link-decoration"
+                  exact
+                >
                   Book a Flight
-                </Nav.Link>
+                </Link>
                 {/* <Nav.Link href="/user"> */}
                 <Button
                   onClick={handleClickOpen}
-                  variant="contained"
-                  style={{ marginLeft: "30px" }}
+                  variant='contained'
+                  style={{ marginLeft: '30px' }}
                   sx={{
-                    color: "#7400b8",
-                    backgroundColor: "#ffffff",
-                    "&:hover": {
-                      backgroundColor: "#e9e9e9",
-                      color: "#7400b8",
+                    color: '#7400b8',
+                    backgroundColor: '#ffffff',
+                    '&:hover': {
+                      backgroundColor: '#e9e9e9',
+                      color: '#7400b8',
                     },
                   }}
                 >
-                  {" "}
-                  Sign In{" "}
+                  {' '}
+                  Sign In{' '}
                 </Button>
                 <Dialog open={open} onClose={handleClose}>
                   <DialogTitle>SIGN IN</DialogTitle>
                   <DialogContent>
                     <TextField
                       autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Email Address"
-                      type="email"
-                      name="email"
+                      margin='dense'
+                      id='name'
+                      label='Email Address'
+                      type='email'
+                      name='email'
                       fullWidth
-                      variant="standard"
+                      variant='standard'
                       onChange={onChange}
                     />
                     <TextField
                       autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Password"
-                      name="password"
-                      type="password"
+                      margin='dense'
+                      id='name'
+                      label='Password'
+                      name='password'
+                      type='password'
                       fullWidth
-                      variant="standard"
+                      variant='standard'
                       onChange={onChange}
                     />
                   </DialogContent>
                   <DialogActions>
-                    <Button onClick={handleClose} variant="outlined">
+                    <Button onClick={handleClose} variant='outlined'>
                       Cancel
                     </Button>
                     <Button
@@ -167,15 +211,15 @@ const TopBar = (props) => {
                         handleClose();
                         guestClick();
                       }}
-                      variant="contained"
-                      color="primary"
+                      variant='contained'
+                      color='primary'
                     >
                       Sign in
                     </Button>
                   </DialogActions>
                   <DialogContent>
-                    Don't have an account?{" "}
-                    <Link to="/signup" onClick={handleClose}>
+                    Don't have an account?{' '}
+                    <Link to='/signup' onClick={handleClose}>
                       Sign up
                     </Link>
                   </DialogContent>
@@ -183,16 +227,30 @@ const TopBar = (props) => {
               </Nav>
             </Navbar.Collapse>
           )}
-          { (JSON.parse(window.sessionStorage.getItem('existing'))) && (
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="me-auto"></Nav>
+          {existing && (
+            <Navbar.Collapse id='responsive-navbar-nav'>
+              <Nav className='me-auto'></Nav>
               <Nav>
-                <Nav.Link href="/" style={{ color: "white" }} exact>
+                <Link
+                  to="/"
+                  style={{
+                    color: "white",
+                    alignSelf: "center",
+                    marginRight: "15px",
+                  }}
+                  className="link-decoration"
+                  exact
+                >
                   Book a Flight
-                </Nav.Link>
-                <Nav.Link href="/reservations" style={{ color: "white" }} exact>
+                </Link>
+                <Link
+                  to="/reservations"
+                  style={{ color: "white", alignSelf: "center" }}
+                  className="link-decoration"
+                  exact
+                >
                   My Bookings
-                </Nav.Link>
+                </Link>
                 <UserProfile logOutClick={logOutClick} />
               </Nav>
             </Navbar.Collapse>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
+import { IoIosAirplane } from 'react-icons/io';
 import {
   Button,
   Box,
@@ -32,7 +33,7 @@ const FlightReservation = ({
   const [page, setPage] = React.useState(0);
   const [count, setCount] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  console.log("props of flight reservation",data)
+  console.log('props of flight reservation', data);
   const cabinClass = data.details.cabin ? data.details.cabin : null;
   const [open, setOpen] = React.useState(false);
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -62,7 +63,6 @@ const FlightReservation = ({
       ? row.firstClass.adultPrice
       : row.business.adultPrice;
   };
-  //useEffect(() => {}, []);
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: '#5e60ce',
@@ -91,6 +91,10 @@ const FlightReservation = ({
             <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
               From
             </StyledTableCell>
+            <StyledTableCell
+              align='center'
+              style={{ fontWeight: 'bolder' }}
+            ></StyledTableCell>
             <StyledTableCell align='center' style={{ fontWeight: 'bolder' }}>
               To
             </StyledTableCell>
@@ -137,6 +141,9 @@ const FlightReservation = ({
                     </TableCell>
                     <TableCell align='center'>{row.flightNumber}</TableCell>
                     <TableCell align='center'>{row.departureAirport}</TableCell>
+                    <TableCell align='center'>
+                      <IoIosAirplane />
+                    </TableCell>
                     <TableCell align='center'>{row.arrivalAirport}</TableCell>
                     <TableCell align='center'>
                       {getDate(row.departureDate)}

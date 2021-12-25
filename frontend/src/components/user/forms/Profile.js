@@ -23,11 +23,12 @@ const Profile = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const token = window.sessionStorage.getItem("token");
-  const decodedToken = jwt_decode(token);
+  var decodedToken;
+  if (token) decodedToken = jwt_decode(token);
   const theme = createTheme({
     palette: {
       secondary: {
-        main: indigo['A200'],
+        main: indigo["A200"],
       },
     },
   });
@@ -63,6 +64,15 @@ const Profile = () => {
         setValues(res.data);
         console.log(res.data);
         setSuccess(true);
+        window.sessionStorage.setItem("letter", true);
+        var e = new Event("storage");
+        e.originalEvent = {
+          key: "letter",
+          oldValue: false,
+          newValue: true,
+        };
+        console.log(e);
+        window.dispatchEvent(e);
       })
       .catch((err) => {
         console.log(err);
@@ -82,7 +92,7 @@ const Profile = () => {
     setTimeout(() => {
       setSuccess(false);
       setError(false);
-    }, 5000);
+    }, 6000);
   }, [edit]);
   const toggleEdit = () => {
     setEdit(!edit);
@@ -97,6 +107,16 @@ const Profile = () => {
           width={100}
           timeout={5000}
         />
+      )}
+      {success && (
+        <Alert severity="success" sx={{ background: "#f4eff8" }}>
+          You have successfully updated your information.
+        </Alert>
+      )}
+      {error && (
+        <Alert severity="error">
+          Something went wrong. Please try again later.
+        </Alert>
       )}
       {!loading && info && (
         <div>
@@ -273,16 +293,6 @@ const Profile = () => {
                   Cancel
                 </Button>
               </Stack>
-            )}
-            {success && (
-              <Alert severity="success" sx={{ background: "#f4eff8" }}>
-                You have successfully updated your information.
-              </Alert>
-            )}
-            {error && (
-              <Alert severity="error">
-                Something went wrong. Please try again later.
-              </Alert>
             )}
           </ThemeProvider>
         </div>

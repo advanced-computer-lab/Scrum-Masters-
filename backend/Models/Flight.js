@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 //const Schema = mongoose.Schema;
 
-function getChildPrice(adult) {
-  console.log("pppppppppppppp",this.flightNumber);
-  return adult*0.6;
-}
+// function getChildPrice(adult) {
+//   console.log("EL TYPE AHU YA EKHWATY" ,typeof adult);
+//   return adult*0.6;
+// }
 
 const flightSchema = mongoose.Schema(
   // check for unique flight numbers within the day
@@ -52,12 +52,15 @@ const flightSchema = mongoose.Schema(
       },
       adultPrice: {
         type: Number,
-        default: 1000,
+        // default: 1000,
         required: true,
       },
       childPrice: {
         type: Number,
-        default: 1500,
+        default: function () {
+          console.log('el type bta3y', typeof this.economy.adultPrice);
+          return this.economy.adultPrice * 0.6;
+        },
         required: true,
       },
       availableSeats: {
@@ -79,14 +82,17 @@ const flightSchema = mongoose.Schema(
         default: 0,
         required: true,
       },
-      childPrice: {
-        type: Number,
-        default: 1100,
-        required: true,
-      },
       adultPrice: {
         type: Number,
         default: 1800,
+        required: true,
+      },
+      childPrice: {
+        type: Number,
+        default: 1000,
+        // default: function () {
+        //   return this.business.adultPrice * 0.6;
+        // }, // 60% of the specified adult price
         required: true,
       },
       availableSeats: {
@@ -108,14 +114,17 @@ const flightSchema = mongoose.Schema(
         default: 0,
         required: true,
       },
-      childPrice: {
-        type: Number,
-        default: 1500,
-        required: true,
-      },
       adultPrice: {
         type: Number,
         default: 3000,
+        required: true,
+      },
+      childPrice: {
+        type: Number,
+        default: 2500,
+        // default: function () {
+        //   return this.firstClass.adultPrice * 0.6;
+        // }, // 60% of the specified adult price
         required: true,
       },
       availableSeats: {
@@ -178,6 +187,5 @@ flightSchema
   .set(function (duration) {
     this.duration = duration;
   });
-  console.log("pppppppppppppp",this.flightNumber);
 const Flight = mongoose.model('Flight', flightSchema);
 module.exports = Flight;
