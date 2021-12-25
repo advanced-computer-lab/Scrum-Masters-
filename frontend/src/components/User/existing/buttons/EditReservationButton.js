@@ -39,7 +39,7 @@ const style = {
   borderRadius: 2,
 };
 
-const EditReservationButton = (resId) => {
+const EditReservationButton = (props) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [input, setInput] = useState({
@@ -58,21 +58,21 @@ const EditReservationButton = (resId) => {
     returnDate: false,
     cabin: false,
   });
+  const [state, setState] = useState();
 
   useEffect(() => {
-    console.log('This is the resID', resId.resId);
     function fetchData() {
       axios
-        .get(`http://localhost:8081/user/edit/history/${resId.resId}`)
+        .get(`http://localhost:8081/user/edit/history/${props.resId}`)
         .then((res) => {
           //console.log("This is the response", res.data);
           setData(res.data);
           setInput(res.data.input);
           setCabin(res.data.input.cabin);
           setLoading(false);
-          console.log('this is the input of the button', res.data);
+          //console.log('this is the input of the button', res.data);
         })
-        .catch((err) => console.log('sadddd'));
+        .catch((err) => console.log('editReservationButton'));
     }
     if (open) fetchData();
   }, [open]);
@@ -105,15 +105,16 @@ const EditReservationButton = (resId) => {
   };
 
   const handleVisiblity = (count) => {
-    if (count == 4) {
-      setVisiblity({ departureDate: false, returnDate: false, cabin: false });
-      return;
-    }
-    if (count == 0)
+    if (count == 0) {
       setVisiblity({ departureDate: true, returnDate: false, cabin: true });
-    else if (count == 1)
+      setState(0);
+    } else if (count == 1) {
       setVisiblity({ departureDate: false, returnDate: true, cabin: true });
-    else setVisiblity({ departureDate: true, returnDate: true, cabin: true });
+      setState(1);
+    } else {
+      setVisiblity({ departureDate: false, returnDate: false, cabin: false });
+      setState(null);
+    }
   };
 
   const handleOpen = () => setOpen(true);
@@ -217,23 +218,13 @@ const EditReservationButton = (resId) => {
                       underline='hover'
                       onClick={() => handleVisiblity(1)}
                       sx={{
-                        marginBottom: '0.5%',
+                        marginBottom: '5%',
                       }}
                     >
                       Change Return Flight
                     </Link>
                     <br />
-                    <Link
-                      component='button'
-                      variant='body2'
-                      underline='hover'
-                      onClick={() => handleVisiblity(2)}
-                      sx={{
-                        marginBottom: '5%',
-                      }}
-                    >
-                      Change Arrival and Departure Flights
-                    </Link>
+
                     <Grid
                       container
                       rowSpacing={1}
@@ -273,7 +264,7 @@ const EditReservationButton = (resId) => {
                     </Grid>
                   </TreeItem>
 
-                  {visibility.cabin && (
+                  {false && (
                     <TreeItem nodeId='2' label='Choose Cabin'>
                       <FormControl component='fieldset'>
                         <RadioGroup
@@ -316,7 +307,7 @@ const EditReservationButton = (resId) => {
                       reset
                     </Button>
                     <Button
-                      href={`/edit/${input.departureAirport}/${input.arrivalAirport}/${input.noOfChildren}/${input.noOfAdults}/${input.arrivalDate}/${input.departureDate}/${input.cabin}`}
+                      href={`/edit/${input.departureAirport}/${input.arrivalAirport}/${input.noOfChildren}/${input.noOfAdults}/${input.arrivalDate}/${input.departureDate}/${input.cabin}/${state}/${props.resId}`}
                       color='inherit'
                       sx={{ mr: 1, color: 'primary.main' }}
                     >

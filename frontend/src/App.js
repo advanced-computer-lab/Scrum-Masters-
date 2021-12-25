@@ -77,7 +77,7 @@ function App() {
           /> */}
 
           <Route
-            path='/edit/:departureAirport/:arrivalAirport/:noOfChildren/:noOfAdults/:arrivalDate/:departureDate/:cabin'
+            path='/edit/:departureAirport/:arrivalAirport/:noOfChildren/:noOfAdults/:arrivalDate/:departureDate/:cabin/:state/:resId'
             exact
             component={EditingPage}
           />
