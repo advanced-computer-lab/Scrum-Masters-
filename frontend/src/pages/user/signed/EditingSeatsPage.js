@@ -64,6 +64,7 @@ const EditingSeatsPage = () => {
           firstTickets={data.oldDepartingTickets}
           cabin={cabin}
           edit={false}
+          one={true}
         />
       )}
       {!loading && edit === '0' && secondFlightId !== '0' && data && (

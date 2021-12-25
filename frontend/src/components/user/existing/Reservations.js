@@ -1,4 +1,5 @@
 import { React, useEffect, useState } from "react";
+import EditReservationButton from "./buttons/EditReservationButton";
 import { GridCellParams } from "@mui/x-data-grid";
 import emailjs from "emailjs-com";
 import axios from "axios";
@@ -36,9 +37,7 @@ import AccessTimeTwoToneIcon from "@mui/icons-material/AccessTimeTwoTone";
 import LinearScaleOutlinedIcon from "@mui/icons-material/LinearScaleOutlined";
 import AirlineSeatReclineExtraIcon from "@mui/icons-material/AirlineSeatReclineExtra";
 import AirplanemodeActive from "@mui/icons-material/AirplanemodeActiveRounded";
-import FlightClassTwoToneIcon from "@mui/icons-material/FlightClassTwoTone";
 import CardMedia from "@mui/material/CardMedia";
-import EditReservationButton from "./buttons/EditReservationButton";
 import { positions } from "@mui/system";
 import jwt_decode from "jwt-decode";
 import QRCODE from '../../../images/QRcode.png';
@@ -149,7 +148,7 @@ export default function BasicTable(onDelete) {
       .delete(`http://localhost:8081/user/delete/reservation/${reservationId}`)
       .then((res) => {
         sendEmail(price);
-        // console.log(res);
+        console.log("deleted");
       })
       .catch((err) => {
         console.log(err);
@@ -189,6 +188,7 @@ export default function BasicTable(onDelete) {
         function (response) {
           console.log("SUCCESS!", response.status, response.text);
 
+          setTimeout(() => {}, 3000);
           window.location.reload(false);
         },
         function (error) {
@@ -214,7 +214,7 @@ export default function BasicTable(onDelete) {
         .get(`http://localhost:8081/user/reservations/${decodedToken.id}`)
         .then((res) => {
           getData(res.data);
-          // console.log(res.data);
+          console.log(res.data);
         })
         .catch((err) => console.log(err));
     }, []);
@@ -222,7 +222,7 @@ export default function BasicTable(onDelete) {
   ViewReservations();
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
+      backgroundColor: "#5e60ce",
       color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {
