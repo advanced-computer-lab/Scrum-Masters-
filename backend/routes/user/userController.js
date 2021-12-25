@@ -638,10 +638,10 @@ router.patch("/reservation/:resId", async (req, res) => {
     // second flight equals zero , I need to check
     //
     /// two diff flights
-    if (newCriteria.seconFlightId !== 0) {
+    if (newCriteria.secondFlightId !== "0") {
       if (
         newCriteria.firstFlightId !== oldReservation.departingFlightId &&
-        newCriteria.seconFlightId !== oldReservation.returnFlightId
+        newCriteria.secondFlightId !== oldReservation.returnFlightId
       ) {
         if (newCriteria.cabin === "economy") {
           // I decremented the seats in the new flights
@@ -698,7 +698,7 @@ router.patch("/reservation/:resId", async (req, res) => {
       }
     }
     // departure flight only changed, same cabin
-    else if (newCriteria.state === 0) {
+    else if (newCriteria.state === "0") {
       if (newCriteria.cabin === "economy") {
         // I decremented the seats in the new flight
         await Flight.findByIdAndUpdate(newCriteria.firstFlightId, {
@@ -724,7 +724,7 @@ router.patch("/reservation/:resId", async (req, res) => {
           $inc: { "firstClass.availableSeats": totalSeats },
         });
       }
-    } else if (newCriteria.state === 1) {
+    } else if (newCriteria.state === "1") {
       if (newCriteria.cabin === "economy") {
         // I decremented the seats in the new flight
         await Flight.findByIdAndUpdate(newCriteria.secondFlightId, {

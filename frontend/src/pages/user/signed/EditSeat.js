@@ -6,13 +6,6 @@ import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import SeatMap from "../../../components/user/existing/SeatMap";
 const EditSeat = (props) => {
-
-  const input = {
-    firstFlightId:props.firstFlight._id,
-    secondFlightId:props.secondFlight?props.secondFlight._id:0
-
-  }
-
   const [firstFlight, setFirstFlight] = useState();
   const [secondFlight, setSecondFlight] = useState();
   const [firstSeats, setFirstSeats] = useState();
@@ -84,8 +77,6 @@ const EditSeat = (props) => {
       }))
     );
   };
-
-
   const getIndividualPrice = (flight, type, cabin) => {
     if (type === "adult") {
       switch (cabin) {
@@ -111,9 +102,6 @@ const EditSeat = (props) => {
       }
     }
   };
-
-   
-
   const handleTickets = (reservationId) => {
     console.log("post", firstTickets);
     firstTickets.forEach((ticket) => {
@@ -142,6 +130,7 @@ const EditSeat = (props) => {
         });
       });
     }
+    props.onTicketsDone();
   };
   const handleSeats = (seats) => {
     seats.forEach((y) => {
@@ -159,12 +148,7 @@ const EditSeat = (props) => {
     handleTickets();
     //now first tickets and second tickets contains the old departure (and return) tickets with the new seats only,
     //if the flight number is changed, that's not handled yet
-
-
-    props.onTicketsDone();
   };
-
-  
   useEffect(() => {
     console.log("props", props);
     var input = [];

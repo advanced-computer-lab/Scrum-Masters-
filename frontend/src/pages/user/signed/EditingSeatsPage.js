@@ -18,18 +18,15 @@ const EditingSeatsPage = () => {
   function getPrice(row, cabinClass) {
     if (cabinClass === "economy")
       return (
-        row.economy.adultPrice * data.details.noOfAdults +
-        row.economy.childPrice * data.details.noOfChildren
+        row.economy.adultPrice * data.oldDepartingTickets.length
       );
     else if (cabinClass === "first")
       return (
-        row.firstClass.adultPrice * data.details.noOfAdults +
-        row.firstClass.childPrice * data.details.noOfChildren
+        row.firstClass.adultPrice *  data.oldDepartingTickets.length
       );
     else
       return (
-        row.business.adultPrice * data.details.noOfAdults +
-        row.business.childPrice * data.details.noOfChildren
+        row.business.adultPrice *  data.oldDepartingTickets.length
       );
   }
   useEffect(() => {
@@ -48,7 +45,8 @@ const EditingSeatsPage = () => {
       .then((res) => {
         setLoading(true);
         setFirstFlight(res.data);
-        setFirstPrice(res.data, cabin);
+        setFirstPrice(getPrice(res.data, cabin));
+        console.log(getPrice(res.data, cabin))
         setLoading(false);
       })
       .catch((err) => console.log(err));
@@ -58,7 +56,8 @@ const EditingSeatsPage = () => {
         .then((res) => {
           setLoading(true);
           setSecondFlight(res.data);
-          setSecondPrice(res.data, cabin);
+          setSecondPrice(getPrice(res.data, cabin));
+          console.log(getPrice(res.data, cabin))
           setLoading(false);
         })
         .catch((err) => console.log(err));
@@ -71,6 +70,7 @@ const EditingSeatsPage = () => {
       secondFlightId,
       cabin,
       totalPrice: firstPrice + secondPrice,
+      state
     };
 
     try {
@@ -117,6 +117,7 @@ const EditingSeatsPage = () => {
           numberOfPassengers={data.oldDepartingTickets.length}
           firstFlight={firstFlight}
           firstTickets={data.oldDepartingTickets}
+           secondTickets={data.oldReturningTickets}
           secondFlight={secondFlight}
           cabin={cabin} //new cabin
           edit={false}
